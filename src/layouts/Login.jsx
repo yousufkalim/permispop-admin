@@ -50,15 +50,16 @@ export default class Login extends Component {
   LogIn = e => {
     this.validationCheck(this.state);
     e.preventDefault();
+    debugger;
     const info = {
       Email: this.state.email,
       Password: this.state.password
     };
     var dataToLogIn = JSON.stringify(info);
-
     this.WebServicesManager.LogIn(
       { endPoint: "Personal/AdminLogin", dataToLogIn: dataToLogIn },
       (statusCode, response) => {
+        // debugger;
         if (response.returnStatus === true) {
           this.functionData(response.data);
         } else if (response.returnStatus === false) {

@@ -8,15 +8,20 @@ import {Button,Modal,
     FormGroup,
     ControlLabel,
     FormControl,
-    HelpBlock
+    HelpBlock,
+    DropdownButton,
+    MenuItem
 } from "react-bootstrap";
 import Autocomplete from "react-autocomplete";
+import { isThisTypeNode } from "typescript";
+import { MDBDropdown, MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem } from "mdbreact";
 
 
 export class UserCard extends Component {
     WebServicesManager = new WebServicesManager();
     constructor(props){
         super(props);
+        console.log("props dara",this.props);
         this.state={
             items:[],
             showModal:false,
@@ -37,9 +42,28 @@ export class UserCard extends Component {
             highWayCodeDate:this.props.highWayCodeDate,
             frontIDPhoto:this.props.frontIDPhoto,
             backIDPhoto:this.props.backIDPhoto,
-            // userDetail:""
+            // userDetail:"",
+            banStatus:"",
+            banDate:"",
         };
     }
+
+    componentWillMount(){
+        this.WebServicesManager.getApiWithParamCall(
+        {
+            endPoint: "Profile/GetProfileByPersonalId",
+            dataToFetch: this.props.id
+        },
+        (statusCode,response)=>{
+            console.log("res",response);
+            this.setState({
+                banStatus:response.banStatus !== null?response.banStatus:"",
+                banDate:response.banDate !== null ? response.banDate : ""
+            })
+        })
+    }
+
+
 
     getAddress = e => {
         this.setState({ address: e.target.value });
@@ -123,9 +147,135 @@ export class UserCard extends Component {
             this.props.toggle(); 
         });
     }
+ 
+     DropdownPage = () => {
+        return (
+          <MDBDropdown>
+            <MDBDropdownToggle caret color="primary">
+              MDBDropdown
+            </MDBDropdownToggle>
+            <MDBDropdownMenu basic>
+              <MDBDropdownItem>Action</MDBDropdownItem>
+              <MDBDropdownItem>Another Action</MDBDropdownItem>
+              <MDBDropdownItem>Something else here</MDBDropdownItem>
+              <MDBDropdownItem divider />
+              <MDBDropdownItem>Separated link</MDBDropdownItem>
+            </MDBDropdownMenu>
+          </MDBDropdown>
+        );
+      }
+      
+     
+    handleFunc = (days) =>{
+            var banTill = moment()
+            .add(days, "days")
+            .format();
+            debugger;
+            this.WebServicesManager.getApiWithParamCall(
+            {
+            endPoint:"Profile/GetProfileByPersonalId",
+            dataToFetch: this.props.id
+            },
+            (statusCode, responcedata) =>
+            {   
+                const profiledata = {
+                
+                    id : responcedata.id,
+                    role: responcedata.role,
+                    PersonalInfoId: responcedata.personalInfoId,
+                    DrivingLisenceInfoId: responcedata.drivingLisenceInfoId,
+                    ExersiceAuthorizationInfoId: responcedata.exersiceAuthorizationInfoId,
+                    VehicleDetailInfoId: responcedata.vehicleDetailInfoId,
+                    VehicleInsuranceInfoId: responcedata.vehicleInsuranceInfoId,
+                    DrivingSchoolInsuranceInfoId: responcedata.drivingSchoolInsuranceInfoId,
+                    TechnicalControlInfoId: responcedata.technicalControlInfoId,
+                    BusinessInfoId: responcedata.businessInfoId,
+                    InsuranceCompanyInfoId: responcedata.insuranceCompanyInfoId,
+                    DrivingSchoolIdentityInfoId: responcedata.drivingSchoolIdentityInfoId,
+                    DrivingSchoolApprovalInfoId: responcedata.drivingSchoolApprovalInfoId,
+                    DrivingSchoolManagerInfoId: responcedata.drivingSchoolManagerInfoId,
+                    DrivingSchoolVehiclesInfoId: responcedata.drivingSchoolVehiclesInfoId,
+                    DrivingSchoolInstructorInfoId: responcedata.drivingSchoolInstructorInfoId,
+                    Lat: responcedata.lat,
+                    Long: responcedata.long,
+                    Status: responcedata.status,
+                    BanStatus: "Ban",
+                    BanDate: banTill,
+                    
+                }
+                // debugger;
+                var dataTo = JSON.stringify(profiledata);
+                this.WebServicesManager.postApiCall(
+                    {
+                        endPoint:"Profile/UpdateProfile",
+                        dataToInsert:dataTo
+                    },
+                    (statusCode, response) =>
+                    {
+                        // debugger;
+                     console.log("update",response);
+                     window.location.reload();   
+                    }
+                );
+            }
+            )
+    }
 
+
+    handlefuntUnban = () =>{
+      
+        this.WebServicesManager.getApiWithParamCall(
+        {
+        endPoint:"Profile/GetProfileByPersonalId",
+        dataToFetch: this.props.id
+        },
+        (statusCode, resp) =>
+        {   
+            const profiledataUnban = {
+            
+                id : resp.id,
+                role: resp.role,
+                PersonalInfoId: resp.personalInfoId,
+                DrivingLisenceInfoId: resp.drivingLisenceInfoId,
+                ExersiceAuthorizationInfoId: resp.exersiceAuthorizationInfoId,
+                VehicleDetailInfoId: resp.vehicleDetailInfoId,
+                VehicleInsuranceInfoId: resp.vehicleInsuranceInfoId,
+                DrivingSchoolInsuranceInfoId: resp.drivingSchoolInsuranceInfoId,
+                TechnicalControlInfoId: resp.technicalControlInfoId,
+                BusinessInfoId: resp.businessInfoId,
+                InsuranceCompanyInfoId: resp.insuranceCompanyInfoId,
+                DrivingSchoolIdentityInfoId: resp.drivingSchoolIdentityInfoId,
+                DrivingSchoolApprovalInfoId: resp.drivingSchoolApprovalInfoId,
+                DrivingSchoolManagerInfoId: resp.drivingSchoolManagerInfoId,
+                DrivingSchoolVehiclesInfoId: resp.drivingSchoolVehiclesInfoId,
+                DrivingSchoolInstructorInfoId: resp.drivingSchoolInstructorInfoId,
+                Lat: resp.lat,
+                Long: resp.long,
+                Status: resp.status,
+                BanStatus: "",
+                BanDate: "",
+                
+            }
+            debugger;
+            var dataTo = JSON.stringify(profiledataUnban);
+            this.WebServicesManager.postApiCall(
+                {
+                    endPoint:"Profile/UpdateProfile",
+                    dataToInsert:dataTo
+                },
+                (statusCode, response) =>
+                {
+                    debugger;
+                 console.log("update",response);
+                 window.location.reload();   
+                }
+            );
+        }
+        )
+}
     render() {console.log("this.props",this.props);
         return (
+          
             <div className="card card-user">
                 <div className="image">
                     <img src={this.props.bgImage} alt="..." />
@@ -158,7 +308,31 @@ export class UserCard extends Component {
                         </a>
                     </div>
                     <p className="description text-center">{this.props.role}</p>
-                    {/* <center><Button varient="primary" onClick={()=>{this.setState({showModal:true});console.log("state",this.state,this.props)}}>Upadate Data</Button></center> */}
+                    <Button varient="primary" onClick={()=>this.setState({showModal:true})}>Upadate Data</Button>
+                   {/* <Button varien t="primary" onClick={this.handleFunc}>Ban Student</Button> */}
+                   {this.state.banStatus === ""?
+                   <DropdownButton
+                        bsStyle="default"
+                        title="Ban Student"
+                        noCaret
+                        id="dropdown-no-caret"
+                        style={{fontSize:'14px'}}
+                        >
+                        <MenuItem
+                            onClick={() => this.handleFunc(15)}
+                            eventKey="1"
+                        >
+                            15 Days
+                        </MenuItem>
+                        <MenuItem onClick={()=>this.handleFunc(30)} eventKey="2">
+                            30 Days
+                        </MenuItem>
+                    </DropdownButton>:
+                        <>
+                        <p>Ban till: {moment(this.state.banDate).format("DD/MM/YYYY")}</p> 
+                        <Button varient="primary"onClick={this.handlefuntUnban}>Un-Ban</Button>
+                        </>
+                     } 
                 </div>
                 <hr />
                 <div className="text-center">{this.props.socials}</div>
@@ -255,6 +429,17 @@ export class UserCard extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="row"> 
+                                                 
+                                                        {/* <FormGroup>
+                                                            <ControlLabel>Address</ControlLabel>
+                                                            <FormControl className="form-control" value={this.state.address}   onChange={(e) => { this.setState({ address: e.target.value }); }} /> */}
+                                                            {/* <select className="form-control" value={this.props.address} onChange={(e) => { this.setState({ pkRole: e.target.value }); }}>
+                                                                <option>Student
+                                                    </option>   <option>Instructor
+                                                    </option>   <option>Driving School
+                                                    </option>
+                                                            </select> */}
+                                                        {/* </FormGroup> */}
                                                         <Col md={6} className="address-in">
                                                         <FormGroup>
                                                             <ControlLabel>

@@ -25,10 +25,12 @@ class Users extends Component {
         this.setState({ showDetails: !this.state.showDetails, userDetails: obj });
     }
     componentWillMount() {
+        
         this.WebServicesManager.getApiCall({
             endPoint: "Personal/GetAllUsers"
         }, (s, r) => {
                 this.setState({ allUsers: r });
+
         });
     }
 

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { NavItem, Nav, NavDropdown, MenuItem } from "react-bootstrap";
+import {Redirect} from "react-router-dom"
 
 class AdminNavbarLinks extends Component {
 
@@ -10,7 +11,7 @@ class AdminNavbarLinks extends Component {
       User: ""
     };
   }
-componentWillMount()
+componentDidMount()
 {
 
   var y = localStorage.getItem("userdata");
@@ -18,7 +19,8 @@ componentWillMount()
   // console.log("props",this.props);
   if(y === null || y=== "")
   {
-    this.props.history.history.push(`/`);
+    console.log("this.prop",this.props)
+    this.props.history.replace(`/login`);
    } else {
     this.setState({User: JSON.parse(y) });
   }

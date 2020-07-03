@@ -17,7 +17,8 @@ class Users extends Component {
             allUsers: [],
             users: [],
             showDetails: false,
-            userDetails: {}
+            userDetails: {},
+            documentVerified:""
         };
     }
     WebServicesManager = new WebServicesManager();
@@ -30,8 +31,10 @@ class Users extends Component {
             endPoint: "Personal/GetAllUsers"
         }, (s, r) => {
                 this.setState({ allUsers: r });
-
+                // this.state.documentVerified= this.allUsers.documentVerified
         });
+
+        
     }
 
     render() {
@@ -94,16 +97,20 @@ class Users extends Component {
                                             </thead>
                                             <tbody>
                                                 {this.state.allUsers.map((prop, key) => {
-                                                    return (
-                                                        <tr>
-                                                            <td>{key + 1}</td>
-                                                            <td>{prop.firstName + " " + prop.surName}</td>
-                                                            <td>{prop.role}</td>
-                                                            <td>{prop.active}</td>
-                                                            <td>{prop.verified}</td>
-                                                            <td><Button onClick={() => this.handleClick(prop)}><li className="pe-7s-look   fa-2x" title="View More"></li></Button></td>
-                                                        </tr>
-                                                    );
+                                                    if(prop.role !== "Admin" && prop.role !== "Deleted DSInstructor"){
+                                                        return (
+                                                            <tr>
+                                                                <td>{key + 1}</td>
+                                                                <td>{prop.firstName + " " + prop.surName}</td>
+                                                                <td>{prop.role==="DSInstructor"?"DrivingSchool Instructor":prop.role}</td>
+                                                                <td>{prop.active}</td>
+                                                                {/* <td>{prop.verified}</td> */}
+                                                                <td>{prop.documentTested === "Tested"?<i className="fa fa-check"></i>: <i className="fa fa-remove"></i>}</td>
+                                                                    {/* {this.state.userDetails.documentTested === undefined ? "" : this.state.userDetails.documentTested === "" ? "" : this.state.userDetails.documentTested === "Tested" ? <i className="fa fa-check"></i> : <i className="fa fa-remove"></i>}</td> */}
+                                                                <td><Button onClick={() => this.handleClick(prop)}><li className="pe-7s-look   fa-2x" title="View More"></li></Button></td>
+                                                            </tr>
+                                                        );
+                                                    }
                                                 })}
                                             </tbody>
                                         </Table>

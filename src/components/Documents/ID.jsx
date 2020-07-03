@@ -31,13 +31,140 @@ class ID extends Component {
             { endPoint: "Document", dataToInsert: dataToInsert },
             (statusCode, response) => {
                 console.log("response",response);
+                this.WebServicesManager.getApiWithParamCall(
+                    {
+                      endPoint: "Document/GetUserDoc",
+                      dataToFetch: this.props.id
+                    },
+                    (statusCode, responsePersonal) => {
+                       debugger;
+                       var docVarify = false;
+                        console.log("rep",responsePersonal);
+                        responsePersonal.map(item => {
+                            if(item.status === "true"){
+                                docVarify = true;
+                            }else{
+                                docVarify =false;
+                            }
+                        })
+                        if(docVarify === true){
+                            this.WebServicesManager.getApiWithParamCall(
+                                {
+                                endPoint: "Personal/GetAllById",
+                                dataToFetch: this.props.id
+                                },
+                                (statusCode, responsePersonal) => {
+                                debugger;
+                                    console.log("rep",responsePersonal);
+                                const perobj = {
+                                id: responsePersonal.id,
+                                firstName:responsePersonal.firstName,
+                                surName: responsePersonal.surName,
+                                dob: responsePersonal.dob,
+                                placeOfBirth: responsePersonal.placeOfBirth,
+                                gender: responsePersonal.gender,
+                                frontIDPhoto: responsePersonal.frontIDPhoto,
+                                backIDPhoto: responsePersonal.backIDPhoto,
+                                address: responsePersonal.address,
+                                complement: responsePersonal.complement,
+                                zip: responsePersonal.zip,
+                                city: responsePersonal.city,
+                                photo: responsePersonal.photo,
+                                password: responsePersonal.password,
+                                neph: responsePersonal.neph,
+                                noOfHrsWanted: responsePersonal.noOfHrsWanted,
+                                email: responsePersonal.email,
+                                phone: responsePersonal.phone,
+                                secondEmail: responsePersonal.secondEmail,
+                                secondPhone: responsePersonal.secondPhone,
+                                highWayCodeDate: responsePersonal.highWayCodeDate,
+                                lat: responsePersonal.let,
+                                long: responsePersonal.long,
+                                role: responsePersonal.role,
+                                drivingSchoolID: responsePersonal.drivingSchoolID,
+                                registrationDate: responsePersonal.registrationDate,
+                                documentTested: "Tested"
+                            }
+                            debugger;
+                            this.WebServicesManager.postApiCall(
+                                {
+                                    endPoint:"Personal/UpdatePersonal",
+                                    dataToInsert:JSON.stringify(perobj)
+                                },
+                                (statusCode, Resp)=>
+                                {
+                                    debugger;
+                                    console.log("Resp",Resp)
+                                }
+                            )
+                    
+                        })
+                    }
+                    else
+                    {
+                        this.WebServicesManager.getApiWithParamCall(
+                            {
+                            endPoint: "Personal/GetAllById",
+                            dataToFetch: this.props.id
+                            },
+                            (statusCode, responsePersonal) => {
+                            debugger;
+                                console.log("rep",responsePersonal);
+                            const perobj = {
+                            id: responsePersonal.id,
+                            firstName:responsePersonal.firstName,
+                            surName: responsePersonal.surName,
+                            dob: responsePersonal.dob,
+                            placeOfBirth: responsePersonal.placeOfBirth,
+                            gender: responsePersonal.gender,
+                            frontIDPhoto: responsePersonal.frontIDPhoto,
+                            backIDPhoto: responsePersonal.backIDPhoto,
+                            address: responsePersonal.address,
+                            complement: responsePersonal.complement,
+                            zip: responsePersonal.zip,
+                            city: responsePersonal.city,
+                            photo: responsePersonal.photo,
+                            password: responsePersonal.password,
+                            neph: responsePersonal.neph,
+                            noOfHrsWanted: responsePersonal.noOfHrsWanted,
+                            email: responsePersonal.email,
+                            phone: responsePersonal.phone,
+                            secondEmail: responsePersonal.secondEmail,
+                            secondPhone: responsePersonal.secondPhone,
+                            highWayCodeDate: responsePersonal.highWayCodeDate,
+                            lat: responsePersonal.let,
+                            long: responsePersonal.long,
+                            role: responsePersonal.role,
+                            drivingSchoolID: responsePersonal.drivingSchoolID,
+                            registrationDate: responsePersonal.registrationDate,
+                            documentTested: ""
+                        }
+                        debugger;
+                        this.WebServicesManager.postApiCall(
+                            {
+                                endPoint:"Personal/UpdatePersonal",
+                                dataToInsert:JSON.stringify(perobj)
+                            },
+                            (statusCode, Resp)=>
+                            {
+                                debugger;
+                                console.log("Resp",Resp)
+                            }
+                        )
+                    })
+                 }
+
+                    })
                 this.props.retunfb();
+                
             }
         );
-
     }
+
     componentWillMount() {
         this.setState({ status: this.props.status === "true" ? "checked" : "" });
+      
+       
     }
 
     render() {

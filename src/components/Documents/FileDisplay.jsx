@@ -6,7 +6,8 @@ class FileDisplay extends Component {
     render() {
         // debugger;
         console.log("this prop file",this.props.file);
-        if (this.props.file !== undefined) {
+        if (this.props.file !== undefined && this.props.file !== null) {
+
             if (this.props.file.indexOf(".pdf") > -1) {
                 return (<iframe src={this.props.file} width="100%" height="100%" style={{ overflow: "auto" }}></iframe>);
             }

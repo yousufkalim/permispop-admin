@@ -1,9 +1,10 @@
 
 import React, { Component } from "react";
-import { Table, Modal,lg } from "react-bootstrap";
+import { Table, Modal,lg ,Button} from "react-bootstrap";
 import 'font-awesome/css/font-awesome.min.css';
 import ID from "components/Documents/ID.jsx";
 import WebServicesManager from "../../WebServicesManager/WebServicesManager";
+import { classicNameResolver } from "typescript";
 
 
 class UserDocuments extends Component {
@@ -27,7 +28,8 @@ class UserDocuments extends Component {
             vReg: {},
             vIns: {},
             veh: {},
-            dsa: {}
+            dsa: {},
+
         };
     }
     componentDidMount() {
@@ -58,6 +60,66 @@ class UserDocuments extends Component {
                 });
             });
     }
+
+    maildata = m =>{
+        var notVerfiedDoc = ""
+        const listToMatch = {
+            fic:"Front Id Card",
+            bic:"Back Id Card",
+            drvlic:"Driving Licence",
+            aoe:"Authorizatio of Exercise",
+            kbl:"kbls",
+            veh:"Vehicle Image",
+            vreg:"Vehicle Registration",
+            vins:"Vehicle Insurance",
+            rc:"Rcpro",
+        }
+
+        const listAllDocument = {
+            fic:"Front Id Card",
+            bic:"Back Id Card",
+            drvlic:"Driving Licence",
+            aoe:"Authorizatio of Exercise",
+            kbl:"kbls",
+            veh:"Vehicle Image",
+            vreg:"Vehicle Registration",
+            vins:"Vehicle Insurance",
+            rc:"Rcpro",
+            greenCard:"Green Card",
+            vImg:"Vehicle Image",
+            dsa:"dsa"
+        }
+
+        this.WebServicesManager.getApiWithParamCall({
+            endPoint: "Document/GetUserDoc",
+            dataToFetch: this.props.id
+        },
+        (statusCode, Response) => {
+            console.log("Result",Response);
+            debugger;
+            for(var i=0;i<Response.length;i++){     
+                if (Response[i].status === "false") {
+                    // notVerfiedDoc.push(listToMatch[Response[i].documentName])
+                    notVerfiedDoc = `${notVerfiedDoc}**${listToMatch[Response[i].documentName]}`;
+                }
+                // Object.entries(listAllDocument).forEach(([key, value]) => {
+                //     if(key !== Response[i].documentName){
+                //         notVerfiedDoc = `${notVerfiedDoc}**${value}`;
+                //     }
+                //     console.log("key,val",key,value)
+                // });
+            }    
+            //    debugger;
+            debugger;
+                this.WebServicesManager.getApiWithParamCall({
+                endPoint:"Personal/EmailDocuments",
+                dataToFetch:`${this.props.id}&email=${this.props.email}&doc=${notVerfiedDoc}`
+                },(statusCode,responseEmail)=>{
+                console.log("email");
+                alert("mail sent successfully");
+                })  
+        });
+    }
     render() {
         return (
             <div className="content">
@@ -76,7 +138,7 @@ class UserDocuments extends Component {
                         </tr>
                     </thead>
                     {this.props.role.toLowerCase() === "instructor" ?
-                        <tbody>
+                    <tbody>
                             <tr>
                                 <td>Front Id</td>
                                 <td>{this.state.frontDoc === undefined ? "" : this.state.frontDoc.status === "" ? "" : this.state.frontDoc.status === "true" ? <i className="fa fa-check"></i> : <i className="fa fa-remove"></i>}</td>
@@ -126,7 +188,7 @@ class UserDocuments extends Component {
                             <tr>
                                 <td>Vehicle Insurance</td>
                                 <td>{this.state.vIns === undefined ? "" : this.state.vIns.status === "" ? "" : this.state.vIns.status === "true" ? <i className="fa fa-check"></i> : <i className="fa fa-remove"></i>}</td>
-                                <td><i className="fa fa-file" onClick={() => this.setState({ showId: true, docTitle: "Vehicle Insurance", idName: "vIns", fbStatus: this.state.vReg === undefined ? false : this.state.vIns.status })}></i></td>
+                                <td><i className="fa fa-file" onClick={() => this.setState({ showId: true, docTitle: "Vehicle Insurance", idName: "vIns", fbStatus: this.state.vIns === undefined ? false : this.state.vIns.status === undefined?false:this.state.vIns.status })}></i></td>
                             </tr>
 
                         </tbody>
@@ -168,6 +230,7 @@ class UserDocuments extends Component {
                         </tbody>
                     }
                 </Table>
+                <Button onClick={this.maildata}><li className="fa fa-envelope  fa-1x"></li>Send Email Non-Verified Document</Button>
             </div>
         );
     }

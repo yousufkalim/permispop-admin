@@ -42,6 +42,7 @@ class Payments extends Component {
               if(item.activated === 'true'){
                 // debugger;
                 const resp = {
+                  id:responseUser.id,
                   firstName:responseUser.firstName,
                   surName:responseUser.surName,
                   gender:responseUser.gender,
@@ -54,6 +55,7 @@ class Payments extends Component {
                 this.setState({ users: [...this.state.users, resp] })
               }else{ 
                 const resp = {
+                  id:responseUser.id,
                   firstName:responseUser.firstName,
                   surName:responseUser.surName,
                   gender:responseUser.gender,
@@ -108,6 +110,7 @@ class Payments extends Component {
                                 {
                                   this.state.inactiveusers.length > 0?
                                     this.state.inactiveusers.map( (item, idx)=> {
+                                      console.log("item",item)
                                         return (
                                           <tr>
                                             <td><input type="checkbox"  value={item.id} onChange={this.active}/></td>

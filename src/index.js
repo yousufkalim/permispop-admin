@@ -12,7 +12,7 @@ import AdminLayout from "layouts/Admin.jsx";
 import Login from "layouts/Login.jsx";
 
 var y = localStorage.getItem('userdata');
-console.log("y is",y);
+// console.log("y is",y);
 
 ReactDOM.render(
   <BrowserRouter>

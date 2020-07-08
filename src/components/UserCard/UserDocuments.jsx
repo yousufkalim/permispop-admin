@@ -4,7 +4,6 @@ import { Table, Modal,lg ,Button} from "react-bootstrap";
 import 'font-awesome/css/font-awesome.min.css';
 import ID from "components/Documents/ID.jsx";
 import WebServicesManager from "../../WebServicesManager/WebServicesManager";
-import { classicNameResolver } from "typescript";
 
 
 class UserDocuments extends Component {
@@ -29,8 +28,31 @@ class UserDocuments extends Component {
             vIns: {},
             veh: {},
             dsa: {},
+            profileData:"",
+            vehicleInfo:"",
 
         };
+    }
+    componentWillMount() {
+        console.log("in ID comp",this.props);
+        this.WebServicesManager.getApiWithParamCall(
+            {
+                endPoint:"Profile/GetProfileByPersonalId",
+                dataToFetch: this.props.id
+            },
+            (statusCode,responseProfile)=>{
+                var vehicle = "";
+                console.log("response Profile",responseProfile);
+                if(responseProfile.role === "Instructor"){
+                    vehicle = JSON.parse(responseProfile.vehicleDetailInfoId);
+                }else{
+                    vehicle = JSON.parse(responseProfile.drivingSchoolVehiclesInfoId);   
+                }
+                this.setState({profileData:responseProfile,vehicleInfo:vehicle},()=>{
+                    console.log("update per",this.state);
+                });
+            }
+        )
     }
     componentDidMount() {
         this.getData();
@@ -120,7 +142,25 @@ class UserDocuments extends Component {
                 })  
         });
     }
+
+    renderVehicle = () =>{
+        if(this.state.vehicleInfo!==""){
+            Object.entries(this.state.vehicleInfo).forEach((key,value)=>{
+                console.log("key,value",key,value);
+                if(value !== null){
+                    return (
+                        <tr key={key}>
+                            <td>{key}</td>
+                            <td>{this.state.veh === undefined ? "" : this.state.veh.status === "" ? "" : this.state.veh.status === "true" ? <i className="fa fa-check"></i> : <i className="fa fa-remove"></i>}</td>
+                            <td><i className="fa fa-file" onClick={() => this.setState({ showId: true, docTitle: {key}, idName: "veh", fbStatus: this.state.veh === undefined ? false : this.state.veh.status })}></i></td>
+                        </tr>
+                    )
+                }
+            })
+        }
+    }
     render() {
+        const {vehicleInfo} = this.state;
         return (
             <div className="content">
                 <Modal size="lg" show={this.state.showId} >
@@ -128,7 +168,7 @@ class UserDocuments extends Component {
                         <Modal.Title>{this.state.docTitle}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <ID Type={this.state.idName} {...this.props} status={this.state.fbStatus} retunfb={this.getData} />
+                        <ID Type={this.state.idName} {...this.props} {...this.state.profileData} vehicleInfo={this.state.vehicleInfo} status={this.state.fbStatus} retunfb={this.getData} />
                     </Modal.Body>
                 </Modal>
 
@@ -175,7 +215,7 @@ class UserDocuments extends Component {
                                 <td>{this.state.greenCard === undefined ? "" : this.state.greenCard.status === "" ? "" : this.state.greenCard.status === "true" ? <i className="fa fa-check"></i> : <i className="fa fa-remove"></i>}</td>
                                 <td><i className="fa fa-file" onClick={() => this.setState({ showId: true, docTitle: "Green Card", idName: "greenCard", fbStatus: this.state.greenCard === undefined ? false : this.state.greenCard.status })}></i></td>
                             </tr>*/}
-                            <tr>
+                            {/* <tr>
                                 <td>Vehicle Image</td>
                                 <td>{this.state.veh === undefined ? "" : this.state.veh.status === "" ? "" : this.state.veh.status === "true" ? <i className="fa fa-check"></i> : <i className="fa fa-remove"></i>}</td>
                                 <td><i className="fa fa-file" onClick={() => this.setState({ showId: true, docTitle: "Vehicle Image", idName: "veh", fbStatus: this.state.veh === undefined ? false : this.state.veh    .status })}></i></td>
@@ -189,7 +229,28 @@ class UserDocuments extends Component {
                                 <td>Vehicle Insurance</td>
                                 <td>{this.state.vIns === undefined ? "" : this.state.vIns.status === "" ? "" : this.state.vIns.status === "true" ? <i className="fa fa-check"></i> : <i className="fa fa-remove"></i>}</td>
                                 <td><i className="fa fa-file" onClick={() => this.setState({ showId: true, docTitle: "Vehicle Insurance", idName: "vIns", fbStatus: this.state.vIns === undefined ? false : this.state.vIns.status === undefined?false:this.state.vIns.status })}></i></td>
-                            </tr>
+                            </tr> */}
+                            {vehicleInfo!=="" && vehicleInfo.Vehicle1 !== null && vehicleInfo.Vehicle1 !== undefined?
+                                <tr>
+                                    <td>Vehicle1 Detail</td>
+                                    <td>{this.state.veh === undefined ? "" : this.state.veh.status === "" ? "" : this.state.veh.status === "true" ? <i className="fa fa-check"></i> : <i className="fa fa-remove"></i>}</td>
+                                    <td><i className="fa fa-file" onClick={() => this.setState({ showId: true, docTitle: "Vehicle1 detail", idName: "veh1", fbStatus: this.state.veh === undefined ? false : this.state.veh.status === undefined?false:this.state.veh.status })}></i></td>
+                                </tr>:""
+                            }
+                            {vehicleInfo!=="" && vehicleInfo.Vehicle2 !== null && vehicleInfo.Vehicle2 !== undefined?
+                                <tr>
+                                    <td>Vehicle2 Detail</td>
+                                    <td>{this.state.veh === undefined ? "" : this.state.veh.status === "" ? "" : this.state.veh.status === "true" ? <i className="fa fa-check"></i> : <i className="fa fa-remove"></i>}</td>
+                                    <td><i className="fa fa-file" onClick={() => this.setState({ showId: true, docTitle: "Vehicl2 detail", idName: "veh2", fbStatus: this.state.veh === undefined ? false : this.state.veh.status === undefined?false:this.state.veh.status })}></i></td>
+                                </tr>:""
+                            }
+                            {vehicleInfo!=="" && vehicleInfo.Vehicle3 !== null && vehicleInfo.Vehicle3 !== undefined?
+                                <tr>
+                                    <td>Vehicle3 Detail</td>
+                                    <td>{this.state.veh === undefined ? "" : this.state.veh.status === "" ? "" : this.state.veh.status === "true" ? <i className="fa fa-check"></i> : <i className="fa fa-remove"></i>}</td>
+                                    <td><i className="fa fa-file" onClick={() => this.setState({ showId: true, docTitle: "Vehilce3 detail", idName: "veh3", fbStatus: this.state.veh === undefined ? false : this.state.veh.status === undefined?false:this.state.veh.status })}></i></td>
+                                </tr>:""
+                            }
 
                         </tbody>
                         : this.props.role.toLowerCase() === "student" ?
@@ -209,23 +270,45 @@ class UserDocuments extends Component {
                                 <td>{this.state.backDoc === undefined ? "" : this.state.backDoc.status === "" ? "" : this.state.backDoc.status === "true" ? <i className="fa fa-check"></i> : <i className="fa fa-remove"></i>}</td>
                                 <td><i className="fa fa-file" onClick={() => this.setState({ showId: true, docTitle: "Back ID", idName: "bic", fbStatus: this.state.backDoc === undefined ? false : this.state.backDoc.status })}></i></td>
                             </tr>
-                            </tbody> :
+                        </tbody> :
                         <tbody>
+                            <tr>
+                                <td>Driving School Approval</td>
+                                <td>{this.state.dsa === undefined ? "" : this.state.dsa.status === "" ? "" : this.state.dsa.status === "true" ? <i className="fa fa-check"></i> : <i className="fa fa-remove"></i>}</td>
+                                <td><i className="fa fa-file" onClick={() => this.setState({ showId: true, docTitle: "Driving School Approval", idName: "dsa", fbStatus: this.state.dsa === undefined ? false : this.state.dsa.status })}></i></td>
+                            </tr>
                             <tr>
                                 <td>KBL</td>
                                 <td>{this.state.kbl === undefined ? "" : this.state.kbl.status === "" ? "" : this.state.kbl.status === "true" ? <i className="fa fa-check"></i> : <i className="fa fa-remove"></i>}</td>
                                 <td><i className="fa fa-file" onClick={() => this.setState({ showId: true, docTitle: "KBL", idName: "kbl", fbStatus: this.state.kbl === undefined ? false : this.state.kbl.status })}></i></td>
                             </tr>
-                             <tr>
+                            <tr>
                                 <td>RC Pro</td>
                                 <td>{this.state.rc === undefined ? "" : this.state.rc.status === "" ? "" : this.state.rc.status === "true" ? <i className="fa fa-check"></i> : <i className="fa fa-remove"></i>}</td>
                                 <td><i className="fa fa-file" onClick={() => this.setState({ showId: true, docTitle: "RC Pro", idName: "rc", fbStatus: this.state.rc === undefined ? false : this.state.rc.status })}></i></td>
-                                </tr>
+                            </tr>
+
+                            {vehicleInfo!=="" && vehicleInfo.Vehicle1 !== null && vehicleInfo.Vehicle1 !== undefined?
                                 <tr>
-                                    <td>Driving School Approval</td>
-                                    <td>{this.state.dsa === undefined ? "" : this.state.dsa.status === "" ? "" : this.state.dsa.status === "true" ? <i className="fa fa-check"></i> : <i className="fa fa-remove"></i>}</td>
-                                    <td><i className="fa fa-file" onClick={() => this.setState({ showId: true, docTitle: "Driving School Approval", idName: "dsa", fbStatus: this.state.dsa === undefined ? false : this.state.dsa.status })}></i></td>
-                                </tr>
+                                    <td>Vehicle1 Detail</td>
+                                    <td>{this.state.veh === undefined ? "" : this.state.veh.status === "" ? "" : this.state.veh.status === "true" ? <i className="fa fa-check"></i> : <i className="fa fa-remove"></i>}</td>
+                                    <td><i className="fa fa-file" onClick={() => this.setState({ showId: true, docTitle: "Vehicle1 detail", idName: "veh1", fbStatus: this.state.veh === undefined ? false : this.state.veh.status === undefined?false:this.state.veh.status })}></i></td>
+                                </tr>:""
+                            }
+                            {vehicleInfo!=="" && vehicleInfo.Vehicle2 !== null && vehicleInfo.Vehicle2 !== undefined?
+                                <tr>
+                                    <td>Vehicle2 Detail</td>
+                                    <td>{this.state.veh === undefined ? "" : this.state.veh.status === "" ? "" : this.state.veh.status === "true" ? <i className="fa fa-check"></i> : <i className="fa fa-remove"></i>}</td>
+                                    <td><i className="fa fa-file" onClick={() => this.setState({ showId: true, docTitle: "Vehicl2 detail", idName: "veh2", fbStatus: this.state.veh === undefined ? false : this.state.veh.status === undefined?false:this.state.veh.status })}></i></td>
+                                </tr>:""
+                            }
+                            {vehicleInfo!=="" && vehicleInfo.Vehicle3 !== null && vehicleInfo.Vehicle3 !== undefined?
+                                <tr>
+                                    <td>Vehicle3 Detail</td>
+                                    <td>{this.state.veh === undefined ? "" : this.state.veh.status === "" ? "" : this.state.veh.status === "true" ? <i className="fa fa-check"></i> : <i className="fa fa-remove"></i>}</td>
+                                    <td><i className="fa fa-file" onClick={() => this.setState({ showId: true, docTitle: "Vehilce3 detail", idName: "veh3", fbStatus: this.state.veh === undefined ? false : this.state.veh.status === undefined?false:this.state.veh.status })}></i></td>
+                                </tr>:""
+                            }
 
                         </tbody>
                     }

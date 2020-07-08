@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import FileDisplay from "components/Documents/FileDisplay.jsx";
 import { Grid, Row, Col } from "react-bootstrap";
+import moment from "moment";
 
 class DrivingLicense extends Component {
     constructor(props) {
@@ -23,17 +24,22 @@ class DrivingLicense extends Component {
                     <Col md={6}>
                         <b>{this.props.Type===undefined?"No Added Yet":""}</b>
                         <br/>        
-                        {this.props.firstName}<br />
-                        Email: {this.props.gender}
+                        <b>{this.props.firstName}</b>
                         <br />
-                        Date of Birth: {this.props.dob}
+                        Email: {this.props.email}
+                        <br />
+                        Gender:{this.props.gender}
+                        <br/>
+                        Date of Birth: {moment(this.props.dob).format('DD/MM/YYYY')}
                         <br />
                         City: {this.props.city}
                         <br />
                         Zip: {this.props.zip}
                         <br />
-                        Address: {this.props.addres}
-                        </Col>
+                        Address: {this.props.address}
+                        <hr/>
+                        <p style={{color:'red',fontSize:12}}>**For Updating Data click on button <b>Update Data</b> under profile info card**</p>
+                    </Col>
                 </Row>
 
             </Grid>

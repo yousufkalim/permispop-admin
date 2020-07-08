@@ -19,13 +19,16 @@ export class UserCard extends Component {
     WebServicesManager = new WebServicesManager();
     constructor(props){
         super(props);
-        console.log("props dara",this.props);
+        // console.log("props dara",this.props);
         this.state={
             items:[],
             showModal:false,
             firstName:this.props.firstName,
             surName:this.props.surName,
             email:this.props.email,
+            contactEmail:this.props.contactEmail,
+            secondEmail:this.props.secondEmail,
+            secondPhone:this.props.secondPhone,
             password:this.props.password,
             dob:this.props.dob,
             phone:this.props.phone,
@@ -38,6 +41,7 @@ export class UserCard extends Component {
             gender:this.props.gender,
             complement:this.props.complement,
             highWayCodeDate:this.props.highWayCodeDate,
+            neph:this.props.neph,
             frontIDPhoto:"",
             backIDPhoto:"",
             frontIdPathError:this.props.frontIDPhoto,
@@ -54,7 +58,7 @@ export class UserCard extends Component {
             dataToFetch: this.props.id
         },
         (statusCode,response)=>{
-            console.log("res",response);
+            // console.log("res",response);
             this.setState({
                 banStatus:response.banStatus !== null?response.banStatus:"",
                 banDate:response.banDate !== null ? response.banDate : ""
@@ -120,12 +124,14 @@ export class UserCard extends Component {
         fetch(
           "https://api-adresse.data.gouv.fr/search/?q=" +
             e.target.value +
-            "&type=housenumber&autocomplete=1"
+            "&type=street&autocomplete=1&limit=15"
         )
           .then(response => response.json())
           .then(responseJson => {
+            console.log("res address",responseJson);
             var addressToSet = [];
-            for (var i = 0; i < 5; i++) {
+            // debugger;
+            for (var i = 0; i < responseJson.features.length; i++) {
               addressToSet.push({
                 id: i,
                 label: responseJson.features[i].properties.label,
@@ -135,8 +141,10 @@ export class UserCard extends Component {
                 lng: responseJson.features[0].geometry.coordinates[0]
               });
             }
-            if (addressToSet.length === 5) {
-              this.setState({ items: addressToSet });
+            if (addressToSet.length === responseJson.features.length) {
+              this.setState({ items: addressToSet },()=>{
+              console.log("Address to set",addressToSet,"state",this.state.items);
+              });
             }
           })
           .catch(error => {
@@ -145,18 +153,20 @@ export class UserCard extends Component {
       };
       SetAddress = item => {
         this.setState({ address: item });
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < this.state.items.length; i++) {
           if (this.state.items[i].label === item) {
+            // debugger;
             var city = this.state.items[i].city;
             var zipCode = this.state.items[i].PostalCode;
             var lat = this.state.items[i].lat;
             var lng = this.state.items[i].lng;
             var newAddress = this.state.items[i].label.split(String(zipCode));
-            this.setState({ address:newAddress[0],zip: zipCode, city: city, lat: lat, long: lng });
+            this.setState({ address:newAddress[0],zip: zipCode, city: city, lat: lat, lng: lng });
             // this.validationCheckforAddress(this.state);
           }
         }
       };
+    
     
 
     handleSave = () => {
@@ -173,20 +183,24 @@ export class UserCard extends Component {
             BackIDPhoto: this.state.backIDPhoto===""?this.state.backIdPathError:this.state.backIDPhoto,
             address:this.state.address,
             Complement: this.state.complement,
-            ZIP: this.props.zip,
+            ZIP: this.state.zip,
             City:this.state.city,
             Photo:this.props.photo,
             Password:this.state.password,
-            NEPH:this.props.neph,
+            NEPH:this.state.neph,
             NoOfHrsWanted:this.props.noOfHrsWanted,
             Email:this.state.email,
+            ContactEmail:this.state.contactEmail,
             Phone:this.state.phone,
-            SecondEmail:this.props.secondEmail,
-            SecondPhone:this.props.secondPhone,
+            SecondEmail:this.state.secondEmail,
+            SecondPhone:this.state.secondPhone,
             HighWayCodeDate:this.state.highWayCodeDate,
             Lat:this.state.lat,
             Long:this.state.long,
             Role:this.props.role,
+            DrivingSchoolID:this.props.drivingSchoolID,
+            RegistrationDate:this.props.RegistrationDate,
+            documentTested:this.props.documentTested,
         }
         var datais = JSON.stringify(data);
         this.WebServicesManager.postApiCall({
@@ -353,14 +367,15 @@ export class UserCard extends Component {
                     (statusCode, response) =>
                     {
                         // debugger;
-                    console.log("update",response);
+                    // console.log("update",response);
                     window.location.reload();   
                     }
                 );
             }
             )
         }
-    render() {console.log("this.props",this.props);
+    render() {
+        // console.log("this.props",this.props);
         return (
             <div className="card card-user">
                 <div className="image">
@@ -385,7 +400,7 @@ export class UserCard extends Component {
                                     <tbody>
                                         <tr>
                                             <th>Email</th>
-                                            <td>{this.props.email}</td>
+                                            <td>{(this.state.contactEmail===""||this.state.contactEmail === null)?this.state.email:this.state.contactEmail}</td>
                                         </tr>
                                         <tr>
                                             <th>Date of Birth</th>
@@ -411,14 +426,14 @@ export class UserCard extends Component {
                     <p className="description text-center" style={{fontWeight:'bold',fontSize:16}}>{this.props.role}</p>
                     {this.state.banDate!==""?<p className="text-center" style={{fontSize:10}}>Ban till: {moment(this.state.banDate).format("DD/MM/YYYY")}</p>:""}
                     <center>
-                    <Button varient="primary" style={{marginLeft:10}} onClick={()=>this.setState({showModal:true})}>Upadate Data</Button>
+                    <Button varient="primary" style={{marginLeft:10,marginTop:10}} onClick={()=>this.setState({showModal:true})}>Upadate Data</Button>
                    {this.state.banStatus === "" ? 
                    <DropdownButton
                         bsStyle="default"
                         title="Ban Student"
                         noCaret
                         id="dropdown-no-caret"
-                        style={{fontSize:'14px',marginLeft:10}}
+                        style={{fontSize:'14px',marginLeft:10,marginTop:10}}
                         >
                         <MenuItem
                             onClick={() => this.handleFunc(15)}
@@ -432,16 +447,16 @@ export class UserCard extends Component {
                     </DropdownButton>: 
                         this.state.banStatus !== "DeActive" ?
                         <> 
-                        <Button varient="primary" style={{marginLeft:10}} onClick={this.handlefuntUnban}>Un-Ban</Button>
+                        <Button varient="primary" style={{marginLeft:10,marginTop:10}} onClick={this.handlefuntUnban}>Un-Ban</Button>
                         </>
                         : ""
                      } 
                     {this.state.banStatus === "" && this.state.banStatus !=="Ban" ?
-                    <Button varient="primary" style={{marginLeft:10}} onClick={this.handlefuntDeActive}>De-Active</Button>:
+                    <Button varient="primary" style={{marginLeft:10,marginTop:10}} onClick={this.handlefuntDeActive}>De-Active</Button>:
                     this.state.banStatus !== "Ban" ?
                     <>
                     {/* <p>De-Activated</p>  */}
-                    <Button varient="primary" style={{marginLeft:10}} onClick={this.handlefuntUnban}>Re-active</Button>
+                    <Button varient="primary" style={{marginLeft:10,marginTop:10}} onClick={this.handlefuntUnban}>Re-active</Button>
                       </>
                       :""
                       }</center>
@@ -453,9 +468,10 @@ export class UserCard extends Component {
                     onHide={()=>this.setState({showModal:false})}
                     backdrop="static"
                     keyboard={false}
+                    size="xl"
                 >
                     <Modal.Header closeButton>
-                    <Modal.Title>  <p className="description text-center">{this.props.role} Data</p> </Modal.Title>
+                    <Modal.Title>Update Data</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                     <div className="content">
@@ -485,13 +501,14 @@ export class UserCard extends Component {
                                                 </FormGroup>
                                             </div>
                                         </div>
-                                        <div className="row">
+                                        <div className="row"> 
                                             <div className="col-md-6">
                                                 <FormGroup>
-                                                    <ControlLabel>Email</ControlLabel>
-                                                    <FormControl className="form-control"  disabled  
-                                                    value={this.state.email} 
-                                                    onChange={(e) => { this.setState({ email: e.target.value }); }}></FormControl>
+                                                    <ControlLabel>DOB</ControlLabel>
+                                                    <FormControl className="form-control"
+                                                        type="date"
+                                                        value={moment(this.state.dob).format("YYYY-MM-DD")} 
+                                                        onChange={(e) => { this.setState({ dob: e.target.value }); }} />
                                                 </FormGroup>
                                             </div>
                                             <div className="col-md-6">
@@ -513,18 +530,35 @@ export class UserCard extends Component {
                                         <div className="row">
                                             <div className="col-md-6">
                                                 <FormGroup>
-                                                    <ControlLabel>DOB</ControlLabel>
-                                                    <FormControl className="form-control"
-                                                        type="date"
-                                                        value={moment(this.state.dob).format("YYYY-MM-DD")} 
-                                                        onChange={(e) => { this.setState({ dob: e.target.value }); }} />
+                                                    <ControlLabel>Email</ControlLabel>
+                                                    <FormControl className="form-control"  
+                                                    value={(this.state.contactEmail===""||this.state.contactEmail === null)?this.state.email:this.state.contactEmail} 
+                                                    onChange={(e) => { this.setState({ contactEmail: e.target.value }); }}></FormControl>
                                                 </FormGroup>
                                             </div>
                                             <div className="col-md-6">
                                                 <FormGroup>
                                                     <ControlLabel>Phone</ControlLabel>
-                                                    <FormControl className="form-control"  onChange={(e) => { this.setState({ phone: e.target.value }); }}
+                                                    <FormControl className="form-control" maxLength={10}  onChange={(e) => { this.setState({ phone: e.target.value }); }}
                                                         value={this.state.phone} 
+                                                        />
+                                                </FormGroup>
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-md-6">
+                                                <FormGroup>
+                                                    <ControlLabel>Second Email</ControlLabel>
+                                                    <FormControl className="form-control"  
+                                                    value={this.state.secondEmail} 
+                                                    onChange={(e) => { this.setState({ secondEmail: e.target.value }); }}></FormControl>
+                                                </FormGroup>
+                                            </div>
+                                            <div className="col-md-6">
+                                                <FormGroup>
+                                                    <ControlLabel>Second Phone</ControlLabel>
+                                                    <FormControl className="form-control" maxLength={10}  onChange={(e) => { this.setState({ secondPhone: e.target.value }); }}
+                                                        value={this.state.secondPhone} 
                                                         />
                                                 </FormGroup>
                                             </div>
@@ -539,9 +573,9 @@ export class UserCard extends Component {
                                                     <br />
                                                     <Autocomplete
                                                     items={this.state.items}
-                                                    shouldItemRender={(item, value) =>
-                                                        item.label.toLowerCase().indexOf(value.toLowerCase()) > -1
-                                                    }
+                                                    // shouldItemRender={(item, value) =>
+                                                    //     item.label.toLowerCase().indexOf(value.toLowerCase()) > -1
+                                                    // }
                                                     getItemValue={item => item.label}
                                                     renderItem={(item, highlighted) => (
                                                         <div
@@ -602,11 +636,21 @@ export class UserCard extends Component {
                                             </div>
                                         </div>
                                         <div className="row">
-                                        <div className="col-md-6">
+                                            <div className="col-md-6">
                                                 <FormGroup>
-                                                    <ControlLabel>Highway Code</ControlLabel>
-                                                    <FormControl className="form-control"  onChange={(e) => { this.setState({ highWayCodeDate: e.target.value }); }}
-                                                        value={this.state.highWayCodeDate} 
+                                                    <ControlLabel>Highway Code Date</ControlLabel>
+                                                    <FormControl className="form-control"
+                                                        type="date"
+                                                        value={moment(this.state.highWayCodeDate).format("YYYY-MM-DD")} 
+                                                        onChange={(e) => { this.setState({ highWayCodeDate: e.target.value }); }} 
+                                                    />
+                                                </FormGroup>
+                                            </div>
+                                            <div className="col-md-6">
+                                                <FormGroup>
+                                                    <ControlLabel>NEPH number</ControlLabel>
+                                                    <FormControl className="form-control" maxLength={12}  onChange={(e) => { this.setState({ highWayCodeDate: e.target.value }); }}
+                                                        value={this.state.neph} 
                                                         />
                                                 </FormGroup>
                                             </div>

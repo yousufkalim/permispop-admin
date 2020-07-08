@@ -45,7 +45,7 @@ class Users extends Component {
                         <Row>
                             <Row>
                                 <Col md={12}>
-                                    <a href="#" onClick={() => this.handleClick(null)}> <i class="fa fa-arrow-circle-left"></i>Back to list</a>
+                                    <a href="#" onClick={() => this.handleClick(null)}> <i className="fa fa-arrow-circle-left"></i>Back to list</a>
                                 </Col>
                             </Row>
                             <Row>
@@ -63,11 +63,11 @@ class Users extends Component {
                                         ctTableResponsive
                                         content={
                                             <TabContainer className="content">
-                                                <Tabs defaultActiveKey="Payments" id="sdsds-tab-example">
-                                                    <Tab eventKey="Payments" title="Payments">
-                                                        <UserPayments />
+                                                <Tabs defaultActiveKey="Payments">
+                                                    <Tab eventKey="Payments" title="Payments" id="1">
+                                                        <UserPayments {...this.state.userDetails} />
                                                     </Tab>
-                                                    <Tab eventKey="documents" title="Documents">
+                                                    <Tab eventKey="documents" title="Documents" id="2">
                                                         <UserDocuments {...this.state.userDetails} />
                                                     </Tab>
                                                 </Tabs>
@@ -99,7 +99,7 @@ class Users extends Component {
                                                 {this.state.allUsers.map((prop, key) => {
                                                     if(prop.role !== "Admin" && prop.role !== "Deleted DSInstructor"){
                                                         return (
-                                                            <tr>
+                                                            <tr key={key}>
                                                                 <td>{key + 1}</td>
                                                                 <td>{prop.firstName + " " + prop.surName}</td>
                                                                 <td>{prop.role==="DSInstructor"?"DrivingSchool Instructor":prop.role}</td>

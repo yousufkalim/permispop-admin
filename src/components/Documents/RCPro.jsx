@@ -1,0 +1,217 @@
+import React, { Component } from "react";
+import { Grid, Row, Col,Button,Modal,FormGroup,FormControl,ControlLabel } from "react-bootstrap";
+import WebServicesManager from "../../WebServicesManager/WebServicesManager";
+import FileDisplay from "components/Documents/FileDisplay.jsx";
+import moment from "moment";
+
+class RCPro extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            rc: {},
+            insurer:"",
+            policeNumber:"",
+            endDate:"",
+            insuranceImagePath:"",
+        };
+    }
+    WebServicesManager = new WebServicesManager();
+    componentDidMount() {
+        this.WebServicesManager.getApiWithParamCall({
+            endPoint: "InsuranceCompany/GetInsuranceCompanyByIdAsync",
+            dataToFetch: this.props.insuranceCompanyInfoId
+        },
+            (statusCode, response) => {
+                if(response !== null){
+                this.setState({ 
+                    rc: response,
+                    insurer: response.insurer,
+                    policeNumber: response.policeNumber,
+                    endDate: response.endDate,
+                    insuranceImagePath:response.insuranceImagePath,
+                });
+                }
+            });
+    }
+
+    handleModelShow = () => {
+        this.setState(
+            { showModalUpdate:!this.state.showModalUpdate }
+        )
+    }
+
+    handleFrontFileSelect = e =>{
+        if (
+        e.target.files[0] !== "" ||
+        e.target.files[0] !== null ||
+        e.target.files[0] !== undefined
+        ) {
+        this.setState({insuranceImagePath:e.target.files[0].name});
+        const imagedata = e.target.files[0];
+        const Picture = new FormData();
+        Picture.append("file", imagedata);
+        this.WebServicesManager.postApiImageCall(
+            {
+            endPoint: "Personal/UploadProfileImage",
+            dataToInsert: Picture
+            },
+            (statusCode, response) => {
+            // this.state.ImagePath =
+            this.setState({
+                insuranceImagePath: response
+            });
+            });
+        }else{
+            console.log("file is null");    
+        }
+    }
+
+    handleSave = () =>{
+        console.log("save");
+        // save login will go here
+        const perobj = {
+            id:this.props.insuranceCompanyInfoId,
+            Insurer:this.state.insurer,
+            PoliceNumber:this.state.policeNumber,
+            EndDate:this.state.endDate,
+            InsuranceImagePath:this.state.insuranceImagePath,
+            Folder:`${this.props.id}_${this.props.firstName}_${this.props.surName}`,
+        }
+        this.WebServicesManager.postApiCall(
+            {
+                endPoint:"InsuranceCompany/UpdateInsurance",
+                dataToInsert:JSON.stringify(perobj)
+            },
+            (statusCode, Resp)=>
+            {
+                // debugger;
+                console.log("Resp",Resp)
+                window.location.reload();
+            }
+        )
+    }
+
+
+    render() {
+        if (this.state.rc !== null)
+            return (
+                <>
+                    <Grid fluid>
+                        <Row>
+                            <Col md={6} style={{ overflow: "auto" }}>
+
+                                <FileDisplay file={this.state.rc.insuranceImagePath!==undefined?this.state.rc.insuranceImagePath:""} />
+                                {this.state.rc.insuranceImagePath !== undefined?
+                            <a href={this.state.rc.insuranceImagePath} target="_blank">View file in new Tab.</a>:""}
+                            </Col>
+
+                            <Col md={6}>
+                                <b>{this.state.rc ===undefined && this.state.rc ==={} && this.state.rc ===null ?"No Added Yet":""}</b>
+                                <br/>        
+                                Insurer: {this.state.rc.insurer}
+                                <br />
+                                Police Number {this.state.rc.policeNumber}
+                                <br />
+                                Date of Expirtation: {moment(this.state.rc.endDate).format('DD/MM/YYYY')}
+                                <br/>
+                                <Button varient="success" onClick={this.handleModelShow}>Update Data</Button>
+                            </Col>
+                        </Row>
+                    </Grid>
+                    <Modal
+                        show={this.state.showModalUpdate}
+                        onHide={this.handleModelShow}
+                        backdrop="static"
+                        keyboard={false}
+                        size="xl"
+                    >
+                        <Modal.Header closeButton>
+                        <Modal.Title>Update Data</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <div className="content">
+                                <Grid fluid>
+                                    <Row>
+                                        <Col md={12}>
+                                            <form>
+                                                <div className="clearfix" />
+                                                <div className="container-flex">
+                                                    <div>
+                                                        <div className="row">
+                                                            <div className="col-md-6">
+                                                                <FormGroup>
+                                                                    <ControlLabel>Date of Expirtation</ControlLabel>
+                                                                    <FormControl className="form-control"
+                                                                        type="date"
+                                                                        value={moment(this.state.endDate).format("YYYY-MM-DD")} 
+                                                                        onChange={(e) => { this.setState({ endDate: e.target.value }); }} 
+                                                                    />
+                                                                </FormGroup>  
+                                                            </div>
+                                                            <div className="col-md-6">
+                                                                <FormGroup>
+                                                                    <ControlLabel>Police Number</ControlLabel>
+                                                                    <FormControl className="form-control"
+                                                                        type="text"
+                                                                        value={this.state.policeNumber} 
+                                                                        onChange={(e) => { this.setState({ policeNumber: e.target.value }); }} 
+                                                                    />
+                                                                </FormGroup>  
+                                                            </div>
+                                                        </div>
+                                                        <Row style={{padding:'20px 0px'}}>
+                                                            <Col md={6}>
+                                                                <FormGroup>
+                                                                    <ControlLabel>Insurer</ControlLabel>
+                                                                    <FormControl className="form-control"
+                                                                        value={this.state.insurer}  
+                                                                        onChange={(e) => { this.setState({insurer: e.target.value }); }} 
+                                                                    />
+                                                                </FormGroup>
+                                                            </Col>
+                                                            <Col md={6}>
+                                                            <ControlLabel>
+                                                                Upload Insurance Certificate File
+                                                                <span className="text-red">*</span>
+                                                            </ControlLabel>
+                                                            <FormControl
+                                                                type="file"
+                                                                bsClass="form-control"
+                                                                onChange={this.handleFrontFileSelect}
+                                                                accept="image/jpeg,application/pdf"
+                                                                name="insuranceImagePath"
+                                                                id="insuranceImagePath"
+                                                            />
+                                                            {this.state.insuranceImagePath!==""?<a href={this.state.insuranceImagePath} target="_blank">View current File</a>:""}
+                                                            </Col>
+                                                        </Row>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </Col>
+                                    </Row>
+                                </Grid>
+                            </div>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={this.handleModelShow}>
+                            Close
+                            </Button>
+                            <Button variant="primary" onClick={this.handleSave}>Update</Button>
+                        </Modal.Footer>
+                    </Modal>
+                </>
+            );
+        else
+            return (<Grid fluid>
+                <Row>
+                    <Col md={12}>
+                        N/A
+                    </Col>
+                </Row>
+
+            </Grid >);
+    }
+}
+
+export default RCPro;

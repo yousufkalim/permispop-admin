@@ -15,6 +15,8 @@ class Users extends Component {
         super(props);
         this.state = {
             allUsers: [],
+            nonVarifiedUser:[],
+            verfiedUser:[],
             users: [],
             showDetails: false,
             userDetails: {},
@@ -26,12 +28,20 @@ class Users extends Component {
         this.setState({ showDetails: !this.state.showDetails, userDetails: obj });
     }
     componentWillMount() {
-        
+        var nonV=[];
+        var V=[];
         this.WebServicesManager.getApiCall({
             endPoint: "Personal/GetAllUsers"
         }, (s, r) => {
-                this.setState({ allUsers: r });
-                // this.state.documentVerified= this.allUsers.documentVerified
+                console.log("r",r);
+                r.map(item=>{
+                    if(item.documentTested === "Tested" ){
+                        V.push(item);
+                    }else{
+                        nonV.push(item);
+                    }
+                })
+                this.setState({ allUsers: r,verfiedUser:V,nonVarifiedUser:nonV });
         });
 
         
@@ -45,7 +55,7 @@ class Users extends Component {
                         <Row>
                             <Row>
                                 <Col md={12}>
-                                    <a href="#" onClick={() => this.handleClick(null)}> <i className="fa fa-arrow-circle-left"></i>Back to list</a>
+                                    <a href="#" onClick={() => window.location.reload()}> <i className="fa fa-arrow-circle-left"></i>Back to list</a>
                                 </Col>
                             </Row>
                             <Row>
@@ -81,39 +91,73 @@ class Users extends Component {
                         <Row>
                             <Col md={12}>
                                 <Card
-                                    title=""
+                                    title="Users"
                                     category=""
                                     ctTableFullWidth
                                     ctTableResponsive
                                     content={
-
-                                        <Table striped hover>
-                                            <thead>
-                                                <tr>
-                                                    {thArrayUser.map((prop, key) => {
-                                                        return <th key={key}>{prop}</th>;
-                                                    })}
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {this.state.allUsers.map((prop, key) => {
-                                                    if(prop.role !== "Admin" && prop.role !== "Deleted DSInstructor"){
-                                                        return (
-                                                            <tr key={key}>
-                                                                <td>{key + 1}</td>
-                                                                <td>{prop.firstName + " " + prop.surName}</td>
-                                                                <td>{prop.role==="DSInstructor"?"DrivingSchool Instructor":prop.role}</td>
-                                                                <td>{prop.active}</td>
-                                                                {/* <td>{prop.verified}</td> */}
-                                                                <td>{prop.documentTested === "Tested"?<i className="fa fa-check" style={{color:'green'}}></i>: <i className="fa fa-remove" style={{color:'red'}}></i>}</td>
-                                                                    {/* {this.state.userDetails.documentTested === undefined ? "" : this.state.userDetails.documentTested === "" ? "" : this.state.userDetails.documentTested === "Tested" ? <i className="fa fa-check"></i> : <i className="fa fa-remove"></i>}</td> */}
-                                                                <td><Button onClick={() => this.handleClick(prop)}><li className="pe-7s-look   fa-2x" title="View More"></li></Button></td>
-                                                            </tr>
-                                                        );
-                                                    }
-                                                })}
-                                            </tbody>
-                                        </Table>
+                                        <Tabs defaultActiveKey="inactiveuser" transition={false} id="noanim-tab-example">
+                                            <Tab eventKey="inactiveuser" title="Non Verified">
+                        
+                                                <Table striped bordered hover>
+                                                    <thead>
+                                                        <tr>
+                                                            {thArrayUser.map((prop, key) => {
+                                                                return <th key={key}>{prop}</th>;
+                                                            })}
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {this.state.nonVarifiedUser.map((prop, key) => {
+                                                            if(prop.role !== "Admin" && prop.role !== "Deleted DSInstructor"){
+                                                                return (
+                                                                    <tr key={key}>
+                                                                        <td>{key + 1}</td>
+                                                                        <td>{prop.firstName + " " + prop.surName}</td>
+                                                                        <td>{prop.role==="DSInstructor"?"DrivingSchool Instructor":prop.role}</td>
+                                                                        <td>{prop.active}</td>
+                                                                        {/* <td>{prop.verified}</td> */}
+                                                                        <td>{prop.documentTested === "Tested"?<i className="fa fa-check" style={{color:'green'}}></i>: <i className="fa fa-remove" style={{color:'red'}}></i>}</td>
+                                                                            {/* {this.state.userDetails.documentTested === undefined ? "" : this.state.userDetails.documentTested === "" ? "" : this.state.userDetails.documentTested === "Tested" ? <i className="fa fa-check"></i> : <i className="fa fa-remove"></i>}</td> */}
+                                                                        <td><Button onClick={() => this.handleClick(prop)}><li className="pe-7s-look   fa-2x" title="View More"></li></Button></td>
+                                                                    </tr>
+                                                                );
+                                                            }
+                                                        })}
+                                                    </tbody>
+                                                </Table>
+                                            </Tab>
+                                            <Tab eventKey="verfied" title="Verified">
+                        
+                                                <Table striped bordered hover>
+                                                    <thead>
+                                                        <tr>
+                                                            {thArrayUser.map((prop, key) => {
+                                                                return <th key={key}>{prop}</th>;
+                                                            })}
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {this.state.verfiedUser.map((prop, key) => {
+                                                            if(prop.role !== "Admin" && prop.role !== "Deleted DSInstructor"){
+                                                                return (
+                                                                    <tr key={key}>
+                                                                        <td>{key + 1}</td>
+                                                                        <td>{prop.firstName + " " + prop.surName}</td>
+                                                                        <td>{prop.role==="DSInstructor"?"DrivingSchool Instructor":prop.role}</td>
+                                                                        <td>{prop.active}</td>
+                                                                        {/* <td>{prop.verified}</td> */}
+                                                                        <td>{prop.documentTested === "Tested"?<i className="fa fa-check" style={{color:'green'}}></i>: <i className="fa fa-remove" style={{color:'red'}}></i>}</td>
+                                                                            {/* {this.state.userDetails.documentTested === undefined ? "" : this.state.userDetails.documentTested === "" ? "" : this.state.userDetails.documentTested === "Tested" ? <i className="fa fa-check"></i> : <i className="fa fa-remove"></i>}</td> */}
+                                                                        <td><Button onClick={() => this.handleClick(prop)}><li className="pe-7s-look   fa-2x" title="View More"></li></Button></td>
+                                                                    </tr>
+                                                                );
+                                                            }
+                                                        })}
+                                                    </tbody>
+                                                </Table>
+                                            </Tab>
+                                        </Tabs>
                                     }
                                 />
                                 

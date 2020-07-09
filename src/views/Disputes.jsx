@@ -66,13 +66,14 @@ class Disputes extends Component {
                                         </thead>
                                         <tbody>
                                             {this.state.users.map((prop, key) => {
+                                                console.log("props",prop);
                                                 return (
                                                     <tr key={key}>
                                                         <td style={{ backgroundColor: '#D5D8DC', color: 'white' }} className="text-right">{key + 1}</td>
                                                         <td style={{ backgroundColor: '#F8C471', color: 'white' }} className="text-center">{prop.disputingFrom.toLowerCase() === "student" ? prop.studentID : prop.instructorID}</td>
                                                        <td style={{ backgroundColor: '#F8C471', color: 'white' }} className="text-center">{prop.disputingFrom}</td>
                                                         <td style={{ backgroundColor: '#82E0AA', color: 'white' }} className="text-center">{prop.disputingFrom.toLowerCase() === "student" ? prop.instructorID : prop.studentID}</td>
-                                                        <td style={{ backgroundColor: '#82E0AA', color: 'white' }} className="text-center">{prop.disputingFrom.toLowerCase() === "student" ?"Student":"Instructor"}</td>
+                                                        <td style={{ backgroundColor: '#82E0AA', color: 'white' }} className="text-center">{prop.disputingFrom.toLowerCase() !== "student" ?"Student":"Instructor/DrivingSchool"}</td>
                                                         <td style={{ backgroundColor: '#85C1E9', color: 'white' }} className="text-center">{prop.adminComments}</td>
                                                         <td style={{ backgroundColor: '#F2D7D5', color: 'white' }} className="text-center">{prop.status}</td>
                                                         <td style={{ backgroundColor: '#F2D7D5', color: 'white' }} className="text-center"><Button onClick={(e) => { this.toggle(prop.id); }}><li className="pe-7s-look   fa-2x" title="View More"></li></Button></td>

@@ -37,7 +37,6 @@ class UserDocuments extends Component {
         };
     }
     componentWillMount() {
-        console.log("in ID comp",this.props);
         this.WebServicesManager.getApiWithParamCall(
             {
                 endPoint:"Profile/GetProfileByPersonalId",
@@ -47,9 +46,13 @@ class UserDocuments extends Component {
                 var vehicle = "";
                 console.log("response Profile",responseProfile);
                 if(responseProfile.role === "Instructor"){
-                    vehicle = JSON.parse(responseProfile.vehicleDetailInfoId);
+                    if(responseProfile.vehicleDetailInfoId !== ""){
+                        vehicle = JSON.parse(responseProfile.vehicleDetailInfoId);
+                    }
                 }else{
-                    vehicle = JSON.parse(responseProfile.drivingSchoolVehiclesInfoId);   
+                    if(responseProfile.drivingSchoolVehiclesInfoId !== ""){
+                        vehicle = JSON.parse(responseProfile.drivingSchoolVehiclesInfoId);
+                    }   
                 }
                 this.setState({profileData:responseProfile,vehicleInfo:vehicle},()=>{
                     console.log("update per",this.state);
@@ -128,25 +131,16 @@ class UserDocuments extends Component {
             debugger;
             for(var i=0;i<Response.length;i++){     
                 if (Response[i].status === "false") {
-                    // notVerfiedDoc.push(listToMatch[Response[i].documentName])
                     notVerfiedDoc = `${notVerfiedDoc}**${listToMatch[Response[i].documentName]}`;
                 }
-                // Object.entries(listAllDocument).forEach(([key, value]) => {
-                //     if(key !== Response[i].documentName){
-                //         notVerfiedDoc = `${notVerfiedDoc}**${value}`;
-                //     }
-                //     console.log("key,val",key,value)
-                // });
             }    
-            //    debugger;
-            debugger;
-                this.WebServicesManager.getApiWithParamCall({
-                endPoint:"Personal/EmailDocuments",
-                dataToFetch:`${this.props.id}&email=${this.props.email}&doc=${notVerfiedDoc}`
-                },(statusCode,responseEmail)=>{
-                console.log("email");
-                alert("mail sent successfully");
-                })  
+            this.WebServicesManager.getApiWithParamCall({
+            endPoint:"Personal/EmailDocuments",
+            dataToFetch:`${this.props.id}&email=${this.props.email}&doc=${notVerfiedDoc}`
+            },(statusCode,responseEmail)=>{
+            console.log("email");
+            alert("mail sent successfully");
+            })  
         });
     }
 
@@ -175,7 +169,7 @@ class UserDocuments extends Component {
                         <Modal.Title>{this.state.docTitle}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <ID Type={this.state.idName} {...this.state.profileData} {...this.props} vehicleInfo={this.state.vehicleInfo} status={this.state.fbStatus} retunfb={this.getData} />
+                        <ID Type={this.state.idName} {...this.props} {...this.state.profileData} vehicleInfo={this.state.vehicleInfo} status={this.state.fbStatus} retunfb={this.getData} />
                     </Modal.Body>
                 </Modal>
 
@@ -212,7 +206,7 @@ class UserDocuments extends Component {
                                 <td>{this.state.kbl === undefined ? "" : this.state.kbl.status === "" ? "" : this.state.kbl.status === "true" ? <i className="fa fa-check"></i> : <i className="fa fa-remove"></i>}</td>
                                 <td><i className="fa fa-file" onClick={() => this.setState({ showId: true, docTitle: "KBL", idName: "kbl", fbStatus: this.state.kbl === undefined ? false : this.state.kbl.status })}></i></td>
                             </tr>
-                            {/*   <tr>
+                            <tr>
                                 <td>RC Pro</td>
                                 <td>{this.state.rc === undefined ? "" : this.state.rc.status === "" ? "" : this.state.rc.status === "true" ? <i className="fa fa-check"></i> : <i className="fa fa-remove"></i>}</td>
                                 <td><i className="fa fa-file" onClick={() => this.setState({ showId: true, docTitle: "RC Pro", idName: "rc", fbStatus: this.state.rc === undefined ? false : this.state.rc.status })}></i></td>
@@ -221,22 +215,7 @@ class UserDocuments extends Component {
                                 <td>Green Card</td>
                                 <td>{this.state.greenCard === undefined ? "" : this.state.greenCard.status === "" ? "" : this.state.greenCard.status === "true" ? <i className="fa fa-check"></i> : <i className="fa fa-remove"></i>}</td>
                                 <td><i className="fa fa-file" onClick={() => this.setState({ showId: true, docTitle: "Green Card", idName: "greenCard", fbStatus: this.state.greenCard === undefined ? false : this.state.greenCard.status })}></i></td>
-                            </tr>*/}
-                            {/* <tr>
-                                <td>Vehicle Image</td>
-                                <td>{this.state.veh === undefined ? "" : this.state.veh.status === "" ? "" : this.state.veh.status === "true" ? <i className="fa fa-check"></i> : <i className="fa fa-remove"></i>}</td>
-                                <td><i className="fa fa-file" onClick={() => this.setState({ showId: true, docTitle: "Vehicle Image", idName: "veh", fbStatus: this.state.veh === undefined ? false : this.state.veh    .status })}></i></td>
                             </tr>
-                            <tr>
-                                <td>Vehicle Registratione</td>
-                                <td>{this.state.vReg === undefined ? "" : this.state.vReg.status === "" ? "" : this.state.vReg.status === "true" ? <i className="fa fa-check"></i> : <i className="fa fa-remove"></i>}</td>
-                                <td><i className="fa fa-file" onClick={() => this.setState({ showId: true, docTitle: "Vehicle Registration", idName: "vReg", fbStatus: this.state.vReg === undefined ? false : this.state.vReg.status })}></i></td>
-                            </tr>
-                            <tr>
-                                <td>Vehicle Insurance</td>
-                                <td>{this.state.vIns === undefined ? "" : this.state.vIns.status === "" ? "" : this.state.vIns.status === "true" ? <i className="fa fa-check"></i> : <i className="fa fa-remove"></i>}</td>
-                                <td><i className="fa fa-file" onClick={() => this.setState({ showId: true, docTitle: "Vehicle Insurance", idName: "vIns", fbStatus: this.state.vIns === undefined ? false : this.state.vIns.status === undefined?false:this.state.vIns.status })}></i></td>
-                            </tr> */}
                             {vehicleInfo!=="" && vehicleInfo.Vehicle1 !== null && vehicleInfo.Vehicle1 !== undefined?
                                 <tr>
                                     <td>Vehicle1 Detail</td>
@@ -291,11 +270,6 @@ class UserDocuments extends Component {
                         </tbody>: 
                         this.props.role.toLowerCase() === "student" ?
                         <tbody>
-                            {/* //<tr>
-                            //    <td>Profile</td>
-                            //    <td>{this.state.profile === undefined ? "" : this.state.profile.status === "" ? "" : this.state.profile.status === "true" ? <i className="fa fa-check"></i> : <i className="fa fa-remove"></i>}</td>
-                            //    <td><i className="fa fa-file" onClick={() => this.setState({ showId: true, docTitle: "Profile Photo", idName: "profile", fbStatus: this.state.profile === undefined ? false : this.state.profile.status })}></i></td>
-                            //</tr>-*/}
                             <tr>
                                 <td>Front Id</td>
                                 <td>{this.state.frontDoc === undefined ? "" : this.state.frontDoc.status === "" ? "" : this.state.frontDoc.status === "true" ? <i className="fa fa-check"></i> : <i className="fa fa-remove"></i>}</td>
@@ -327,22 +301,22 @@ class UserDocuments extends Component {
                             {vehicleInfo!=="" && vehicleInfo.Vehicle1 !== null && vehicleInfo.Vehicle1 !== undefined?
                                 <tr>
                                     <td>Vehicle1 Detail</td>
-                                    <td>{this.state.veh === undefined ? "" : this.state.veh.status === "" ? "" : this.state.veh.status === "true" ? <i className="fa fa-check"></i> : <i className="fa fa-remove"></i>}</td>
-                                    <td><i className="fa fa-file" onClick={() => this.setState({ showId: true, docTitle: "Vehicle1 detail", idName: "veh1", fbStatus: this.state.veh === undefined ? false : this.state.veh.status === undefined?false:this.state.veh.status })}></i></td>
+                                    <td>{this.state.veh1 === undefined ? "" : this.state.veh1.status === "" ? "" : this.state.veh1.status === "true" ? <i className="fa fa-check"></i> : <i className="fa fa-remove"></i>}</td>
+                                    <td><i className="fa fa-file" onClick={() => this.setState({ showId: true, docTitle: "Vehicle1 detail", idName: "veh1", fbStatus: this.state.veh1 === undefined ? false : this.state.veh1.status === undefined?false:this.state.veh1.status })}></i></td>
                                 </tr>:""
                             }
                             {vehicleInfo!=="" && vehicleInfo.Vehicle2 !== null && vehicleInfo.Vehicle2 !== undefined?
                                 <tr>
                                     <td>Vehicle2 Detail</td>
-                                    <td>{this.state.veh === undefined ? "" : this.state.veh.status === "" ? "" : this.state.veh.status === "true" ? <i className="fa fa-check"></i> : <i className="fa fa-remove"></i>}</td>
-                                    <td><i className="fa fa-file" onClick={() => this.setState({ showId: true, docTitle: "Vehicl2 detail", idName: "veh2", fbStatus: this.state.veh === undefined ? false : this.state.veh.status === undefined?false:this.state.veh.status })}></i></td>
+                                    <td>{this.state.veh2 === undefined ? "" : this.state.veh2.status === "" ? "" : this.state.veh2.status === "true" ? <i className="fa fa-check"></i> : <i className="fa fa-remove"></i>}</td>
+                                    <td><i className="fa fa-file" onClick={() => this.setState({ showId: true, docTitle: "Vehicl2 detail", idName: "veh2", fbStatus: this.state.veh2 === undefined ? false : this.state.veh2.status === undefined?false:this.state.veh2.status })}></i></td>
                                 </tr>:""
                             }
                             {vehicleInfo!=="" && vehicleInfo.Vehicle3 !== null && vehicleInfo.Vehicle3 !== undefined?
                                 <tr>
                                     <td>Vehicle3 Detail</td>
-                                    <td>{this.state.veh === undefined ? "" : this.state.veh.status === "" ? "" : this.state.veh.status === "true" ? <i className="fa fa-check"></i> : <i className="fa fa-remove"></i>}</td>
-                                    <td><i className="fa fa-file" onClick={() => this.setState({ showId: true, docTitle: "Vehilce3 detail", idName: "veh3", fbStatus: this.state.veh === undefined ? false : this.state.veh.status === undefined?false:this.state.veh.status })}></i></td>
+                                    <td>{this.state.veh3 === undefined ? "" : this.state.veh3.status === "" ? "" : this.state.veh3.status === "true" ? <i className="fa fa-check"></i> : <i className="fa fa-remove"></i>}</td>
+                                    <td><i className="fa fa-file" onClick={() => this.setState({ showId: true, docTitle: "Vehilce3 detail", idName: "veh3", fbStatus: this.state.veh3 === undefined ? false : this.state.veh3.status === undefined?false:this.state.veh3.status })}></i></td>
                                 </tr>:""
                             }
 

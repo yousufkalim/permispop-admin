@@ -15,7 +15,6 @@ class UserPayments extends Component {
     componentWillMount() {
         if(this.props.role === "Student"){
             // get membership data
-            // debugger;
             this.WebServicesManager.getApiWithParamCall(
                 {
                     endPoint:"Membership/GetEligibleMember",

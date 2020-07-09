@@ -3,6 +3,7 @@ import { Card } from "components/Card/Card.jsx";
 import { Grid, Row, Col, Table, Button } from "react-bootstrap";
 import WebServicesManager from "WebServicesManager/WebServicesManager";
 import $ from 'jquery';
+import moment from "moment";
 
 
 class Dispute extends Component {
@@ -13,16 +14,18 @@ class Dispute extends Component {
             bInfo: {},
             sInfo: {},
             iInfo: {},
-            status: "-1"
+            status: "-1",
         };
     }
     WebServicesManager = new WebServicesManager();
     componentWillMount() {
+        console.log("props inner",this.props);
         this.WebServicesManager.getApiWithParamCall({
             endPoint: "Dispute/GetDispute",
             dataToFetch: this.props.id
         }, (s, r) => {
-            this.setState({ disputeInfo: r[0] });
+            console.log("r",r);
+            this.setState({ disputeInfo: r[0]});
             this.WebServicesManager.getApiWithParamCall({
                 endPoint: "Bookings/GetBookingById",
                 dataToFetch: r[0].bookingId
@@ -54,8 +57,115 @@ class Dispute extends Component {
         this.WebServicesManager.getApiWithParamCall({
             endPoint: "Dispute/UpdateDisputeStatus",
             dataToFetch: this.props.id + "&status=" + this.state.status + "&cmt=" + $("#txtCmt").val()
-        }, (s, r) => { this.props.toggle();});
+        }, (s, r) => {
+            // console.log("drispuet r",r); 
+            if(this.state.status === "Student Suspended"){
+                this.deactivateUser(this.state.sInfo.id);
+            }else if(this.state.status === "Instructor Suspended"){
+                this.deactivateUser(this.state.IInfo.id);
+            }
+            this.props.toggle();
+            window.location.reload();
+        });
 
+    }
+    deactivateUser = (id) =>{
+        // debugger;
+        this.WebServicesManager.getApiWithParamCall(
+        {
+        endPoint:"Profile/GetProfileByPersonalId",
+        dataToFetch: id
+        },
+        (statusCode, resp) =>
+        {   
+            const profiledataUnban = {
+            
+                id : resp.id,
+                role: resp.role,
+                PersonalInfoId: resp.personalInfoId,
+                DrivingLisenceInfoId: resp.drivingLisenceInfoId,
+                ExersiceAuthorizationInfoId: resp.exersiceAuthorizationInfoId,
+                VehicleDetailInfoId: resp.vehicleDetailInfoId,
+                VehicleInsuranceInfoId: resp.vehicleInsuranceInfoId,
+                DrivingSchoolInsuranceInfoId: resp.drivingSchoolInsuranceInfoId,
+                TechnicalControlInfoId: resp.technicalControlInfoId,
+                BusinessInfoId: resp.businessInfoId,
+                InsuranceCompanyInfoId: resp.insuranceCompanyInfoId,
+                DrivingSchoolIdentityInfoId: resp.drivingSchoolIdentityInfoId,
+                DrivingSchoolApprovalInfoId: resp.drivingSchoolApprovalInfoId,
+                DrivingSchoolManagerInfoId: resp.drivingSchoolManagerInfoId,
+                DrivingSchoolVehiclesInfoId: resp.drivingSchoolVehiclesInfoId,
+                DrivingSchoolInstructorInfoId: resp.drivingSchoolInstructorInfoId,
+                Lat: resp.lat,
+                Long: resp.long,
+                Status: resp.status,
+                BanStatus: "DeActive",
+                BanDate: "",
+                
+            }
+            // debugger;
+            var dataTo = JSON.stringify(profiledataUnban);
+            this.WebServicesManager.postApiCall(
+                {
+                    endPoint:"Profile/UpdateProfile",
+                    dataToInsert:dataTo
+                },
+                (statusCode, response) =>
+                {
+                    window.location.reload();   
+                }
+            );
+        }
+        )
+    }
+    activateUser = (id) =>{
+      
+        this.WebServicesManager.getApiWithParamCall(
+        {
+        endPoint:"Profile/GetProfileByPersonalId",
+        dataToFetch: id
+        },
+        (statusCode, resp) =>
+        {   
+            const profiledataUnban = {
+            
+                id : resp.id,
+                role: resp.role,
+                PersonalInfoId: resp.personalInfoId,
+                DrivingLisenceInfoId: resp.drivingLisenceInfoId,
+                ExersiceAuthorizationInfoId: resp.exersiceAuthorizationInfoId,
+                VehicleDetailInfoId: resp.vehicleDetailInfoId,
+                VehicleInsuranceInfoId: resp.vehicleInsuranceInfoId,
+                DrivingSchoolInsuranceInfoId: resp.drivingSchoolInsuranceInfoId,
+                TechnicalControlInfoId: resp.technicalControlInfoId,
+                BusinessInfoId: resp.businessInfoId,
+                InsuranceCompanyInfoId: resp.insuranceCompanyInfoId,
+                DrivingSchoolIdentityInfoId: resp.drivingSchoolIdentityInfoId,
+                DrivingSchoolApprovalInfoId: resp.drivingSchoolApprovalInfoId,
+                DrivingSchoolManagerInfoId: resp.drivingSchoolManagerInfoId,
+                DrivingSchoolVehiclesInfoId: resp.drivingSchoolVehiclesInfoId,
+                DrivingSchoolInstructorInfoId: resp.drivingSchoolInstructorInfoId,
+                Lat: resp.lat,
+                Long: resp.long,
+                Status: resp.status,
+                BanStatus: "",
+                BanDate: "",
+                
+            }
+            var dataTo = JSON.stringify(profiledataUnban);
+            this.WebServicesManager.postApiCall(
+                {
+                    endPoint:"Profile/UpdateProfile",
+                    dataToInsert:dataTo
+                },
+                (statusCode, response) =>
+                {
+                 console.log("update",response);
+                 window.location.reload();   
+                }
+            );
+        }
+        )
     }
     render() {
         return (
@@ -81,14 +191,28 @@ class Dispute extends Component {
                                             </select>
                                         </Col>
                                     </Row>
+                                    <br/>
                                     <Row>
                                         <Col md={5}>
                                             Comments: <textarea className="form-control" rows="3" id="txtCmt"></textarea>
                                         </Col>
                                         <Col md={5}>
-                                            <Button id="btnSubmit" onClick={this.submit} >Submit</Button>
+                                            <Button id="btnSubmit" onClick={this.submit} style={{marginTop:30}}>Submit</Button>
                                         </Col>
                                     </Row>
+                                    <br/>
+                                    <br/>
+                                    <b>Status</b>: {this.state.disputeInfo.status}
+                                    {
+                                    this.state.disputeInfo.status==="Student Suspended"?
+                                        <Button onClick={()=>this.activateUser(this.state.sInfo.id)} style={{marginLeft:20}}>Activate Student</Button>
+                                    :
+                                    this.state.disputeInfo.status==="Instructor Suspended"?
+                                        <Button onClick={()=>this.activateUser(this.state.iInfo.id)} style={{marginLeft:20}}>Activate Instructor</Button>
+                                    :""
+                                    }
+                                    <br/>
+                                    <b>Admin Comment</b>: {this.state.disputeInfo.adminComments}
                                 </Grid>
                             }
                         />
@@ -105,7 +229,7 @@ class Dispute extends Component {
                                     <Grid>
                                         <Row>
                                             <Col md={6}>
-                                                Date: {this.state.disputeInfo.feedBackDate}
+                                                Date: {moment(this.state.disputeInfo.feedBackDate).format('DD/MM/YYYY')}
                                             </Col>
                                             <Col md={6}>
                                                 Raised From: {this.state.disputeInfo.disputingFrom}
@@ -134,16 +258,16 @@ class Dispute extends Component {
                                 content={
                                     <Grid>
                                         <Row>
-                                            <Col md={6}>
-                                                Date: {this.state.bInfo.bookingDate}
+                                            <Col md={4}>
+                                                Date: {moment(this.state.bInfo.bookingDate).format("DD/MM/YYYY")}
                                             </Col>
-                                            <Col md={6}>
+                                            <Col md={4}>
                                                 Start Time: {this.state.bInfo.startTime}
                                             </Col>
                                         </Row>
                                         <Row>
-                                            <Col md={6}>
-                                                End Time : {this.state.bInfo.endTime}
+                                            <Col md={4}>
+                                                End Time : {moment(this.state.bInfo.endTime).format("HH:mm")}
                                             </Col>
                                         </Row>
                                     </Grid>

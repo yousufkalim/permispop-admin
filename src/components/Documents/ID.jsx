@@ -24,28 +24,33 @@ class ID extends Component {
     }
     
     updateStatus = e => {
+        var statusis = false;
+        
+        if(e === undefined){
+            statusis = this.state.status!==""?true:false;
+        }else{
+            statusis  = e.target.checked
+       }
+
         const info = {
             userId: this.props.personalInfoId,
             documentName: this.props.Type,
-            status: e.target.checked,
+            status: statusis,
             comments: ""
         };
-        debugger;
-        this.setState({ status: e.target.checked });
+        
+        this.setState({ status: statusis });
         var dataToInsert = JSON.stringify(info);
         this.WebServicesManager.postApiCall(
             { endPoint: "Document", dataToInsert: dataToInsert },
             (statusCode, response) => {
-                console.log("response",response);
                 this.WebServicesManager.getApiWithParamCall(
                     {
                       endPoint: "Document/GetUserDoc",
                       dataToFetch: this.props.id
                     },
                     (statusCode, responsePersonal) => {
-                    //    debugger;
                        var docVarify = false;
-                        console.log("rep",responsePersonal);
                         responsePersonal.map(item => {
                             if(item.status === "true"){
                                 docVarify = true;
@@ -60,7 +65,6 @@ class ID extends Component {
                                 dataToFetch: this.props.id
                                 },
                                 (statusCode, responsePersonal) => {
-                                    console.log("rep",responsePersonal);
                                     const perobj = {
                                         id: responsePersonal.id,
                                         firstName:responsePersonal.firstName,
@@ -90,7 +94,7 @@ class ID extends Component {
                                         registrationDate: responsePersonal.registrationDate,
                                         documentTested: "Tested"
                                     }
-                                    // debugger;
+                                    
                                     this.WebServicesManager.postApiCall(
                                         {
                                             endPoint:"Personal/UpdatePersonal",
@@ -98,7 +102,7 @@ class ID extends Component {
                                         },
                                         (statusCode, Resp)=>
                                         {
-                                            // debugger;
+                                            
                                             console.log("Resp",Resp)
                                         }
                                     )
@@ -113,8 +117,6 @@ class ID extends Component {
                                 dataToFetch: this.props.id
                                 },
                                 (statusCode, responsePersonal) => {
-                                // debugger;
-                                    console.log("rep",responsePersonal);
                                     const perobj = {
                                         id: responsePersonal.id,
                                         firstName:responsePersonal.firstName,
@@ -144,7 +146,7 @@ class ID extends Component {
                                         registrationDate: responsePersonal.registrationDate,
                                         documentTested: ""
                                     }
-                                    // debugger;
+                                    
                                     this.WebServicesManager.postApiCall(
                                         {
                                             endPoint:"Personal/UpdatePersonal",
@@ -152,7 +154,7 @@ class ID extends Component {
                                         },
                                         (statusCode, Resp)=>
                                         {
-                                            // debugger;
+                                            
                                             console.log("Resp",Resp)
                                         }
                                     )
@@ -167,8 +169,10 @@ class ID extends Component {
     }
      
     componentWillMount() {
-        this.setState({ status: this.props.status === "true" ? "checked" : "" });
-        // console.log("Props",this.props);
+        ;
+        this.setState({ status: this.props.status === "true" ? "checked" : "" },()=>{
+            this.updateStatus()
+        });
     }
     render() {
 
@@ -186,7 +190,7 @@ class ID extends Component {
                                 <AOE {...this.props} /> : ""}
                             {this.props.Type === "kbl" ?
                                 <Siret {...this.props} /> : ""}
-                            {this.props.Type === "vIns" ?
+                            {this.props.Type === "greenCard" ?
                                 <VehicleInsurance {...this.props} /> : ""}
                             {this.props.Type === "vReg" ?
                                 <VehicleRegistration {...this.props} imgType="reg" /> : ""}

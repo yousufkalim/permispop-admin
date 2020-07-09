@@ -16,6 +16,14 @@ class Siret extends Component {
     }
     WebServicesManager = new WebServicesManager();
     componentDidMount() {
+        if(this.props.role === "DSInstructor"){
+            const response = JSON.parse(this.props.businessInfoId);
+            this.setState({ 
+                siret: response,
+                siratImagePath:response.siratImagePath,
+                siretNumber:response.siretNumber,
+            });
+        }
         this.WebServicesManager.getApiWithParamCall({
             endPoint: "Business/GetBusinessStoreByUserId",
             dataToFetch: this.props.businessInfoId
@@ -67,24 +75,76 @@ class Siret extends Component {
     handleSave = () =>{
         console.log("save");
         // save login will go here
-        const perobj = {
-            id:this.props.businessInfoId,
-            SiratImagePath:this.state.siratImagePath,
-            SiretNumber:this.state.siretNumber,
-            Folder:`${this.props.id}_${this.props.firstName}_${this.props.surName}`,
-        }
-        this.WebServicesManager.postApiCall(
-            {
-                endPoint:"Business/UpdateBusinessTable",
-                dataToInsert:JSON.stringify(perobj)
-            },
-            (statusCode, Resp)=>
-            {
-                // debugger;
-                console.log("Resp",Resp)
-                window.location.reload();
+        if(this.props.role === "DSInstructor"){
+            const perobj = {
+                id:this.props.businessInfoId,
+                siratImagePath:this.state.siratImagePath,
+                siretNumber:this.state.siretNumber,
+                folder:`${this.props.id}_${this.props.firstName}_${this.props.surName}`,
             }
-        )
+            this.WebServicesManager.getApiWithParamCall(
+                {
+                    endPoint: "Profile/GetProfileByPersonalId",
+                    dataToFetch: this.props.personalInfoId
+                },
+                (statusCode, response) => {
+                    // get all detail and reassign
+                    const info = {
+                        id: response.id,
+                        role: response.role,
+                        PersonalInfoId:response.personalInfoId,
+                        DrivingLisenceInfoId: response.drivingLisenceInfoId,
+                        ExersiceAuthorizationInfoId: response.exersiceAuthorizationInfoId,
+                        VehicleDetailInfoId: response.VehicleDetailInfoId,
+                        VehicleInsuranceInfoId: response.vehicleInsuranceInfoId,
+                        DrivingSchoolInsuranceInfoId: response.drivingSchoolInsuranceInfoId,
+                        TechnicalControlInfoId: response.technicalControlInfoId,
+                        BusinessInfoId:JSON.stringify(perobj),
+                        InsuranceCompanyInfoId: response.insuranceCompanyInfoId,
+                        DrivingSchoolIdentityInfoId: response.drivingSchoolIdentityInfoId,
+                        DrivingSchoolApprovalInfoId: response.drivingSchoolApprovalInfoId,
+                        DrivingSchoolManagerInfoId: response.drivingSchoolManagerInfoId,
+                        DrivingSchoolVehiclesInfoId:response.DrivingSchoolVehiclesInfoId,
+                        DrivingSchoolInstructorInfoId: response.drivingSchoolInstructorInfoId,
+                        Lat: response.lat,
+                        Long: response.long,
+                        Status: response.status,
+                        BanStatus:response.banStatus,
+                        BanDate:response.banDate,
+                    }
+                    const dataToUpdate = JSON.stringify(info);
+                    this.WebServicesManager.postApiCall(
+                        {
+                            endPoint: "Profile/UpdateProfile",
+                            dataToInsert: dataToUpdate
+                        },
+                        (statusCode, response) => {
+                            console.log("after update",response);
+                            window.location.reload();
+                        }
+                    )
+                }
+            )
+        }else{
+            const perobj = {
+                id:this.props.businessInfoId,
+                SiratImagePath:this.state.siratImagePath,
+                SiretNumber:this.state.siretNumber,
+                Folder:`${this.props.id}_${this.props.firstName}_${this.props.surName}`,
+            }
+            this.WebServicesManager.postApiCall(
+                {
+                    endPoint:"Business/UpdateBusinessTable",
+                    dataToInsert:JSON.stringify(perobj)
+                },
+                (statusCode, Resp)=>
+                {
+                    // debugger;
+                    console.log("Resp",Resp)
+                    window.location.reload();
+                }
+            )
+        }
     }
 
     render() {

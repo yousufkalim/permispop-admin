@@ -19,7 +19,6 @@ export class UserCard extends Component {
     WebServicesManager = new WebServicesManager();
     constructor(props){
         super(props);
-        // console.log("props dara",this.props);
         this.state={
             items:[],
             showModal:false,
@@ -58,7 +57,6 @@ export class UserCard extends Component {
             dataToFetch: this.props.id
         },
         (statusCode,response)=>{
-            // console.log("res",response);
             this.setState({
                 banStatus:response.banStatus !== null?response.banStatus:"",
                 banDate:response.banDate !== null ? response.banDate : ""
@@ -83,7 +81,6 @@ export class UserCard extends Component {
             dataToInsert: Picture
             },
             (statusCode, response) => {
-            // this.state.ImagePath =
             this.setState({
                 frontIDPhoto: response
             });
@@ -108,7 +105,6 @@ export class UserCard extends Component {
             dataToInsert: Picture
         },
         (statusCode, response) => {
-            // this.state.ImagePath =
             this.setState({
             backIDPhoto: response
             });
@@ -130,7 +126,6 @@ export class UserCard extends Component {
           .then(responseJson => {
             console.log("res address",responseJson);
             var addressToSet = [];
-            // debugger;
             for (var i = 0; i < responseJson.features.length; i++) {
               addressToSet.push({
                 id: i,
@@ -155,7 +150,6 @@ export class UserCard extends Component {
         this.setState({ address: item });
         for (let i = 0; i < this.state.items.length; i++) {
           if (this.state.items[i].label === item) {
-            // debugger;
             var city = this.state.items[i].city;
             var zipCode = this.state.items[i].PostalCode;
             var lat = this.state.items[i].lat;
@@ -170,8 +164,6 @@ export class UserCard extends Component {
     
 
     handleSave = () => {
-        // debugger
-        // console.log("thuis",this.state);
         const data = {
             id:this.props.id,
             FirstName: this.state.firstName,
@@ -208,7 +200,6 @@ export class UserCard extends Component {
             dataToInsert: datais
         },
         (statusCode,response) => {  
-            // this.props.toggle(); 
             window.location.reload();
         });
     }
@@ -219,7 +210,6 @@ export class UserCard extends Component {
             var banTill = moment()
             .add(days, "days")
             .format();
-            // debugger;
             this.WebServicesManager.getApiWithParamCall(
             {
             endPoint:"Profile/GetProfileByPersonalId",
@@ -252,7 +242,6 @@ export class UserCard extends Component {
                     BanDate: banTill,
                     
                 }
-                // debugger;
                 var dataTo = JSON.stringify(profiledata);
                 this.WebServicesManager.postApiCall(
                     {
@@ -261,7 +250,6 @@ export class UserCard extends Component {
                     },
                     (statusCode, response) =>
                     {
-                        // debugger;
                      console.log("update",response);
                      window.location.reload();   
                     }
@@ -305,7 +293,6 @@ export class UserCard extends Component {
                 BanDate: "",
                 
             }
-            // debugger;
             var dataTo = JSON.stringify(profiledataUnban);
             this.WebServicesManager.postApiCall(
                 {
@@ -314,7 +301,6 @@ export class UserCard extends Component {
                 },
                 (statusCode, response) =>
                 {
-                    // debugger;
                  console.log("update",response);
                  window.location.reload();   
                 }
@@ -366,8 +352,6 @@ export class UserCard extends Component {
                     },
                     (statusCode, response) =>
                     {
-                        // debugger;
-                    // console.log("update",response);
                     window.location.reload();   
                     }
                 );
@@ -375,7 +359,6 @@ export class UserCard extends Component {
             )
         }
     render() {
-        // console.log("this.props",this.props);
         return (
             <div className="card card-user">
                 <div className="image">

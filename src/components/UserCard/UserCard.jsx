@@ -501,6 +501,7 @@ export class UserCard extends Component {
                                                 </FormGroup>
                                             </div>
                                         </div>
+                                        {this.props.role !== "DrivingSchool"?
                                         <div className="row"> 
                                             <div className="col-md-6">
                                                 <FormGroup>
@@ -526,7 +527,7 @@ export class UserCard extends Component {
                                                         </FormControl>
                                                 </FormGroup>
                                             </div>
-                                        </div>
+                                        </div>:""}
                                         <div className="row">
                                             <div className="col-md-6">
                                                 <FormGroup>
@@ -635,6 +636,7 @@ export class UserCard extends Component {
                                                 </FormGroup>
                                             </div>
                                         </div>
+                                        {this.props.role === "Student"?
                                         <div className="row">
                                             <div className="col-md-6">
                                                 <FormGroup>
@@ -654,12 +656,13 @@ export class UserCard extends Component {
                                                         />
                                                 </FormGroup>
                                             </div>
-                                        </div>
+                                        </div>:""}
                                     </div>
                                 </div>
                                 <div className="clearfix" />
                             </form>
                         </Col>
+                        {this.props.role !== "DrivingSchool"?
                         <Row style={{padding:'20px 0px'}}>
                             <Col md={6}>
                             <ControlLabel>
@@ -693,7 +696,7 @@ export class UserCard extends Component {
                             />
                             {this.state.backIdPathError!==""?<a href={this.state.backIdPathError} target="_blank">View current File</a>:""}
                             </Col>
-                        </Row>
+                        </Row>:""}
                     </Row>
                 </Grid>
             </div>

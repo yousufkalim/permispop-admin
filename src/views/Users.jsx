@@ -105,7 +105,7 @@ class Users extends Component {
                                                                 <td>{prop.role==="DSInstructor"?"DrivingSchool Instructor":prop.role}</td>
                                                                 <td>{prop.active}</td>
                                                                 {/* <td>{prop.verified}</td> */}
-                                                                <td>{prop.documentTested === "Tested"?<i className="fa fa-check"></i>: <i className="fa fa-remove"></i>}</td>
+                                                                <td>{prop.documentTested === "Tested"?<i className="fa fa-check" style={{color:'green'}}></i>: <i className="fa fa-remove" style={{color:'red'}}></i>}</td>
                                                                     {/* {this.state.userDetails.documentTested === undefined ? "" : this.state.userDetails.documentTested === "" ? "" : this.state.userDetails.documentTested === "Tested" ? <i className="fa fa-check"></i> : <i className="fa fa-remove"></i>}</td> */}
                                                                 <td><Button onClick={() => this.handleClick(prop)}><li className="pe-7s-look   fa-2x" title="View More"></li></Button></td>
                                                             </tr>

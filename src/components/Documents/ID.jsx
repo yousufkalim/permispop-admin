@@ -47,10 +47,11 @@ class ID extends Component {
                 this.WebServicesManager.getApiWithParamCall(
                     {
                       endPoint: "Document/GetUserDoc",
-                      dataToFetch: this.props.id
+                      dataToFetch: this.props.personalInfoId
                     },
                     (statusCode, responsePersonal) => {
-                       var docVarify = false;
+                        debugger;
+                        var docVarify = false;
                         responsePersonal.map(item => {
                             if(item.status === "true"){
                                 docVarify = true;
@@ -62,7 +63,7 @@ class ID extends Component {
                             this.WebServicesManager.getApiWithParamCall(
                                 {
                                 endPoint: "Personal/GetAllById",
-                                dataToFetch: this.props.id
+                                dataToFetch: this.props.personalInfoId
                                 },
                                 (statusCode, responsePersonal) => {
                                     const perobj = {
@@ -102,8 +103,19 @@ class ID extends Component {
                                         },
                                         (statusCode, Resp)=>
                                         {
-                                            
+                                            debugger;
                                             console.log("Resp",Resp)
+                                            this.WebServicesManager.getApiWithParamCall(
+                                                {
+                                                    endPoint:"Personal/SendEmail",
+                                                    dataToFetch:Resp.id+"&email="+Resp.email
+                                                },
+                                                (statusCode,EResp)=>
+                                                {
+                                                    debugger;
+                                                    console.log("data",EResp);
+                                                }
+                                            )
                                         }
                                     )
                                 }
@@ -114,7 +126,7 @@ class ID extends Component {
                             this.WebServicesManager.getApiWithParamCall(
                                 {
                                 endPoint: "Personal/GetAllById",
-                                dataToFetch: this.props.id
+                                dataToFetch: this.props.personalInfoId
                                 },
                                 (statusCode, responsePersonal) => {
                                     const perobj = {

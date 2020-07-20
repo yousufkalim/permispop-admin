@@ -310,7 +310,6 @@ export class UserCard extends Component {
 }
 
         handlefuntDeActive = () =>{
-            // debugger;
             this.WebServicesManager.getApiWithParamCall(
             {
             endPoint:"Profile/GetProfileByPersonalId",
@@ -343,7 +342,6 @@ export class UserCard extends Component {
                     BanDate: "",
                     
                 }
-                // debugger;
                 var dataTo = JSON.stringify(profiledataUnban);
                 this.WebServicesManager.postApiCall(
                     {

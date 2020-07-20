@@ -29,7 +29,7 @@ class UserPayments extends Component {
                             dataToFetch:responseMember.packageId
                             },
                             (statusCode, pData) => {
-                                debugger;
+                                //debugger;
                                 this.setState({
                                     packageInfo:pData,
                                     membershipInfo:responseMember

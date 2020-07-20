@@ -141,7 +141,6 @@ class VehicleRegistration extends Component {
         e.target.files[0] !== undefined
         ) {
         const updatedFile = e.target.name;
-        // debugger;
         this.setState({updatedFile:e.target.files[0].name});
         const imagedata = e.target.files[0];
         const Picture = new FormData();
@@ -167,7 +166,6 @@ class VehicleRegistration extends Component {
         const {Type,role,vehicleInfo } = this.props;
         var vehicle  = {};
         // save login will go here
-        debugger;
         if(role === "Instructor"){
             if(Type === "veh1"){
                 vehicle = {
@@ -333,18 +331,6 @@ class VehicleRegistration extends Component {
                 )
             }
         )
-        // this.WebServicesManager.postApiCall(
-        //     {
-        //         endPoint:"Business/UpdateBusinessTable",
-        //         dataToInsert:JSON.stringify(vehicle)
-        //     },
-        //     (statusCode, Resp)=>
-        //     {
-        //         // debugger;
-        //         console.log("Resp",Resp)
-        //         window.location.reload();
-        //     }
-        // )
     }
 
     render() {

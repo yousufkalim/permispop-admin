@@ -29,7 +29,6 @@ class Siret extends Component {
             dataToFetch: this.props.businessInfoId
         },
         (statusCode, response) => {
-            // debugger;
             if(response !== null){
                 this.setState({ 
                     siret: response,
@@ -139,7 +138,6 @@ class Siret extends Component {
                 },
                 (statusCode, Resp)=>
                 {
-                    // debugger;
                     console.log("Resp",Resp)
                     window.location.reload();
                 }

@@ -20,7 +20,6 @@ class AOE extends Component {
     }
     componentDidMount() {
         if(this.props.role === "DSInstructor"){
-            // debugger
             const response = JSON.parse(this.props.exersiceAuthorizationInfoId);
             this.setState({ 
                 aoe: response,
@@ -152,7 +151,6 @@ class AOE extends Component {
                 },
                 (statusCode, Resp)=>
                 {
-                    debugger;
                     console.log("Resp",Resp)
                     window.location.reload();
                 }

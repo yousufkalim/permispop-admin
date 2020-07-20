@@ -30,15 +30,26 @@ class ID extends Component {
             statusis = this.state.status!==""?true:false;
         }else{
             statusis  = e.target.checked
-       }
-
-        const info = {
+        }   
+        var lengthToMatch;
+        if(this.props.role === "Student" || this.props.role === "student"){
+            lengthToMatch = 2;
+        }else if(this.props.role === "Instructor"){
+            lengthToMatch = 7;
+        }else if(this.props.role === "DSInstructor"){
+            lengthToMatch = 5;
+        }else{
+            lengthToMatch = 4
+        }
+        
+        const info = 
+        {
             userId: this.props.personalInfoId,
             documentName: this.props.Type,
             status: statusis,
             comments: ""
-        };
-        
+        }
+
         this.setState({ status: statusis });
         var dataToInsert = JSON.stringify(info);
         this.WebServicesManager.postApiCall(
@@ -50,15 +61,17 @@ class ID extends Component {
                       dataToFetch: this.props.personalInfoId
                     },
                     (statusCode, responsePersonal) => {
-                        debugger;
                         var docVarify = false;
-                        responsePersonal.map(item => {
-                            if(item.status === "true"){
-                                docVarify = true;
-                            }else{
-                                docVarify =false;
-                            }
-                        })
+                        if(responsePersonal.length >= lengthToMatch){
+                            responsePersonal.map(item => {
+                                if(item.status === "true"){
+                                    docVarify = true;
+                                }else{
+                                    docVarify =false;
+                                }
+                            })
+                        }
+                        var mail_sent = false;
                         if(docVarify === true){
                             this.WebServicesManager.getApiWithParamCall(
                                 {
@@ -66,6 +79,9 @@ class ID extends Component {
                                 dataToFetch: this.props.personalInfoId
                                 },
                                 (statusCode, responsePersonal) => {
+                                    if(responsePersonal.documentTested ==="Tested"){
+                                        mail_sent=true;
+                                    }
                                     const perobj = {
                                         id: responsePersonal.id,
                                         firstName:responsePersonal.firstName,
@@ -103,19 +119,21 @@ class ID extends Component {
                                         },
                                         (statusCode, Resp)=>
                                         {
-                                            debugger;
+
                                             console.log("Resp",Resp)
-                                            this.WebServicesManager.getApiWithParamCall(
-                                                {
-                                                    endPoint:"Personal/SendEmail",
-                                                    dataToFetch:Resp.id+"&email="+Resp.email
-                                                },
-                                                (statusCode,EResp)=>
-                                                {
-                                                    debugger;
-                                                    console.log("data",EResp);
-                                                }
-                                            )
+                                            if(mail_sent === false){
+                                                this.WebServicesManager.getApiWithParamCall(
+                                                    {
+                                                        endPoint:"Personal/SendEmail",
+                                                        dataToFetch:Resp.id+"&email="+Resp.email
+                                                    },
+                                                    (statusCode,EResp)=>
+                                                    {
+                                                        console.log("data",EResp);
+                                                        alert("All document Verified, mail sent successfully");
+                                                    }
+                                                );
+                                            }
                                         }
                                     )
                                 }
@@ -181,7 +199,6 @@ class ID extends Component {
     }
      
     componentWillMount() {
-        ;
         this.setState({ status: this.props.status === "true" ? "checked" : "" },()=>{
             this.updateStatus()
         });

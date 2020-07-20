@@ -17,7 +17,6 @@ class DrivingSchoolApproval extends Component {
     }
     WebServicesManager = new WebServicesManager();
     componentDidMount() {
-        // debugger;
         this.WebServicesManager.getApiWithParamCall({
             endPoint: "DrivingSchoolApproval/GetDrivingSchoolApprovalAsyncByPersonalInfoId",
             dataToFetch: this.props.drivingSchoolApprovalInfoId
@@ -71,7 +70,6 @@ class DrivingSchoolApproval extends Component {
 
     handleSave = () =>{
         console.log("save");
-        // debugger;
         // save login will go here
         const perobj = {
             id:this.props.drivingSchoolApprovalInfoId,
@@ -88,7 +86,6 @@ class DrivingSchoolApproval extends Component {
             },
             (statusCode, Resp)=>
             {
-                // debugger;
                 console.log("Resp",Resp)
                 window.location.reload();
             }

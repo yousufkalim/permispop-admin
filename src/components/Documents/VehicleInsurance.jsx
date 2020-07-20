@@ -82,18 +82,71 @@ handleSave = () =>{
             greenCardImagePath:this.state.greenCardImagePath,
             Folder:`${this.props.id}_${this.props.firstName}_${this.props.surName}`,
         }
-        this.WebServicesManager.postApiCall(
-            {
-                endPoint:"VehicleInsurance/UpdateInsurance",
-                dataToInsert:JSON.stringify(perobj)
-            },
-            (statusCode, Resp)=>
-            {
-                // debugger;
-                console.log("Resp",Resp)
-                window.location.reload();
-            }
-        )
+        if(this.props.vehicleInsuranceInfoId === ""){
+            this.WebServicesManager.postApiCall(
+                {
+                    endPoint:"VehicleInsurance",
+                    dataToInsert:JSON.stringify(perobj)
+                },
+                (statusCode, Resp)=>{
+                    this.WebServicesManager.getApiWithParamCall(
+                        {
+                            endPoint: "Profile/GetProfileByPersonalId",
+                            dataToFetch: this.props.personalInfoId
+                        },
+                        (statusCode, response) => {
+                            const infopr = {
+                                id: response.id,
+                                role: response.role,
+                                PersonalInfoId:response.personalInfoId,
+                                DrivingLisenceInfoId: response.drivingLisenceInfoId,
+                                ExersiceAuthorizationInfoId: response.exersiceAuthorizationInfoId,
+                                VehicleDetailInfoId: response.vehicleDetailInfoId,
+                                VehicleInsuranceInfoId: Resp.id,
+                                DrivingSchoolInsuranceInfoId: response.drivingSchoolInsuranceInfoId,
+                                TechnicalControlInfoId: response.technicalControlInfoId,
+                                BusinessInfoId:response.businessInfoId,
+                                InsuranceCompanyInfoId: response.InsuranceCompanyInfoId,
+                                DrivingSchoolIdentityInfoId: response.drivingSchoolIdentityInfoId,
+                                DrivingSchoolApprovalInfoId: response.drivingSchoolApprovalInfoId,
+                                DrivingSchoolManagerInfoId: response.drivingSchoolManagerInfoId,
+                                DrivingSchoolVehiclesInfoId:response.drivingSchoolVehiclesInfoId,
+                                DrivingSchoolInstructorInfoId: response.drivingSchoolInstructorInfoId,
+                                Lat: response.lat,
+                                Long: response.long,
+                                Status: response.status,
+                                BanStatus:response.banStatus,
+                                BanDate:response.banDate,
+                            }
+                            const dataToUpdate = JSON.stringify(infopr);
+                            this.WebServicesManager.postApiCall(
+                                {
+                                    endPoint: "Profile/UpdateProfile",
+                                    dataToInsert: dataToUpdate
+                                },
+                                (statusCode, response) => {
+                                    window.location.reload();
+                                }
+                            )
+                        }
+                    )
+
+                }
+            );
+        }else{
+            this.WebServicesManager.postApiCall(
+                {
+                    endPoint:"VehicleInsurance/UpdateInsurance",
+                    dataToInsert:JSON.stringify(perobj)
+                },
+                (statusCode, Resp)=>
+                {
+                    // debugger;
+                    console.log("Resp",Resp)
+                    window.location.reload();
+                }
+            )
+        }
     }
 
     render() {

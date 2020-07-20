@@ -30,9 +30,7 @@ class DrivingLicense extends Component {
     }
     componentDidMount() {
         console.log("this.props.DLID",this.props);
-        // debugger;
         if(this.props.role === "DSInstructor"){
-            // debugger;
             var response = JSON.parse(this.props.drivingLisenceInfoId);
             if(response !==null){
                 this.setState({
@@ -54,7 +52,6 @@ class DrivingLicense extends Component {
                 dataToFetch: this.props.drivingLisenceInfoId
             },
             (statusCode, response) => {
-                debugger;
                 if(response !==null){
                     this.setState({ 
                         dLic: response,
@@ -101,9 +98,7 @@ class DrivingLicense extends Component {
     handleSave = () =>{
         console.log("save");
         // save login will go here
-        // debugger;
         if(this.props.role === "DSInstructor"){
-            debugger;
             const perobj = {
                 id:this.props.drivingLisenceInfoId,
                 lisenceNumber:this.state.lisenceNumber,

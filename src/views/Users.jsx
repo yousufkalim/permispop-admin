@@ -33,7 +33,7 @@ class Users extends Component {
         this.WebServicesManager.getApiCall({
             endPoint: "Personal/GetAllUsers"
         }, (s, r) => {
-                console.log("r",r);
+                // console.log("r",r);
                 r.map(item=>{
                     if(item.documentTested === "Tested" ){
                         V.push(item);

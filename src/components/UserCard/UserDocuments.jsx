@@ -128,7 +128,6 @@ class UserDocuments extends Component {
         },
         (statusCode, Response) => {
             console.log("Result",Response);
-            ///debugger;
             for(var i=0;i<Response.length;i++){     
                 if (Response[i].status === "false") {
                     notVerfiedDoc = `${notVerfiedDoc}**${listToMatch[Response[i].documentName]}`;

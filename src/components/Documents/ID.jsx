@@ -31,6 +31,7 @@ class ID extends Component {
         }else{
             statusis  = e.target.checked
         }   
+        // debugger;
         var lengthToMatch;
         if(this.props.role === "Student" || this.props.role === "student"){
             lengthToMatch = 2;
@@ -61,17 +62,18 @@ class ID extends Component {
                       dataToFetch: this.props.personalInfoId
                     },
                     (statusCode, responsePersonal) => {
-                        var docVarify = false;
+                        var docVarify = true;
                         if(responsePersonal.length >= lengthToMatch){
                             responsePersonal.map(item => {
-                                if(item.status === "true"){
-                                    docVarify = true;
-                                }else{
-                                    docVarify =false;
+                                if(item.status !== "true"){
+                                    docVarify = false;
                                 }
                             })
+                        }else if(responsePersonal.length === 0){
+                            docVarify = false;
                         }
-                        var mail_sent = false;
+                        var mail_sent = true;
+                        // debugger;
                         if(docVarify === true){
                             this.WebServicesManager.getApiWithParamCall(
                                 {
@@ -79,8 +81,8 @@ class ID extends Component {
                                 dataToFetch: this.props.personalInfoId
                                 },
                                 (statusCode, responsePersonal) => {
-                                    if(responsePersonal.documentTested ==="Tested"){
-                                        mail_sent=true;
+                                    if(responsePersonal.documentTested !=="Tested"){
+                                        mail_sent=false;
                                     }
                                     const perobj = {
                                         id: responsePersonal.id,

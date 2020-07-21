@@ -165,7 +165,7 @@ export class UserCard extends Component {
 
     handleSave = () => {
         const data = {
-            id:this.props.id,
+            id:this.props.personalInfoId,
             FirstName: this.state.firstName,
             SurName:this.state.surName,
             DOB: this.state.dob,
@@ -250,12 +250,22 @@ export class UserCard extends Component {
                     },
                     (statusCode, response) =>
                     {
-                     console.log("update",response);
-                     window.location.reload();   
+                        console.log("update",response);
+                        this.WebServicesManager.getApiWithParamCall(
+                            {
+                                endPoint:"Personal/SendEmail",
+                                dataToFetch:this.props.id+"&email="+this.props.email+"&emailfor=Ban"
+                            },
+                            (statusCode,EResp)=>
+                            {
+                                console.log("data",EResp);
+                                window.location.reload();   
+                            }
+                        );
                     }
                 );
             }
-            )
+        )
     }
 
 
@@ -301,8 +311,19 @@ export class UserCard extends Component {
                 },
                 (statusCode, response) =>
                 {
-                 console.log("update",response);
-                 window.location.reload();   
+                    console.log("update",response);
+                    this.WebServicesManager.getApiWithParamCall(
+                        {
+                            endPoint:"Personal/SendEmail",
+                            dataToFetch:this.props.id+"&email="+this.props.email+"&emailfor=Unban"
+                        },
+                        (statusCode,EResp)=>
+                        {
+                            console.log("data",EResp);
+                            window.location.reload();
+                        }
+                    );
+                    
                 }
             );
         }
@@ -310,6 +331,7 @@ export class UserCard extends Component {
 }
 
         handlefuntDeActive = () =>{
+            console.log("this.props",this.props);
             this.WebServicesManager.getApiWithParamCall(
             {
             endPoint:"Profile/GetProfileByPersonalId",
@@ -350,7 +372,17 @@ export class UserCard extends Component {
                     },
                     (statusCode, response) =>
                     {
-                    window.location.reload();   
+                        this.WebServicesManager.getApiWithParamCall(
+                            {
+                                endPoint:"Personal/SendEmail",
+                                dataToFetch:this.props.id+"&email="+this.props.email+"&emailfor=Deactivate"
+                            },
+                            (statusCode,EResp)=>
+                            {
+                                console.log("data",EResp);
+                                window.location.reload();
+                            }
+                        );   
                     }
                 );
             }

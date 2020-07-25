@@ -19,27 +19,32 @@ class Dispute extends Component {
     }
     WebServicesManager = new WebServicesManager();
     componentWillMount() {
+        var tokn = localStorage.getItem('userdata');
         console.log("props inner",this.props);
         this.WebServicesManager.getApiWithParamCall({
             endPoint: "Dispute/GetDispute",
-            dataToFetch: this.props.id
+            dataToFetch: this.props.id,
+            token:tokn,
         }, (s, r) => {
             console.log("r",r);
             this.setState({ disputeInfo: r[0]});
             this.WebServicesManager.getApiWithParamCall({
                 endPoint: "Bookings/GetBookingById",
-                dataToFetch: r[0].bookingId
+                dataToFetch: r[0].bookingId,
+                token:tokn,
             }, (s, rb) => { this.setState({ bInfo: rb }); console.log(rb) });
 
             this.WebServicesManager.getApiWithParamCall({
                 endPoint: "personal/GetAllById",
-                dataToFetch: r[0].studentID
+                dataToFetch: r[0].studentID,
+                token:tokn,
             }, (s, rs) => { this.setState({ sInfo: rs }); });
 
 
             this.WebServicesManager.getApiWithParamCall({
                 endPoint: "personal/GetAllById",
-                dataToFetch: r[0].instructorID
+                dataToFetch: r[0].instructorID,
+                token:tokn,
             }, (s, ri) => { this.setState({ iInfo: ri }) });
 
         }
@@ -51,12 +56,14 @@ class Dispute extends Component {
        
     }
     submit = e => {
+        var tokn = localStorage.getItem('userdata');
         if ( this.state.status === '-1')
             alert("Please Select status");
         else
         this.WebServicesManager.getApiWithParamCall({
             endPoint: "Dispute/UpdateDisputeStatus",
-            dataToFetch: this.props.id + "&status=" + this.state.status + "&cmt=" + $("#txtCmt").val()
+            dataToFetch: this.props.id + "&status=" + this.state.status + "&cmt=" + $("#txtCmt").val(),
+            token:tokn,
         }, (s, r) => {
             // console.log("drispuet r",r); 
             if(this.state.status === "Student Suspended"){
@@ -71,10 +78,12 @@ class Dispute extends Component {
     }
     deactivateUser = (id) =>{
         // debugger;
+        var tokn = localStorage.getItem('userdata');
         this.WebServicesManager.getApiWithParamCall(
         {
         endPoint:"Profile/GetProfileByPersonalId",
-        dataToFetch: id
+        dataToFetch: id,
+        token:tokn,
         },
         (statusCode, resp) =>
         {   
@@ -108,7 +117,8 @@ class Dispute extends Component {
             this.WebServicesManager.postApiCall(
                 {
                     endPoint:"Profile/UpdateProfile",
-                    dataToInsert:dataTo
+                    dataToInsert:dataTo,
+                    token:tokn,
                 },
                 (statusCode, response) =>
                 {
@@ -119,11 +129,12 @@ class Dispute extends Component {
         )
     }
     activateUser = (id) =>{
-      
+        var tokn = localStorage.getItem('userdata');
         this.WebServicesManager.getApiWithParamCall(
         {
         endPoint:"Profile/GetProfileByPersonalId",
-        dataToFetch: id
+        dataToFetch: id,
+        token:tokn,
         },
         (statusCode, resp) =>
         {   
@@ -156,7 +167,8 @@ class Dispute extends Component {
             this.WebServicesManager.postApiCall(
                 {
                     endPoint:"Profile/UpdateProfile",
-                    dataToInsert:dataTo
+                    dataToInsert:dataTo,
+                    token:tokn,
                 },
                 (statusCode, response) =>
                 {

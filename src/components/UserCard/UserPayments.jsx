@@ -13,12 +13,14 @@ class UserPayments extends Component {
         };
     }
     componentWillMount() {
+        var tokn = localStorage.getItem('userdata');
         if(this.props.role === "Student"){
             // get membership data
             this.WebServicesManager.getApiWithParamCall(
                 {
                     endPoint:"Membership/GetEligibleMember",
-                    dataToFetch:this.props.id+"&role="+this.props.role
+                    dataToFetch:this.props.id+"&role="+this.props.role,
+                    token:tokn,
                 },
                 (statusCode,responseMember)=>{
                     // get package details
@@ -26,7 +28,8 @@ class UserPayments extends Component {
                         this.WebServicesManager.getApiWithParamCall(
                             {            
                             endPoint: "package/GetPackageById",
-                            dataToFetch:responseMember.packageId
+                            dataToFetch:responseMember.packageId,
+                            token:tokn,
                             },
                             (statusCode, pData) => {
                                 //debugger;

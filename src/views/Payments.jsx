@@ -25,9 +25,10 @@ class Payments extends Component {
       };
   }
   componentWillMount() {
-
+    var tokn = localStorage.getItem('userdata');
     this.WebServicesManager.getApiCall({
-      endPoint: "Membership/GetAllActiveUsers"
+      endPoint: "Membership/GetAllActiveUsers",
+      token:tokn,
     },
     (statusCode, responseMemeber)=>{
       if(responseMemeber.length > 0){
@@ -35,7 +36,8 @@ class Payments extends Component {
           this.WebServicesManager.getApiWithParamCall(
             {
                 endPoint: "Personal/GetAllById",
-                dataToFetch: item.userId
+                dataToFetch: item.userId,
+                token:tokn,
             },
             (statusCode, responseUser) => {
               console.log("respisswe",responseUser,item);
@@ -72,10 +74,12 @@ class Payments extends Component {
     });
   }
   active = e => {
+    var tokn = localStorage.getItem('userdata');
       alert("Payment Confirmed Successfully");
       this.WebServicesManager.getApiWithParamCall({
           endPoint: "Membership/Activate",
-          dataToFetch: e.target.value
+          dataToFetch: e.target.value,
+          token:tokn,
       }, 
       (s, r) => {
         //

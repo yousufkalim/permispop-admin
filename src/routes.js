@@ -1,4 +1,3 @@
-
 import Dashboard from "views/Dashboard.jsx";
 import Packages from "views/Packages.jsx";
 import Users from "views/Users.jsx";

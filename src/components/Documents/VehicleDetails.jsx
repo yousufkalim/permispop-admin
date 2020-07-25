@@ -33,6 +33,7 @@ class VehicleRegistration extends Component {
     }
     WebServicesManager = new WebServicesManager();
     componentDidMount() {
+        var tokn = localStorage.getItem('userdata');
         console.log("props for vehicle",this.props)
         const {vehicleInfo,Type} = this.props;
         if(Type === "veh1"){
@@ -162,6 +163,7 @@ class VehicleRegistration extends Component {
     }
 
     handleSave = () =>{
+        var tokn = localStorage.getItem('userdata');
         console.log("save",this.state);
         const {Type,role,vehicleInfo } = this.props;
         var vehicle  = {};
@@ -291,7 +293,8 @@ class VehicleRegistration extends Component {
         this.WebServicesManager.getApiWithParamCall(
             {
                 endPoint: "Profile/GetProfileByPersonalId",
-                dataToFetch: this.props.personalInfoId
+                dataToFetch: this.props.personalInfoId,
+                token:tokn,
             },
             (statusCode, response) => {
                 // get all detail and reassign
@@ -322,7 +325,8 @@ class VehicleRegistration extends Component {
                 this.WebServicesManager.postApiCall(
                     {
                         endPoint: "Profile/UpdateProfile",
-                        dataToInsert: dataToUpdate
+                        dataToInsert: dataToUpdate,
+                        token:tokn,
                     },
                     (statusCode, response) => {
                         console.log("after update",response);

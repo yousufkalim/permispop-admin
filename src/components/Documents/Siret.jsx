@@ -16,6 +16,7 @@ class Siret extends Component {
     }
     WebServicesManager = new WebServicesManager();
     componentDidMount() {
+        var tokn = localStorage.getItem('userdata');
         if(this.props.role === "DSInstructor"){
             const response = JSON.parse(this.props.businessInfoId);
             this.setState({ 
@@ -26,7 +27,8 @@ class Siret extends Component {
         }
         this.WebServicesManager.getApiWithParamCall({
             endPoint: "Business/GetBusinessStoreByUserId",
-            dataToFetch: this.props.businessInfoId
+            dataToFetch: this.props.businessInfoId,
+            token:tokn,
         },
         (statusCode, response) => {
             if(response !== null){
@@ -72,6 +74,7 @@ class Siret extends Component {
     }
 
     handleSave = () =>{
+        var tokn = localStorage.getItem('userdata');
         console.log("save");
         // save login will go here
         if(this.props.role === "DSInstructor"){
@@ -84,7 +87,8 @@ class Siret extends Component {
             this.WebServicesManager.getApiWithParamCall(
                 {
                     endPoint: "Profile/GetProfileByPersonalId",
-                    dataToFetch: this.props.personalInfoId
+                    dataToFetch: this.props.personalInfoId,
+                    token:tokn,
                 },
                 (statusCode, response) => {
                     // get all detail and reassign
@@ -115,7 +119,8 @@ class Siret extends Component {
                     this.WebServicesManager.postApiCall(
                         {
                             endPoint: "Profile/UpdateProfile",
-                            dataToInsert: dataToUpdate
+                            dataToInsert: dataToUpdate,
+                            token:tokn,
                         },
                         (statusCode, response) => {
                             console.log("after update",response);
@@ -134,7 +139,8 @@ class Siret extends Component {
             this.WebServicesManager.postApiCall(
                 {
                     endPoint:"Business/UpdateBusinessTable",
-                    dataToInsert:JSON.stringify(perobj)
+                    dataToInsert:JSON.stringify(perobj),
+                    token:tokn,
                 },
                 (statusCode, Resp)=>
                 {

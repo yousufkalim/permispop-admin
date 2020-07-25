@@ -14,8 +14,10 @@ class MembershipSetting extends Component {
     WebServicesManager = new WebServicesManager();
 
     componentDidMount() {
+        var tokn = localStorage.getItem('userdata');
         this.WebServicesManager.getApiCall({
-            endPoint: "package/GetStudentPackages"
+            endPoint: "package/GetStudentPackages",
+            token:tokn,
         },
             (statusCode, pgkDetails) => {
                 this.setState({ packages: pgkDetails });
@@ -49,9 +51,9 @@ class MembershipSetting extends Component {
                                             Student Membership
                                         </Col>
                                         <Col md={6}>
-                                            Free<label class="switch">
+                                            Free<label className="switch">
                                                 <input type="checkbox" checked/>
-                                                    <span class="slider round"></span>
+                                                    <span className="slider round"></span>
 </label> Paid
                                         </Col>
                                         </Row>
@@ -60,9 +62,9 @@ class MembershipSetting extends Component {
                                                 Instructor Membership
                                         </Col>
                                             <Col md={6}>
-                                                Free<label class="switch">
+                                                Free<label className="switch">
                                                     <input type="checkbox" />
-                                                    <span class="slider round"></span>
+                                                    <span className="slider round"></span>
                                                 </label> Paid
                                         </Col>
                                         </Row>
@@ -71,9 +73,9 @@ class MembershipSetting extends Component {
                                                 Driving Membership
                                         </Col>
                                             <Col md={6}>
-                                                Free<label class="switch">
+                                                Free<label className="switch">
                                                     <input type="checkbox" />
-                                                    <span class="slider round"></span>
+                                                    <span className="slider round"></span>
                                                 </label> Paid
                                         </Col>
                                         </Row>

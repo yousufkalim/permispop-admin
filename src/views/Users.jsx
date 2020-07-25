@@ -30,8 +30,10 @@ class Users extends Component {
     componentWillMount() {
         var nonV=[];
         var V=[];
+        var tokn = localStorage.getItem('userdata');
         this.WebServicesManager.getApiCall({
-            endPoint: "Personal/GetAllUsers"
+            endPoint: "Personal/GetAllUsers",
+            token:tokn,
         }, (s, r) => {
                 // console.log("r",r);
                 r.map(item=>{

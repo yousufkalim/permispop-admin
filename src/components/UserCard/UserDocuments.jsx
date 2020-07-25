@@ -37,10 +37,12 @@ class UserDocuments extends Component {
         };
     }
     componentWillMount() {
+        var tokn = localStorage.getItem('userdata');
         this.WebServicesManager.getApiWithParamCall(
             {
                 endPoint:"Profile/GetProfileByPersonalId",
-                dataToFetch: this.props.id
+                dataToFetch: this.props.id,
+                token:tokn,
             },
             (statusCode,responseProfile)=>{
                 var vehicle = "";
@@ -65,10 +67,12 @@ class UserDocuments extends Component {
 
     }
     getData = e => {
+        var tokn = localStorage.getItem('userdata');
         console.log("this.props.id",this.props.id)
         this.WebServicesManager.getApiWithParamCall({
             endPoint: "Document/GetUserDoc",
-            dataToFetch: this.props.id
+            dataToFetch: this.props.id,
+            token:tokn,
         },
             (statusCode, list) => {
                 console.log("list",list);
@@ -94,6 +98,7 @@ class UserDocuments extends Component {
     }
 
     maildata = m =>{
+        var tokn = localStorage.getItem('userdata');
         var notVerfiedDoc = ""
         const listToMatch = {
             fic:"Front Id Card",
@@ -124,7 +129,8 @@ class UserDocuments extends Component {
 
         this.WebServicesManager.getApiWithParamCall({
             endPoint: "Document/GetUserDoc",
-            dataToFetch: this.props.id
+            dataToFetch: this.props.id,
+            token:tokn,
         },
         (statusCode, Response) => {
             console.log("Result",Response);
@@ -135,7 +141,8 @@ class UserDocuments extends Component {
             }    
             this.WebServicesManager.getApiWithParamCall({
             endPoint:"Personal/EmailDocuments",
-            dataToFetch:`${this.props.id}&email=${this.props.email}&doc=${notVerfiedDoc}`
+            dataToFetch:`${this.props.id}&email=${this.props.email}&doc=${notVerfiedDoc}`,
+            token:tokn,
             },(statusCode,responseEmail)=>{
             console.log("email");
             alert("mail sent successfully");

@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { NavItem, Nav, NavDropdown, MenuItem } from "react-bootstrap";
 import {Redirect} from "react-router-dom"
+import jwtDecode from "jwt-decode";
+
 
 class AdminNavbarLinks extends Component {
 
@@ -13,16 +15,23 @@ class AdminNavbarLinks extends Component {
   }
 componentDidMount()
 {
+  var tokn = localStorage.getItem("userdata");
 
-  var y = localStorage.getItem("userdata");
   // console.log("y is",y);
   // console.log("props",this.props);
-  if(y === null || y=== "")
-  {
+  if(tokn === null || tokn=== "")
+    {
     console.log("this.prop",this.props)
-    this.props.history.replace(`/login`);
+    window.location.replace('/login');
    } else {
-    this.setState({User: JSON.parse(y) });
+     try{
+      var decoded = jwtDecode(tokn);
+      var y = JSON.parse(decoded.userData);
+      this.setState({User: y });
+     }catch(e){
+       alert(e);
+       window.location.replace('/login');
+     }
   }
 }
 

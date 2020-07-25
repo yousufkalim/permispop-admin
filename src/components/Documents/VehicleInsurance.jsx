@@ -20,9 +20,11 @@ class VehicleInsurance extends Component {
     WebServicesManager = new WebServicesManager();
     componentDidMount() {
         // debugger;
+        var tokn = localStorage.getItem('userdata');
         this.WebServicesManager.getApiWithParamCall({
             endPoint: "VehicleInsurance/GetVehicleInsuranceByPersonalID",
-            dataToFetch: this.props.vehicleInsuranceInfoId
+            dataToFetch: this.props.vehicleInsuranceInfoId,
+            token:tokn,
         },
             (statusCode, response) => {
                 if(response !== null){
@@ -71,6 +73,7 @@ class VehicleInsurance extends Component {
     }
 
 handleSave = () =>{
+    var tokn = localStorage.getItem('userdata');
         console.log("save");
         // save login will go here
         const perobj = {
@@ -86,13 +89,15 @@ handleSave = () =>{
             this.WebServicesManager.postApiCall(
                 {
                     endPoint:"VehicleInsurance",
-                    dataToInsert:JSON.stringify(perobj)
+                    dataToInsert:JSON.stringify(perobj),
+                    token:tokn,
                 },
                 (statusCode, Resp)=>{
                     this.WebServicesManager.getApiWithParamCall(
                         {
                             endPoint: "Profile/GetProfileByPersonalId",
-                            dataToFetch: this.props.personalInfoId
+                            dataToFetch: this.props.personalInfoId,
+                            token:tokn,
                         },
                         (statusCode, response) => {
                             const infopr = {
@@ -122,7 +127,8 @@ handleSave = () =>{
                             this.WebServicesManager.postApiCall(
                                 {
                                     endPoint: "Profile/UpdateProfile",
-                                    dataToInsert: dataToUpdate
+                                    dataToInsert: dataToUpdate,
+                                    token:tokn,
                                 },
                                 (statusCode, response) => {
                                     window.location.reload();
@@ -137,7 +143,8 @@ handleSave = () =>{
             this.WebServicesManager.postApiCall(
                 {
                     endPoint:"VehicleInsurance/UpdateInsurance",
-                    dataToInsert:JSON.stringify(perobj)
+                    dataToInsert:JSON.stringify(perobj),
+                    token:tokn,
                 },
                 (statusCode, Resp)=>
                 {

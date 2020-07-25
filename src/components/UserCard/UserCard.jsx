@@ -51,10 +51,12 @@ export class UserCard extends Component {
     }
 
     componentWillMount(){
+        var tokn = localStorage.getItem('userdata');
         this.WebServicesManager.getApiWithParamCall(
         {
             endPoint: "Profile/GetProfileByPersonalId",
-            dataToFetch: this.props.id
+            dataToFetch: this.props.id,
+            token:tokn,
         },
         (statusCode,response)=>{
             this.setState({
@@ -164,6 +166,7 @@ export class UserCard extends Component {
     
 
     handleSave = () => {
+        var tokn = localStorage.getItem('userdata');
         const data = {
             id:this.props.personalInfoId,
             FirstName: this.state.firstName,
@@ -197,7 +200,8 @@ export class UserCard extends Component {
         var datais = JSON.stringify(data);
         this.WebServicesManager.postApiCall({
             endPoint: "Personal/UpdatePersonal",
-            dataToInsert: datais
+            dataToInsert: datais,
+            token:tokn,
         },
         (statusCode,response) => {  
             window.location.reload();
@@ -207,13 +211,15 @@ export class UserCard extends Component {
       
      
     handleFunc = (days) =>{
+            var tokn = localStorage.getItem('userdata');
             var banTill = moment()
             .add(days, "days")
             .format();
             this.WebServicesManager.getApiWithParamCall(
             {
             endPoint:"Profile/GetProfileByPersonalId",
-            dataToFetch: this.props.id
+            dataToFetch: this.props.id,
+            token:tokn,
             },
             (statusCode, responcedata) =>
             {   
@@ -246,7 +252,8 @@ export class UserCard extends Component {
                 this.WebServicesManager.postApiCall(
                     {
                         endPoint:"Profile/UpdateProfile",
-                        dataToInsert:dataTo
+                        dataToInsert:dataTo,
+                        token:tokn,
                     },
                     (statusCode, response) =>
                     {
@@ -254,7 +261,8 @@ export class UserCard extends Component {
                         this.WebServicesManager.getApiWithParamCall(
                             {
                                 endPoint:"Personal/SendEmail",
-                                dataToFetch:this.props.id+"&email="+this.props.email+"&emailfor=Ban"
+                                dataToFetch:this.props.id+"&email="+this.props.email+"&emailfor=Ban",
+                                token:tokn,
                             },
                             (statusCode,EResp)=>
                             {
@@ -270,11 +278,12 @@ export class UserCard extends Component {
 
 
     handlefuntUnban = () =>{
-      
+        var tokn = localStorage.getItem('userdata');
         this.WebServicesManager.getApiWithParamCall(
         {
         endPoint:"Profile/GetProfileByPersonalId",
-        dataToFetch: this.props.id
+        dataToFetch: this.props.id,
+        token:tokn,
         },
         (statusCode, resp) =>
         {   
@@ -307,7 +316,8 @@ export class UserCard extends Component {
             this.WebServicesManager.postApiCall(
                 {
                     endPoint:"Profile/UpdateProfile",
-                    dataToInsert:dataTo
+                    dataToInsert:dataTo,
+                    token:tokn,
                 },
                 (statusCode, response) =>
                 {
@@ -315,7 +325,8 @@ export class UserCard extends Component {
                     this.WebServicesManager.getApiWithParamCall(
                         {
                             endPoint:"Personal/SendEmail",
-                            dataToFetch:this.props.id+"&email="+this.props.email+"&emailfor=Unban"
+                            dataToFetch:this.props.id+"&email="+this.props.email+"&emailfor=Unban",
+                            token:tokn,
                         },
                         (statusCode,EResp)=>
                         {
@@ -331,11 +342,13 @@ export class UserCard extends Component {
 }
 
         handlefuntDeActive = () =>{
+            var tokn = localStorage.getItem('userdata');
             console.log("this.props",this.props);
             this.WebServicesManager.getApiWithParamCall(
             {
             endPoint:"Profile/GetProfileByPersonalId",
-            dataToFetch: this.props.id
+            dataToFetch: this.props.id,
+            token:tokn,
             },
             (statusCode, resp) =>
             {   
@@ -368,14 +381,16 @@ export class UserCard extends Component {
                 this.WebServicesManager.postApiCall(
                     {
                         endPoint:"Profile/UpdateProfile",
-                        dataToInsert:dataTo
+                        dataToInsert:dataTo,
+                        token:tokn,
                     },
                     (statusCode, response) =>
                     {
                         this.WebServicesManager.getApiWithParamCall(
                             {
                                 endPoint:"Personal/SendEmail",
-                                dataToFetch:this.props.id+"&email="+this.props.email+"&emailfor=Deactivate"
+                                dataToFetch:this.props.id+"&email="+this.props.email+"&emailfor=Deactivate",
+                                token:tokn,
                             },
                             (statusCode,EResp)=>
                             {

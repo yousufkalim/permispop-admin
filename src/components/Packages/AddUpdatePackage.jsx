@@ -28,6 +28,7 @@ class AddUpdatePackage extends Component {
 
     WebServicesManager = new WebServicesManager();
     handleSave = e => {
+        var tokn = localStorage.getItem('userdata');
         const pkg = {
             name: this.state.pkName,
             type: this.state.pkDuration,
@@ -39,7 +40,8 @@ class AddUpdatePackage extends Component {
         }
         this.WebServicesManager.postApiCall({
             endPoint: "Package",
-            dataToInsert: JSON.stringify(pkg)
+            dataToInsert: JSON.stringify(pkg),
+            token:tokn,
         }, () => {  this.props.toggle(); 
         });
     }

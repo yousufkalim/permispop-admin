@@ -34,10 +34,10 @@ class Packages extends Component {
                         </div>
                     <header className="pull-right" style={{ fontSize: 28 }}>
                         <Button bsStyle="info" fill type="button" onClick={this.toggle} >
-                            <i class="fa fa-plus fa-2x"></i>
+                            <i className="fa fa-plus fa-2x"></i>
                         </Button>
                         <Button fill type="button"  >
-                            <i class="fa fa-cog fa-2x" onClick={this.toggleSetting}></i>
+                            <i className="fa fa-cog fa-2x" onClick={this.toggleSetting}></i>
                         </Button>
                         <div className="clearfix" />
                     </header>

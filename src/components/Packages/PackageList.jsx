@@ -15,8 +15,10 @@ class PackageList extends Component {
     WebServicesManager = new WebServicesManager();
 
     componentDidMount() {
+        var tokn = localStorage.getItem('userdata');
         this.WebServicesManager.getApiCall({
-            endPoint: "package/GetStudentPackages"
+            endPoint: "package/GetStudentPackages",
+            token:tokn,
         },
             (statusCode, pgkDetails) => {
                 this.setState({ packages: pgkDetails });
@@ -45,7 +47,7 @@ class PackageList extends Component {
                                         </thead>
                                         <tbody>
                                             {this.state.packages.map((prop, key) => {
-                                                return (<tr>
+                                                return (<tr key={key}>
                                                     <td key={key}>{key+1}</td>
                                                     <td key={key}>{prop.name}</td>
                                                     <td key={key}>{prop.type}</td>

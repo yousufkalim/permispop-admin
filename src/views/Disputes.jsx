@@ -18,8 +18,10 @@ class Disputes extends Component {
 
     WebServicesManager = new WebServicesManager();
     componentWillMount() {
+        var tokn = localStorage.getItem('userdata');
         this.WebServicesManager.getApiCall({
-            endPoint: "Dispute/GetAllDisputesForAdmin"
+            endPoint: "Dispute/GetAllDisputesForAdmin",
+            token:tokn,
         }, (s, r) => {
                 if (r !== null)
                     this.setState({ users: r });

@@ -19,6 +19,7 @@ class AOE extends Component {
         };
     }
     componentDidMount() {
+        var tokn = localStorage.getItem('userdata');
         if(this.props.role === "DSInstructor"){
             const response = JSON.parse(this.props.exersiceAuthorizationInfoId);
             this.setState({ 
@@ -32,7 +33,8 @@ class AOE extends Component {
         }else{
             this.WebServicesManager.getApiWithParamCall({
                 endPoint: "ExersiceAuthorization/GetExersiceAuthorityByUserId",
-                dataToFetch: this.props.exersiceAuthorizationInfoId
+                dataToFetch: this.props.exersiceAuthorizationInfoId,
+                token:tokn,
             },
                 (statusCode, response) => {
                     if(response !== null){
@@ -81,6 +83,7 @@ class AOE extends Component {
     }
 
     handleSave = () =>{
+        var tokn = localStorage.getItem('userdata');
         console.log("save");
         // save login will go here
         if(this.props.role === "DSInstructor"){
@@ -95,7 +98,8 @@ class AOE extends Component {
             this.WebServicesManager.getApiWithParamCall(
                 {
                     endPoint: "Profile/GetProfileByPersonalId",
-                    dataToFetch: this.props.personalInfoId
+                    dataToFetch: this.props.personalInfoId,
+                    token:tokn,
                 },
                 (statusCode, response) => {
                     // get all detail and reassign
@@ -126,7 +130,8 @@ class AOE extends Component {
                     this.WebServicesManager.postApiCall(
                         {
                             endPoint: "Profile/UpdateProfile",
-                            dataToInsert: dataToUpdate
+                            dataToInsert: dataToUpdate,
+                            token:tokn,
                         },
                         (statusCode, response) => {
                             console.log("after update",response);
@@ -147,7 +152,8 @@ class AOE extends Component {
             this.WebServicesManager.postApiCall(
                 {
                     endPoint:"ExersiceAuthorization/UpdateExersiceAuthorization",
-                    dataToInsert:JSON.stringify(perobj)
+                    dataToInsert:JSON.stringify(perobj),
+                    token:tokn,
                 },
                 (statusCode, Resp)=>
                 {

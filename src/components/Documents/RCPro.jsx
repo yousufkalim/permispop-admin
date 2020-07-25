@@ -17,9 +17,11 @@ class RCPro extends Component {
     }
     WebServicesManager = new WebServicesManager();
     componentDidMount() {
+        var tokn = localStorage.getItem('userdata');
         this.WebServicesManager.getApiWithParamCall({
             endPoint: "InsuranceCompany/GetInsuranceCompanyByIdAsync",
-            dataToFetch: this.props.insuranceCompanyInfoId
+            dataToFetch: this.props.insuranceCompanyInfoId,
+            token:tokn,
         },
             (statusCode, response) => {
                 if(response !== null){
@@ -67,6 +69,7 @@ class RCPro extends Component {
     }
 
     handleSave = () =>{
+        var tokn = localStorage.getItem('userdata');
         console.log("save");
         // save login will go here
         const perobj = {
@@ -81,13 +84,15 @@ class RCPro extends Component {
             this.WebServicesManager.postApiCall(
                 {
                     endPoint:"InsuranceCompany",
-                    dataToInsert:JSON.stringify(perobj)
+                    dataToInsert:JSON.stringify(perobj),
+                    token:tokn,
                 },
                 (statusCode, Resp)=>{
                     this.WebServicesManager.getApiWithParamCall(
                         {
                             endPoint: "Profile/GetProfileByPersonalId",
-                            dataToFetch: this.props.personalInfoId
+                            dataToFetch: this.props.personalInfoId,
+                            token:tokn,
                         },
                         (statusCode, response) => {
                             const infopr = {
@@ -117,7 +122,8 @@ class RCPro extends Component {
                             this.WebServicesManager.postApiCall(
                                 {
                                     endPoint: "Profile/UpdateProfile",
-                                    dataToInsert: dataToUpdate
+                                    dataToInsert: dataToUpdate,
+                                    token:tokn,
                                 },
                                 (statusCode, response) => {
                                     window.location.reload();
@@ -132,7 +138,8 @@ class RCPro extends Component {
             this.WebServicesManager.postApiCall(
                 {
                     endPoint:"InsuranceCompany/UpdateInsurance",
-                    dataToInsert:JSON.stringify(perobj)
+                    dataToInsert:JSON.stringify(perobj),
+                    token:tokn,
                 },
                 (statusCode, Resp)=>
                 {

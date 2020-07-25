@@ -6,6 +6,7 @@ import logo from "../assets/img/images/logo.png";
 import "../assets/sass/custom.scss";
 import WebServicesManager from "../WebServicesManager/WebServicesManager";
 import Utilities from "../Utilities/Utilities";
+import jwtDecode from "jwt-decode";
 export default class Login extends Component {
   WebServicesManager = new WebServicesManager();
   constructor(props) {
@@ -50,7 +51,6 @@ export default class Login extends Component {
   LogIn = e => {
     this.validationCheck(this.state);
     e.preventDefault();
-    debugger;
     const info = {
       Email: this.state.email,
       Password: this.state.password
@@ -59,7 +59,6 @@ export default class Login extends Component {
     this.WebServicesManager.LogIn(
       { endPoint: "Personal/AdminLogin", dataToLogIn: dataToLogIn },
       (statusCode, response) => {
-        // debugger;
         if (response.returnStatus === true) {
           this.functionData(response.data);
         } else if (response.returnStatus === false) {
@@ -85,10 +84,12 @@ export default class Login extends Component {
     localStorage.setItem("reload", "true");
   }
   functionData(response) {
+    var decoded = jwtDecode(response);
+    var userinfo = JSON.parse(decoded.userData);
     localStorage.setItem("getRatings","true");
-    localStorage.setItem("userdata", JSON.stringify(response));
+    localStorage.setItem("userdata", response);
     localStorage.setItem("firstVisit",0);
-    this.props.history.push(`/admin/Dashboard/user/${response.id}`);
+    this.props.history.push(`/admin/Dashboard/user/${userinfo.id}`);
   }
   passwordShow = () => {
     this.setState({ passwordShow: false, typeChng: "text" });

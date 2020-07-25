@@ -17,9 +17,11 @@ class DrivingSchoolApproval extends Component {
     }
     WebServicesManager = new WebServicesManager();
     componentDidMount() {
+        var tokn = localStorage.getItem('userdata');
         this.WebServicesManager.getApiWithParamCall({
             endPoint: "DrivingSchoolApproval/GetDrivingSchoolApprovalAsyncByPersonalInfoId",
-            dataToFetch: this.props.drivingSchoolApprovalInfoId
+            dataToFetch: this.props.drivingSchoolApprovalInfoId,
+            token:tokn,
         },
             (statusCode, response) => {
                 if(response !== null){
@@ -69,6 +71,7 @@ class DrivingSchoolApproval extends Component {
     }
 
     handleSave = () =>{
+        var tokn = localStorage.getItem('userdata');
         console.log("save");
         // save login will go here
         const perobj = {
@@ -82,7 +85,8 @@ class DrivingSchoolApproval extends Component {
         this.WebServicesManager.postApiCall(
             {
                 endPoint:"DrivingSchoolApproval/UpdateSchoolApproval",
-                dataToInsert:JSON.stringify(perobj)
+                dataToInsert:JSON.stringify(perobj),
+                token:tokn,
             },
             (statusCode, Resp)=>
             {

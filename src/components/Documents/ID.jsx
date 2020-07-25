@@ -24,6 +24,7 @@ class ID extends Component {
     }
     
     updateStatus = e => {
+        var tokn = localStorage.getItem('userdata');
         var statusis = false;
         
         if(e === undefined){
@@ -54,14 +55,20 @@ class ID extends Component {
         this.setState({ status: statusis });
         var dataToInsert = JSON.stringify(info);
         this.WebServicesManager.postApiCall(
-            { endPoint: "Document", dataToInsert: dataToInsert },
+            { 
+                endPoint: "Document", 
+                dataToInsert: dataToInsert,
+                token:tokn, 
+            },
             (statusCode, response) => {
                 this.WebServicesManager.getApiWithParamCall(
                     {
                       endPoint: "Document/GetUserDoc",
-                      dataToFetch: this.props.personalInfoId
+                      dataToFetch: this.props.personalInfoId,
+                      token:tokn,
                     },
                     (statusCode, responsePersonal) => {
+                        debugger;
                         var docVarify = true;
                         if(responsePersonal.length >= lengthToMatch){
                             responsePersonal.map(item => {
@@ -71,6 +78,8 @@ class ID extends Component {
                             })
                         }else if(responsePersonal.length === 0){
                             docVarify = false;
+                        }else{
+                            docVarify=false;
                         }
                         var mail_sent = true;
                         // debugger;
@@ -78,7 +87,8 @@ class ID extends Component {
                             this.WebServicesManager.getApiWithParamCall(
                                 {
                                 endPoint: "Personal/GetAllById",
-                                dataToFetch: this.props.personalInfoId
+                                dataToFetch: this.props.personalInfoId,
+                                token:tokn,
                                 },
                                 (statusCode, responsePersonal) => {
                                     if(responsePersonal.documentTested !=="Tested"){
@@ -117,7 +127,8 @@ class ID extends Component {
                                     this.WebServicesManager.postApiCall(
                                         {
                                             endPoint:"Personal/UpdatePersonal",
-                                            dataToInsert:JSON.stringify(perobj)
+                                            dataToInsert:JSON.stringify(perobj),
+                                            token:tokn,
                                         },
                                         (statusCode, Resp)=>
                                         {
@@ -127,7 +138,8 @@ class ID extends Component {
                                                 this.WebServicesManager.getApiWithParamCall(
                                                     {
                                                         endPoint:"Personal/SendEmail",
-                                                        dataToFetch:Resp.id+"&email="+Resp.email
+                                                        dataToFetch:Resp.id+"&email="+Resp.email,
+                                                        token:tokn,
                                                     },
                                                     (statusCode,EResp)=>
                                                     {
@@ -146,7 +158,8 @@ class ID extends Component {
                             this.WebServicesManager.getApiWithParamCall(
                                 {
                                 endPoint: "Personal/GetAllById",
-                                dataToFetch: this.props.personalInfoId
+                                dataToFetch: this.props.personalInfoId,
+                                token:tokn,
                                 },
                                 (statusCode, responsePersonal) => {
                                     const perobj = {
@@ -182,7 +195,8 @@ class ID extends Component {
                                     this.WebServicesManager.postApiCall(
                                         {
                                             endPoint:"Personal/UpdatePersonal",
-                                            dataToInsert:JSON.stringify(perobj)
+                                            dataToInsert:JSON.stringify(perobj),
+                                            token:tokn,
                                         },
                                         (statusCode, Resp)=>
                                         {

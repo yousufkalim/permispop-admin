@@ -9,11 +9,13 @@ export default class WebServicesManager extends React.Component {
   //Post method
 
   callPostMethod(apiURL, params, callback) {
+    let headeris = {
+      "Content-Type": "application/json"
+    }
+  if(params.token !== undefined){headeris["Authorization"]="Bearer "+params.token}
     fetch(apiURL, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers:headeris,
       body: params.dataToInsert
     })
       .then(response => response.json())
@@ -36,11 +38,13 @@ export default class WebServicesManager extends React.Component {
 
   //Get method
   callGetMethod(baseURL, params, callback) {
+    let headeris = {
+      "Content-Type": "application/json"
+    }
+  if(params.token !== undefined){headeris["Authorization"]="Bearer "+params.token}
     fetch(baseURL, {
       method: "Get",
-      headers: {
-        "Content-Type": "application/json"
-      }
+      headers: headeris,
     })
       .then(response => response.json())
       .then(responseJson => {
@@ -55,11 +59,13 @@ export default class WebServicesManager extends React.Component {
 
   //Get method for contactUs
   callGetMethodForContactUs(baseURL, params, callback) {
+    let headeris = {
+      "Content-Type": "application/json"
+    }
+  if(params.token !== undefined){headeris["Authorization"]="Bearer "+params.token}
     fetch(baseURL, {
       method: "Get",
-      headers: {
-        "Content-Type": "application/json"
-      }
+      headers: headeris,
     })
       .then(response => response.json())
       .then(responseJson => {
@@ -80,12 +86,14 @@ export default class WebServicesManager extends React.Component {
 
   //Get method for Email validate Check
   callGetMethodForEmailValidate(baseURL, params, callback) {
+    let headeris = {
+      "Content-Type": "application/json"
+    }
+  if(params.token !== undefined){headeris["Authorization"]="Bearer "+params.token}
     baseURL = baseURL + "/?email=" + params.dataToCheck;
     fetch(baseURL, {
       method: "Get",
-      headers: {
-        "Content-Type": "application/json"
-      }
+      headers: headeris,
     })
       .then(response => response.json())
       .then(responseJson => {
@@ -106,11 +114,13 @@ export default class WebServicesManager extends React.Component {
 
   //Post method
   callPostMethodToGetAllPerson(baseURL, params, callback) {
+    let headeris = {
+      "Content-Type": "application/json"
+    }
+  if(params.token !== undefined){headeris["Authorization"]="Bearer "+params.token}
     fetch(baseURL, {
       method: "Post",
-      headers: {
-        "Content-Type": "application/json"
-      }
+      headers: headeris,
     })
       .then(response => response.json())
       .then(responseJson => {
@@ -130,11 +140,13 @@ export default class WebServicesManager extends React.Component {
   }
 
   callPostNearbyInstructorMethod(apiURL, params, callback) {
+    let headeris = {
+      "Content-Type": "application/json"
+    }
+  if(params.token !== undefined){headeris["Authorization"]="Bearer "+params.token}
     fetch(apiURL, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: headeris,
       body: params.dataToInsert
     })
       .then(response => response.json())
@@ -158,12 +170,14 @@ export default class WebServicesManager extends React.Component {
 
   //Get with parameters method with ID
   callGetWithParamMethod(baseURL, params, callback) {
+    let headeris = {
+      "Content-Type": "application/json"
+    }
+  if(params.token !== undefined){headeris["Authorization"]="Bearer "+params.token}
     baseURL = baseURL + "/?id=" + params.dataToFetch;
     fetch(baseURL, {
       method: "Get",
-      headers: {
-        "Content-Type": "application/json"
-      }
+      headers:headeris,
       // body: params.dataToFetch
     })
       .then(response => response.json())
@@ -174,12 +188,14 @@ export default class WebServicesManager extends React.Component {
       .catch(error => {});
   }
   callApiwithParamReturnMsg(baseURL, params, callback) {
+    let headeris = {
+      "Content-Type": "application/json"
+    }
+  if(params.token !== undefined){headeris["Authorization"]="Bearer "+params.token}
     baseURL = baseURL + "/?id=" + params.dataToFetch;
     fetch(baseURL, {
       method: "Get",
-      headers: {
-        "Content-Type": "application/json"
-      }
+      headers:headeris
       // body: params.dataToFetch
     })
       .then(response => response.json())
@@ -192,13 +208,15 @@ export default class WebServicesManager extends React.Component {
   }
 
   GetBookletCmt(baseURL, params, callback) {
+    let headeris = {
+      "Content-Type": "application/json"
+    }
+  if(params.token !== undefined){headeris["Authorization"]="Bearer "+params.token}
     baseURL = this.baseUrl +baseURL+ "/?studentId=" + params[0]+"&bookletItemId="+params[1];
     
     fetch(baseURL, {
       method: "Get",
-      headers: {
-        "Content-Type": "application/json"
-      }
+      headers: headeris,
       // body: params.dataToFetch
     })
       .then(response => response.json())
@@ -224,11 +242,13 @@ getApiwithParamReturnMsg(params, callback) {
 }
   //Get LogIn
   callGetLogIn(baseURL, params, callback) {
+    let headeris = {
+      "Content-Type": "application/json"
+    }
+  if(params.token !== undefined){headeris["Authorization"]="Bearer "+params.token}
     fetch(baseURL, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: headeris,
       body: params.dataToLogIn
     })
       .then(response => response.json())
@@ -247,15 +267,17 @@ getApiwithParamReturnMsg(params, callback) {
 
   //Get with parameters method with ID
   callPutMethod(baseURL, params, callback) {
+    let headeris = {
+      "Content-Type": "application/json"
+    }
+  if(params.token !== undefined){headeris["Authorization"]="Bearer "+params.token}
     var params2 = JSON.parse(params.dataToUpdate);
     baseURL = baseURL + "?id=" + params2.id + "&status=" + params2.status;
 
     // baseURL = baseURL;
     fetch(baseURL, {
       method: "Get",
-      headers: {
-        "Content-Type": "application/json"
-      }
+      headers: headeris
       // body: params.dataToFetch
     })
       .then(response => response.json())
@@ -272,15 +294,17 @@ getApiwithParamReturnMsg(params, callback) {
 
   //delete with parameters method with ID
   callDeleteMethod(baseURL, params, callback) {
+    let headeris = {
+      "Content-Type": "application/json"
+    }
+  if(params.token !== undefined){headeris["Authorization"]="Bearer "+params.token}
     var params1 = JSON.parse(params.dataToUpdate);
     baseURL = baseURL + "?id=" + params1.id;
 
     // baseURL = baseURL;
     fetch(baseURL, {
       method: "Post",
-      headers: {
-        "Content-Type": "application/json"
-      }
+      headers: headeris,
       // body: params.dataToFetch
     })
       .then(response => response.json())
@@ -305,13 +329,15 @@ getApiwithParamReturnMsg(params, callback) {
   callDeleteMethodInURL(baseURL, params, callback) {
     // var params = JSON.parse(params.dataToDelete);
     baseURL = baseURL + "/" + params.dataToDelete;
+    let headeris = {
+      "Content-Type": "application/json"
+    }
+  if(params.token !== undefined){headeris["Authorization"]="Bearer "+params.token}
 
     // baseURL = baseURL;
     fetch(baseURL, {
       method: "Delete",
-      headers: {
-        "Content-Type": "application/json"
-      }
+      headers: headeris
       // body: params.dataToFetch
     })
       .then(response => response.json())
@@ -335,13 +361,15 @@ getApiwithParamReturnMsg(params, callback) {
   //Get with parameters method with ID
   callPostMethodForSuspend(baseURL, params, callback) {
     // var params = JSON.parse(params.dataToUpdate);
+    let headeris = {
+      "Content-Type": "application/json"
+    }
+  if(params.token !== undefined){headeris["Authorization"]="Bearer "+params.token}
 
     // baseURL = baseURL;
     fetch(baseURL, {
       method: "Post",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: headeris,
       body: params.dataToUpdate
     })
       .then(response => response.json())

@@ -7,6 +7,8 @@ import "../assets/sass/custom.scss";
 import WebServicesManager from "../WebServicesManager/WebServicesManager";
 import Utilities from "../Utilities/Utilities";
 import jwtDecode from "jwt-decode";
+import {Base64} from "js-base64"
+
 export default class Login extends Component {
   WebServicesManager = new WebServicesManager();
   constructor(props) {
@@ -85,7 +87,7 @@ export default class Login extends Component {
   }
   functionData(response) {
     var decoded = jwtDecode(response);
-    var userinfo = JSON.parse(decoded.userData);
+    var userinfo = JSON.parse(Base64.decode(decoded.userData));
     localStorage.setItem("getRatings","true");
     localStorage.setItem("userdata", response);
     localStorage.setItem("firstVisit",0);
@@ -188,7 +190,7 @@ export default class Login extends Component {
                       <Checkbox className="t-white">Remember me</Checkbox>
                     </Col>
                     <Col md={6} xs={6} className="p-3 f-r">
-                      <a href="/forgotPassoword" className="t-white">
+                      <a href="" className="t-white">
                         Forget Password
                       </a>
                     </Col>

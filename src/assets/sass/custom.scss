@@ -1412,9 +1412,8 @@ form {
 }
 
 .card {
-  border-radius: 0;
+  border-radius: 4px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-
   .content {
     padding: 15px 15px 26px 15px;
   }

@@ -128,7 +128,7 @@ class Payments extends Component {
                                         );
                                     })
                                   :
-                                  <td colspan="7" style={{fontWeight:'bold',textAlign:'center',marginTop:'30px'}}>No Inactive User</td>
+                                  <td colspan="7" style={{fontWeight:'bold',textAlign:'center',paddingTop:'30px'}}>No Inactive User</td>
                                 }
                             </tbody>
                             </table>
@@ -162,7 +162,7 @@ class Payments extends Component {
                                             );
                                   })
                                   :
-                                  <td colspan="6" style={{fontWeight:'bold',textAlign:'center',marginTop:'30px'}}>No active User</td>
+                                  <td colspan="6" style={{fontWeight:'bold',textAlign:'center',paddingTop:'30px'}}>No active User</td>
                                 }
                               </tbody>
                             </table>

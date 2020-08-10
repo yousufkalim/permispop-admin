@@ -11,14 +11,15 @@ import "./assets/css/pe-icon-7-stroke.css";
 import AdminLayout from "layouts/Admin.jsx";
 import Login from "layouts/Login.jsx";
 
+
 var y = localStorage.getItem('userdata');
-// console.log("y is",y);
+console.log("y is",y);
 
 ReactDOM.render(
   <BrowserRouter>
     <Switch>
       <Route path="/admin" render={props => <AdminLayout {...props} />} />
-      <Redirect exact from="/" to={(y!== null && y!=="")?"/admin/dashboard":"/login"} />
+      <Redirect exact from="/" to={(y!== null && y!=="" && y !== undefined)?"/admin/dashboard":"/login"} />
       <Route path="/login" render={props => <Login {...props} />} />
     </Switch>
   </BrowserRouter>,

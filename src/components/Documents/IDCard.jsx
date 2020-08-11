@@ -18,7 +18,7 @@ class DrivingLicense extends Component {
                     <Col md={6}> 
                         <FileDisplay file={this.props.Type === "fic" ? this.props.frontIDPhoto : this.props.backIDPhoto} />
                         {this.props.Type !== undefined?
-                        <a href={this.props.Type === "fic" ? this.props.frontIDPhoto : this.props.backIDPhoto} target="_blank">View file in new Tab.</a>:""}
+                        <a rel="noopener noreferrer" href={this.props.Type === "fic" ? this.props.frontIDPhoto : this.props.backIDPhoto} target="_blank">View file in new Tab.</a>:""}
                     </Col>
 
                     <Col md={6}>

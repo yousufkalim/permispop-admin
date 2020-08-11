@@ -166,7 +166,7 @@ handleSave = () =>{
                             <Col md={6}>
                                 <FileDisplay file={this.state.vIns.greenCardImagePath!==undefined?this.state.vIns.greenCardImagePath:""}/>
                                 {this.state.vIns.greenCardImagePath !== undefined?
-                                <a href={this.state.vIns.greenCardImagePath} target="_blank">View file in new Tab.</a>:""}
+                                <a rel="noopener noreferrer" href={this.state.vIns.greenCardImagePath} target="_blank">View file in new Tab.</a>:""}
                             </Col>
                             <Col md={6}>
                                 <b>{this.state.vIns.greenCardImagePath===undefined?"No Added Yet":""}</b>

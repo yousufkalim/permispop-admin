@@ -173,7 +173,7 @@ class AOE extends Component {
 
                             <FileDisplay file={this.state.aoe.authorizationImagePath} />
                             {this.state.aoe.authorizationImagePath !== undefined?
-                            <a href={this.state.aoe.authorizationImagePath} target="_blank">View file in new Tab.</a>:""}
+                            <a href={this.state.aoe.authorizationImagePath} rel="noopener noreferrer" target="_blank">View file in new Tab.</a>:""}
                         </Col>
                         <Col md={6}>
                             <b>{this.state.aoe.authorizationImagePath===undefined?"No Added Yet":""}</b>

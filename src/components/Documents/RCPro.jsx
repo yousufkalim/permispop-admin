@@ -161,7 +161,7 @@ class RCPro extends Component {
 
                                 <FileDisplay file={this.state.rc.insuranceImagePath!==undefined?this.state.rc.insuranceImagePath:""} />
                                 {this.state.rc.insuranceImagePath !== undefined?
-                            <a href={this.state.rc.insuranceImagePath} target="_blank">View file in new Tab.</a>:""}
+                            <a href={this.state.rc.insuranceImagePath} rel="noopener noreferrer" target="_blank">View file in new Tab.</a>:""}
                             </Col>
 
                             <Col md={6}>

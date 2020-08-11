@@ -17,7 +17,7 @@ class Footer extends Component {
             &copy; {new Date().getFullYear()}{" "}
 
             <a href="#">
-              Falcon
+              Falcon Consulting
             </a>
             , made with love for a better web
           </p>

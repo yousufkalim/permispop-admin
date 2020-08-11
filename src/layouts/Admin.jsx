@@ -11,7 +11,6 @@ import { style } from "variables/Variables.jsx";
 import routes from "routes.js";
 
 import image from "assets/img/sidebar-3.jpg";
-import jwtDecode from "jwt-decode";
 
 class Admin extends Component {
   constructor(props) {
@@ -105,7 +104,6 @@ class Admin extends Component {
   };
   componentDidMount() {
     this.setState({ _notificationSystem: this.refs.notificationSystem });
-    var _notificationSystem = this.refs.notificationSystem;
     var color = Math.floor(Math.random() * 4 + 1);
     var level;
     switch (color) {

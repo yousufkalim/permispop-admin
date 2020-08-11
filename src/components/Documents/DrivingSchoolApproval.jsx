@@ -106,7 +106,7 @@ class DrivingSchoolApproval extends Component {
 
                                 <FileDisplay file={this.state.dsa.approvalCertificationImagePath!==undefined?this.state.dsa.approvalCertificationImagePath:""} />
                                 {this.state.dsa.approvalCertificationImagePath !== undefined?
-                            <a href={this.state.dsa.approvalCertificationImagePath} target="_blank">View file in new Tab.</a>:""}
+                            <a href={this.state.dsa.approvalCertificationImagePath} rel="noopener noreferrer" target="_blank">View file in new Tab.</a>:""}
                             </Col>
 
                             <Col md={6}>

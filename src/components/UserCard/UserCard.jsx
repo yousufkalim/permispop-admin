@@ -196,6 +196,7 @@ export class UserCard extends Component {
             DrivingSchoolID:this.props.drivingSchoolID,
             RegistrationDate:this.props.RegistrationDate,
             documentTested:this.props.documentTested,
+            CPFAccept:this.props.cpfAccept,
         }
         var datais = JSON.stringify(data);
         this.WebServicesManager.postApiCall({

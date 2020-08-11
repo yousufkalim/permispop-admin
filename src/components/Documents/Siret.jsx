@@ -159,7 +159,7 @@ class Siret extends Component {
                         <Col md={6}>
                             <FileDisplay file={(this.state.siret.siratImagePath!==undefined || this.state.siret.siratImagePath !== null)?this.state.siret.siratImagePath:""} />
                             {this.state.siret.siratImagePath !== undefined?
-                            <a href={this.state.siret.siratImagePath} target="_blank">View file in new Tab.</a>:""}
+                            <a rel="noopener noreferrer" href={this.state.siret.siratImagePath} target="_blank">View file in new Tab.</a>:""}
                         </Col>
                         <Col md={6}>        
                         <b>{this.state.siret.siratImagePath===undefined?"No Added Yet":""}</b>

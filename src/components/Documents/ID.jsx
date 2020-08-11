@@ -67,22 +67,20 @@ class ID extends Component {
                       dataToFetch: this.props.personalInfoId,
                       token:tokn,
                     },
-                    (statusCode, responsePersonal) => {
-                        debugger;
+                    (statusCode, responsePersonalDoc) => {
                         var docVarify = true;
-                        if(responsePersonal.length >= lengthToMatch){
-                            responsePersonal.map(item => {
+                        if(responsePersonalDoc.length >= lengthToMatch){
+                            responsePersonalDoc.map(item => {
                                 if(item.status !== "true"){
                                     docVarify = false;
                                 }
                             })
-                        }else if(responsePersonal.length === 0){
+                        }else if(responsePersonalDoc.length === 0){
                             docVarify = false;
                         }else{
                             docVarify=false;
                         }
                         var mail_sent = true;
-                        // debugger;
                         if(docVarify === true){
                             this.WebServicesManager.getApiWithParamCall(
                                 {
@@ -121,7 +119,8 @@ class ID extends Component {
                                         role: responsePersonal.role,
                                         drivingSchoolID: responsePersonal.drivingSchoolID,
                                         registrationDate: responsePersonal.registrationDate,
-                                        documentTested: "Tested"
+                                        documentTested: "Tested",
+                                        CPFAccept:responsePersonal.cpfAccept,
                                     }
                                     
                                     this.WebServicesManager.postApiCall(
@@ -189,7 +188,8 @@ class ID extends Component {
                                         role: responsePersonal.role,
                                         drivingSchoolID: responsePersonal.drivingSchoolID,
                                         registrationDate: responsePersonal.registrationDate,
-                                        documentTested: ""
+                                        documentTested: "",
+                                        CPFAccept:responsePersonal.cpfAccept,
                                     }
                                     
                                     this.WebServicesManager.postApiCall(

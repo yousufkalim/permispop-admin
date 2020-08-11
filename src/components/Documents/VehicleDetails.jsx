@@ -346,18 +346,18 @@ class VehicleRegistration extends Component {
                         <Row>
                             <Col md={6}>
                                     <FileDisplay file={role!=="Instructor"?this.state.vIns.vehicleePhotosImagePath!==undefined?this.state.vIns.vehicleePhotosImagePath:"":this.state.vIns.VImagePath!==undefined?this.state.vIns.VImagePath:""} />
-                                    <a href={role!=="Instructor"?this.state.vIns.vehicleePhotosImagePath!==undefined?this.state.vIns.vehicleePhotosImagePath:"":this.state.vIns.VImagePath!==undefined?this.state.vIns.VImagePath:""} target="_blank">View Vehicle file.</a>
+                                    <a rel="noopener noreferrer" href={role!=="Instructor"?this.state.vIns.vehicleePhotosImagePath!==undefined?this.state.vIns.vehicleePhotosImagePath:"":this.state.vIns.VImagePath!==undefined?this.state.vIns.VImagePath:""} target="_blank">View Vehicle file.</a>
                                     <hr/>
                                     <FileDisplay file={role!=="Instrutor"?this.state.vIns.vehicleRegistrationCertificatePhotoImagePath!==undefined && this.state.vIns.vehicleRegistrationCertificatePhotoImagePath!==null?this.state.vIns.vehicleRegistrationCertificatePhotoImagePath:"":this.state.vIns.vRegCert!==undefined?this.state.vIns.vRegCert:""}/> 
-                                    <a href={role!=="Instrutor"?this.state.vIns.vehicleRegistrationCertificatePhotoImagePath!==undefined?this.state.vIns.vehicleRegistrationCertificatePhotoImagePath:"":this.state.vIns.vRegCert!==undefined?this.state.vIns.vRegCert:""} target="_blank">View Registration file.</a>
+                                    <a rel="noopener noreferrer" href={role!=="Instrutor"?this.state.vIns.vehicleRegistrationCertificatePhotoImagePath!==undefined?this.state.vIns.vehicleRegistrationCertificatePhotoImagePath:"":this.state.vIns.vRegCert!==undefined?this.state.vIns.vRegCert:""} target="_blank">View Registration file.</a>
                                     <hr/>
                                     <FileDisplay file={this.state.vIns.technicalControlImagePath!==undefined?this.state.vIns.technicalControlImagePath:""} />
-                                    <a href={this.state.vIns.technicalControlImagePath!==undefined?this.state.vIns.technicalControlImagePath:""} target="_blank">View file in new Tab.</a>
+                                    <a rel="noopener noreferrer" href={this.state.vIns.technicalControlImagePath!==undefined?this.state.vIns.technicalControlImagePath:""} target="_blank">View file in new Tab.</a>
                                     <hr/>
                                     {role !=="Instructor"?
                                     <>
                                     <FileDisplay file={role!=="Instructor"?this.state.greenCardImagePath!==undefined?this.state.greenCardImagePath:"":this.state.greenCardImagePath!==undefined?this.state.greenCardImagePath:""} />
-                                    <a href={role!=="Instructor"?this.state.greenCardImagePath!==undefined?this.state.greenCardImagePath:"":this.state.greenCardImagePath!==undefined?this.state.greenCardImagePath:""} target="_blank">View GreenCard file.</a>
+                                    <a rel="noopener noreferrer" href={role!=="Instructor"?this.state.greenCardImagePath!==undefined?this.state.greenCardImagePath:"":this.state.greenCardImagePath!==undefined?this.state.greenCardImagePath:""} target="_blank">View GreenCard file.</a>
                                     </>:""
                                     }
                             </Col>

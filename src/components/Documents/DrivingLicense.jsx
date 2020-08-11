@@ -196,7 +196,7 @@ class DrivingLicense extends Component {
                             {/* {console.log("this.state.dLic.drivingLisenceImagePath",this.state.dLic.drivingLisenceImagePath)} */}
                             <FileDisplay file={this.state.dLic.drivingLisenceImagePath!==undefined?this.state.dLic.drivingLisenceImagePath:""} />
                             {this.state.dLic.drivingLisenceImagePath !== undefined?
-                            <a href={this.state.dLic.drivingLisenceImagePath} target="_blank">View file in new Tab.</a>:""}
+                            <a href={this.state.dLic.drivingLisenceImagePath} rel="noopener noreferrer" target="_blank">View file in new Tab.</a>:""}
                         </Col>
 
                         <Col md={6}>

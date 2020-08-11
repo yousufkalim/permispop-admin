@@ -98,7 +98,7 @@ class Users extends Component {
                                     ctTableFullWidth
                                     ctTableResponsive
                                     content={
-                                        <Tabs defaultActiveKey="inactiveuser" transition={false} id="noanim-tab-example">
+                                        <Tabs defaultActiveKey="inactiveuser" id="noanim-tab-example">
                                             <Tab eventKey="inactiveuser" title="Non Verified">
                         
                                                 <Table striped bordered hover>

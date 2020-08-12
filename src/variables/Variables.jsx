@@ -244,7 +244,7 @@ var style = {
 // // // For User List
 // //
 //
-const thArrayUser = ["","User", "Role",  "Active", "Documents Verified"];
+const thArrayUser = ["#","User", "Role",  "Active", "Documents Verified","Show Details"];
 //
 // //
 // // // For Packages

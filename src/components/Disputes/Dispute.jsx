@@ -67,12 +67,14 @@ class Dispute extends Component {
         }, (s, r) => {
             // console.log("drispuet r",r); 
             if(this.state.status === "Student Suspended"){
+                debugger;
                 this.deactivateUser(this.state.sInfo.id);
             }else if(this.state.status === "Instructor Suspended"){
                 this.deactivateUser(this.state.IInfo.id);
-            }
+            }else{
             this.props.toggle();
             window.location.reload();
+            }
         });
 
     }
@@ -112,7 +114,7 @@ class Dispute extends Component {
                 BanDate: "",
                 
             }
-            // debugger;
+            debugger;
             var dataTo = JSON.stringify(profiledataUnban);
             this.WebServicesManager.postApiCall(
                 {
@@ -122,6 +124,7 @@ class Dispute extends Component {
                 },
                 (statusCode, response) =>
                 {
+                    this.props.toggle();
                     window.location.reload();   
                 }
             );
@@ -172,8 +175,9 @@ class Dispute extends Component {
                 },
                 (statusCode, response) =>
                 {
-                 console.log("update",response);
-                 window.location.reload();   
+                    console.log("update",response);
+                    this.props.toggle();
+                    window.location.reload();   
                 }
             );
         }

@@ -46,44 +46,47 @@ class Disputes extends Component {
                             <Card
                                 title=""
                                 content={
-                                    <Table>
-                                        <thead>
-                                            <tr>
-                                                <td style={{ backgroundColor: 'grey', color: 'white' }} className="text-center">Disputes</td>
-                                                <td style={{ backgroundColor: '#CA6F1E', color: 'white' }} className="text-center" colSpan="2" >Raised By</td>
-                                                <td style={{ backgroundColor: '#27AE60', color: 'white' }} className="text-center" colSpan="2" >Raised against</td>
-                                                <td style={{ backgroundColor: '#2874A6', color: 'white' }} className="text-center"></td>
-                                                <td style={{ backgroundColor: '#E74C3C', color: 'white' }} className="text-center" colSpan="2" ></td>
-                                            </tr>
-                                            <tr>
-                                                <td style={{ backgroundColor: '#ABB2B9', color: 'white' }} className="text-center">No.</td>
-                                                <td style={{ backgroundColor: '#F5B041', color: 'white' }} className="text-center">Name</td>
-                                                <td style={{ backgroundColor: '#F5B041', color: 'white' }} className="text-center" >Role</td>
-                                                <td style={{ backgroundColor: '#7DCEA0', color: 'white' }} className="text-center">Name</td>
-                                                <td style={{ backgroundColor: '#7DCEA0', color: 'white' }} className="text-center">Role</td>
-                                                <td style={{ backgroundColor: '#5DADE2', color: 'white' }} className="text-center">Comments</td>
-                                                <td style={{ backgroundColor: '#F1948A', color: 'white' }} className="text-center">status</td>
-                                                <td style={{ backgroundColor: '#F1948A', color: 'white' }} className="text-center"></td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {this.state.users.map((prop, key) => {
-                                                console.log("props",prop);
-                                                return (
-                                                    <tr key={key}>
-                                                        <td style={{ backgroundColor: '#D5D8DC', color: 'white' }} className="text-right">{key + 1}</td>
-                                                        <td style={{ backgroundColor: '#F8C471', color: 'white' }} className="text-center">{prop.disputingFrom.toLowerCase() === "student" ? prop.studentID : prop.instructorID}</td>
-                                                       <td style={{ backgroundColor: '#F8C471', color: 'white' }} className="text-center">{prop.disputingFrom}</td>
-                                                        <td style={{ backgroundColor: '#82E0AA', color: 'white' }} className="text-center">{prop.disputingFrom.toLowerCase() === "student" ? prop.instructorID : prop.studentID}</td>
-                                                        <td style={{ backgroundColor: '#82E0AA', color: 'white' }} className="text-center">{prop.disputingFrom.toLowerCase() !== "student" ?"Student":"Instructor/DrivingSchool"}</td>
-                                                        <td style={{ backgroundColor: '#85C1E9', color: 'white' }} className="text-center">{prop.adminComments}</td>
-                                                        <td style={{ backgroundColor: '#F2D7D5', color: 'white' }} className="text-center">{prop.status}</td>
-                                                        <td style={{ backgroundColor: '#F2D7D5', color: 'white' }} className="text-center"><Button onClick={(e) => { this.toggle(prop.id); }}><li className="pe-7s-look   fa-2x" title="View More"></li></Button></td>
-                                                    </tr>
-                                                );
-                                            })}
-                                        </tbody>
-                                    </Table>
+                                    <div className="table-responsive">
+                                        <Table bordered>
+                                            <thead>
+                                                <tr style = {{backgroundColor:"#149e7a",color:'#fff'}}>
+                                                    <td className="text-center">Disputes</td>
+                                                    <td className="text-center" colSpan="2" >Raised By</td>
+                                                    <td className="text-center" colSpan="2" >Raised against</td>
+                                                    <td className="text-center"></td>
+                                                    <td className="text-center" colSpan="2" ></td>
+                                                </tr>
+                                                <tr style = {{backgroundColor:"#ffb733",color:'#fff'}}>
+                                                    <td className="text-center">#</td>
+                                                    <td className="text-center">Name</td>
+                                                    <td className="text-center" >Role</td>
+                                                    <td className="text-center">Name</td>
+                                                    <td className="text-center">Role</td>
+                                                    <td className="text-center">Comments</td>
+                                                    <td className="text-center">status</td>
+                                                    <td className="text-center">view details</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {this.state.users.map((prop, key) => {
+                                                    console.log("props",prop);
+                                                    return (
+                                                        <tr key={key}>
+                                                            {console.log("props are",prop)}
+                                                            <td  className="text-center">{key + 1}</td>
+                                                            <td className="text-center">{prop.disputingFrom.toLowerCase() === "student" ? prop.studentID : prop.instructorID}</td>
+                                                            <td className="text-center">{prop.disputingFrom}</td>
+                                                            <td className="text-center">{prop.disputingFrom.toLowerCase() === "student" ? prop.instructorID : prop.studentID}</td>
+                                                            <td className="text-center">{prop.disputingFrom.toLowerCase() !== "student" ?"Student":"Instructor/DrivingSchool"}</td>
+                                                            <td className="text-center">{prop.adminComments !== null && prop.adminComments !== "null"?prop.adminComments:"No Comment"}</td>
+                                                            <td className="text-center">{prop.status !==null && prop.status !== "null"?prop.status:"Pending"}</td>
+                                                            <td className="text-center"><Button disabled={prop.status==="close"?true:false} onClick={(e) => { this.toggle(prop.id); }}><li className="pe-7s-look fa-2x iconH" title="View More" style={{color:'#fff'}}></li></Button></td>
+                                                        </tr>
+                                                    );
+                                                })}
+                                            </tbody>
+                                        </Table>
+                                    </div>
                                 }
                             />
                         </Col>

@@ -43,7 +43,7 @@ body {
   .btn {
     background-color: $primary;
     border: $primary;
-    border-radius: 0px;
+    border-radius: 4px;
     color: $white;
   }
 
@@ -1252,10 +1252,10 @@ form {
 }
 
 .btn:hover {
-  background-color: transparent;
+  background-color: #ffb733;
   border: solid 2px;
-  border-color: $primarylight !important;
-  border-radius: 0px;
+  border-color: #ffb733  !important;
+  border-radius: 4px;
   color: gray;
 }
 
@@ -1634,4 +1634,42 @@ a {
 }
 .navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:not(.btn):hover, .navbar-default .navbar-nav > .active > a:not(.btn):focus, .navbar-default .navbar-nav > li > a:not(.btn):hover, .navbar-default .navbar-nav > li > a:not(.btn):focus{
     color:#9A9A9A;
+}
+
+.table>thead:first-child>tr:first-child>th {
+  color:white;
+  padding:20px 10px;
+}
+
+.nav-tabs>li.active>a {
+  color:#fff;
+  background-color: #149e7a;
+  border:1px solid #149e7a;
+}
+
+.nav-tabs>li.active>a:focus {
+  color:#fff;
+  background-color: #149e7a;
+  border:1px solid #149e7a;
+}
+
+.nav-tabs>li>a {
+  color:#000;
+  border: 2px solid #149e7a;
+}
+
+.nav-tabs>li>a:focus {
+  color:#fff;
+  background-color: #149e7a;
+  border:1px solid #149e7a;
+}
+
+.nav-tabs>li>a:hover {
+  color:#000;
+  border: 2px solid #ffb733;
+}
+
+.table thead {
+  background-color: #ffb733 !important;
+  color:#fff;
 }

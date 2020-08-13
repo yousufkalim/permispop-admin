@@ -5,6 +5,7 @@
   "dependencies": {
     "bootstrap": "^3.3.7",
     "chartist": "0.10.1",
+    "datatables.net": "^1.10.20",
     "font-awesome": "^4.7.0",
     "jquery": "^3.5.0",
     "js-base64": "^3.4.5",

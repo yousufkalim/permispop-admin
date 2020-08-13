@@ -1,14 +1,66 @@
-
 import React, { Component } from "react";
 import { Grid, Row, Col, Table, Button, Tabs, Tab, TabContainer } from "react-bootstrap";
-
+import ReactDOM from "react-dom";
 import Card from "components/Card/Card.jsx";
+import {Link} from "react-router-dom";
 import { thArrayUser } from "variables/Variables.jsx";
 import UserCard from "components/UserCard/UserCard.jsx";
 import WebServicesManager from "WebServicesManager/WebServicesManager";
 import UserDocuments from "components/UserCard/UserDocuments.jsx";
 import UserPayments from "components/UserCard/UserPayments.jsx";
 import 'font-awesome/css/font-awesome.min.css';
+import { MDBDataTable } from 'mdbreact';
+
+const $ = require("jquery");
+$.DataTable = require("datatables.net");
+
+const columns1 = [
+    {title: "#"},
+    { title: "Name" },
+    { title: "Role" },
+    { title: "Active" },
+    { title: "Document Verified" },
+    { title:"View Details"},
+  ];
+
+  const columns= [
+    {
+      label: '#',
+      field: 'key',
+      sort: 'asc',
+      width: 150
+    },
+    {
+      label: 'Name',
+      field: 'name',
+      sort: 'asc',
+      width: 270
+    },
+    {
+      label: 'Role',
+      field: 'role',
+      sort: 'asc',
+      width: 200
+    },
+    {
+      label: 'Active',
+      field: 'active',
+      sort: 'asc',
+      width: 100
+    },
+    {
+      label: 'Document Verfied',
+      field: 'docV',
+      sort: 'asc',
+      width: 150
+    },
+    {
+      label: 'View Details',
+      field: 'details',
+      sort: 'asc',
+      width: 100
+    }
+  ];
 
 class Users extends Component {
     constructor(props) {
@@ -20,7 +72,9 @@ class Users extends Component {
             users: [],
             showDetails: false,
             userDetails: {},
-            documentVerified:""
+            documentVerified:"",
+            dataV:{},
+            dataNV:{},
         };
     }
     WebServicesManager = new WebServicesManager();
@@ -30,23 +84,31 @@ class Users extends Component {
     componentWillMount() {
         var nonV=[];
         var V=[];
+        var VN=[];
+        var NVN = [];
+        var vc=1,nvc=1;
         var tokn = localStorage.getItem('userdata');
         this.WebServicesManager.getApiCall({
             endPoint: "Personal/GetAllUsers",
             token:tokn,
         }, (s, r) => {
-                // console.log("r",r);
-                r.map(item=>{
-                    if(item.documentTested === "Tested" ){
-                        V.push(item);
-                    }else{
-                        nonV.push(item);
-                    }
-                })
-                this.setState({ allUsers: r,verfiedUser:V,nonVarifiedUser:nonV });
-        });
+            // console.log("r",r);
+            r.map(item=>{
+                if(item.documentTested === "Tested" ){
+                    VN.push({key:vc,name:item.firstName+" "+item.surName,role:item.role,active:<i className="fa fa-check" style={{color:'green'}}></i>,docV:<i className="fa fa-check" style={{color:'green'}}></i>,details:<Button onClick={() => this.handleClick(item)}><li className="pe-7s-look   fa-2x" title="View More"></li></Button>,clickEvent:() => this.handleClick(item)});
+                    vc = vc+1;
 
-        
+                }else{
+                    NVN.push({key:nvc,name:item.firstName+" "+item.surName,role:item.role,active:<i className="fa fa-check" style={{color:'green'}}></i>,docV:<i className="fa fa-remove" style={{color:'red'}}></i>,details:<Button onClick={() => this.handleClick(item)}><li className="pe-7s-look   fa-2x" title="View More"></li></Button>,clickEvent:() => this.handleClick(item)});
+                    // nonV.push(item);
+                    nvc = nvc+1;
+                }
+            });
+            var datais = {columns:columns,rows:VN}
+            var datais1 = {columns:columns,rows:NVN}
+            console.log("VN",VN,datais);
+            this.setState({ allUsers: r,verfiedUser:V,nonVarifiedUser:nonV,dataV:datais,dataNV:datais1 });
+        });
     }
 
     render() {
@@ -100,64 +162,22 @@ class Users extends Component {
                                     content={
                                         <Tabs defaultActiveKey="inactiveuser" id="noanim-tab-example">
                                             <Tab eventKey="inactiveuser" title="Non Verified">
-                        
-                                                <Table striped bordered hover>
-                                                    <thead>
-                                                        <tr>
-                                                            {thArrayUser.map((prop, key) => {
-                                                                return <th key={key}>{prop}</th>;
-                                                            })}
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {this.state.nonVarifiedUser.map((prop, key) => {
-                                                            if(prop.role !== "Admin" && prop.role !== "Deleted DSInstructor"){
-                                                                return (
-                                                                    <tr key={key}>
-                                                                        <td>{key + 1}</td>
-                                                                        <td>{prop.firstName + " " + prop.surName}</td>
-                                                                        <td>{prop.role==="DSInstructor"?"DrivingSchool Instructor":prop.role}</td>
-                                                                        <td>{prop.active}</td>
-                                                                        {/* <td>{prop.verified}</td> */}
-                                                                        <td>{prop.documentTested === "Tested"?<i className="fa fa-check" style={{color:'green'}}></i>: <i className="fa fa-remove" style={{color:'red'}}></i>}</td>
-                                                                            {/* {this.state.userDetails.documentTested === undefined ? "" : this.state.userDetails.documentTested === "" ? "" : this.state.userDetails.documentTested === "Tested" ? <i className="fa fa-check"></i> : <i className="fa fa-remove"></i>}</td> */}
-                                                                        <td><Button onClick={() => this.handleClick(prop)}><li className="pe-7s-look   fa-2x" title="View More"></li></Button></td>
-                                                                    </tr>
-                                                                );
-                                                            }
-                                                        })}
-                                                    </tbody>
-                                                </Table>
+                                                <Row className="table-responseive" style={{margin:10}}>
+                                                    <MDBDataTable
+                                                        bordered
+                                                        data={this.state.dataNV}
+                                                        className="dataTableNew"
+                                                    />
+                                                </Row>
                                             </Tab>
                                             <Tab eventKey="verfied" title="Verified">
-                        
-                                                <Table striped bordered hover>
-                                                    <thead>
-                                                        <tr>
-                                                            {thArrayUser.map((prop, key) => {
-                                                                return <th key={key}>{prop}</th>;
-                                                            })}
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {this.state.verfiedUser.map((prop, key) => {
-                                                            if(prop.role !== "Admin" && prop.role !== "Deleted DSInstructor"){
-                                                                return (
-                                                                    <tr key={key}>
-                                                                        <td>{key + 1}</td>
-                                                                        <td>{prop.firstName + " " + prop.surName}</td>
-                                                                        <td>{prop.role==="DSInstructor"?"DrivingSchool Instructor":prop.role}</td>
-                                                                        <td>{prop.active}</td>
-                                                                        {/* <td>{prop.verified}</td> */}
-                                                                        <td>{prop.documentTested === "Tested"?<i className="fa fa-check" style={{color:'green'}}></i>: <i className="fa fa-remove" style={{color:'red'}}></i>}</td>
-                                                                            {/* {this.state.userDetails.documentTested === undefined ? "" : this.state.userDetails.documentTested === "" ? "" : this.state.userDetails.documentTested === "Tested" ? <i className="fa fa-check"></i> : <i className="fa fa-remove"></i>}</td> */}
-                                                                        <td><Button onClick={() => this.handleClick(prop)}><li className="pe-7s-look   fa-2x" title="View More"></li></Button></td>
-                                                                    </tr>
-                                                                );
-                                                            }
-                                                        })}
-                                                    </tbody>
-                                                </Table>
+                                                <Row className="table-responseive" style={{margin:10}}>
+                                                    <MDBDataTable
+                                                        bordered
+                                                        data={this.state.dataV}
+                                                        className="dataTableNew"
+                                                    />
+                                                </Row>
                                             </Tab>
                                         </Tabs>
                                     }

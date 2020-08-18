@@ -94,14 +94,16 @@ class Users extends Component {
         }, (s, r) => {
             // console.log("r",r);
             r.map(item=>{
-                if(item.documentTested === "Tested" ){
-                    VN.push({key:vc,name:item.firstName+" "+item.surName,role:item.role,active:<i className="fa fa-check" style={{color:'green'}}></i>,docV:<i className="fa fa-check" style={{color:'green'}}></i>,details:<Button onClick={() => this.handleClick(item)}><li className="pe-7s-look   fa-2x" title="View More"></li></Button>,clickEvent:() => this.handleClick(item)});
-                    vc = vc+1;
+                if(item.role !== "Admin" && item.role !== "Email" ){
+                    if(item.documentTested === "Tested" ){
+                        VN.push({key:vc,name:item.firstName+" "+item.surName,role:item.role,active:<i className="fa fa-check" style={{color:'green'}}></i>,docV:<i className="fa fa-check" style={{color:'green'}}></i>,details:<Button onClick={() => this.handleClick(item)}><li className="pe-7s-look   fa-2x" title="View More"></li></Button>,clickEvent:() => this.handleClick(item)});
+                        vc = vc+1;
 
-                }else{
-                    NVN.push({key:nvc,name:item.firstName+" "+item.surName,role:item.role,active:<i className="fa fa-check" style={{color:'green'}}></i>,docV:<i className="fa fa-remove" style={{color:'red'}}></i>,details:<Button onClick={() => this.handleClick(item)}><li className="pe-7s-look   fa-2x" title="View More"></li></Button>,clickEvent:() => this.handleClick(item)});
-                    // nonV.push(item);
-                    nvc = nvc+1;
+                    }else{
+                        NVN.push({key:nvc,name:item.firstName+" "+item.surName,role:item.role,active:<i className="fa fa-check" style={{color:'green'}}></i>,docV:<i className="fa fa-remove" style={{color:'red'}}></i>,details:<Button onClick={() => this.handleClick(item)}><li className="pe-7s-look   fa-2x" title="View More"></li></Button>,clickEvent:() => this.handleClick(item)});
+                        // nonV.push(item);
+                        nvc = nvc+1;
+                    }
                 }
             });
             var datais = {columns:columns,rows:VN}

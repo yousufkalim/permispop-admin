@@ -34,6 +34,8 @@ export class UserCard extends Component {
             address:this.props.address,
             city:this.props.city,
             zip:this.props.zip,
+            zipError:'',
+            disableSubmit:false,
             lat:this.props.lat,
             long:this.props.long,
             addressError:"",
@@ -118,7 +120,7 @@ export class UserCard extends Component {
 
 
     getAddress = e => {
-        this.setState({ address: e.target.value });
+        this.setState({ address: e.target.value,zip:"",city:"",lat:0,long:0,zipError:'Please Select From Dropdown to set Address.',disableSubmit:true});
         fetch(
           "https://api-adresse.data.gouv.fr/search/?q=" +
             e.target.value +
@@ -157,7 +159,7 @@ export class UserCard extends Component {
             var lat = this.state.items[i].lat;
             var lng = this.state.items[i].lng;
             var newAddress = this.state.items[i].label.split(String(zipCode));
-            this.setState({ address:newAddress[0],zip: zipCode, city: city, lat: lat, lng: lng });
+            this.setState({ address:newAddress[0],zip: zipCode, city: city, lat: lat, long: lng,zipError:'',disableSubmit:false});
             // this.validationCheckforAddress(this.state);
           }
         }
@@ -166,9 +168,10 @@ export class UserCard extends Component {
     
 
     handleSave = () => {
+        debugger;
         var tokn = localStorage.getItem('userdata');
         const data = {
-            id:this.props.personalInfoId,
+            id:this.props.id,
             FirstName: this.state.firstName,
             SurName:this.state.surName,
             DOB: this.state.dob,
@@ -185,7 +188,7 @@ export class UserCard extends Component {
             NEPH:this.state.neph,
             NoOfHrsWanted:this.props.noOfHrsWanted,
             Email:this.state.email,
-            ContactEmail:this.state.contactEmail,
+            ContactEmail:this.state.contactEmail!==null?this.state.contactEmail:this.state.email,
             Phone:this.state.phone,
             SecondEmail:this.state.secondEmail,
             SecondPhone:this.state.secondPhone,
@@ -197,6 +200,7 @@ export class UserCard extends Component {
             RegistrationDate:this.props.RegistrationDate,
             documentTested:this.props.documentTested,
             CPFAccept:this.props.cpfAccept,
+            SpokenLanguage:this.props.spokenLanguage,
         }
         var datais = JSON.stringify(data);
         this.WebServicesManager.postApiCall({
@@ -204,8 +208,26 @@ export class UserCard extends Component {
             dataToInsert: datais,
             token:tokn,
         },
-        (statusCode,response) => {  
-            window.location.reload();
+        (statusCode,response) => {
+            this.WebServicesManager.getApiWithParamCall({
+                endPoint:'Profile/GetProfileByPersonalId',
+                dataToFetch:this.props.id,
+                token:tokn,
+            },(statusCode,responseProfile)=> {
+                responseProfile.lat=this.state.lat;
+                responseProfile.long=this.state.long;
+                this.WebServicesManager.postApiCall(
+                    {
+                        endPoint:"Profile/UpdateProfile",
+                        dataToInsert:JSON.stringify(responseProfile),
+                        token:tokn,
+                    },
+                    (statusCode, responseUpdate) =>{
+                        window.location.reload();
+                    }
+                )
+
+            })
         });
     }
 
@@ -278,7 +300,7 @@ export class UserCard extends Component {
     }
 
 
-    handlefuntUnban = () =>{
+    handleUnban = () =>{
         var tokn = localStorage.getItem('userdata');
         this.WebServicesManager.getApiWithParamCall(
         {
@@ -476,7 +498,7 @@ export class UserCard extends Component {
                     </DropdownButton>: 
                         this.state.banStatus !== "DeActive" ?
                         <> 
-                        <Button varient="primary" style={{marginLeft:10,marginTop:10}} onClick={this.handlefuntUnban}>Un-Ban</Button>
+                        <Button varient="primary" style={{marginLeft:10,marginTop:10}} onClick={this.handleUnban}>Un-Ban</Button>
                         </>
                         : ""
                      } 
@@ -485,7 +507,7 @@ export class UserCard extends Component {
                     this.state.banStatus !== "Ban" ?
                     <>
                     {/* <p>De-Activated</p>  */}
-                    <Button varient="primary" style={{marginLeft:10,marginTop:10}} onClick={this.handlefuntUnban}>Re-active</Button>
+                    <Button varient="primary" style={{marginLeft:10,marginTop:10}} onClick={this.handleUnban}>Re-active</Button>
                       </>
                       :""
                       }</center>
@@ -655,7 +677,8 @@ export class UserCard extends Component {
                                                     <ControlLabel>ZipCode</ControlLabel>
                                                     <FormControl className="form-control"  onChange={(e) => { this.setState({ highWayCodeDate: e.target.value }); }}
                                                         value={this.state.zip} 
-                                                        />
+                                                    />
+                                                    <HelpBlock style={{color:'red',fontSize:12}}>{this.state.zipError}</HelpBlock>
                                                 </FormGroup>
                                             </div>
                                             <div className="col-md-6">
@@ -705,7 +728,6 @@ export class UserCard extends Component {
                                 accept="image/jpeg,application/pdf"
                                 name="frontIDPhoto"
                                 id="frontIDPhoto"
-                                value={this.state.frontIDPhoto}
                             />
                             {this.state.frontIdPathError!==""?<a href={this.state.frontIdPathError} target="_blank">View current File</a>:""}
                             </Col>
@@ -721,7 +743,6 @@ export class UserCard extends Component {
                                 accept="image/jpeg,application/pdf"
                                 name="backIDPhoto"
                                 id="backIDPhoto"
-                                value={this.state.backIDPhoto}
                             />
                             {this.state.backIdPathError!==""?<a href={this.state.backIdPathError} target="_blank">View current File</a>:""}
                             </Col>
@@ -734,7 +755,7 @@ export class UserCard extends Component {
                     <Button variant="secondary" onClick={()=>this.setState({showModal:false})}>
                       Close
                     </Button>
-                    <Button variant="primary" onClick={this.handleSave} >Update</Button>
+                    <Button variant="primary" disabled={this.state.disableSubmit} onClick={this.handleSave} >Update</Button>
                     </Modal.Footer>
                 </Modal>
             </div>

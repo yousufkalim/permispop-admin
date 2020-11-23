@@ -1,16 +1,16 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 import NotificationSystem from "react-notification-system";
-
 import AdminNavbar from "components/Navbars/AdminNavbar";
 import Footer from "components/Footer/Footer";
 import Sidebar from "components/Sidebar/Sidebar";
-
 import { style } from "variables/Variables.jsx";
-
 import routes from "routes.js";
-
 import image from "assets/img/sidebar-3.jpg";
+
+// jwt and base64
+import jwtDecode from "jwt-decode";
+import { Base64 } from "js-base64";
 
 class Admin extends Component {
   constructor(props) {
@@ -20,10 +20,10 @@ class Admin extends Component {
       image: image,
       color: "black",
       hasImage: true,
-      fixedClasses: "dropdown show-dropdown open"
+      fixedClasses: "dropdown show-dropdown open",
     };
   }
-  handleNotificationClick = position => {
+  handleNotificationClick = (position) => {
     var color = Math.floor(Math.random() * 4 + 1);
     var level;
     switch (color) {
@@ -51,16 +51,16 @@ class Admin extends Component {
       ),
       level: level,
       position: position,
-      autoDismiss: 15
+      autoDismiss: 15,
     });
   };
-  getRoutes = routes => {
+  getRoutes = (routes) => {
     return routes.map((prop, key) => {
       if (prop.layout === "/admin") {
         return (
           <Route
             path={prop.layout + prop.path}
-            render={props => (
+            render={(props) => (
               <prop.component
                 {...props}
                 handleClick={this.handleNotificationClick}
@@ -74,7 +74,7 @@ class Admin extends Component {
       }
     });
   };
-  getBrandText = path => {
+  getBrandText = (path) => {
     for (let i = 0; i < routes.length; i++) {
       if (
         this.props.location.pathname.indexOf(
@@ -86,13 +86,13 @@ class Admin extends Component {
     }
     return "Brand";
   };
-  handleImageClick = image => {
+  handleImageClick = (image) => {
     this.setState({ image: image });
   };
-  handleColorClick = color => {
+  handleColorClick = (color) => {
     this.setState({ color: color });
   };
-  handleHasImage = hasImage => {
+  handleHasImage = (hasImage) => {
     this.setState({ hasImage: hasImage });
   };
   handleFixedClick = () => {
@@ -148,13 +148,34 @@ class Admin extends Component {
       this.refs.mainPanel.scrollTop = 0;
     }
   }
+  componentWillMount() {
+    var userdata = localStorage.getItem("userdata");
+    if (userdata) {
+      try {
+        var decoded = jwtDecode(userdata);
+        if (Date.now() >= decoded.exp * 1000) {
+          localStorage.clear();
+          window.location.replace("/login");
+        } else {
+          userdata = JSON.parse(Base64.decode(decoded.userData));
+        }
+      } catch (e) {
+        localStorage.clear();
+        window.location.replace("/login");
+      }
+    }
+  }
   render() {
     return (
       <div className="wrapper">
-       <NotificationSystem ref="notificationSystem" style={style} />
-        <Sidebar {...this.props} routes={routes} image={this.state.image}
-        color={this.state.color}
-        hasImage={this.state.hasImage}/>
+        <NotificationSystem ref="notificationSystem" style={style} />
+        <Sidebar
+          {...this.props}
+          routes={routes}
+          image={this.state.image}
+          color={this.state.color}
+          hasImage={this.state.hasImage}
+        />
         <div id="main-panel" className="main-panel" ref="mainPanel">
           <AdminNavbar
             {...this.props}

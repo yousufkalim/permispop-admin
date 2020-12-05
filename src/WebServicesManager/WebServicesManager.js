@@ -447,4 +447,36 @@ export default class WebServicesManager extends React.Component {
       callback
     );
   }
+  callPutMethodParams(baseURL, params, callback) {
+    let headeris = {
+      "Content-Type": "application/json",
+    };
+    console.log(params);
+    if (params.token !== undefined) {
+      headeris["Authorization"] = "Bearer " + params.token;
+    }
+    // baseURL = baseURL + "?id=" + params.updateId;
+
+    // baseURL = baseURL;
+    fetch(baseURL, {
+      method: "PUT",
+      headers: headeris,
+      body: params.dataToUpdate,
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        let statusCode = responseJson.code;
+        callback(statusCode, responseJson.data);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  }
+  putApiWithParams(params, callback) {
+    return this.callPutMethodParams(
+      this.baseUrl + params.endPoint,
+      params,
+      callback
+    );
+  }
 }

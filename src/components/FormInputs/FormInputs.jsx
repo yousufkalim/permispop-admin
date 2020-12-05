@@ -1,15 +1,29 @@
 import React, { Component } from "react";
-import { FormGroup, ControlLabel, FormControl, Row } from "react-bootstrap";
+import {
+  FormGroup,
+  ControlLabel,
+  FormControl,
+  Row,
+  HelpBlock,
+} from "react-bootstrap";
+import { Translation } from "react-i18next";
 
-function FieldGroup({ label, ...props }) {
+function FieldGroup({ validation, label, isImport, help, ...props }) {
   return (
-    <FormGroup>
-      <ControlLabel>{label}</ControlLabel>
-      <FormControl {...props} />
-    </FormGroup>
+    <Translation>
+      {(t) => (
+        <FormGroup>
+          <ControlLabel>
+            {t(label)}{" "}
+            <span className={isImport ? "do-hide" : "text-red"}>*</span>
+          </ControlLabel>
+          <FormControl {...props} />
+          <HelpBlock>{t(help)}</HelpBlock>
+        </FormGroup>
+      )}
+    </Translation>
   );
 }
-
 export class FormInputs extends Component {
   render() {
     var row = [];

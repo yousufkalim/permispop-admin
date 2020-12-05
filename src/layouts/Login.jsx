@@ -7,7 +7,7 @@ import "../assets/sass/custom.scss";
 import WebServicesManager from "../WebServicesManager/WebServicesManager";
 import Utilities from "../Utilities/Utilities";
 import jwtDecode from "jwt-decode";
-import {Base64} from "js-base64"
+import { Base64 } from "js-base64";
 
 export default class Login extends Component {
   WebServicesManager = new WebServicesManager();
@@ -29,13 +29,13 @@ export default class Login extends Component {
       ShowLoading: [
         <div class="spinner-border text-primary" role="status">
           <span class="sr-only">Loading...</span>
-        </div>
-      ]
+        </div>,
+      ],
     };
   }
 
   // handler for all fields change
-  handleChange = e => {
+  handleChange = (e) => {
     this.setState({ [e.target.name]: e.target.value }, () => {});
   };
   validationCheck(state) {
@@ -50,12 +50,12 @@ export default class Login extends Component {
       this.setState({ emailError: "Email is Invaild" });
     }
   }
-  LogIn = e => {
+  LogIn = (e) => {
     this.validationCheck(this.state);
     e.preventDefault();
     const info = {
       Email: this.state.email,
-      Password: this.state.password
+      Password: this.state.password,
     };
     var dataToLogIn = JSON.stringify(info);
     this.WebServicesManager.LogIn(
@@ -67,14 +67,14 @@ export default class Login extends Component {
           setTimeout(() => {
             this.setState({
               notValidError: "Your email or password wrong!",
-              isLoading: false
+              isLoading: false,
             });
           }, 4000);
         } else {
           setTimeout(() => {
             this.setState({
               notValidError: "Error from sever",
-              isLoading: false
+              isLoading: false,
             });
           }, 1000);
         }
@@ -88,9 +88,9 @@ export default class Login extends Component {
   functionData(response) {
     var decoded = jwtDecode(response);
     var userinfo = JSON.parse(Base64.decode(decoded.userData));
-    localStorage.setItem("getRatings","true");
+    localStorage.setItem("getRatings", "true");
     localStorage.setItem("userdata", response);
-    localStorage.setItem("firstVisit",0);
+    localStorage.setItem("firstVisit", 0);
     this.props.history.push(`/admin/Dashboard/user/${userinfo.id}`);
   }
   passwordShow = () => {
@@ -184,7 +184,7 @@ export default class Login extends Component {
                     ></i>
                   )}
                 </FormGroup>
-                <FormGroup>
+                {/* <FormGroup>
                   <Row>
                     <Col md={6} xs={6}>
                       <Checkbox className="t-white">Remember me</Checkbox>
@@ -195,7 +195,7 @@ export default class Login extends Component {
                       </a>
                     </Col>
                   </Row>
-                </FormGroup>
+                </FormGroup> */}
                 <FormGroup>
                   <Row>
                     <Col md={6}>
@@ -209,7 +209,7 @@ export default class Login extends Component {
                         {this.state.isLoading ? "Loading..." : "LOGIN"}
                       </Button>
                     </Col>
-                    <Col md={6}>
+                    {/* <Col md={6}>
                       <Button
                         block
                         href="/register"
@@ -218,7 +218,7 @@ export default class Login extends Component {
                       >
                         REGISTER NOW
                       </Button>
-                    </Col>
+                    </Col> */}
                   </Row>
                 </FormGroup>
               </Form>

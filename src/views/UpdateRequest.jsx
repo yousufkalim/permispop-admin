@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { Grid, Row, Col, Tabs, Tab } from "react-bootstrap";
+import { Grid, Row, Col, Tabs, Tab, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 import { Card } from "components/Card/Card.jsx";
 import WebServicesManager from "WebServicesManager/WebServicesManager";
-import moment from "moment";
 
 export class UpdateRequest extends Component {
   WebServicesManager = new WebServicesManager();
@@ -17,6 +17,14 @@ export class UpdateRequest extends Component {
 
   componentDidMount() {
     //   makeing api call for getting all request for admin
+    this.loadData();
+  }
+
+  loadData = () => {
+    this.setState({
+      pendingRequest: [],
+      completed: [],
+    });
     var token = localStorage.getItem("userdata");
     this.WebServicesManager.getApiCall(
       {
@@ -42,7 +50,20 @@ export class UpdateRequest extends Component {
         }
       }
     );
-  }
+  };
+
+  MakeRequestComplete = (id) => {
+    var token = localStorage.getItem("userdata");
+    this.WebServicesManager.getApiCall(
+      {
+        endPoint: `Profile/updateRequestStatus?id=${id}`,
+        token,
+      },
+      (statusCode, returnStatus) => {
+        this.loadData();
+      }
+    );
+  };
 
   render() {
     return (
@@ -80,7 +101,27 @@ export class UpdateRequest extends Component {
                                     <td>{`${item.user.firstName} ${item.user.surName}`}</td>
                                     <td>{item.updateField}</td>
                                     <td>{item.description}</td>
-                                    <td>{item.id}</td>
+                                    <td>
+                                      <Button
+                                        style={{ margin: "5px 10px" }}
+                                        varient="success"
+                                        onClick={() =>
+                                          this.MakeRequestComplete(item.id)
+                                        }
+                                      >
+                                        Complete
+                                      </Button>
+                                      <Link
+                                        to={{
+                                          pathname: "/admin/users",
+                                          user_id: item.user.id,
+                                        }}
+                                      >
+                                        <Button style={{ margin: "5px 10px" }}>
+                                          Update Profile
+                                        </Button>
+                                      </Link>
+                                    </td>
                                   </tr>
                                 ))
                               ) : (

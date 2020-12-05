@@ -4,6 +4,7 @@ import Users from "views/Users.jsx";
 import Payments from "views/Payments.jsx";
 import Disputes from "views/Disputes.jsx";
 import UpdateRequest from "views/UpdateRequest";
+import Limitaions from "views/Limitaions";
 const dashboardRoutes = [
   {
     path: "/dashboard",
@@ -46,6 +47,13 @@ const dashboardRoutes = [
     name: "Update Requests",
     icon: "pe-7s-edit",
     component: UpdateRequest,
+    layout: "/admin",
+  },
+  {
+    path: "/limitaions",
+    name: "User Limitations",
+    icon: "pe-7s-lock",
+    component: Limitaions,
     layout: "/admin",
   },
 ];

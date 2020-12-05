@@ -150,7 +150,7 @@ export class UserCard extends Component {
             console.error(error);
           });
       };
-      SetAddress = item => {
+    SetAddress = item => {
         this.setState({ address: item });
         for (let i = 0; i < this.state.items.length; i++) {
           if (this.state.items[i].label === item) {
@@ -364,7 +364,7 @@ export class UserCard extends Component {
         )
 }
 
-        handlefuntDeActive = () =>{
+    handlefuntDeActive = () =>{
             var tokn = localStorage.getItem('userdata');
             console.log("this.props",this.props);
             this.WebServicesManager.getApiWithParamCall(
@@ -426,6 +426,7 @@ export class UserCard extends Component {
             }
             )
         }
+
     render() {
         return (
             <div className="card card-user">
@@ -703,7 +704,7 @@ export class UserCard extends Component {
                                             <div className="col-md-6">
                                                 <FormGroup>
                                                     <ControlLabel>NEPH number</ControlLabel>
-                                                    <FormControl className="form-control" maxLength={12}  onChange={(e) => { this.setState({ highWayCodeDate: e.target.value }); }}
+                                                    <FormControl className="form-control" maxLength={12}  onChange={(e) => { this.setState({ neph: e.target.value }); }}
                                                         value={this.state.neph} 
                                                         />
                                                 </FormGroup>

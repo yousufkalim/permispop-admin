@@ -14,6 +14,7 @@ import {
   responsiveBar,
   legendBar,
 } from "variables/Variables.jsx";
+import Switch from "react-switch";
 
 var legendPieLocal = {
   names: ["Male", "Female", "Others"],
@@ -27,6 +28,7 @@ class Dashboard extends Component {
       userCounts: null,
       genderData: null,
       userListWithBookingCount: [],
+      limitaion: null,
     };
   }
 
@@ -85,7 +87,43 @@ class Dashboard extends Component {
         this.setState({ userListWithBookingCount: resJson });
       })
       .catch((e) => console.log(e));
+
+    // get limitations
+    fetch("http://localhost:5000/api/dynamic/", {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("userdata"),
+        "content-type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((resJson) => {
+        this.setState({ limitaions: resJson });
+      })
+      .catch((e) => console.log(e));
   }
+
+  // change mailing status
+
+  changeMailingStatus = (status) => {
+    this.setState(
+      { limitaions: { ...this.state.limitaions, mailReports: status } },
+      () => {
+        // api call to update status in backend
+        fetch(`http://localhost:5000/api/dynamic/updateMailStatus/${status}`, {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("userdata"),
+            "content-type": "application/json",
+          },
+        })
+          .then((res) => res.json())
+          .then((resJson) => console.log(resJson))
+          .catch((e) => console.log(e));
+      }
+    );
+  };
+
   render() {
     const { userCounts } = this.state;
     return (
@@ -162,19 +200,34 @@ class Dashboard extends Component {
                 stats="current week"
                 statsIcon="fa fa-calendar"
                 content={
-                  <div className="user-booking-count-div">
-                    <ListGroup varient="flush">
-                      {this.state.userListWithBookingCount.map((item) => (
-                        <ListGroupItem
-                          key={item.user_id}
-                          className="custome_list_item"
-                        >
-                          <span>{item.user}</span>
-                          <span className="number">{item.bookingCount}</span>
-                        </ListGroupItem>
-                      ))}
-                    </ListGroup>
-                  </div>
+                  <>
+                    <Switch
+                      onChange={(checked) => this.changeMailingStatus(checked)}
+                      checked={
+                        this.state.limitaions !== undefined
+                          ? this.state.limitaions.mailReports
+                          : true
+                      }
+                      name="withOther"
+                      offColor="#888"
+                      onColor="#149e7a"
+                    />
+                    <br />
+                    <small className="text-muted">Send Reports via mail</small>
+                    <div className="user-booking-count-div">
+                      <ListGroup varient="flush">
+                        {this.state.userListWithBookingCount.map((item) => (
+                          <ListGroupItem
+                            key={item.user_id}
+                            className="custome_list_item"
+                          >
+                            <span>{item.user}</span>
+                            <span className="number">{item.bookingCount}</span>
+                          </ListGroupItem>
+                        ))}
+                      </ListGroup>
+                    </div>
+                  </>
                 }
               />
             </Col>

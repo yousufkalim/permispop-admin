@@ -58,9 +58,9 @@ class Dashboard extends Component {
           resJson.genderCount.others;
         var dataPieLocal = {
           labels: [
-            `${(resJson.genderCount.male * 100) / countUser}%`,
-            `${(resJson.genderCount.female * 100) / countUser}%`,
-            `${(resJson.genderCount.others * 100) / countUser}%`,
+            `${((resJson.genderCount.male * 100) / countUser).toFixed(2)}%`,
+            `${((resJson.genderCount.female * 100) / countUser).toFixed(2)}%`,
+            `${((resJson.genderCount.others * 100) / countUser).toFixed(2)}%`,
           ],
           series: [
             resJson.genderCount.male,
@@ -234,7 +234,6 @@ class Dashboard extends Component {
 
             <Col md={6}>
               <Card
-                statsIcon="fa fa-clock-o"
                 title="Gender Count"
                 category="Number of user by gender register to platform"
                 content={

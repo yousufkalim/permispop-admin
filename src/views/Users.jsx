@@ -1,37 +1,15 @@
 import React, { Component } from "react";
-import {
-  Grid,
-  Row,
-  Col,
-  Table,
-  Button,
-  Tabs,
-  Tab,
-  TabContainer,
-} from "react-bootstrap";
-import ReactDOM from "react-dom";
+import { Grid, Row, Col, Tabs, Tab, TabContainer } from "react-bootstrap";
 import Card from "components/Card/Card.jsx";
-import { Link } from "react-router-dom";
-import { thArrayUser } from "variables/Variables.jsx";
 import UserCard from "components/UserCard/UserCard.jsx";
 import WebServicesManager from "WebServicesManager/WebServicesManager";
 import UserDocuments from "components/UserCard/UserDocuments.jsx";
 import UserPayments from "components/UserCard/UserPayments.jsx";
-import UserVehicle from "components/UserCard/UserVehicle.jsx";
 import "font-awesome/css/font-awesome.min.css";
 import { MDBDataTable } from "mdbreact";
 
 const $ = require("jquery");
 $.DataTable = require("datatables.net");
-
-const columns1 = [
-  { title: "#" },
-  { title: "Name" },
-  { title: "Role" },
-  { title: "Active" },
-  { title: "Document Verified" },
-  { title: "View Details" },
-];
 
 const columns = [
   {

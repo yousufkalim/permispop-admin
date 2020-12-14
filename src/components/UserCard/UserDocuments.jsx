@@ -13,7 +13,7 @@ import {
   FormGroup,
 } from "react-bootstrap";
 import FormInputs from "../../components/FormInputs/FormInputs";
-import { Trans, Translation } from "react-i18next";
+import { Translation } from "react-i18next";
 import DatePicker from "react-datepicker";
 import "font-awesome/css/font-awesome.min.css";
 import ID from "components/Documents/ID.jsx";
@@ -84,7 +84,6 @@ class UserDocuments extends Component {
       startDateOfTechError: "",
       endDateOfTechError: "",
       VImagePath: "",
-      VImage: "",
       VCertifiateImagePath: "",
       VCertificateImageError: "",
       DSVCertifiateImagePath: "",
@@ -111,8 +110,12 @@ class UserDocuments extends Component {
         token: tokn,
       },
       (statusCode, responseProfile) => {
+        debugger;
         var vehicle = "";
-        if (responseProfile.role === "Instructor") {
+        if (
+          responseProfile.role === "Instructor" ||
+          responseProfile.role === "CarRentalAgent"
+        ) {
           if (responseProfile.vehicleDetailInfoId !== "") {
             vehicle = JSON.parse(responseProfile.vehicleDetailInfoId);
           }
@@ -122,27 +125,35 @@ class UserDocuments extends Component {
           }
         }
         var vehicleData = {};
-        Object.entries(vehicle).forEach(([key, value]) => {
-          this.WebServicesManager.getApiWithParamCall(
-            {
-              endPoint: "VehicleDetail/GetVehicleDetailByIdAsync",
-              dataToFetch: value,
-              token: tokn,
-            },
-            (statusCode, responseVehicle) => {
-              vehicleData[key] = responseVehicle;
-              if (
-                Object.entries(vehicleData).length ===
-                Object.entries(vehicleData).length
-              ) {
-                this.setState(
-                  { profileData: responseProfile, vehicleInfo: vehicleData },
-                  () => {}
-                );
+
+        if (Object.entries(vehicle).length > 0) {
+          Object.entries(vehicle).forEach(([key, value]) => {
+            this.WebServicesManager.getApiWithParamCall(
+              {
+                endPoint: "VehicleDetail/GetVehicleDetailByIdAsync",
+                dataToFetch: value,
+                token: tokn,
+              },
+              (statusCode, responseVehicle) => {
+                vehicleData[key] = responseVehicle;
+                if (
+                  Object.entries(vehicleData).length ===
+                  Object.entries(vehicle).length
+                ) {
+                  this.setState(
+                    { profileData: responseProfile, vehicleInfo: vehicleData },
+                    () => {}
+                  );
+                }
               }
-            }
+            );
+          });
+        } else {
+          this.setState(
+            { profileData: responseProfile, vehicleInfo: vehicleData },
+            () => {}
           );
-        });
+        }
       }
     );
   }
@@ -203,20 +214,20 @@ class UserDocuments extends Component {
       rc: "Rcpro",
     };
 
-    const listAllDocument = {
-      fic: "Front Id Card",
-      bic: "Back Id Card",
-      drvlic: "Driving Licence",
-      aoe: "Authorizatio of Exercise",
-      kbl: "kbls",
-      veh: "Vehicle Image",
-      vreg: "Vehicle Registration",
-      vins: "Vehicle Insurance",
-      rc: "Rcpro",
-      greenCard: "Green Card",
-      vImg: "Vehicle Image",
-      dsa: "dsa",
-    };
+    // const listAllDocument = {
+    //   fic: "Front Id Card",
+    //   bic: "Back Id Card",
+    //   drvlic: "Driving Licence",
+    //   aoe: "Authorizatio of Exercise",
+    //   kbl: "kbls",
+    //   veh: "Vehicle Image",
+    //   vreg: "Vehicle Registration",
+    //   vins: "Vehicle Insurance",
+    //   rc: "Rcpro",
+    //   greenCard: "Green Card",
+    //   vImg: "Vehicle Image",
+    //   dsa: "dsa",
+    // };
 
     this.WebServicesManager.getApiWithParamCall(
       {
@@ -287,7 +298,6 @@ class UserDocuments extends Component {
       startDateOfTechError: "",
       endDateOfTechError: "",
       VImagePath: "",
-      VImage: "",
       VCertifiateImagePath: "",
       VCertificateImageError: "",
       DSVCertifiateImagePath: "",
@@ -856,12 +866,15 @@ class UserDocuments extends Component {
                 this.WebServicesManager.getApiWithParamCall(
                   {
                     endPoint: "Profile/GetProfileByPersonalId",
-                    dataToFetch: this.state.userData.id,
+                    dataToFetch: this.props.id,
                     token,
                   },
                   (statusCode, responseGet) => {
                     let vehicles = {};
-                    if (responseGet.role === "Instructor") {
+                    if (
+                      responseGet.role === "Instructor" ||
+                      responseGet.role === "CarRentalAgent"
+                    ) {
                       vehicles = JSON.parse(responseGet.vehicleDetailInfoId);
                     } else {
                       vehicles = JSON.parse(
@@ -1169,56 +1182,57 @@ class UserDocuments extends Component {
   render() {
     var vehicleList = [];
     const { vehicleInfo } = this.state;
-    if (vehicleInfo !== "") {
+    if (vehicleInfo !== "" && Object.entries(vehicleInfo).length > 0) {
       Object.entries(vehicleInfo).forEach(([key, value]) => {
         var keySplit = "veh" + key.split("Vehicle")[1];
         var stateis = Object.entries(this.state).find(
           (item) => item[0] === keySplit
         );
-        stateis = stateis[1];
-        console.log("stateis", stateis);
-        vehicleList.push(
-          <tr>
-            <td>{key} Detail</td>
-            <td>
-              {stateis === undefined ? (
-                ""
-              ) : stateis.status === "" ? (
-                ""
-              ) : stateis.status === "true" ? (
-                <i className="fa fa-check"></i>
-              ) : (
-                <i className="fa fa-remove"></i>
-              )}
-            </td>
-            <td>
-              <i
-                className="fa fa-file"
-                onClick={() =>
-                  this.setState({
-                    showId: true,
-                    docTitle: `${key} Detail`,
-                    idName: `${keySplit}`,
-                    fbStatus:
-                      stateis === undefined
-                        ? false
-                        : stateis.status === undefined
-                        ? false
-                        : stateis.status,
-                  })
-                }
-              ></i>
-              <i
-                className="fa fa-pencil"
-                onClick={() => this.handleUpdateCall(value)}
-              ></i>
-              <i
-                className="fa fa-trash"
-                onClick={() => this.handleDelete(value)}
-              ></i>
-            </td>
-          </tr>
-        );
+        if (stateis !== undefined) {
+          stateis = stateis[1];
+          vehicleList.push(
+            <tr>
+              <td>{key} Detail</td>
+              <td>
+                {stateis === undefined ? (
+                  <i className="fa fa-remove"></i>
+                ) : stateis.status === "" ? (
+                  <i className="fa fa-remove"></i>
+                ) : stateis.status === "true" ? (
+                  <i className="fa fa-check"></i>
+                ) : (
+                  <i className="fa fa-remove"></i>
+                )}
+              </td>
+              <td>
+                <i
+                  className="fa fa-file"
+                  onClick={() =>
+                    this.setState({
+                      showId: true,
+                      docTitle: `${key} Detail`,
+                      idName: `${keySplit}`,
+                      fbStatus:
+                        stateis === undefined
+                          ? false
+                          : stateis.status === undefined
+                          ? false
+                          : stateis.status,
+                    })
+                  }
+                ></i>
+                <i
+                  className="fa fa-pencil"
+                  onClick={() => this.handleUpdateCall(value)}
+                ></i>
+                <i
+                  className="fa fa-trash"
+                  onClick={() => this.handleDelete(value)}
+                ></i>
+              </td>
+            </tr>
+          );
+        }
       });
     }
 
@@ -1264,9 +1278,9 @@ class UserDocuments extends Component {
                     <td>Front Id</td>
                     <td>
                       {this.state.frontDoc === undefined ? (
-                        ""
+                        <i className="fa fa-remove"></i>
                       ) : this.state.frontDoc.status === "" ? (
-                        ""
+                        <i className="fa fa-remove"></i>
                       ) : this.state.frontDoc.status === "true" ? (
                         <i className="fa fa-check"></i>
                       ) : (
@@ -1294,9 +1308,9 @@ class UserDocuments extends Component {
                     <td>Back Id</td>
                     <td>
                       {this.state.backDoc === undefined ? (
-                        ""
+                        <i className="fa fa-remove"></i>
                       ) : this.state.backDoc.status === "" ? (
-                        ""
+                        <i className="fa fa-remove"></i>
                       ) : this.state.backDoc.status === "true" ? (
                         <i className="fa fa-check"></i>
                       ) : (
@@ -1325,9 +1339,9 @@ class UserDocuments extends Component {
                     <td>Driving License</td>
                     <td>
                       {this.state.drvLic === undefined ? (
-                        ""
+                        <i className="fa fa-remove"></i>
                       ) : this.state.drvLic.status === "" ? (
-                        ""
+                        <i className="fa fa-remove"></i>
                       ) : this.state.drvLic.status === "true" ? (
                         <i className="fa fa-check"></i>
                       ) : (
@@ -1355,9 +1369,9 @@ class UserDocuments extends Component {
                     <td>Authorization to Exercise</td>
                     <td>
                       {this.state.exeDoc === undefined ? (
-                        ""
+                        <i className="fa fa-remove"></i>
                       ) : this.state.exeDoc.status === "" ? (
-                        ""
+                        <i className="fa fa-remove"></i>
                       ) : this.state.exeDoc.status === "true" ? (
                         <i className="fa fa-check"></i>
                       ) : (
@@ -1385,9 +1399,9 @@ class UserDocuments extends Component {
                     <td>KBL</td>
                     <td>
                       {this.state.kbl === undefined ? (
-                        ""
+                        <i className="fa fa-remove"></i>
                       ) : this.state.kbl.status === "" ? (
-                        ""
+                        <i className="fa fa-remove"></i>
                       ) : this.state.kbl.status === "true" ? (
                         <i className="fa fa-check"></i>
                       ) : (
@@ -1415,9 +1429,9 @@ class UserDocuments extends Component {
                     <td>RC Pro</td>
                     <td>
                       {this.state.rc === undefined ? (
-                        ""
+                        <i className="fa fa-remove"></i>
                       ) : this.state.rc.status === "" ? (
-                        ""
+                        <i className="fa fa-remove"></i>
                       ) : this.state.rc.status === "true" ? (
                         <i className="fa fa-check"></i>
                       ) : (
@@ -1445,9 +1459,9 @@ class UserDocuments extends Component {
                     <td>Green Card</td>
                     <td>
                       {this.state.greenCard === undefined ? (
-                        ""
+                        <i className="fa fa-remove"></i>
                       ) : this.state.greenCard.status === "" ? (
-                        ""
+                        <i className="fa fa-remove"></i>
                       ) : this.state.greenCard.status === "true" ? (
                         <i className="fa fa-check"></i>
                       ) : (
@@ -1496,9 +1510,9 @@ class UserDocuments extends Component {
                     <td>Front Id</td>
                     <td>
                       {this.state.frontDoc === undefined ? (
-                        ""
+                        <i className="fa fa-remove"></i>
                       ) : this.state.frontDoc.status === "" ? (
-                        ""
+                        <i className="fa fa-remove"></i>
                       ) : this.state.frontDoc.status === "true" ? (
                         <i className="fa fa-check"></i>
                       ) : (
@@ -1526,9 +1540,9 @@ class UserDocuments extends Component {
                     <td>Back Id</td>
                     <td>
                       {this.state.backDoc === undefined ? (
-                        ""
+                        <i className="fa fa-remove"></i>
                       ) : this.state.backDoc.status === "" ? (
-                        ""
+                        <i className="fa fa-remove"></i>
                       ) : this.state.backDoc.status === "true" ? (
                         <i className="fa fa-check"></i>
                       ) : (
@@ -1557,9 +1571,9 @@ class UserDocuments extends Component {
                     <td>Driving License</td>
                     <td>
                       {this.state.drvLic === undefined ? (
-                        ""
+                        <i className="fa fa-remove"></i>
                       ) : this.state.drvLic.status === "" ? (
-                        ""
+                        <i className="fa fa-remove"></i>
                       ) : this.state.drvLic.status === "true" ? (
                         <i className="fa fa-check"></i>
                       ) : (
@@ -1587,9 +1601,9 @@ class UserDocuments extends Component {
                     <td>Authorization to Exercise</td>
                     <td>
                       {this.state.exeDoc === undefined ? (
-                        ""
+                        <i className="fa fa-remove"></i>
                       ) : this.state.exeDoc.status === "" ? (
-                        ""
+                        <i className="fa fa-remove"></i>
                       ) : this.state.exeDoc.status === "true" ? (
                         <i className="fa fa-check"></i>
                       ) : (
@@ -1617,9 +1631,9 @@ class UserDocuments extends Component {
                     <td>KBL DS</td>
                     <td>
                       {this.state.kbl === undefined ? (
-                        ""
+                        <i className="fa fa-remove"></i>
                       ) : this.state.kbl.status === "" ? (
-                        ""
+                        <i className="fa fa-remove"></i>
                       ) : this.state.kbl.status === "true" ? (
                         <i className="fa fa-check"></i>
                       ) : (
@@ -1655,9 +1669,9 @@ class UserDocuments extends Component {
                     <td>Front Id</td>
                     <td>
                       {this.state.frontDoc === undefined ? (
-                        ""
+                        <i className="fa fa-remove"></i>
                       ) : this.state.frontDoc.status === "" ? (
-                        ""
+                        <i className="fa fa-remove"></i>
                       ) : this.state.frontDoc.status === "true" ? (
                         <i className="fa fa-check"></i>
                       ) : (
@@ -1686,9 +1700,9 @@ class UserDocuments extends Component {
                     <td>Back Id</td>
                     <td>
                       {this.state.backDoc === undefined ? (
-                        ""
+                        <i className="fa fa-remove"></i>
                       ) : this.state.backDoc.status === "" ? (
-                        ""
+                        <i className="fa fa-remove"></i>
                       ) : this.state.backDoc.status === "true" ? (
                         <i className="fa fa-check"></i>
                       ) : (
@@ -1713,7 +1727,7 @@ class UserDocuments extends Component {
                     </td>
                   </tr>
                 </tbody>
-              ) : (
+              ) : this.props.role.toLowerCase() === "drivingschool" ? (
                 <tbody>
                   <tr>
                     <td colSpan="3">
@@ -1724,9 +1738,9 @@ class UserDocuments extends Component {
                     <td>Driving School Approval</td>
                     <td>
                       {this.state.dsa === undefined ? (
-                        ""
+                        <i className="fa fa-remove"></i>
                       ) : this.state.dsa.status === "" ? (
-                        ""
+                        <i className="fa fa-remove"></i>
                       ) : this.state.dsa.status === "true" ? (
                         <i className="fa fa-check"></i>
                       ) : (
@@ -1754,9 +1768,9 @@ class UserDocuments extends Component {
                     <td>KBL</td>
                     <td>
                       {this.state.kbl === undefined ? (
-                        ""
+                        <i className="fa fa-remove"></i>
                       ) : this.state.kbl.status === "" ? (
-                        ""
+                        <i className="fa fa-remove"></i>
                       ) : this.state.kbl.status === "true" ? (
                         <i className="fa fa-check"></i>
                       ) : (
@@ -1784,9 +1798,9 @@ class UserDocuments extends Component {
                     <td>RC Pro</td>
                     <td>
                       {this.state.rc === undefined ? (
-                        ""
+                        <i className="fa fa-remove"></i>
                       ) : this.state.rc.status === "" ? (
-                        ""
+                        <i className="fa fa-remove"></i>
                       ) : this.state.rc.status === "true" ? (
                         <i className="fa fa-check"></i>
                       ) : (
@@ -1811,124 +1825,160 @@ class UserDocuments extends Component {
                     </td>
                   </tr>
                   <tr>
-                    <td colSpan="3">
+                    <td colSpan="2">
                       <h3>Vehicle Details</h3>
                     </td>
+                    <td>
+                      <i
+                        className="fa fa-plus-circle"
+                        style={{ fontSize: 18 }}
+                        onClick={this.handleShowModel}
+                      ></i>
+                    </td>
                   </tr>
-                  {vehicleInfo !== "" &&
-                  vehicleInfo.Vehicle1 !== null &&
-                  vehicleInfo.Vehicle1 !== undefined ? (
-                    <tr>
-                      <td>Vehicle1 Detail</td>
-                      <td>
-                        {this.state.veh1 === undefined ? (
-                          ""
-                        ) : this.state.veh1.status === "" ? (
-                          ""
-                        ) : this.state.veh1.status === "true" ? (
-                          <i className="fa fa-check"></i>
-                        ) : (
-                          <i className="fa fa-remove"></i>
-                        )}
-                      </td>
-                      <td>
-                        <i
-                          className="fa fa-file"
-                          onClick={() =>
-                            this.setState({
-                              showId: true,
-                              docTitle: "Vehicle1 detail",
-                              idName: "veh1",
-                              fbStatus:
-                                this.state.veh1 === undefined
-                                  ? false
-                                  : this.state.veh1.status === undefined
-                                  ? false
-                                  : this.state.veh1.status,
-                            })
-                          }
-                        ></i>
-                      </td>
-                    </tr>
-                  ) : (
-                    ""
-                  )}
-                  {vehicleInfo !== "" &&
-                  vehicleInfo.Vehicle2 !== null &&
-                  vehicleInfo.Vehicle2 !== undefined ? (
-                    <tr>
-                      <td>Vehicle2 Detail</td>
-                      <td>
-                        {this.state.veh2 === undefined ? (
-                          ""
-                        ) : this.state.veh2.status === "" ? (
-                          ""
-                        ) : this.state.veh2.status === "true" ? (
-                          <i className="fa fa-check"></i>
-                        ) : (
-                          <i className="fa fa-remove"></i>
-                        )}
-                      </td>
-                      <td>
-                        <i
-                          className="fa fa-file"
-                          onClick={() =>
-                            this.setState({
-                              showId: true,
-                              docTitle: "Vehicl2 detail",
-                              idName: "veh2",
-                              fbStatus:
-                                this.state.veh2 === undefined
-                                  ? false
-                                  : this.state.veh2.status === undefined
-                                  ? false
-                                  : this.state.veh2.status,
-                            })
-                          }
-                        ></i>
-                      </td>
-                    </tr>
-                  ) : (
-                    ""
-                  )}
-                  {vehicleInfo !== "" &&
-                  vehicleInfo.Vehicle3 !== null &&
-                  vehicleInfo.Vehicle3 !== undefined ? (
-                    <tr>
-                      <td>Vehicle3 Detail</td>
-                      <td>
-                        {this.state.veh3 === undefined ? (
-                          ""
-                        ) : this.state.veh3.status === "" ? (
-                          ""
-                        ) : this.state.veh3.status === "true" ? (
-                          <i className="fa fa-check"></i>
-                        ) : (
-                          <i className="fa fa-remove"></i>
-                        )}
-                      </td>
-                      <td>
-                        <i
-                          className="fa fa-file"
-                          onClick={() =>
-                            this.setState({
-                              showId: true,
-                              docTitle: "Vehilce3 detail",
-                              idName: "veh3",
-                              fbStatus:
-                                this.state.veh3 === undefined
-                                  ? false
-                                  : this.state.veh3.status === undefined
-                                  ? false
-                                  : this.state.veh3.status,
-                            })
-                          }
-                        ></i>
-                      </td>
-                    </tr>
-                  ) : (
-                    ""
-                  )}
+                  {vehicleList}
+                </tbody>
+              ) : (
+                <tbody>
+                  <tr>
+                    <td colSpan="3">
+                      <h3>Personal Detail</h3>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Front Id</td>
+                    <td>
+                      {this.state.frontDoc === undefined ? (
+                        <i className="fa fa-remove"></i>
+                      ) : this.state.frontDoc.status === "" ? (
+                        <i className="fa fa-remove"></i>
+                      ) : this.state.frontDoc.status === "true" ? (
+                        <i className="fa fa-check"></i>
+                      ) : (
+                        <i className="fa fa-remove"></i>
+                      )}
+                    </td>
+                    <td>
+                      <i
+                        className="fa fa-file"
+                        onClick={() =>
+                          this.setState({
+                            showId: true,
+                            docTitle: "Front ID",
+                            idName: "fic",
+                            fbStatus:
+                              this.state.frontDoc === undefined
+                                ? false
+                                : this.state.frontDoc.status,
+                          })
+                        }
+                      ></i>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Back Id</td>
+                    <td>
+                      {this.state.backDoc === undefined ? (
+                        <i className="fa fa-remove"></i>
+                      ) : this.state.backDoc.status === "" ? (
+                        <i className="fa fa-remove"></i>
+                      ) : this.state.backDoc.status === "true" ? (
+                        <i className="fa fa-check"></i>
+                      ) : (
+                        <i className="fa fa-remove"></i>
+                      )}
+                    </td>
+                    <td>
+                      <i
+                        className="fa fa-file"
+                        onClick={() =>
+                          this.setState({
+                            showId: true,
+                            docTitle: "Back ID",
+                            idName: "bic",
+                            fbStatus:
+                              this.state.backDoc === undefined
+                                ? false
+                                : this.state.backDoc.status,
+                          })
+                        }
+                      ></i>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>KBL</td>
+                    <td>
+                      {this.state.kbl === undefined ? (
+                        <i className="fa fa-remove"></i>
+                      ) : this.state.kbl.status === "" ? (
+                        <i className="fa fa-remove"></i>
+                      ) : this.state.kbl.status === "true" ? (
+                        <i className="fa fa-check"></i>
+                      ) : (
+                        <i className="fa fa-remove"></i>
+                      )}
+                    </td>
+                    <td>
+                      <i
+                        className="fa fa-file"
+                        onClick={() =>
+                          this.setState({
+                            showId: true,
+                            docTitle: "KBL",
+                            idName: "kbl",
+                            fbStatus:
+                              this.state.kbl === undefined
+                                ? false
+                                : this.state.kbl.status,
+                          })
+                        }
+                      ></i>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>RC Pro</td>
+                    <td>
+                      {this.state.rc === undefined ? (
+                        <i className="fa fa-remove"></i>
+                      ) : this.state.rc.status === "" ? (
+                        <i className="fa fa-remove"></i>
+                      ) : this.state.rc.status === "true" ? (
+                        <i className="fa fa-check"></i>
+                      ) : (
+                        <i className="fa fa-remove"></i>
+                      )}
+                    </td>
+                    <td>
+                      <i
+                        className="fa fa-file"
+                        onClick={() =>
+                          this.setState({
+                            showId: true,
+                            docTitle: "RC Pro",
+                            idName: "rc",
+                            fbStatus:
+                              this.state.rc === undefined
+                                ? false
+                                : this.state.rc.status,
+                          })
+                        }
+                      ></i>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colSpan="2">
+                      <h3>Vehicle Details</h3>
+                    </td>
+                    <td>
+                      <i
+                        className="fa fa-plus-circle"
+                        style={{ fontSize: 18 }}
+                        onClick={this.handleShowModel}
+                      ></i>
+                    </td>
+                  </tr>
+                  {vehicleList}
                 </tbody>
               )}
             </Table>
@@ -2390,7 +2440,7 @@ class UserDocuments extends Component {
               <Modal.Footer>
                 <Button
                   className="form-cust-btn"
-                  onClick={this.handleShowModel}
+                  onClick={this.handleSubmit}
                   disabled={this.state.isAddDisable}
                 >
                   {t("Add")}

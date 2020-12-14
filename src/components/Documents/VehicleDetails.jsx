@@ -1,21 +1,8 @@
 import React, { Component } from "react";
-import {
-  Grid,
-  Row,
-  Col,
-  Button,
-  Modal,
-  FormControl,
-  FormGroup,
-  ControlLabel,
-  HelpBlock,
-} from "react-bootstrap";
-import DatePicker from "react-datepicker";
-import { Translation, withTranslation } from "react-i18next";
+import { Grid, Row, Col, Button } from "react-bootstrap";
 import WebServicesManager from "../../WebServicesManager/WebServicesManager";
 import FileDisplay from "components/Documents/FileDisplay.jsx";
 import moment from "moment";
-import Utilities from "../../Utilities/Utilities";
 
 class VehicleRegistration extends Component {
   constructor(props) {
@@ -48,7 +35,6 @@ class VehicleRegistration extends Component {
   }
   WebServicesManager = new WebServicesManager();
   async componentDidMount() {
-    var tokn = localStorage.getItem("userdata");
     const { vehicleInfo, Type } = this.props;
     var vehicleInfoGet = vehicleInfo[`Vehicle${Type.split("veh")[1]}`];
     console.log("sad", vehicleInfo[`Vehicle${Type.split("veh")[1]}`]);

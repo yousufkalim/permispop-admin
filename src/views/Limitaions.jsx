@@ -14,6 +14,7 @@ import {
 import { StatsCard } from "components/StatsCard/StatsCard.jsx";
 import DataTableCustom from "components/DataTables/datatables";
 import WebServicesManager from "WebServicesManager/WebServicesManager";
+import { updateDo } from "typescript";
 
 function Limitaions() {
   const WebServicesManagers = useMemo(() => new WebServicesManager());
@@ -21,9 +22,11 @@ function Limitaions() {
   const [updateLimit, setUpdateLimit] = useState();
   const [customValue, setCustomValue] = useState([]);
   const [show, setShow] = useState(false);
+  const [showUpdate, setShowUpdate] = useState(false);
   const [fieldValue, setFieldValue] = useState("");
   const [customLimitValue, setCustomLimitValue] = useState(0);
   const [newCustom, setNewCustom] = useState({});
+  const [updateCustom, setUpdateCustom] = useState(null);
   const [listAppend, setListAppend] = useState([]);
   const [userList, setUserList] = useState([]);
 
@@ -46,7 +49,6 @@ function Limitaions() {
         var custom = [];
         setUserLimits(resJson);
         resJson.customValues.map((item) => {
-          console.log(item);
           custom.push([
             `${item.user.FirstName} ${item.user.SurName}`,
             item.user.Role,
@@ -61,11 +63,6 @@ function Limitaions() {
                     ? item.vehicleAddLimitDrivingSchool
                     : resJson.vehicleAddLimitDrivingSchool
                 }</li>
-                <li>Max Booking Allowed = ${
-                  item.maxBookingLimit !== undefined
-                    ? item.maxBookingLimit
-                    : resJson.maxBookingLimit
-                }</li>
                 ${
                   item.user.Role === "DrivingSchool"
                     ? `<li>Max Instructor Add = ${
@@ -76,7 +73,7 @@ function Limitaions() {
                     : ""
                 }
               </ul>`
-              : `Max Booking Allowed = 20`,
+              : ``,
             item,
           ]);
         });
@@ -109,6 +106,9 @@ function Limitaions() {
 
   const handleShow = () => {
     setShow(!show);
+  };
+  const handleUpdateShow = () => {
+    setShowUpdate(!showUpdate);
   };
 
   const addNewRecord = (e) => {
@@ -179,6 +179,27 @@ function Limitaions() {
       window.alert("User Already exists please update from there");
     }
   };
+  const updateRecordToDb = () => {
+    // perform saving actions
+    fetch("http://localhost:5000/api/dynamic/updateuserlimits", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("userdata"),
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(updateCustom),
+    })
+      .then((res) => res.json())
+      .then((resJson) => {
+        console.log(resJson);
+        setCustomLimitValue("");
+        setFieldValue("");
+        setListAppend([]);
+        setUpdateCustom(null);
+        setShowUpdate(false);
+        loadData();
+      });
+  };
 
   const handleDelete = (id) => {
     const confirm = window.confirm("Are you sure want to delete?" + id);
@@ -199,8 +220,29 @@ function Limitaions() {
         .catch((e) => console.log("delete error: ", e));
     }
   };
+
+  // useEffect(() => {
+  //   if (updateCustom !== null && showUpdate === false) {
+  //     setShowUpdate(true);
+  //   }
+  // }, [updateCustom]);
+
+  const handleUpdateClick = (data) => {
+    setUpdateCustom(data);
+    setShowUpdate(true);
+  };
+
+  const handleUpdateField = (e, field) => {
+    debugger;
+    var updateis = updateCustom;
+    updateis[field] = parseInt(e.target.value);
+    setUpdateCustom(updateis);
+    setFieldValue(fieldValue + 1);
+  };
+
   const actions = {
     onDelete: handleDelete,
+    onUpdate: handleUpdateClick,
   };
 
   return (
@@ -299,7 +341,6 @@ function Limitaions() {
                         Instructor Add Limit
                       </option>
                       <option value="vehicleAddLimit">Vehicle Add Limit</option>
-                      <option value="maxBookingLimit">Booking Limit</option>
                     </React.Fragment>
                   </FormControl>
                 </FormGroup>
@@ -349,6 +390,145 @@ function Limitaions() {
             disabled={listAppend.length <= 0 || newCustom.user === undefined}
           >
             Add Record
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      {/* update user special limitations */}
+      <Modal show={showUpdate} onHide={handleUpdateShow}>
+        <Modal.Header closeButton>
+          <Modal.Title>Add Special Limitations</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <FormGroup>
+              <ControlLabel>User</ControlLabel>
+              <FormControl
+                type="text"
+                name="gender"
+                value={
+                  updateCustom
+                    ? `${updateCustom.user.FirstName} ${updateCustom.user.SurName}`
+                    : ""
+                }
+                readOnly={true}
+              />
+            </FormGroup>
+            <Row>
+              {updateCustom !== null ? (
+                <React.Fragment>
+                  {updateCustom.vehicleAddLimitInstructor ? (
+                    <React.Fragment>
+                      <Col sm={6}>
+                        <FormGroup>
+                          <ControlLabel>Field</ControlLabel>
+                          <FormControl
+                            type="text"
+                            name="field"
+                            value="Vehicle Add Limit"
+                            readOnly={true}
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col sm={6}>
+                        <FormGroup>
+                          <ControlLabel>Value</ControlLabel>
+                          <FormControl
+                            type="number"
+                            name="fieldvalue"
+                            value={updateCustom.vehicleAddLimitInstructor}
+                            min={1}
+                            onChange={(e) =>
+                              handleUpdateField(e, "vehicleAddLimitInstructor")
+                            }
+                          />
+                        </FormGroup>
+                      </Col>
+                    </React.Fragment>
+                  ) : (
+                    ""
+                  )}
+                  {updateCustom.vehicleAddLimitDrivingSchool ? (
+                    <React.Fragment>
+                      <Col sm={6}>
+                        <FormGroup>
+                          <ControlLabel>Field</ControlLabel>
+                          <FormControl
+                            type="text"
+                            name="field"
+                            value="Vehicle Add Limit"
+                            readOnly={true}
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col sm={6}>
+                        <FormGroup>
+                          <ControlLabel>Value</ControlLabel>
+                          <FormControl
+                            type="number"
+                            name="fieldvalue"
+                            value={updateCustom.vehicleAddLimitDrivingSchool}
+                            min={1}
+                            onChange={(e) =>
+                              handleUpdateField(
+                                e,
+                                "vehicleAddLimitDrivingSchool"
+                              )
+                            }
+                          />
+                        </FormGroup>
+                      </Col>
+                    </React.Fragment>
+                  ) : (
+                    ""
+                  )}
+                  {updateCustom.instructorAddLimit ? (
+                    <React.Fragment>
+                      <Col sm={6}>
+                        <FormGroup>
+                          <ControlLabel>Field</ControlLabel>
+                          <FormControl
+                            type="text"
+                            name="field"
+                            value="Instructor Add Limit"
+                            readOnly={true}
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col sm={6}>
+                        <FormGroup>
+                          <ControlLabel>Value</ControlLabel>
+                          <FormControl
+                            type="number"
+                            name="fieldvalue"
+                            value={updateCustom.instructorAddLimit}
+                            min={1}
+                            onChange={(e) =>
+                              handleUpdateField(e, "instructorAddLimit")
+                            }
+                          />
+                        </FormGroup>
+                      </Col>
+                    </React.Fragment>
+                  ) : (
+                    ""
+                  )}
+                </React.Fragment>
+              ) : (
+                ""
+              )}
+            </Row>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleUpdateShow}>
+            Close
+          </Button>
+          <Button
+            variant="primary"
+            onClick={updateRecordToDb}
+            disabled={updateCustom && updateCustom.user === undefined}
+          >
+            Update Record
           </Button>
         </Modal.Footer>
       </Modal>

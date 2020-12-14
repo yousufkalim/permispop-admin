@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import { Translation } from "react-i18next";
-import { Grid, Row, Col } from "react-bootstrap";
+import { Grid, Row } from "react-bootstrap";
 const $ = require("jquery");
 $.DataTable = require("datatables.net");
 
@@ -27,7 +26,10 @@ export default class DataTableCustom extends Component {
           createdCell: (td, cellData, rowData, row, col) =>
             ReactDOM.render(
               <React.Fragment>
-                <i className="fa fa-pencil"></i>
+                <i
+                  className="fa fa-pencil"
+                  onClick={() => this.props.actions.onUpdate(cellData)}
+                ></i>
                 <i
                   className="fa fa-trash"
                   onClick={() => this.props.actions.onDelete(cellData.user.id)}

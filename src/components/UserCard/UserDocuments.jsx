@@ -110,7 +110,6 @@ class UserDocuments extends Component {
         token: tokn,
       },
       (statusCode, responseProfile) => {
-        debugger;
         var vehicle = "";
         if (
           responseProfile.role === "Instructor" ||
@@ -119,14 +118,16 @@ class UserDocuments extends Component {
           if (responseProfile.vehicleDetailInfoId !== "") {
             vehicle = JSON.parse(responseProfile.vehicleDetailInfoId);
           }
+        } else if (responseProfile.role === "DSInstructor") {
+          vehicle = {};
         } else {
           if (responseProfile.drivingSchoolVehiclesInfoId !== "") {
             vehicle = JSON.parse(responseProfile.drivingSchoolVehiclesInfoId);
           }
         }
         var vehicleData = {};
-
-        if (Object.entries(vehicle).length > 0) {
+        debugger;
+        if (vehicle !== null && Object.entries(vehicle).length > 0) {
           Object.entries(vehicle).forEach(([key, value]) => {
             this.WebServicesManager.getApiWithParamCall(
               {
@@ -968,7 +969,7 @@ class UserDocuments extends Component {
   //start for vehicle upodate
   handleUpdateCall = (responseVehicle) => {
     console.log(responseVehicle, "id is");
-    debugger;
+
     var insuranceDetail = JSON.parse(responseVehicle.vehichleInsuranceInfoId);
     var technicalControlDetial = JSON.parse(
       responseVehicle.technicalControlInfoID
@@ -1056,7 +1057,6 @@ class UserDocuments extends Component {
       endData: moment(this.state.endDateOfTech).utc().format(),
       folder: this.state.folder,
     };
-    debugger;
 
     let token = localStorage.getItem("userdata");
     // api call for posting Vehicle Insurance data
@@ -1079,7 +1079,7 @@ class UserDocuments extends Component {
           },
           (statusCode, responseAddVehicleTC) => {
             // add vehicle detail
-            debugger;
+
             const VehichleDetail = {
               id: this.state.detailID,
               dateOfFirstRegistration: moment(this.state.registerDate)
@@ -1119,7 +1119,6 @@ class UserDocuments extends Component {
     const token = localStorage.getItem("userdata");
     var conf = window.confirm("Are you sure want to delete this vehicle?");
     if (conf) {
-      debugger;
       this.WebServicesManager.getApiWithParamCall(
         {
           endPoint: "VehicleDetail/UpdateVehicleDetail",
@@ -1146,7 +1145,7 @@ class UserDocuments extends Component {
                   delete vehicles[key];
                 }
               });
-              debugger;
+
               let updateUserProfile = {};
               if (responseGet.role === "Instuctor") {
                 updateUserProfile = {
@@ -1168,7 +1167,6 @@ class UserDocuments extends Component {
                   token,
                 },
                 (statusCode, responseUpdateProfile) => {
-                  debugger;
                   window.location.reload();
                 }
               );

@@ -126,7 +126,6 @@ class UserDocuments extends Component {
           }
         }
         var vehicleData = {};
-        debugger;
         if (vehicle !== null && Object.entries(vehicle).length > 0) {
           Object.entries(vehicle).forEach(([key, value]) => {
             this.WebServicesManager.getApiWithParamCall(
@@ -821,110 +820,137 @@ class UserDocuments extends Component {
 
     let token = localStorage.getItem("userdata");
     // api call for posting Vehicle Insurance data
-    this.WebServicesManager.postApiCall(
-      {
-        endPoint: "VehicleInsurance",
-        dataToInsert: JSON.stringify(vehicleInsurance),
-        token,
-      },
-      (statusCode, responseAddVehicleInsurance) => {
-        let vehicleInsuranceId = responseAddVehicleInsurance.id;
-        // api call for adding technical control data
-        this.WebServicesManager.postApiCall(
-          {
-            endPoint: "TechnicalControl",
-            dataToInsert: JSON.stringify(vehicleTechnicalControl),
-            token,
-          },
-          (statusCode, responseAddVehicleTC) => {
-            let vehicleTC = responseAddVehicleTC.id;
-            // add vehicle detail
-            const VehichleDetail = {
-              dateOfFirstRegistration: this.state.registerDate,
-              brand: toTitleCase(this.state.brand),
-              model: toTitleCase(this.state.model),
-              color: toTitleCase(this.state.color),
-              energy: toTitleCase(this.state.energy),
-              gearBox: toTitleCase(this.state.gearBox),
-              numberPlate: this.state.numberPlate.toUpperCase(),
-              vehichleInsuranceInfoId: vehicleInsuranceId,
-              technicalControlInfoID: vehicleTC,
-              vehicleRegistrationCertificatePhotoImagePath: this.state
-                .VCertifiateImagePath,
-              vehicleePhotosImagePath: this.state.VImagePath,
-              folder: this.state.folder,
-            };
-            this.WebServicesManager.postApiCall(
-              {
-                endPoint: "VehicleDetail",
-                dataToInsert: JSON.stringify(VehichleDetail),
-                token,
-              },
-              (statusCode, responseAddVehicle) => {
-                let vehicleId = responseAddVehicle.id;
-                // update vehicle list in profile view
-                // get profile data
-                this.WebServicesManager.getApiWithParamCall(
-                  {
-                    endPoint: "Profile/GetProfileByPersonalId",
-                    dataToFetch: this.props.id,
-                    token,
-                  },
-                  (statusCode, responseGet) => {
-                    let vehicles = {};
-                    if (
-                      responseGet.role === "Instructor" ||
-                      responseGet.role === "CarRentalAgent"
-                    ) {
-                      vehicles = JSON.parse(responseGet.vehicleDetailInfoId);
-                    } else {
-                      vehicles = JSON.parse(
-                        responseGet.drivingSchoolVehiclesInfoId
-                      );
-                    }
-                    let lastElement =
-                      Object.keys(vehicles).length > 0
-                        ? Object.keys(vehicles)[
-                            Object.keys(vehicles).length - 1
-                          ]
-                        : "Vehicle0";
-                    lastElement =
-                      "Vehicle" +
-                      String(parseInt(lastElement.split("Vehicle")[1]) + 1);
+    var insuranceDetail,
+      technicalDetail,
+      vehicleDetail = "";
 
-                    vehicles[lastElement] = vehicleId;
-                    let updateUserProfile = {};
-                    if (responseGet.role !== "DrivingSchool") {
-                      updateUserProfile = {
-                        ...responseGet,
-                        vehicleDetailInfoId: JSON.stringify(vehicles),
-                      };
-                    } else {
-                      updateUserProfile = {
-                        ...responseGet,
-                        drivingSchoolVehiclesInfoId: JSON.stringify(vehicles),
-                      };
-                    }
-                    console.log(updateUserProfile);
-                    // update profile api call
-                    this.WebServicesManager.postApiCall(
-                      {
-                        endPoint: "Profile/UpdateProfile",
-                        dataToInsert: JSON.stringify(updateUserProfile),
-                        token,
-                      },
-                      (statusCode, responseUpdateProfile) => {
-                        window.location.reload();
-                      }
-                    );
-                  }
-                );
-              }
-            );
+    new Promise(async (resolve, reject) => {
+      try {
+        // add insurance details to db
+        await fetch(`${process.env.REACT_APP_BASE_URL}VehicleInsurance`, {
+          method: "POST",
+          headers: {
+            authorization: `Bearer ${token}`,
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(vehicleInsurance),
+        })
+          .then((res) => res.json())
+          .then((resJson) => {
+            insuranceDetail = resJson.data?.id;
+          })
+          .catch((e) => reject(e));
+
+        // add vehicle technical details to db
+        await fetch(`${process.env.REACT_APP_BASE_URL}TechnicalControl`, {
+          method: "POST",
+          headers: {
+            authorization: `Bearer ${token}`,
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(vehicleTechnicalControl),
+        })
+          .then((res) => res.json())
+          .then((resJson) => {
+            technicalDetail = resJson.data?.id;
+          })
+          .catch((e) => reject(e));
+
+        var VehichleDetail = {
+          dateOfFirstRegistration: this.state.registerDate,
+          brand: toTitleCase(this.state.brand),
+          model: toTitleCase(this.state.model),
+          color: toTitleCase(this.state.color),
+          energy: toTitleCase(this.state.energy),
+          gearBox: toTitleCase(this.state.gearBox),
+          numberPlate: this.state.numberPlate.toUpperCase(),
+          vehichleInsuranceInfoId: insuranceDetail,
+          technicalControlInfoID: technicalDetail,
+          vehicleRegistrationCertificatePhotoImagePath: this.state
+            .VCertifiateImagePath,
+          vehicleePhotosImagePath: this.state.VImagePath,
+          folder: this.state.folder,
+        };
+        // add vehicle detail to db
+        await fetch(`${process.env.REACT_APP_BASE_URL}VehicleDetail`, {
+          method: "POST",
+          headers: {
+            authorization: `Bearer ${token}`,
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(VehichleDetail),
+        })
+          .then((res) => res.json())
+          .then((resJson) => {
+            vehicleDetail = resJson.data?.id;
+          })
+          .catch((e) => reject(e));
+
+        await fetch(
+          `${process.env.REACT_APP_BASE_URL}Profile/GetProfileByPersonalId?id=${this.props.id}`,
+          {
+            method: "GET",
+            headers: {
+              authorization: `Bearer ${token}`,
+              "content-type": "application/json",
+            },
           }
-        );
+        )
+          .then((res) => res.json())
+          .then(async (resJson) => {
+            resJson = resJson.data;
+            let vehicles = {};
+            if (
+              resJson.role !== "DrivingSchool" &&
+              resJson.role !== "DSInstructor"
+            ) {
+              vehicles = JSON.parse(resJson.vehicleDetailInfoId);
+            } else {
+              vehicles = JSON.parse(resJson.drivingSchoolVehiclesInfoId);
+            }
+            let lastElement =
+              Object.keys(vehicles).length > 0
+                ? Object.keys(vehicles)[Object.keys(vehicles).length - 1]
+                : "Vehicle0";
+            lastElement =
+              "Vehicle" + String(parseInt(lastElement.split("Vehicle")[1]) + 1);
+
+            vehicles[lastElement] = vehicleDetail;
+            let updateUserProfile = {};
+            if (resJson.role !== "DrivingSchool") {
+              updateUserProfile = {
+                ...resJson,
+                vehicleDetailInfoId: JSON.stringify(vehicles),
+              };
+            } else {
+              updateUserProfile = {
+                ...resJson,
+                drivingSchoolVehiclesInfoId: JSON.stringify(vehicles),
+              };
+            }
+
+            await fetch(
+              `${process.env.REACT_APP_BASE_URL}Profile/UpdateProfile`,
+              {
+                method: "POST",
+                headers: {
+                  authorization: `Bearer ${token}`,
+                  "content-type": "application/json",
+                },
+                body: JSON.stringify(updateUserProfile),
+              }
+            )
+              .then((res) => res.json())
+              .then((resJson) => {
+                resolve(resJson.data);
+                window.location.reload();
+              })
+              .catch((e) => reject(e));
+          });
+      } catch (e) {
+        reject(e);
       }
-    );
+    });
   };
 
   // get dynamic data for vehicle model and brand
@@ -980,36 +1006,36 @@ class UserDocuments extends Component {
       {
         // vehicle info states
         registerDate: new Date(
-          moment(responseVehicle.dateOfFirstRegistration).local().format()
+          moment(responseVehicle?.dateOfFirstRegistration).local().format()
         ),
-        brand: responseVehicle.brand,
+        brand: responseVehicle?.brand,
 
-        numberPlate: responseVehicle.numberPlate,
-        gearBox: responseVehicle.gearBox,
-        color: responseVehicle.color,
-        energy: responseVehicle.energy,
-        VImagePath: responseVehicle.vehicleePhotosImagePath,
+        numberPlate: responseVehicle?.numberPlate,
+        gearBox: responseVehicle?.gearBox,
+        color: responseVehicle?.color,
+        energy: responseVehicle?.energy,
+        VImagePath: responseVehicle?.vehicleePhotosImagePath,
         VCertifiateImagePath:
-          responseVehicle.vehicleRegistrationCertificatePhotoImagePath,
+          responseVehicle?.vehicleRegistrationCertificatePhotoImagePath,
         //   insurance
-        VInsurer: insuranceDetail.insurer,
-        VInsuranceImagePath: insuranceDetail.greenCardImagePath,
-        VpoliceNumber: insuranceDetail.policeNumber,
+        VInsurer: insuranceDetail?.insurer,
+        VInsuranceImagePath: insuranceDetail?.greenCardImagePath,
+        VpoliceNumber: insuranceDetail?.policeNumber,
         VStartDate: new Date(
-          moment(insuranceDetail.startDate).local().format()
+          moment(insuranceDetail?.startDate).local().format()
         ),
-        VEndDate: new Date(moment(insuranceDetail.endDate).local().format()),
+        VEndDate: new Date(moment(insuranceDetail?.endDate).local().format()),
         //   technical control
         startDateOfTech: new Date(
-          moment(technicalControlDetial.startDateOfTech).local().format()
+          moment(technicalControlDetial?.startDateOfTech).local().format()
         ),
         endDateOfTech: new Date(
-          moment(technicalControlDetial.endDateOfTechControl).local().format()
+          moment(technicalControlDetial?.endDateOfTechControl).local().format()
         ),
-        TCImagePath: technicalControlDetial.technicalControlImagePath,
-        techicalID: technicalControlDetial.id,
-        insuranceID: insuranceDetail.id,
-        detailID: responseVehicle.id,
+        TCImagePath: technicalControlDetial?.technicalControlImagePath,
+        techicalID: technicalControlDetial?.id,
+        insuranceID: insuranceDetail?.id,
+        detailID: responseVehicle?.id,
       },
       async () => {
         await this.getVehicleModelData();
@@ -1189,7 +1215,7 @@ class UserDocuments extends Component {
         if (stateis !== undefined) {
           stateis = stateis[1];
           vehicleList.push(
-            <tr>
+            <tr key={stateis.id}>
               <td>{key} Detail</td>
               <td>
                 {stateis === undefined ? (

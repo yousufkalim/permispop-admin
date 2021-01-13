@@ -5,6 +5,7 @@ import UserCard from "components/UserCard/UserCard.jsx";
 import WebServicesManager from "WebServicesManager/WebServicesManager";
 import UserDocuments from "components/UserCard/UserDocuments.jsx";
 import UserPayments from "components/UserCard/UserPayments.jsx";
+import UserInstructors from "components/UserCard/UserInstructors.jsx";
 import "font-awesome/css/font-awesome.min.css";
 import { MDBDataTable } from "mdbreact";
 
@@ -137,8 +138,6 @@ class Users extends Component {
           },
           () => {
             setTimeout(() => {
-              //id sent with link update profile page
-              console.log("dd", this.props.location.user_id);
               var link_id = this.props.location.user_id;
               if (link_id !== undefined) {
                 debugger;
@@ -204,7 +203,7 @@ class Users extends Component {
                               title="Instructor"
                               id="3"
                             >
-                              <UserDocuments {...this.state.userDetails} />
+                              <UserInstructors {...this.state.userDetails} />
                             </Tab>
                           ) : (
                             ""

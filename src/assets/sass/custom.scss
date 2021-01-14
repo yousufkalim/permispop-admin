@@ -776,6 +776,14 @@ form {
 
 .cField {
   padding: 20px 0;
+  width: 100%;
+  overflow: scroll;
+
+  row {
+    width: 100%;
+    overflow: hidden;
+  }
+  
 }
 
 .cField label {
@@ -1168,8 +1176,8 @@ form {
 
   button:disabled {
     opacity: 0.5;
-    border-color: $primary !important;
-    color: $primary !important;
+    border-color: 1px solid $primary !important;
+    color: gray !important;
   }
 }
 
@@ -1888,4 +1896,42 @@ a {
 .info-row-table {
   display: flex;
   justify-content: space-between;
+}
+
+.form-hide {
+  display: none;
+}
+
+.form-show {
+  display:block
+}
+
+.panel-grid {
+  width:auto !important;
+  padding:0px !important;
+  overflow: hidden;
+}
+
+.panel-grid label {
+  color: black !important;
+}
+
+.help-block {
+  color: red !important;
+}
+.form-cust-btn {
+  background-color: $primarybold;
+  color: $white;
+  border: 0;
+  border-radius: 0;
+  padding: 6px 20px;
+  font-size: 20px;
+  margin-right: -14px;
+  margin-left: 20px;
+  float: right !important;
+
+  &:disabled {
+    background-color: gray;
+    border: 1px solid $primarybold;
+  }
 }

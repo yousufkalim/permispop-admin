@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useMemo } from "react";
 import WebServicesManager from "../../WebServicesManager/WebServicesManager";
+import InstructorAdd from "../InstructorComponents/InstructorAdd";
 
 function UserInstructors(props) {
   const WebServicesManagers = useMemo(() => new WebServicesManager());
   const [instructors, setInstructors] = useState([]);
   const [updateList, setUpdateList] = useState(false);
+  const [showAdd, setShowAdd] = useState(false);
 
   // fetch all instructors by driving school
   useEffect(() => {
@@ -37,7 +39,7 @@ function UserInstructors(props) {
                   `${responsePersonalData.address} ${responsePersonalData.zip} ${responsePersonalData.city}`,
                   responsePersonalData.gender,
                   responsePersonalData.email,
-                  props.documentTested,
+                  responsePersonalData.documentTested,
                   responsePersonalData.id,
                 ];
                 data.push(datais);
@@ -57,12 +59,30 @@ function UserInstructors(props) {
     );
   }, [updateList]);
 
+  const updateData = () => {
+    setUpdateList(!updateList);
+  };
+
   return (
     <div className="table-responsive" style={{ overflowX: "scroll" }}>
-      <i
-        className="fa fa-plus-circle"
-        style={{ float: "right", fontSize: 18, margin: "15px 10px" }}
-      ></i>
+      {!showAdd ? (
+        <i
+          className="fa fa-plus-circle"
+          style={{ float: "right", fontSize: 18, margin: "15px 10px" }}
+          onClick={() => setShowAdd(true)}
+        ></i>
+      ) : (
+        <i
+          className="fa fa-times-circle"
+          style={{ float: "right", fontSize: 18, margin: "15px 10px" }}
+          onClick={() => setShowAdd(false)}
+        ></i>
+      )}
+      <InstructorAdd
+        showAddModel={showAdd}
+        drivingSchoolData={props}
+        update={updateData}
+      />
       <table className="table table-bordered">
         <thead>
           <tr>
@@ -90,10 +110,11 @@ function UserInstructors(props) {
                     )}
                   </td>
                   <td>
-                    {/* {ins[5]} */}
-                    <i className="fa fa-file"></i>
-                    <i className="fa fa-pencil"></i>
-                    <i className="fa fa-trash"></i>
+                    <i
+                      className="fa fa-eye"
+                      onClick={() => props.changeUser(ins[5])}
+                    ></i>
+                    {/* <i className="fa fa-trash"></i> */}
                   </td>
                 </tr>
               ))

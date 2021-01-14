@@ -20,7 +20,6 @@ const dashboardRoutes = [
     component: Packages,
     layout: "/admin",
   },
-
   {
     path: "/users",
     name: "Users",

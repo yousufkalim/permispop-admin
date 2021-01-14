@@ -6,6 +6,7 @@ import WebServicesManager from "WebServicesManager/WebServicesManager";
 import UserDocuments from "components/UserCard/UserDocuments.jsx";
 import UserPayments from "components/UserCard/UserPayments.jsx";
 import UserInstructors from "components/UserCard/UserInstructors.jsx";
+import UserMeetups from "components/UserCard/UserMeetups.jsx";
 import "font-awesome/css/font-awesome.min.css";
 import { MDBDataTable } from "mdbreact";
 
@@ -64,6 +65,7 @@ class Users extends Component {
       documentVerified: "",
       dataV: {},
       dataNV: {},
+      defualtTab: "documents",
     };
   }
   WebServicesManager = new WebServicesManager();
@@ -86,7 +88,11 @@ class Users extends Component {
       (statusCode, response) => {
         // console.log("r",r);
         response.map((item) => {
-          if (item.role !== "Admin" && item.role !== "Email") {
+          if (
+            item.role !== "Admin" &&
+            item.role !== "Email" &&
+            item.role !== "DSInstructor"
+          ) {
             if (item.documentTested === "Tested") {
               VerifiedUser.push({
                 key: vc,
@@ -140,7 +146,7 @@ class Users extends Component {
             setTimeout(() => {
               var link_id = this.props.location.user_id;
               if (link_id !== undefined) {
-                debugger;
+                // var element = document.getElementById("5fec10f2f4d2a1176c70a0f6");
                 var element = document.getElementById(link_id);
                 if (element !== null) {
                   element.click();
@@ -153,6 +159,21 @@ class Users extends Component {
     );
   }
   componentDidMount() {}
+
+  changeUser = (id) => {
+    var token = localStorage.getItem("userdata");
+    this.WebServicesManager.getApiWithParamCall(
+      {
+        endPoint: "Personal/GetAllById",
+        dataToFetch: id,
+        token,
+      },
+      (statusCode, responseUser) => {
+        debugger;
+        this.setState({ userDetails: responseUser, defualtTab: "documents" });
+      }
+    );
+  };
 
   render() {
     return (
@@ -183,31 +204,39 @@ class Users extends Component {
                     ctTableResponsive
                     content={
                       <TabContainer className="content">
-                        <Tabs defaultActiveKey="documents">
-                          <Tab eventKey="documents" title="Documents" id="2">
+                        <Tabs defaultActiveKey={this.state.defualtTab}>
+                          <Tab eventKey="documents" title="Documents" id="1">
                             <UserDocuments {...this.state.userDetails} />
                           </Tab>
-                          <Tab eventKey="Payments" title="Payments" id="1">
-                            <UserPayments {...this.state.userDetails} />
-                          </Tab>
-                          {/* {this.state.userDetails.role !== "Student" ? (
-                            <Tab eventKey="vehicles" title="Vehicles" id="3">
-                              <UserVehicle {...this.state.userDetails} />
-                            </Tab>
-                          ) : (
-                            ""
-                          )} */}
+
+                          {/* instructor tabs */}
                           {this.state.userDetails.role === "DrivingSchool" ? (
                             <Tab
                               eventKey="instructor"
                               title="Instructor"
                               id="3"
                             >
-                              <UserInstructors {...this.state.userDetails} />
+                              <UserInstructors
+                                {...this.state.userDetails}
+                                changeUser={this.changeUser}
+                              />
                             </Tab>
                           ) : (
                             ""
                           )}
+                          {/* meetup tabs */}
+                          {this.state.userDetails.role === "Instructor" ||
+                          this.state.userDetails.role === "DSInstructor" ||
+                          this.state.userDetails.role === "CarRentalAgent" ? (
+                            <Tab eventKey="meetup" title="Meetup Points" id="4">
+                              <UserMeetups {...this.state.userDetails} />
+                            </Tab>
+                          ) : (
+                            ""
+                          )}
+                          <Tab eventKey="Payments" title="Payments" id="2">
+                            <UserPayments {...this.state.userDetails} />
+                          </Tab>
                         </Tabs>
                       </TabContainer>
                     }

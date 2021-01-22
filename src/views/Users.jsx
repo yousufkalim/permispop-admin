@@ -91,7 +91,8 @@ class Users extends Component {
           if (
             item.role !== "Admin" &&
             item.role !== "Email" &&
-            item.role !== "DSInstructor"
+            item.role !== "DSInstructor" &&
+            !item.role.includes("Delete")
           ) {
             if (item.documentTested === "Tested") {
               VerifiedUser.push({

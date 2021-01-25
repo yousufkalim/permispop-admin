@@ -103,6 +103,25 @@ class UserDocuments extends Component {
     this.setState({
       folder: `${this.props.id}_${this.props.firstName}_${this.props.surName}`,
     });
+    this.loadDataFromProps();
+  }
+  componentDidMount() {
+    this.getData();
+    this.getVehicleMakeData();
+    this.getVehicleModelData();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.id !== this.props.id) {
+      this.loadDataFromProps();
+      this.getData();
+      this.getVehicleMakeData();
+      this.getVehicleModelData();
+    }
+  }
+
+  loadDataFromProps = () => {
+    var tokn = localStorage.getItem("userdata");
     this.WebServicesManager.getApiWithParamCall(
       {
         endPoint: "Profile/GetProfileByPersonalId",
@@ -156,12 +175,8 @@ class UserDocuments extends Component {
         }
       }
     );
-  }
-  componentDidMount() {
-    this.getData();
-    this.getVehicleMakeData();
-    this.getVehicleModelData();
-  }
+  };
+
   getData = (e) => {
     var tokn = localStorage.getItem("userdata");
     this.WebServicesManager.getApiWithParamCall(

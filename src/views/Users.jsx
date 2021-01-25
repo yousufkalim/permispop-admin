@@ -170,7 +170,6 @@ class Users extends Component {
         token,
       },
       (statusCode, responseUser) => {
-        debugger;
         this.setState({ userDetails: responseUser, defualtTab: "documents" });
       }
     );

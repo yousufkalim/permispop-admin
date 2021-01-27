@@ -13,6 +13,7 @@ import {
   FormGroup,
 } from "react-bootstrap";
 import FormInputs from "../../components/FormInputs/FormInputs";
+import Loader from "react-loader-spinner";
 import { Translation } from "react-i18next";
 import DatePicker from "react-datepicker";
 import "font-awesome/css/font-awesome.min.css";
@@ -96,6 +97,7 @@ class UserDocuments extends Component {
       techicalID: "",
       insuranceID: "",
       detailID: "",
+      loading: false,
     };
   }
   componentWillMount() {
@@ -319,6 +321,7 @@ class UserDocuments extends Component {
       TCImagePath: "",
       VInsuranceImagePath: "",
       isAddDisable: true,
+      loading: false,
     });
   };
 
@@ -808,6 +811,7 @@ class UserDocuments extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
+    this.setState({ loading: true });
     // String capitalize /
     function toTitleCase(str) {
       return str.replace(/\w\S*/g, function (txt) {
@@ -2527,13 +2531,36 @@ class UserDocuments extends Component {
                 </Translation>
               </Modal.Body>
               <Modal.Footer>
-                <Button
-                  className="form-cust-btn"
-                  onClick={this.handleSubmit}
-                  disabled={this.state.isAddDisable}
-                >
-                  {t("Add")}
-                </Button>
+                {this.state.loading || this.state.isAddDisable ? (
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "flex-end",
+                    }}
+                  >
+                    <div style={{ marginRight: 10 }}>
+                      Cheking required fields
+                    </div>
+                    <Loader
+                      type="Puff"
+                      color="#149e7a"
+                      height={30}
+                      width={30}
+                      // timeout={3000} //3 secs
+                    ></Loader>
+                  </div>
+                ) : (
+                  <Button
+                    style={{ marginRight: 20 }}
+                    className="form-cust-btn"
+                    onClick={this.handleSubmit}
+                    disabled={this.state.isAddDisable}
+                  >
+                    {t("Add")}
+                  </Button>
+                )}
               </Modal.Footer>
             </Modal>
             {/* update data model */}

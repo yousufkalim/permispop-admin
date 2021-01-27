@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { Component } from "react";
 import {
   Modal,
   Button,
@@ -14,32 +14,37 @@ import Autocomplete from "react-autocomplete";
 import { Translation } from "react-i18next";
 import WebServicesManager from "../../WebServicesManager/WebServicesManager";
 
-function UserMeetups(props) {
-  const WebServicesManagers = useMemo(() => new WebServicesManager());
-  const [meetupList, setmeetupList] = useState([]);
-  const [updateList, setUpdateList] = useState(false);
-  const [showAdd, setShowAdd] = useState(false);
-  const [showUpdate, setShowUpdate] = useState(false);
-  const [editMeetup, setEditMeetup] = useState(null);
-  const [state, setState] = useState({
-    items: [],
-    zip: "",
-    lat: 0,
-    long: 0,
-    address: "",
-    disableAdd: true,
-    meetupError: "",
-  });
+export class UserMeetups extends Component {
+  WebServicesManager = new WebServicesManager();
+  constructor(props) {
+    super(props);
+    this.state = {
+      address: "",
+      city: "",
+      zip: "",
+      lat: 0,
+      long: 0,
+      showAdd: false,
+      showUpdate: false,
+      meetupList: [],
+      disableAdd: true,
+      items: [],
+      meetupError: "",
+    };
+  }
 
-  // fetch all instructors by driving school
-  useEffect(() => {
-    getMeetupPoints(props.id);
-  }, [updateList]);
-
-  const getMeetupPoints = (userID) => {
+  componentWillMount() {
+    this.getMeetupPoints(this.props.id);
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.updateList !== this.state.updateList)
+      this.getMeetupPoints(this.props.id);
+  }
+  // get data from
+  getMeetupPoints = (userID) => {
     //get meetup points
     var tokn = localStorage.getItem("userdata");
-    WebServicesManagers.getApiWithParamCall(
+    this.WebServicesManager.getApiWithParamCall(
       {
         endPoint: "InstructorMeetupPoints/GetMeetUpPoints",
         dataToFetch: userID,
@@ -47,30 +52,32 @@ function UserMeetups(props) {
       },
       (statusCode, responseMp) => {
         if (responseMp.length > 0) {
-          setmeetupList(responseMp);
+          this.setState({ meetupList: responseMp });
         }
       }
     );
   };
 
-  const getAddress = (e) => {
-    var stateis = {
-      ...state,
-      address: e.target.value,
-      lat: 0,
-      long: 0,
-      zip: "",
-      city: "",
-    };
-    stateis.address = e.target.value;
-    if (stateis.lat === 0 && stateis.long === 0) {
-      stateis.disableAdd = true;
-      stateis.meetupError = "Select From dropdown to continue.";
-    } else {
-      stateis.disableAdd = false;
-      stateis.meetupError = "";
-    }
-    setState(stateis);
+  getAddress = (e) => {
+    this.setState(
+      {
+        address: e.target.value,
+        lat: 0,
+        long: 0,
+        zip: "",
+        city: "",
+      },
+      () => {
+        if (!this.state.lat && !this.state.long) {
+          this.setState({
+            disableAdd: true,
+            meetupError: "Select From dropdown to continue.",
+          });
+        } else {
+          this.setState({ disableAdd: false, meetupError: "" });
+        }
+      }
+    );
     fetch(
       "https://api-adresse.data.gouv.fr/search/?q=" +
         e.target.value +
@@ -91,7 +98,7 @@ function UserMeetups(props) {
         }
 
         if (addressToSet.length === responseJson.features.length) {
-          setState({ ...state, items: addressToSet });
+          this.setState({ items: addressToSet });
         }
       })
       .catch((error) => {
@@ -99,17 +106,17 @@ function UserMeetups(props) {
       });
   };
 
-  const setAddress = (item) => {
-    setState({ ...state, address: item });
-    for (let i = 0; i < state.items.length; i++) {
-      if (state.items[i].label === item) {
-        var city = state.items[i].city;
-        var zipCode = state.items[i].PostalCode;
-        var lat = state.items[i].lat;
-        var lng = state.items[i].lng;
-        var newAddress = state.items[i].label.split(String(zipCode));
-        setState({
-          ...state,
+  setAddress = (item) => {
+    this.setState({ address: item });
+    const { items } = this.state;
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].label === item) {
+        var city = items[i].city;
+        var zipCode = items[i].PostalCode;
+        var lat = items[i].lat;
+        var lng = items[i].lng;
+        var newAddress = items[i].label.split(String(zipCode));
+        this.setState({
           address: newAddress[0],
           zip: zipCode,
           city: city,
@@ -122,80 +129,80 @@ function UserMeetups(props) {
     }
   };
 
-  const handleAddMeetup = () => {
-    console.log("adding mp", state);
+  handleAddMeetup = () => {
     const meetupObj = JSON.stringify({
-      instructorId: props.id,
-      meetup: state.address,
-      zipCode: state.zip,
-      city: state.city,
-      lat: state.lat,
-      long: state.long,
+      instructorId: this.props.id,
+      meetup: this.state.address,
+      zipCode: this.state.zip,
+      city: this.state.city,
+      lat: this.state.lat,
+      long: this.state.long,
     });
-    WebServicesManagers.postApiCall(
+    this.setState({ disableAdd: true });
+    this.WebServicesManager.postApiCall(
       {
         endPoint: "InstructorMeetupPoints",
         dataToInsert: meetupObj,
       },
       (statusCode, response) => {
         if (response !== "") {
-          setUpdateList(!updateList);
+          this.setState({
+            showAdd: false,
+            items: [],
+            zip: "",
+            lat: 0,
+            long: 0,
+            address: "",
+            disableAdd: true,
+            meetupError: "",
+            updateList: !this.state.updateList,
+          });
         }
       }
     );
-    setShowAdd(false);
-    setState({
-      items: [],
-      zip: "",
-      lat: 0,
-      long: 0,
-      address: "",
-      disableAdd: true,
-      meetupError: "",
-    });
   };
 
-  const handleDeleteMeetup = (id) => {
+  handleDeleteMeetup = (id) => {
     var con = window.confirm("Are you sure?");
     if (con) {
       var tokn = localStorage.getItem("userdata");
-      WebServicesManagers.getApiWithParamCall(
+      this.WebServicesManager.getApiWithParamCall(
         {
           endPoint: "InstructorMeetupPoints/deletemeetuppoint",
           dataToFetch: id,
           token: tokn,
         },
         (statusCode, responseMp) => {
-          setUpdateList(!updateList);
+          this.setState({ updateList: !this.state.updateList });
         }
       );
     }
   };
 
-  const updateClick = (meetup) => {
-    setState({
-      ...state,
+  updateClick = (meetup) => {
+    this.setState({
       address: meetup.meetUp,
       city: meetup.city,
       zip: meetup.zipCode,
       lat: meetup.lat,
       long: meetup.long,
+      showUpdate: true,
+      editMeetup: meetup,
     });
-    setShowUpdate(true);
-    setEditMeetup(meetup);
   };
 
-  const updateSubmit = () => {
+  updateSubmit = () => {
     var tokn = localStorage.getItem("userdata");
     const meetupObj = JSON.stringify({
-      ...editMeetup,
-      meetUp: state.address,
-      zipCode: state.zip,
-      city: state.city,
-      lat: state.lat,
-      long: state.long,
+      ...this.state.editMeetup,
+      meetUp: this.state.address,
+      zipCode: this.state.zip,
+      city: this.state.city,
+      lat: this.state.lat,
+      long: this.state.long,
     });
-    WebServicesManagers.postApiCall(
+    this.setState({ disableAdd: true });
+    this.WebServicesManager.postApiCall(
       {
         endPoint: "InstructorMeetupPoints/updatemeetuppoint",
         dataToInsert: meetupObj,
@@ -203,240 +210,254 @@ function UserMeetups(props) {
       },
       (statusCode, response) => {
         if (response !== "") {
-          setUpdateList(!updateList);
+          this.setState({
+            showUpdate: false,
+            items: [],
+            zip: "",
+            lat: 0,
+            long: 0,
+            address: "",
+            disableAdd: true,
+            meetupError: "",
+            updateList: !this.state.updateList,
+          });
         }
       }
     );
-    setShowUpdate(false);
-    setState({
-      items: [],
-      zip: "",
-      lat: 0,
-      long: 0,
-      address: "",
-      disableAdd: true,
-      meetupError: "",
-    });
   };
 
-  return (
-    <Translation>
-      {(t) => (
-        <>
-          <div className="table-responsive" style={{ overflowX: "scroll" }}>
-            <i
-              className="fa fa-plus-circle"
-              style={{ float: "right", fontSize: 18, margin: "15px 10px" }}
-              onClick={() => setShowAdd(true)}
-            ></i>
-            <table className="table table-bordered">
-              <thead>
-                <tr>
-                  <th>Address</th>
-                  <th>ZipCode</th>
-                  <th>City</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {meetupList.length > 0
-                  ? meetupList.map((meetup, index) => (
-                      <tr key={index}>
-                        {console.log("meetuop", meetup)}
-                        <td>{meetup.meetUp}</td>
-                        <td>{meetup.zipCode}</td>
-                        <td>{meetup.city}</td>
-                        <td>
-                          <i
-                            className="fa fa-pencil"
-                            onClick={() => updateClick(meetup)}
-                          ></i>
-                          <i
-                            className="fa fa-trash"
-                            onClick={() => handleDeleteMeetup(meetup.id)}
-                          ></i>
-                        </td>
-                      </tr>
-                    ))
-                  : ""}
-              </tbody>
-            </table>
-          </div>
-          <Modal show={showAdd} onHide={() => setShowAdd(false)}>
-            <Modal.Header closeButton>
-              <Modal.Title>{t("Add Meetup Location")}</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <Form>
-                <FormGroup>
-                  <ControlLabel>
-                    {t("Address")} <span className="text-red">*</span>
-                  </ControlLabel>
-                  <Autocomplete
-                    items={state.items}
-                    shouldItemRender={(item, value) =>
-                      item.label.toLowerCase().indexOf(value.toLowerCase()) > -1
-                    }
-                    getItemValue={(item) => item.label}
-                    renderItem={(item, highlighted) => (
-                      <div
-                        key={item.id}
-                        style={{
-                          backgroundColor: highlighted ? "#eee" : "transparent",
-                        }}
-                      >
-                        {item.label}
-                      </div>
-                    )}
-                    wrapperStyle={{
-                      display: "block",
-                    }}
-                    menuStyle={{
-                      zIndex: "1",
-                      position: "static",
-                      borderRadius: "3px",
-                      boxShadow: "0 2px 12px rgba(0, 0, 0, 0.1)",
-                      background: "rgba(255, 255, 255, 0.9)",
-                      padding: "2px 0",
-                      fontSize: "90%",
-                      overflow: "auto",
-                      // maxHeight: "50%",
-                      maxheight: "150px",
-                      overflowY: "scroll",
-                    }}
-                    inputProps={{
-                      className: "form-control",
-                    }}
-                    value={state.address}
-                    onChange={getAddress}
-                    onSelect={setAddress}
-                  />
-                  <HelpBlock>{state.meetupError}</HelpBlock>
-                </FormGroup>
-                <Row>
-                  <Col md={6}>
-                    <FormGroup>
-                      <ControlLabel>ZipCode</ControlLabel>
-                      <FormControl
-                        type="text"
-                        disabled={true}
-                        value={state.zip}
-                      />
-                    </FormGroup>
-                  </Col>
-                  <Col md={6}>
-                    <FormGroup>
-                      <ControlLabel>City</ControlLabel>
-                      <FormControl
-                        type="text"
-                        disabled={true}
-                        value={state.city}
-                      />
-                    </FormGroup>
-                  </Col>
-                </Row>
-              </Form>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button
-                variant="primary"
-                disabled={state.disableAdd}
-                onClick={handleAddMeetup}
-              >
-                {t("Add")}
-              </Button>
-            </Modal.Footer>
-          </Modal>
-          {/* update */}
-          <Modal show={showUpdate} onHide={() => setShowUpdate(false)}>
-            <Modal.Header closeButton>
-              <Modal.Title>{t("Update Meetup Location")}</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <Form>
-                <FormGroup>
-                  <ControlLabel>
-                    {t("Address")} <span className="text-red">*</span>
-                  </ControlLabel>
-                  <Autocomplete
-                    items={state.items}
-                    shouldItemRender={(item, value) =>
-                      item.label.toLowerCase().indexOf(value.toLowerCase()) > -1
-                    }
-                    getItemValue={(item) => item.label}
-                    renderItem={(item, highlighted) => (
-                      <div
-                        key={item.id}
-                        style={{
-                          backgroundColor: highlighted ? "#eee" : "transparent",
-                        }}
-                      >
-                        {item.label}
-                      </div>
-                    )}
-                    wrapperStyle={{
-                      display: "block",
-                    }}
-                    menuStyle={{
-                      zIndex: "1",
-                      position: "static",
-                      borderRadius: "3px",
-                      boxShadow: "0 2px 12px rgba(0, 0, 0, 0.1)",
-                      background: "rgba(255, 255, 255, 0.9)",
-                      padding: "2px 0",
-                      fontSize: "90%",
-                      overflow: "auto",
-                      // maxHeight: "50%",
-                      maxheight: "150px",
-                      overflowY: "scroll",
-                    }}
-                    inputProps={{
-                      className: "form-control",
-                    }}
-                    value={state?.address}
-                    onChange={getAddress}
-                    onSelect={setAddress}
-                  />
-                  <HelpBlock>{state.meetupError}</HelpBlock>
-                </FormGroup>
-                <Row>
-                  <Col md={6}>
-                    <FormGroup>
-                      <ControlLabel>ZipCode</ControlLabel>
-                      <FormControl
-                        type="text"
-                        disabled={true}
-                        value={state.zip}
-                      />
-                    </FormGroup>
-                  </Col>
-                  <Col md={6}>
-                    <FormGroup>
-                      <ControlLabel>City</ControlLabel>
-                      <FormControl
-                        type="text"
-                        disabled={true}
-                        value={state.city}
-                      />
-                    </FormGroup>
-                  </Col>
-                </Row>
-              </Form>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button
-                variant="primary"
-                disabled={state.disableAdd}
-                onClick={updateSubmit}
-              >
-                {t("Add")}
-              </Button>
-            </Modal.Footer>
-          </Modal>
-        </>
-      )}
-    </Translation>
-  );
+  render() {
+    return (
+      <Translation>
+        {(t) => (
+          <>
+            <div className="table-responsive" style={{ overflowX: "scroll" }}>
+              <i
+                className="fa fa-plus-circle"
+                style={{ float: "right", fontSize: 18, margin: "15px 10px" }}
+                onClick={() => this.setState({ showAdd: true })}
+              ></i>
+              <table className="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>Address</th>
+                    <th>ZipCode</th>
+                    <th>City</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.state.meetupList.length > 0
+                    ? this.state.meetupList.map((meetup, index) => (
+                        <tr key={index}>
+                          {console.log("meetuop", meetup)}
+                          <td>{meetup.meetUp}</td>
+                          <td>{meetup.zipCode}</td>
+                          <td>{meetup.city}</td>
+                          <td>
+                            <i
+                              className="fa fa-pencil"
+                              onClick={() => this.updateClick(meetup)}
+                            ></i>
+                            <i
+                              className="fa fa-trash"
+                              onClick={() => this.handleDeleteMeetup(meetup.id)}
+                            ></i>
+                          </td>
+                        </tr>
+                      ))
+                    : ""}
+                </tbody>
+              </table>
+            </div>
+            <Modal
+              show={this.state.showAdd}
+              onHide={() => this.setState({ showAdd: false })}
+            >
+              <Modal.Header closeButton>
+                <Modal.Title>{t("Add Meetup Location")}</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Form>
+                  <FormGroup>
+                    <ControlLabel>
+                      {t("Address")} <span className="text-red">*</span>
+                    </ControlLabel>
+                    <Autocomplete
+                      items={this.state.items}
+                      shouldItemRender={(item, value) =>
+                        item.label.toLowerCase().indexOf(value.toLowerCase()) >
+                        -1
+                      }
+                      getItemValue={(item) => item.label}
+                      renderItem={(item, highlighted) => (
+                        <div
+                          key={item.id}
+                          style={{
+                            backgroundColor: highlighted
+                              ? "#eee"
+                              : "transparent",
+                          }}
+                        >
+                          {item.label}
+                        </div>
+                      )}
+                      wrapperStyle={{
+                        display: "block",
+                      }}
+                      menuStyle={{
+                        zIndex: "1",
+                        position: "static",
+                        borderRadius: "3px",
+                        boxShadow: "0 2px 12px rgba(0, 0, 0, 0.1)",
+                        background: "rgba(255, 255, 255, 0.9)",
+                        padding: "2px 0",
+                        fontSize: "90%",
+                        overflow: "auto",
+                        // maxHeight: "50%",
+                        maxheight: "150px",
+                        overflowY: "scroll",
+                      }}
+                      inputProps={{
+                        className: "form-control",
+                      }}
+                      value={this.state.address}
+                      onChange={this.getAddress}
+                      onSelect={this.setAddress}
+                    />
+                    <HelpBlock>{this.state.meetupError}</HelpBlock>
+                  </FormGroup>
+                  <Row>
+                    <Col md={6}>
+                      <FormGroup>
+                        <ControlLabel>ZipCode</ControlLabel>
+                        <FormControl
+                          type="text"
+                          disabled={true}
+                          value={this.state.zip}
+                        />
+                      </FormGroup>
+                    </Col>
+                    <Col md={6}>
+                      <FormGroup>
+                        <ControlLabel>City</ControlLabel>
+                        <FormControl
+                          type="text"
+                          disabled={true}
+                          value={this.state.city}
+                        />
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                </Form>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button
+                  variant="primary"
+                  disabled={this.state.disableAdd}
+                  onClick={this.handleAddMeetup}
+                >
+                  {t("Add")}
+                </Button>
+              </Modal.Footer>
+            </Modal>
+            {/* update */}
+            <Modal
+              show={this.state.showUpdate}
+              onHide={() => this.setState({ showUpdate: false })}
+            >
+              <Modal.Header closeButton>
+                <Modal.Title>{t("Update Meetup Location")}</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Form>
+                  <FormGroup>
+                    <ControlLabel>
+                      {t("Address")} <span className="text-red">*</span>
+                    </ControlLabel>
+                    <Autocomplete
+                      items={this.state.items}
+                      shouldItemRender={(item, value) =>
+                        item.label.toLowerCase().indexOf(value.toLowerCase()) >
+                        -1
+                      }
+                      getItemValue={(item) => item.label}
+                      renderItem={(item, highlighted) => (
+                        <div
+                          key={item.id}
+                          style={{
+                            backgroundColor: highlighted
+                              ? "#eee"
+                              : "transparent",
+                          }}
+                        >
+                          {item.label}
+                        </div>
+                      )}
+                      wrapperStyle={{
+                        display: "block",
+                      }}
+                      menuStyle={{
+                        zIndex: "1",
+                        position: "static",
+                        borderRadius: "3px",
+                        boxShadow: "0 2px 12px rgba(0, 0, 0, 0.1)",
+                        background: "rgba(255, 255, 255, 0.9)",
+                        padding: "2px 0",
+                        fontSize: "90%",
+                        overflow: "auto",
+                        // maxHeight: "50%",
+                        maxheight: "150px",
+                        overflowY: "scroll",
+                      }}
+                      inputProps={{
+                        className: "form-control",
+                      }}
+                      value={this.state.address}
+                      onChange={this.getAddress}
+                      onSelect={this.setAddress}
+                    />
+                    <HelpBlock>{this.state.meetupError}</HelpBlock>
+                  </FormGroup>
+                  <Row>
+                    <Col md={6}>
+                      <FormGroup>
+                        <ControlLabel>ZipCode</ControlLabel>
+                        <FormControl
+                          type="text"
+                          disabled={true}
+                          value={this.state.zip}
+                        />
+                      </FormGroup>
+                    </Col>
+                    <Col md={6}>
+                      <FormGroup>
+                        <ControlLabel>City</ControlLabel>
+                        <FormControl
+                          type="text"
+                          disabled={true}
+                          value={this.state.city}
+                        />
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                </Form>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button
+                  variant="primary"
+                  disabled={this.state.disableAdd}
+                  onClick={this.updateSubmit}
+                >
+                  {t("Update")}
+                </Button>
+              </Modal.Footer>
+            </Modal>
+          </>
+        )}
+      </Translation>
+    );
+  }
 }
 
 export default UserMeetups;

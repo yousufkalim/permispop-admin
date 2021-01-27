@@ -971,7 +971,7 @@ class UserDocuments extends Component {
   // get dynamic data for vehicle model and brand
   getVehicleMakeData = async () => {
     const response = await fetch(
-      "https://parseapi.back4app.com/classes/Carmodels_Car_Model_List?keys=Make",
+      "https://parseapi.back4app.com/classes/Carmodels_Car_Model_List?keys=Make&limit=999999",
       {
         headers: {
           "X-Parse-Application-Id": "XSV8AboSPQpA4pAyKCw67EX7KBnI8YiMt1NvrCdM", // This is your app's application id
@@ -980,8 +980,15 @@ class UserDocuments extends Component {
       }
     );
     const data = await response.json(); // Here you have the data that you need
-    // console.log("model",JSON.stringify(data.results, null, 2));
-    this.setState({ brandList: data.results, brand: data.results[0].Make });
+    const makeList = [];
+    data.results.map((list) => {
+      var exists = makeList.find((item) => item.Make === list.Make);
+      // debugger;
+      if (!exists) {
+        makeList.push(list);
+      }
+    });
+    this.setState({ brandList: makeList, brand: data.results[0].Make });
   };
   getVehicleModelData = async () => {
     const response = await fetch(
@@ -1231,6 +1238,49 @@ class UserDocuments extends Component {
           stateis = stateis[1];
           vehicleList.push(
             <tr key={stateis.id}>
+              <td>{key} Detail</td>
+              <td>
+                {stateis === undefined ? (
+                  <i className="fa fa-remove"></i>
+                ) : stateis.status === "" ? (
+                  <i className="fa fa-remove"></i>
+                ) : stateis.status === "true" ? (
+                  <i className="fa fa-check"></i>
+                ) : (
+                  <i className="fa fa-remove"></i>
+                )}
+              </td>
+              <td>
+                <i
+                  className="fa fa-file"
+                  onClick={() =>
+                    this.setState({
+                      showId: true,
+                      docTitle: `${key} Detail`,
+                      idName: `${keySplit}`,
+                      fbStatus:
+                        stateis === undefined
+                          ? false
+                          : stateis.status === undefined
+                          ? false
+                          : stateis.status,
+                    })
+                  }
+                ></i>
+                <i
+                  className="fa fa-pencil"
+                  onClick={() => this.handleUpdateCall(value)}
+                ></i>
+                <i
+                  className="fa fa-trash"
+                  onClick={() => this.handleDelete(value)}
+                ></i>
+              </td>
+            </tr>
+          );
+        } else {
+          vehicleList.push(
+            <tr key={keySplit}>
               <td>{key} Detail</td>
               <td>
                 {stateis === undefined ? (

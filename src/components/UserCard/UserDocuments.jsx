@@ -2490,7 +2490,7 @@ class UserDocuments extends Component {
                                 {(t) => (
                                   <ControlLabel>
                                     {t("End Date")}{" "}
-                                    <span className="text-red">*</span>
+                                    {/* <span className="text-red">*</span> */}
                                   </ControlLabel>
                                 )}
                               </Translation>
@@ -2947,7 +2947,7 @@ class UserDocuments extends Component {
                             {(t) => (
                               <ControlLabel>
                                 {t("End Date")}{" "}
-                                <span className="text-red">*</span>
+                                {/* <span className="text-red">*</span> */}
                               </ControlLabel>
                             )}
                           </Translation>

@@ -189,7 +189,7 @@ export class UserCard extends Component {
   };
 
   handleSave = () => {
-    debugger;
+    // debugger;
     var tokn = localStorage.getItem("userdata");
     const data = {
       id: this.props.id,
@@ -539,7 +539,7 @@ export class UserCard extends Component {
             {this.state.banStatus === "" ? (
               <DropdownButton
                 bsStyle="default"
-                title="Ban Student"
+                title="Ban User"
                 noCaret
                 id="dropdown-no-caret"
                 style={{ fontSize: "14px", marginLeft: 10, marginTop: 10 }}

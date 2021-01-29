@@ -109,7 +109,7 @@ export class UserVehicle extends Component {
               {this.state.vehicleInfo !== "" ? (
                 Object.entries(this.state.vehicleInfo).forEach(
                   ([key, value]) => {
-                    debugger;
+                    // debugger;
                     if (value !== null) {
                       var key1 = key.split("Vehicle")[1];
                       return (

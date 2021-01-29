@@ -502,14 +502,17 @@ class InstructorAdd extends Component {
 
   validationCheckforPassword = (e) => {
     this.setState({ Password: e.target.value }, () => {
+      debugger;
       if (!Utilities.checkNull(this.state.Password)) {
         this.setState({
           PasswordError: "Should Not be empty",
         });
-      } else if (!Utilities.ValidatePassword(this.state.Password)) {
+      } else if (this.state.Password.length < 8) {
         this.setState({
           PasswordError: "Password must contain minimum length of 8",
         });
+        console.log(Utilities.ValidatePassword(this.state.Password));
+        console.log("PASSWORD", this.state.Password);
       } else if (this.state.Password === this.state.CPassword) {
         this.setState({
           CPasswordError: "",
@@ -713,7 +716,7 @@ class InstructorAdd extends Component {
           });
         } else {
           this.setState({
-            DateofExpireError: "pastExpireError",
+            DateofExpireError: "Expiration date must be a future date",
           });
         }
       } else {
@@ -1258,7 +1261,7 @@ class InstructorAdd extends Component {
     var userInfo = JSON.parse(Base64.decode(x.userData));
     this.setState({ showAddModel: false });
     console.log("Submit", this.state);
-    debugger;
+    // debugger;
     const instructorInfo = {
       id: "",
       firstName: this.state.fName,
@@ -1385,7 +1388,7 @@ class InstructorAdd extends Component {
                     token: tokn,
                   },
                   (statusCode, responseUp) => {
-                    debugger;
+                    // debugger;
                     const Instructros = JSON.parse(
                       responseUp.drivingSchoolInstructorInfoId
                     );

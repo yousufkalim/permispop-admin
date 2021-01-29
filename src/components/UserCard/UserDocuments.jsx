@@ -1167,14 +1167,15 @@ class UserDocuments extends Component {
     );
   };
 
-  handleDelete = (id) => {
+  handleDelete = (data) => {
     const token = localStorage.getItem("userdata");
     var conf = window.confirm("Are you sure want to delete this vehicle?");
     if (conf) {
+      // debugger;
       this.WebServicesManager.getApiWithParamCall(
         {
           endPoint: "VehicleDetail/UpdateVehicleDetail",
-          dataToFetch: id,
+          dataToFetch: data.id,
           token,
         },
         (statusCode, responseUpdate) => {
@@ -1182,24 +1183,24 @@ class UserDocuments extends Component {
           this.WebServicesManager.getApiWithParamCall(
             {
               endPoint: "Profile/GetProfileByPersonalId",
-              dataToFetch: this.state.userData.id,
+              dataToFetch: this.props.id,
               token,
             },
             (statusCode, responseGet) => {
               let vehicles = {};
-              if (responseGet.role === "Instructor") {
+              if (responseGet.role !== "DrivingSchool") {
                 vehicles = JSON.parse(responseGet.vehicleDetailInfoId);
               } else {
                 vehicles = JSON.parse(responseGet.drivingSchoolVehiclesInfoId);
               }
               Object.entries(vehicles).forEach(([key, value]) => {
-                if (value === id) {
+                if (value === data.id) {
                   delete vehicles[key];
                 }
               });
-
+              // debugger;
               let updateUserProfile = {};
-              if (responseGet.role === "Instuctor") {
+              if (responseGet.role !== "DrivingSchool") {
                 updateUserProfile = {
                   ...responseGet,
                   vehicleDetailInfoId: JSON.stringify(vehicles),
@@ -2531,7 +2532,7 @@ class UserDocuments extends Component {
                 </Translation>
               </Modal.Body>
               <Modal.Footer>
-                {this.state.loading || this.state.isAddDisable ? (
+                {/* {this.state.loading || this.state.isAddDisable ? (
                   <div
                     style={{
                       display: "flex",
@@ -2560,7 +2561,15 @@ class UserDocuments extends Component {
                   >
                     {t("Add")}
                   </Button>
-                )}
+                )} */}
+                <Button
+                  style={{ marginRight: 20 }}
+                  className="form-cust-btn"
+                  onClick={this.handleSubmit}
+                  disabled={this.state.isAddDisable}
+                >
+                  {t("Add")}
+                </Button>
               </Modal.Footer>
             </Modal>
             {/* update data model */}

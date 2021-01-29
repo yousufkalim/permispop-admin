@@ -152,7 +152,7 @@ function Limitaions() {
     var finduser = userLimits.customValues.find(
       (item) => item.user.id === newCustom.user
     );
-    debugger;
+    // debugger;
     console.log(finduser);
     if (finduser === undefined) {
       // perform saving actions
@@ -233,7 +233,7 @@ function Limitaions() {
   };
 
   const handleUpdateField = (e, field) => {
-    debugger;
+    // debugger;
     var updateis = updateCustom;
     updateis[field] = parseInt(e.target.value);
     setUpdateCustom(updateis);

@@ -86,7 +86,7 @@ class Dispute extends Component {
         (s, r) => {
           // console.log("drispuet r",r);
           if (this.state.status === "Student Suspended") {
-            debugger;
+            // debugger;
             this.deactivateUser(this.state.sInfo.id);
           } else if (this.state.status === "Instructor Suspended") {
             this.deactivateUser(this.state.IInfo.id);
@@ -130,7 +130,7 @@ class Dispute extends Component {
           BanStatus: "DeActive",
           BanDate: "",
         };
-        debugger;
+        // debugger;
         var dataTo = JSON.stringify(profiledataUnban);
         this.WebServicesManager.postApiCall(
           {

@@ -32,7 +32,7 @@ class ID extends Component {
     } else {
       statusis = e.target.checked;
     }
-    debugger;
+    // debugger;
     var lengthToMatch;
     if (this.props.role === "Student" || this.props.role === "student") {
       lengthToMatch = 2;

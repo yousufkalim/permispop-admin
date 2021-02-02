@@ -32,7 +32,7 @@ export class UpdateRequest extends Component {
         token,
       },
       (statusCode, responseRequest) => {
-        console.log(responseRequest);
+        console.log("responseRequest", responseRequest);
         var pendingList = [];
         var completeList = [];
         if (responseRequest.length > 0) {
@@ -96,34 +96,39 @@ export class UpdateRequest extends Component {
                             </thead>
                             <tbody>
                               {this.state.pendingRequest.length > 0 ? (
-                                this.state.pendingRequest.map((item) => (
-                                  <tr>
-                                    <td>{`${item.user.firstName} ${item.user.surName}`}</td>
-                                    <td>{item.updateField}</td>
-                                    <td>{item.description}</td>
-                                    <td>
-                                      <Button
-                                        style={{ margin: "5px 10px" }}
-                                        varient="success"
-                                        onClick={() =>
-                                          this.MakeRequestComplete(item.id)
-                                        }
-                                      >
-                                        Complete
-                                      </Button>
-                                      <Link
-                                        to={{
-                                          pathname: "/admin/users",
-                                          user_id: item.user.id,
-                                        }}
-                                      >
-                                        <Button style={{ margin: "5px 10px" }}>
-                                          Update Profile
-                                        </Button>
-                                      </Link>
-                                    </td>
-                                  </tr>
-                                ))
+                                this.state.pendingRequest.map(
+                                  (item) =>
+                                    item.user && (
+                                      <tr>
+                                        <td>{`${item.user.firstName} ${item.user.surName}`}</td>
+                                        <td>{item.updateField}</td>
+                                        <td>{item.description}</td>
+                                        <td>
+                                          <Button
+                                            style={{ margin: "5px 10px" }}
+                                            varient="success"
+                                            onClick={() =>
+                                              this.MakeRequestComplete(item.id)
+                                            }
+                                          >
+                                            Complete
+                                          </Button>
+                                          <Link
+                                            to={{
+                                              pathname: "/admin/users",
+                                              user_id: item.user.id,
+                                            }}
+                                          >
+                                            <Button
+                                              style={{ margin: "5px 10px" }}
+                                            >
+                                              Update Profile
+                                            </Button>
+                                          </Link>
+                                        </td>
+                                      </tr>
+                                    )
+                                )
                               ) : (
                                 <tr>
                                   <td

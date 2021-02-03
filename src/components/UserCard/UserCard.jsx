@@ -50,7 +50,12 @@ export class UserCard extends Component {
       backIdPathError: this.props.backIDPhoto,
       banStatus: "",
       banDate: "",
+      spokenLanguage: this.props.spokenLanguage,
+      whichPlatform: this.props.whichPlatform,
+      giveOurPlatformTime: this.props.giveOurPlatformTime,
+      workWithOther: this.props.workWithOther,
     };
+    console.log("giveOurPlatformTime", this.state.giveOurPlatformTime);
   }
 
   componentWillMount() {
@@ -230,7 +235,10 @@ export class UserCard extends Component {
       RegistrationDate: this.props.RegistrationDate,
       documentTested: this.props.documentTested,
       CPFAccept: this.props.cpfAccept,
-      SpokenLanguage: this.props.spokenLanguage,
+      spokenLanguage: this.props.spokenLanguage,
+      whichPlatform: this.props.whichPlatform,
+      giveOurPlatformTime: this.props.giveOurPlatformTime,
+      workWithOther: this.props.workWithOther,
     };
     var datais = JSON.stringify(data);
     this.WebServicesManager.postApiCall(
@@ -510,6 +518,44 @@ export class UserCard extends Component {
                     <th>Phone</th>
                     <td>{this.props.phone}</td>
                   </tr>
+                  {this.props.role !== "Student" ? (
+                    <>
+                      <tr>
+                        <th>Will work on our Platform for</th>
+                        {this.props.giveOurPlatformTime !== null &&
+                        this.props.giveOurPlatformTime !== undefined ? (
+                          <td>{this.props.giveOurPlatformTime} (hr/month)</td>
+                        ) : (
+                          <td>N/A</td>
+                        )}
+                      </tr>
+                      <tr>
+                        <th>Working On Other Platform</th>
+                        {this.props.workWithOther === "true" ? (
+                          <td>{this.props.whichPlatform}</td>
+                        ) : (
+                          <td>N/A</td>
+                        )}
+                      </tr>
+                      <tr>
+                        <th>Spoken Language/s</th>
+                        {this.props.spokenLanguage.length > 0 ? (
+                          <td>{this.props.spokenLanguage.join(", ")}</td>
+                        ) : (
+                          <td>N/A</td>
+                        )}
+                      </tr>
+                    </>
+                  ) : (
+                    <tr>
+                      <th>Spoken Language/s</th>
+                      {this.props.spokenLanguage.length > 0 ? (
+                        <td>{this.props.spokenLanguage.join(", ")}</td>
+                      ) : (
+                        <td>N/A</td>
+                      )}
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>

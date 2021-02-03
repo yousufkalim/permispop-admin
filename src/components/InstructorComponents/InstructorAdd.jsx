@@ -502,7 +502,7 @@ class InstructorAdd extends Component {
 
   validationCheckforPassword = (e) => {
     this.setState({ Password: e.target.value }, () => {
-      debugger;
+      // debugger;
       if (!Utilities.checkNull(this.state.Password)) {
         this.setState({
           PasswordError: "Should Not be empty",

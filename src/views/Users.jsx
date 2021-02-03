@@ -195,6 +195,9 @@ class Users extends Component {
                     bgImage="https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400"
                     {...this.state.userDetails}
                   />
+                  {console.log("...this.state.userDetails", {
+                    ...this.state.userDetails,
+                  })}
                 </Col>
                 <Col md={8}>
                   <Card

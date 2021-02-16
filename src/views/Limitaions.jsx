@@ -37,7 +37,7 @@ function Limitaions() {
 
   const loadData = () => {
     setCustomValue([]);
-    fetch("http://160.153.244.127:9093/api/dynamic/", {
+    fetch("http://160.153.244.127:9094/api/dynamic/", {
       method: "GET",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("userdata"),
@@ -156,7 +156,7 @@ function Limitaions() {
     console.log(finduser);
     if (finduser === undefined) {
       // perform saving actions
-      fetch("http://160.153.244.127:9093/api/dynamic/adduserlimits", {
+      fetch("http://160.153.244.127:9094/api/dynamic/adduserlimits", {
         method: "POST",
         headers: {
           Authorization: "Bearer " + localStorage.getItem("userdata"),
@@ -181,7 +181,7 @@ function Limitaions() {
   };
   const updateRecordToDb = () => {
     // perform saving actions
-    fetch("http://160.153.244.127:9093/api/dynamic/updateuserlimits", {
+    fetch("http://160.153.244.127:9094/api/dynamic/updateuserlimits", {
       method: "POST",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("userdata"),
@@ -205,7 +205,7 @@ function Limitaions() {
     const confirm = window.confirm("Are you sure want to delete?" + id);
 
     if (confirm === true) {
-      fetch("http://160.153.244.127:9093/api/dynamic/removeuserlimits/" + id, {
+      fetch("http://160.153.244.127:9094/api/dynamic/removeuserlimits/" + id, {
         method: "GET",
         headers: {
           Authorization: "Bearer " + localStorage.getItem("userdata"),

@@ -23,6 +23,58 @@ export class UserCard extends Component {
     this.state = {
       items: [],
       showModal: false,
+      firstName: "",
+      surName: "",
+      email: "",
+      contactEmail: "",
+      secondEmail: "",
+      secondPhone: "",
+      password: "",
+      dob: "",
+      phone: "",
+      address: "",
+      city: "",
+      zip: "",
+      zipError: "",
+      disableSubmit: false,
+      lat: "",
+      long: "",
+      addressError: "",
+      gender: "",
+      complement: "",
+      highWayCodeDate: "",
+      neph: "",
+      frontIDPhoto: "",
+      backIDPhoto: "",
+      frontIdPathError: "",
+      backIdPathError: "",
+      banStatus: "",
+      banDate: "",
+      spokenLanguage: "",
+      whichPlatform: "",
+      giveOurPlatformTime: "",
+      workWithOther: "",
+    };
+  }
+
+  componentWillMount() {
+    var tokn = localStorage.getItem("userdata");
+    this.WebServicesManager.getApiWithParamCall(
+      {
+        endPoint: "Profile/GetProfileByPersonalId",
+        dataToFetch: this.props.id,
+        token: tokn,
+      },
+      (statusCode, response) => {
+        this.setState({
+          banStatus: response.banStatus !== null ? response.banStatus : "",
+          banDate: response.banDate !== null ? response.banDate : "",
+        });
+      }
+    );
+    this.setState({
+      items: [],
+      showModal: false,
       firstName: this.props.firstName,
       surName: this.props.surName,
       email: this.props.email,
@@ -54,25 +106,47 @@ export class UserCard extends Component {
       whichPlatform: this.props.whichPlatform,
       giveOurPlatformTime: this.props.giveOurPlatformTime,
       workWithOther: this.props.workWithOther,
-    };
-    console.log("giveOurPlatformTime", this.state.giveOurPlatformTime);
+    });
   }
-
-  componentWillMount() {
-    var tokn = localStorage.getItem("userdata");
-    this.WebServicesManager.getApiWithParamCall(
-      {
-        endPoint: "Profile/GetProfileByPersonalId",
-        dataToFetch: this.props.id,
-        token: tokn,
-      },
-      (statusCode, response) => {
-        this.setState({
-          banStatus: response.banStatus !== null ? response.banStatus : "",
-          banDate: response.banDate !== null ? response.banDate : "",
-        });
-      }
-    );
+  componentDidUpdate(prevProps, prevState) {
+    console.log("prev Props");
+    if (this.props.firstName !== this.state.firstName) {
+      this.setState({
+        items: [],
+        showModal: false,
+        firstName: this.props.firstName,
+        surName: this.props.surName,
+        email: this.props.email,
+        contactEmail: this.props.contactEmail,
+        secondEmail: this.props.secondEmail,
+        secondPhone: this.props.secondPhone,
+        password: this.props.password,
+        dob: this.props.dob,
+        phone: this.props.phone,
+        address: this.props.address,
+        city: this.props.city,
+        zip: this.props.zip,
+        zipError: "",
+        disableSubmit: false,
+        lat: this.props.lat,
+        long: this.props.long,
+        addressError: "",
+        gender: this.props.gender,
+        complement: this.props.complement,
+        highWayCodeDate: this.props.highWayCodeDate,
+        neph: this.props.neph,
+        frontIDPhoto: "",
+        backIDPhoto: "",
+        frontIdPathError: this.props.frontIDPhoto,
+        backIdPathError: this.props.backIDPhoto,
+        banStatus: "",
+        banDate: "",
+        spokenLanguage: this.props.spokenLanguage,
+        whichPlatform: this.props.whichPlatform,
+        giveOurPlatformTime: this.props.giveOurPlatformTime,
+        workWithOther: this.props.workWithOther,
+      });
+    }
   }
 
   handleFrontFileSelect = (e) => {
@@ -143,7 +217,6 @@ export class UserCard extends Component {
     )
       .then((response) => response.json())
       .then((responseJson) => {
-        console.log("res address", responseJson);
         var addressToSet = [];
         for (var i = 0; i < responseJson.features.length; i++) {
           addressToSet.push({
@@ -316,7 +389,6 @@ export class UserCard extends Component {
             token: tokn,
           },
           (statusCode, response) => {
-            console.log("update", response);
             this.WebServicesManager.getApiWithParamCall(
               {
                 endPoint: "Personal/SendEmail",
@@ -378,7 +450,6 @@ export class UserCard extends Component {
             token: tokn,
           },
           (statusCode, response) => {
-            console.log("update", response);
             this.WebServicesManager.getApiWithParamCall(
               {
                 endPoint: "Personal/SendEmail",
@@ -402,7 +473,6 @@ export class UserCard extends Component {
 
   handlefuntDeActive = () => {
     var tokn = localStorage.getItem("userdata");
-    console.log("this.props", this.props);
     this.WebServicesManager.getApiWithParamCall(
       {
         endPoint: "Profile/GetProfileByPersonalId",
@@ -580,7 +650,7 @@ export class UserCard extends Component {
               style={{ marginLeft: 10, marginTop: 10 }}
               onClick={() => this.setState({ showModal: true })}
             >
-              Upadate Data
+              Update Data
             </Button>
             {this.state.banStatus === "" ? (
               <DropdownButton
@@ -636,6 +706,7 @@ export class UserCard extends Component {
         </div>
         <hr />
         <div className="text-center">{this.props.socials}</div>
+        {console.log("My Custom", this.props)}
         <Modal
           show={this.state.showModal}
           onHide={() => this.setState({ showModal: false })}
@@ -643,6 +714,7 @@ export class UserCard extends Component {
           keyboard={false}
           size="xl"
         >
+          {console.log(this.state.firstName, this.props.firstName)}
           <Modal.Header closeButton>
             <Modal.Title>Update Data</Modal.Title>
           </Modal.Header>
@@ -655,6 +727,7 @@ export class UserCard extends Component {
                       <div className="clearfix" />
                       <div className="container-flex">
                         <div>
+                          {console.log("My Custom 2", this.props)}
                           <div className="row">
                             <div className="col-md-6">
                               <FormGroup>

@@ -1335,7 +1335,7 @@ class InstructorAdd extends Component {
             this.state.businessKBISImage !== "" &&
             this.state.businessKBISImage !== null
               ? this.state.businessKBISImage
-              : "http://160.153.244.127:9090/CredentialFiles/placeholderimage.png",
+              : "http://api.permispop.fr/CredentialFiles/placeholderimage.png",
           folder: f,
         };
         var dataToInsertOfStep4 = JSON.stringify(bInfo);

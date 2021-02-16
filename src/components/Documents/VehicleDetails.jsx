@@ -191,22 +191,22 @@ class VehicleRegistration extends Component {
                 <br />
                 Police Number: {this.state.vehiclePoliceNumber}
                 <br />
-                Start Data:{" "}
+                Start Date:{" "}
                 {moment(this.state.vehicleInsuranceStartDate).format(
                   "DD/MM/YYYY"
                 )}
                 <br />
-                End Data:{" "}
+                End Date:{" "}
                 {moment(this.state.vehicleInsuranceEndDate).format(
                   "DD/MM/YYYY"
                 )}
                 <hr />
                 <b>Technical Control</b>
                 <br />
-                Start Data:{" "}
+                Start Date :{" "}
                 {moment(this.state.startDateOfTech).format("DD/MM/YYYY")}
                 <br />
-                End Data:{" "}
+                End Date:{" "}
                 {moment(this.state.endDateOfTech).format("DD/MM/YYYY")}
                 <hr />
                 <Button varient="success" onClick={this.handleModelShow}>

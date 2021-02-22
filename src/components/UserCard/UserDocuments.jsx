@@ -103,7 +103,8 @@ class UserDocuments extends Component {
   componentWillMount() {
     var tokn = localStorage.getItem("userdata");
     this.setState({
-      folder: `${this.props.id}_${this.props.firstName}_${this.props.surName}`,
+      // folder: `${this.props.id}_${this.props.firstName}_${this.props.surName}`,
+      folder: `${this.props.id}`,
     });
     this.loadDataFromProps();
   }
@@ -836,7 +837,8 @@ class UserDocuments extends Component {
       endData: this.state.endDateOfTech,
       folder: this.state.folder,
     };
-
+    console.log("vehicleInsurance", vehicleInsurance);
+    console.log("vehicleTechnicalControl", vehicleTechnicalControl);
     let token = localStorage.getItem("userdata");
     // api call for posting Vehicle Insurance data
     var insuranceDetail,
@@ -1048,9 +1050,20 @@ class UserDocuments extends Component {
         VInsuranceImagePath: insuranceDetail?.greenCardImagePath,
         VpoliceNumber: insuranceDetail?.policeNumber,
         VStartDate: new Date(
-          moment(insuranceDetail?.startDate).local().format()
+          moment(
+            insuranceDetail.stateDate ? insuranceDetail.stateDate : "2021-01-01"
+          )
+            .local()
+            .format()
         ),
-        VEndDate: new Date(moment(insuranceDetail?.endDate).local().format()),
+
+        VEndDate: new Date(
+          moment(
+            insuranceDetail.endDate ? insuranceDetail.endData : "2021-01-01"
+          )
+            .local()
+            .format()
+        ),
         //   technical control
         startDateOfTech: new Date(
           moment(technicalControlDetial?.startDateOfTech).local().format()

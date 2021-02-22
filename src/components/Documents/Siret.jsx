@@ -90,7 +90,8 @@ class Siret extends Component {
         id: this.props.businessInfoId,
         siratImagePath: this.state.siratImagePath,
         siretNumber: this.state.siretNumber,
-        folder: `${this.props.id}_${this.props.firstName}_${this.props.surName}`,
+        folder: `${this.props.id}`,
+        // folder: `${this.props.id}_${this.props.firstName}_${this.props.surName}`,
       };
       this.WebServicesManager.getApiWithParamCall(
         {
@@ -143,7 +144,8 @@ class Siret extends Component {
         id: this.props.businessInfoId,
         SiratImagePath: this.state.siratImagePath,
         SiretNumber: this.state.siretNumber,
-        Folder: `${this.props.id}_${this.props.firstName}_${this.props.surName}`,
+        Folder: `${this.props.id}`,
+        // Folder: `${this.props.id}_${this.props.firstName}_${this.props.surName}`,
       };
       this.WebServicesManager.postApiCall(
         {

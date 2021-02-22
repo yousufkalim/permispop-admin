@@ -21,7 +21,7 @@ class FileDisplay extends Component {
             src={
               this.props.file !== "" || this.props.file !== null
                 ? this.props.file
-                : "http://api.permispop.fr/CredentialFiles/placeholderimage.png"
+                : "http://160.153.244.127:9090r/CredentialFiles/placeholderimage.png"
             }
           />
         );
@@ -31,7 +31,9 @@ class FileDisplay extends Component {
         <img
           style={{ width: "100%", height: "100", overflow: "hidden" }}
           alt="image_file_here"
-          src={"http://api.permispop.fr/CredentialFiles/placeholderimage.png"}
+          src={
+            "http://160.153.244.127:9090/CredentialFiles/placeholderimage.png"
+          }
         />
       );
     }

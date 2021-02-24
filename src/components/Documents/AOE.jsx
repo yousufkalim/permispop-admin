@@ -28,35 +28,35 @@ class AOE extends Component {
   }
   componentDidMount() {
     var tokn = localStorage.getItem("userdata");
-    if (this.props.role === "DSInstructor") {
-      const response = JSON.parse(this.props.exersiceAuthorizationInfoId);
-      this.setState({
-        aoe: response,
-        authorizationImagePath: response.authorizationImagePath,
-        authorizationDate: response.authorizationDate,
-        expirationDate: response.expirationDate,
-        issuingAuthority: response.issuingAuthority,
-      });
-    } else {
-      this.WebServicesManager.getApiWithParamCall(
-        {
-          endPoint: "ExersiceAuthorization/GetExersiceAuthorityByUserId",
-          dataToFetch: this.props.exersiceAuthorizationInfoId,
-          token: tokn,
-        },
-        (statusCode, response) => {
-          if (response !== null) {
-            this.setState({
-              aoe: response,
-              authorizationImagePath: response.authorizationImagePath,
-              authorizationDate: response.authorizationDate,
-              expirationDate: response.expirationDate,
-              issuingAuthority: response.issuingAuthority,
-            });
-          }
+    // if (this.props.role === "DSInstructor") {
+    //   const response = JSON.parse(this.props.exersiceAuthorizationInfoId);
+    //   this.setState({
+    //     aoe: response,
+    //     authorizationImagePath: response.authorizationImagePath,
+    //     authorizationDate: response.authorizationDate,
+    //     expirationDate: response.expirationDate,
+    //     issuingAuthority: response.issuingAuthority,
+    //   });
+    // } else {
+    this.WebServicesManager.getApiWithParamCall(
+      {
+        endPoint: "ExersiceAuthorization/GetExersiceAuthorityByUserId",
+        dataToFetch: this.props.exersiceAuthorizationInfoId,
+        token: tokn,
+      },
+      (statusCode, response) => {
+        if (response !== null) {
+          this.setState({
+            aoe: response,
+            authorizationImagePath: response.authorizationImagePath,
+            authorizationDate: response.authorizationDate,
+            expirationDate: response.expirationDate,
+            issuingAuthority: response.issuingAuthority,
+          });
         }
-      );
-    }
+      }
+    );
+    // }
   }
 
   handleModelShow = () => {
@@ -94,84 +94,84 @@ class AOE extends Component {
     var tokn = localStorage.getItem("userdata");
     console.log("save");
     // save login will go here
-    if (this.props.role === "DSInstructor") {
-      const perobj = {
-        id: this.props.exersiceAuthorizationInfoId,
-        authorizationDate: this.state.authorizationDate,
-        issuingAuthority: this.state.issuingAuthority,
-        expirationDate: this.state.expirationDate,
-        authorizationImagePath: this.state.authorizationImagePath,
-        folder: `${this.props.id}`,
-        // folder:`${this.props.id}_${this.props.firstName}_${this.props.surName}`,
-      };
-      this.WebServicesManager.getApiWithParamCall(
-        {
-          endPoint: "Profile/GetProfileByPersonalId",
-          dataToFetch: this.props.personalInfoId,
-          token: tokn,
-        },
-        (statusCode, response) => {
-          // get all detail and reassign
-          const info = {
-            id: response.id,
-            role: response.role,
-            PersonalInfoId: response.personalInfoId,
-            DrivingLisenceInfoId: response.drivingLisenceInfoId,
-            ExersiceAuthorizationInfoId: JSON.stringify(perobj),
-            VehicleDetailInfoId: response.VehicleDetailInfoId,
-            VehicleInsuranceInfoId: response.vehicleInsuranceInfoId,
-            DrivingSchoolInsuranceInfoId: response.drivingSchoolInsuranceInfoId,
-            TechnicalControlInfoId: response.technicalControlInfoId,
-            BusinessInfoId: response.businessInfoId,
-            InsuranceCompanyInfoId: response.insuranceCompanyInfoId,
-            DrivingSchoolIdentityInfoId: response.drivingSchoolIdentityInfoId,
-            DrivingSchoolApprovalInfoId: response.drivingSchoolApprovalInfoId,
-            DrivingSchoolManagerInfoId: response.drivingSchoolManagerInfoId,
-            DrivingSchoolVehiclesInfoId: response.DrivingSchoolVehiclesInfoId,
-            DrivingSchoolInstructorInfoId:
-              response.drivingSchoolInstructorInfoId,
-            Lat: response.lat,
-            Long: response.long,
-            Status: response.status,
-            BanStatus: response.banStatus,
-            BanDate: response.banDate,
-          };
-          const dataToUpdate = JSON.stringify(info);
-          this.WebServicesManager.postApiCall(
-            {
-              endPoint: "Profile/UpdateProfile",
-              dataToInsert: dataToUpdate,
-              token: tokn,
-            },
-            (statusCode, response) => {
-              console.log("after update", response);
-              window.location.reload();
-            }
-          );
-        }
-      );
-    } else {
-      const perobj = {
-        id: this.props.exersiceAuthorizationInfoId,
-        AuthorizationDate: this.state.authorizationDate,
-        IssuingAuthority: this.state.issuingAuthority,
-        ExpirationDate: this.state.expirationDate,
-        AuthorizationImagePath: this.state.authorizationImagePath,
-        Folder: `${this.props.id}`,
-        // Folder: `${this.props.id}_${this.props.firstName}_${this.props.surName}`,
-      };
-      this.WebServicesManager.postApiCall(
-        {
-          endPoint: "ExersiceAuthorization/UpdateExersiceAuthorization",
-          dataToInsert: JSON.stringify(perobj),
-          token: tokn,
-        },
-        (statusCode, Resp) => {
-          console.log("Resp", Resp);
-          window.location.reload();
-        }
-      );
-    }
+    // if (this.props.role === "DSInstructor") {
+    //   const perobj = {
+    //     id: this.props.exersiceAuthorizationInfoId,
+    //     authorizationDate: this.state.authorizationDate,
+    //     issuingAuthority: this.state.issuingAuthority,
+    //     expirationDate: this.state.expirationDate,
+    //     authorizationImagePath: this.state.authorizationImagePath,
+    //     folder: `${this.props.id}`,
+    //     // folder:`${this.props.id}_${this.props.firstName}_${this.props.surName}`,
+    //   };
+    //   this.WebServicesManager.getApiWithParamCall(
+    //     {
+    //       endPoint: "Profile/GetProfileByPersonalId",
+    //       dataToFetch: this.props.personalInfoId,
+    //       token: tokn,
+    //     },
+    //     (statusCode, response) => {
+    //       // get all detail and reassign
+    //       const info = {
+    //         id: response.id,
+    //         role: response.role,
+    //         PersonalInfoId: response.personalInfoId,
+    //         DrivingLisenceInfoId: response.drivingLisenceInfoId,
+    //         ExersiceAuthorizationInfoId: JSON.stringify(perobj),
+    //         VehicleDetailInfoId: response.VehicleDetailInfoId,
+    //         VehicleInsuranceInfoId: response.vehicleInsuranceInfoId,
+    //         DrivingSchoolInsuranceInfoId: response.drivingSchoolInsuranceInfoId,
+    //         TechnicalControlInfoId: response.technicalControlInfoId,
+    //         BusinessInfoId: response.businessInfoId,
+    //         InsuranceCompanyInfoId: response.insuranceCompanyInfoId,
+    //         DrivingSchoolIdentityInfoId: response.drivingSchoolIdentityInfoId,
+    //         DrivingSchoolApprovalInfoId: response.drivingSchoolApprovalInfoId,
+    //         DrivingSchoolManagerInfoId: response.drivingSchoolManagerInfoId,
+    //         DrivingSchoolVehiclesInfoId: response.DrivingSchoolVehiclesInfoId,
+    //         DrivingSchoolInstructorInfoId:
+    //           response.drivingSchoolInstructorInfoId,
+    //         Lat: response.lat,
+    //         Long: response.long,
+    //         Status: response.status,
+    //         BanStatus: response.banStatus,
+    //         BanDate: response.banDate,
+    //       };
+    //       const dataToUpdate = JSON.stringify(info);
+    //       this.WebServicesManager.postApiCall(
+    //         {
+    //           endPoint: "Profile/UpdateProfile",
+    //           dataToInsert: dataToUpdate,
+    //           token: tokn,
+    //         },
+    //         (statusCode, response) => {
+    //           console.log("after update", response);
+    //           window.location.reload();
+    //         }
+    //       );
+    //     }
+    //   );
+    // } else {
+    const perobj = {
+      id: this.props.exersiceAuthorizationInfoId,
+      AuthorizationDate: this.state.authorizationDate,
+      IssuingAuthority: this.state.issuingAuthority,
+      ExpirationDate: this.state.expirationDate,
+      AuthorizationImagePath: this.state.authorizationImagePath,
+      Folder: `${this.props.id}`,
+      // Folder: `${this.props.id}_${this.props.firstName}_${this.props.surName}`,
+    };
+    this.WebServicesManager.postApiCall(
+      {
+        endPoint: "ExersiceAuthorization/UpdateExersiceAuthorization",
+        dataToInsert: JSON.stringify(perobj),
+        token: tokn,
+      },
+      (statusCode, Resp) => {
+        console.log("Resp", Resp);
+        window.location.reload();
+      }
+    );
+    // }
   };
 
   render() {

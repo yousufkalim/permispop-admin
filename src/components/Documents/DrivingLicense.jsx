@@ -37,47 +37,47 @@ class DrivingLicense extends Component {
   componentDidMount() {
     var tokn = localStorage.getItem("userdata");
     console.log("this.props.DLID", this.props);
-    if (this.props.role === "DSInstructor") {
-      var response = JSON.parse(this.props.drivingLisenceInfoId);
-      if (response !== null) {
-        this.setState({
-          dLic: response,
-          lisenceNumber: response.lisenceNumber,
-          deliveryPlace: response.deliveryPlace,
-          obtainingDate: response.obtainingDate,
-          validityDate: response.validityDate,
-          drivingLisenceImagePath: response.drivingLisenceImagePath,
-          already_have_license: response.already_have_license,
-          licenses_for: response.licenses_for,
-          licenses_type: response.licenses_type,
-          folder: response.folder,
-        });
-      }
-    } else {
-      this.WebServicesManager.getApiWithParamCall(
-        {
-          endPoint: "DrivingLisence/GetDrivingLisenceByInstructor",
-          dataToFetch: this.props.drivingLisenceInfoId,
-          token: tokn,
-        },
-        (statusCode, response) => {
-          if (response !== null) {
-            this.setState({
-              dLic: response,
-              lisenceNumber: response.lisenceNumber,
-              deliveryPlace: response.deliveryPlace,
-              obtainingDate: response.obtainingDate,
-              validityDate: response.validityDate,
-              drivingLisenceImagePath: response.drivingLisenceImagePath,
-              already_have_license: response.already_have_license,
-              licenses_for: response.licenses_for,
-              licenses_type: response.licenses_type,
-              folder: response.folder,
-            });
-          }
+    // if (this.props.role === "DSInstructor") {
+    //   var response = JSON.parse(this.props.drivingLisenceInfoId);
+    //   if (response !== null) {
+    //     this.setState({
+    //       dLic: response,
+    //       lisenceNumber: response.lisenceNumber,
+    //       deliveryPlace: response.deliveryPlace,
+    //       obtainingDate: response.obtainingDate,
+    //       validityDate: response.validityDate,
+    //       drivingLisenceImagePath: response.drivingLisenceImagePath,
+    //       already_have_license: response.already_have_license,
+    //       licenses_for: response.licenses_for,
+    //       licenses_type: response.licenses_type,
+    //       folder: response.folder,
+    //     });
+    //   }
+    // } else {
+    this.WebServicesManager.getApiWithParamCall(
+      {
+        endPoint: "DrivingLisence/GetDrivingLisenceByInstructor",
+        dataToFetch: this.props.drivingLisenceInfoId,
+        token: tokn,
+      },
+      (statusCode, response) => {
+        if (response !== null) {
+          this.setState({
+            dLic: response,
+            lisenceNumber: response.lisenceNumber,
+            deliveryPlace: response.deliveryPlace,
+            obtainingDate: response.obtainingDate,
+            validityDate: response.validityDate,
+            drivingLisenceImagePath: response.drivingLisenceImagePath,
+            already_have_license: response.already_have_license,
+            licenses_for: response.licenses_for,
+            licenses_type: response.licenses_type,
+            folder: response.folder,
+          });
         }
-      );
-    }
+      }
+    );
+    // }
   }
   handleFrontFileSelect = (e) => {
     if (
@@ -110,96 +110,96 @@ class DrivingLicense extends Component {
     var tokn = localStorage.getItem("userdata");
     console.log("save");
     // save login will go here
-    if (this.props.role === "DSInstructor") {
-      const perobj = {
-        id: this.props.drivingLisenceInfoId,
-        lisenceNumber: this.state.lisenceNumber,
-        deliveryPlace: this.state.deliveryPlace,
-        obtainingDate: this.state.obtainingDate,
-        validityDate: this.state.validityDate,
-        drivingLisenceImagePath: this.state.drivingLisenceImagePath,
-        already_have_license: this.state.already_have_license,
-        licenses_for:
-          this.state.licenses_for === null ? "" : this.state.licenses_for,
-        licenses_type:
-          this.state.licenses_type === null ? "" : this.state.licenses_type,
-        folder: `${this.props.id}`,
-        // folder:`${this.props.id}_${this.props.firstName}_${this.props.surName}`,
-      };
-      this.WebServicesManager.getApiWithParamCall(
-        {
-          endPoint: "Profile/GetProfileByPersonalId",
-          dataToFetch: this.props.personalInfoId,
-          token: tokn,
-        },
-        (statusCode, response) => {
-          // get all detail and reassign
-          const info = {
-            id: response.id,
-            role: response.role,
-            PersonalInfoId: response.personalInfoId,
-            DrivingLisenceInfoId: JSON.stringify(perobj),
-            ExersiceAuthorizationInfoId: response.exersiceAuthorizationInfoId,
-            VehicleDetailInfoId: response.VehicleDetailInfoId,
-            VehicleInsuranceInfoId: response.vehicleInsuranceInfoId,
-            DrivingSchoolInsuranceInfoId: response.drivingSchoolInsuranceInfoId,
-            TechnicalControlInfoId: response.technicalControlInfoId,
-            BusinessInfoId: response.businessInfoId,
-            InsuranceCompanyInfoId: response.insuranceCompanyInfoId,
-            DrivingSchoolIdentityInfoId: response.drivingSchoolIdentityInfoId,
-            DrivingSchoolApprovalInfoId: response.drivingSchoolApprovalInfoId,
-            DrivingSchoolManagerInfoId: response.drivingSchoolManagerInfoId,
-            DrivingSchoolVehiclesInfoId: response.DrivingSchoolVehiclesInfoId,
-            DrivingSchoolInstructorInfoId:
-              response.drivingSchoolInstructorInfoId,
-            Lat: response.lat,
-            Long: response.long,
-            Status: response.status,
-            BanStatus: response.banStatus,
-            BanDate: response.banDate,
-          };
-          const dataToUpdate = JSON.stringify(info);
-          this.WebServicesManager.postApiCall(
-            {
-              endPoint: "Profile/UpdateProfile",
-              dataToInsert: dataToUpdate,
-              token: tokn,
-            },
-            (statusCode, response) => {
-              console.log("after update", response);
-              window.location.reload();
-            }
-          );
-        }
-      );
-    } else {
-      const perobj = {
-        id: this.props.drivingLisenceInfoId,
-        LisenceNumber: this.state.lisenceNumber,
-        DeliveryPlace: this.state.deliveryPlace,
-        ObtainingDate: this.state.obtainingDate,
-        ValidityDate: this.state.validityDate,
-        drivingLisenceImagePath: this.state.drivingLisenceImagePath,
-        already_have_license: this.state.already_have_license,
-        licenses_for:
-          this.state.licenses_for === null ? "" : this.state.licenses_for,
-        licenses_type:
-          this.state.licenses_type === null ? "" : this.state.licenses_type,
-        Folder: `${this.props.id}`,
-        // Folder: `${this.props.id}_${this.props.firstName}_${this.props.surName}`,
-      };
-      this.WebServicesManager.postApiCall(
-        {
-          endPoint: "DrivingLisence/UpdateDrivingLisenceNew",
-          dataToInsert: JSON.stringify(perobj),
-          token: tokn,
-        },
-        (statusCode, Resp) => {
-          console.log("Resp", Resp);
-          window.location.reload();
-        }
-      );
-    }
+    // if (this.props.role === "DSInstructor") {
+    //   const perobj = {
+    //     id: this.props.drivingLisenceInfoId,
+    //     lisenceNumber: this.state.lisenceNumber,
+    //     deliveryPlace: this.state.deliveryPlace,
+    //     obtainingDate: this.state.obtainingDate,
+    //     validityDate: this.state.validityDate,
+    //     drivingLisenceImagePath: this.state.drivingLisenceImagePath,
+    //     already_have_license: this.state.already_have_license,
+    //     licenses_for:
+    //       this.state.licenses_for === null ? "" : this.state.licenses_for,
+    //     licenses_type:
+    //       this.state.licenses_type === null ? "" : this.state.licenses_type,
+    //     folder: `${this.props.id}`,
+    //     // folder:`${this.props.id}_${this.props.firstName}_${this.props.surName}`,
+    //   };
+    //   this.WebServicesManager.getApiWithParamCall(
+    //     {
+    //       endPoint: "Profile/GetProfileByPersonalId",
+    //       dataToFetch: this.props.personalInfoId,
+    //       token: tokn,
+    //     },
+    //     (statusCode, response) => {
+    //       // get all detail and reassign
+    //       const info = {
+    //         id: response.id,
+    //         role: response.role,
+    //         PersonalInfoId: response.personalInfoId,
+    //         DrivingLisenceInfoId: JSON.stringify(perobj),
+    //         ExersiceAuthorizationInfoId: response.exersiceAuthorizationInfoId,
+    //         VehicleDetailInfoId: response.VehicleDetailInfoId,
+    //         VehicleInsuranceInfoId: response.vehicleInsuranceInfoId,
+    //         DrivingSchoolInsuranceInfoId: response.drivingSchoolInsuranceInfoId,
+    //         TechnicalControlInfoId: response.technicalControlInfoId,
+    //         BusinessInfoId: response.businessInfoId,
+    //         InsuranceCompanyInfoId: response.insuranceCompanyInfoId,
+    //         DrivingSchoolIdentityInfoId: response.drivingSchoolIdentityInfoId,
+    //         DrivingSchoolApprovalInfoId: response.drivingSchoolApprovalInfoId,
+    //         DrivingSchoolManagerInfoId: response.drivingSchoolManagerInfoId,
+    //         DrivingSchoolVehiclesInfoId: response.DrivingSchoolVehiclesInfoId,
+    //         DrivingSchoolInstructorInfoId:
+    //           response.drivingSchoolInstructorInfoId,
+    //         Lat: response.lat,
+    //         Long: response.long,
+    //         Status: response.status,
+    //         BanStatus: response.banStatus,
+    //         BanDate: response.banDate,
+    //       };
+    //       const dataToUpdate = JSON.stringify(info);
+    //       this.WebServicesManager.postApiCall(
+    //         {
+    //           endPoint: "Profile/UpdateProfile",
+    //           dataToInsert: dataToUpdate,
+    //           token: tokn,
+    //         },
+    //         (statusCode, response) => {
+    //           console.log("after update", response);
+    //           window.location.reload();
+    //         }
+    //       );
+    //     }
+    //   );
+    // } else {
+    const perobj = {
+      id: this.props.drivingLisenceInfoId,
+      LisenceNumber: this.state.lisenceNumber,
+      DeliveryPlace: this.state.deliveryPlace,
+      ObtainingDate: this.state.obtainingDate,
+      ValidityDate: this.state.validityDate,
+      drivingLisenceImagePath: this.state.drivingLisenceImagePath,
+      already_have_license: this.state.already_have_license,
+      licenses_for:
+        this.state.licenses_for === null ? "" : this.state.licenses_for,
+      licenses_type:
+        this.state.licenses_type === null ? "" : this.state.licenses_type,
+      Folder: `${this.props.id}`,
+      // Folder: `${this.props.id}_${this.props.firstName}_${this.props.surName}`,
+    };
+    this.WebServicesManager.postApiCall(
+      {
+        endPoint: "DrivingLisence/UpdateDrivingLisenceNew",
+        dataToInsert: JSON.stringify(perobj),
+        token: tokn,
+      },
+      (statusCode, Resp) => {
+        console.log("Resp", Resp);
+        window.location.reload();
+      }
+    );
+    // }
   };
 
   render() {

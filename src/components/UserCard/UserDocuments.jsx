@@ -1077,6 +1077,8 @@ class UserDocuments extends Component {
         detailID: responseVehicle?.id,
       },
       async () => {
+        console.log("this.state", this.state);
+        debugger;
         await this.getVehicleModelData();
         this.setState({
           model: responseVehicle.model.toUpperCase(),
@@ -1122,7 +1124,6 @@ class UserDocuments extends Component {
       endData: moment(this.state.endDateOfTech).utc().format(),
       folder: this.state.folder,
     };
-
     let token = localStorage.getItem("userdata");
     // api call for posting Vehicle Insurance data
     this.WebServicesManager.putApiWithParams(
@@ -1133,6 +1134,7 @@ class UserDocuments extends Component {
         token,
       },
       (statusCode, responseAddVehicleInsurance) => {
+        console.log("responseAddVehicleInsurance", responseAddVehicleInsurance);
         // let vehicleInsuranceId = responseAddVehicleInsurance.id;
         // api call for adding technical control data
         this.WebServicesManager.putApiWithParams(
@@ -1143,6 +1145,8 @@ class UserDocuments extends Component {
             token,
           },
           (statusCode, responseAddVehicleTC) => {
+            console.log("responseAddVehicleTC", responseAddVehicleTC);
+
             // add vehicle detail
 
             const VehichleDetail = {
@@ -1171,6 +1175,10 @@ class UserDocuments extends Component {
                 token,
               },
               (statusCode, responseAddVehicle) => {
+                console.log("responseAddVehicle", responseAddVehicle);
+
+                debugger;
+
                 window.location.reload();
               }
             );

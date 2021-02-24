@@ -2,9 +2,9 @@ import React from "react";
 import Utilities from "Utilities/Utilities";
 
 export default class WebServicesManager extends React.Component {
-  // baseUrl = "http://localhost:63539/api/";
+  baseUrl = "http://localhost:63539/api/";
   // baseUrl = "https://api.permispop.fr/api/";
-  baseUrl = "http://160.153.244.127:9090/api/";
+  // baseUrl = "http://160.153.244.127:9090/api/";
 
   //Post method
 

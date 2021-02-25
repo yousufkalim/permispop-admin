@@ -1028,6 +1028,7 @@ class UserDocuments extends Component {
     var technicalControlDetial = JSON.parse(
       responseVehicle.technicalControlInfoID
     );
+    console.log("technicalControlDetial", technicalControlDetial);
 
     // update state data and open model
     this.setState(
@@ -1064,13 +1065,20 @@ class UserDocuments extends Component {
             .local()
             .format()
         ),
-        //   technical control
-        startDateOfTech: new Date(
-          moment(technicalControlDetial?.startDateOfTech).local().format()
-        ),
-        endDateOfTech: new Date(
-          moment(technicalControlDetial?.endDateOfTechControl).local().format()
-        ),
+        startDateOfTech:
+          technicalControlDetial.startDateOfTech === ""
+            ? ""
+            : new Date(
+                moment(technicalControlDetial.startDateOfTech).local().format()
+              ),
+        endDateOfTech:
+          technicalControlDetial.endDateOfTechControl === ""
+            ? ""
+            : new Date(
+                moment(technicalControlDetial.endDateOfTechControl)
+                  .local()
+                  .format()
+              ),
         TCImagePath: technicalControlDetial?.technicalControlImagePath,
         techicalID: technicalControlDetial?.id,
         insuranceID: insuranceDetail?.id,
@@ -1085,6 +1093,8 @@ class UserDocuments extends Component {
           showEdit: true,
           // isAddDisable: false,
         });
+        console.log("startDateOfTech", this.state.startDateOfTech);
+        console.log("endDateOfTech", this.state.endDateOfTech);
       }
     );
   };
@@ -2497,6 +2507,7 @@ class UserDocuments extends Component {
                                 selected={this.state.startDateOfTech}
                                 dateFormat="dd/MM/yyyy"
                                 placeholderText="DD/MM/YYYY"
+                                valueDefault={null}
                                 onChange={(date) =>
                                   this.handleChangeDateForStartTech(date)
                                 }
@@ -2520,6 +2531,7 @@ class UserDocuments extends Component {
                                 selected={this.state.endDateOfTech}
                                 dateFormat="dd/MM/yyyy"
                                 placeholderText="DD/MM/YYYY"
+                                valueDefault={null}
                                 onChange={(date) =>
                                   this.handleChangeDateForEndTech(date)
                                 }
@@ -2960,6 +2972,7 @@ class UserDocuments extends Component {
                           </Translation>
                           <DatePicker
                             selected={this.state.startDateOfTech}
+                            valueDefault={null}
                             dateFormat="dd/MM/yyyy"
                             placeholderText="DD/MM/YYYY"
                             onChange={(date) =>
@@ -2983,6 +2996,7 @@ class UserDocuments extends Component {
                           </Translation>
                           <DatePicker
                             selected={this.state.endDateOfTech}
+                            valueDefault={null}
                             dateFormat="dd/MM/yyyy"
                             placeholderText="DD/MM/YYYY"
                             onChange={(date) =>

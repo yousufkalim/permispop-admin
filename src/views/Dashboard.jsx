@@ -52,7 +52,7 @@ class Dashboard extends Component {
   }
   componentDidMount() {
     const token = localStorage.getItem("userdata");
-    fetch("https://node.permispop.fr/api/personal/getusercount", {
+    fetch(`${process.env.REACT_APP_BASE_NODE}personal/getusercount`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -83,7 +83,7 @@ class Dashboard extends Component {
       .catch((err) => console.log("error: ", err));
 
     // fetch data for booking counts limit
-    fetch("https://node.permispop.fr/api/dynamic/getBookingCounts", {
+    fetch(`${process.env.REACT_APP_BASE_NODE}dynamic/getBookingCounts`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -97,7 +97,7 @@ class Dashboard extends Component {
       .catch((e) => console.log(e));
 
     // get limitations
-    fetch("https://node.permispop.fr/api/dynamic/", {
+    fetch(`${process.env.REACT_APP_BASE_NODE}dynamic/`, {
       method: "GET",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("userdata"),
@@ -119,7 +119,7 @@ class Dashboard extends Component {
       () => {
         // api call to update status in backend
         fetch(
-          `https://node.permispop.fr/api/dynamic/updateMailStatus/${status}`,
+          `${process.env.REACT_APP_BASE_NODE}dynamic/updateMailStatus/${status}`,
           {
             method: "GET",
             headers: {
@@ -143,7 +143,7 @@ class Dashboard extends Component {
       startDate: startDate + "T00:00:00Z",
       endDate: endDate + "T23:59:00",
     };
-    fetch(`https://node.permispop.fr/api/dynamic/closerangebooking`, {
+    fetch(`${process.env.REACT_APP_BASE_NODE}/dynamic/closerangebooking`, {
       method: "POST",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("userdata"),

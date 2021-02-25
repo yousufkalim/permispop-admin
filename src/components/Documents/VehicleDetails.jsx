@@ -68,6 +68,8 @@ class VehicleRegistration extends Component {
       endDateOfTechControl: technicalData?.endDateOfTechControl,
       technicalControlImagePath: technicalData?.technicalControlImagePath,
     });
+    debugger;
+    console.log("this.state", this.state);
   }
 
   render() {
@@ -122,9 +124,10 @@ class VehicleRegistration extends Component {
                 <hr />
                 <FileDisplay
                   file={
-                    this.state.technicalControlImagePath !== undefined
-                      ? this.state.technicalControlImagePath
-                      : ""
+                    this.state.technicalControlImagePath === "" ||
+                    this.state.technicalControlImagePath === undefined
+                      ? `${process.env.REACT_APP_BASE_URL_FOR_IMAGES}CredentialFiles/placeholderimage.png`
+                      : this.state.technicalControlImagePath
                   }
                 />
                 <a
@@ -204,10 +207,14 @@ class VehicleRegistration extends Component {
                 <b>Technical Control</b>
                 <br />
                 Start Date :{" "}
-                {moment(this.state.startDateOfTech).format("DD/MM/YYYY")}
+                {this.state.startDateOfTech
+                  ? moment(this.state.startDateOfTech).format("DD/MM/YYYY")
+                  : "N/A"}
                 <br />
                 End Date:{" "}
-                {moment(this.state.endDateOfTech).format("DD/MM/YYYY")}
+                {this.state.endDateOfTechControl
+                  ? moment(this.state.endDateOfTechControl).format("DD/MM/YYYY")
+                  : "N/A"}
                 <hr />
                 <Button varient="success" onClick={this.handleModelShow}>
                   Update Data

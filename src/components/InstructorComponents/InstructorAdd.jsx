@@ -1310,7 +1310,7 @@ class InstructorAdd extends Component {
             this.state.drivingLicenseImagepath !== "" &&
             this.state.drivingLicenseImagepath !== null
               ? this.state.drivingLicenseImagepath
-              : "https://api.permispop.fr/CredentialFiles/placeholderimage.png",
+              : `${process.env.REACT_APP_BASE_URL_FOR_IMAGES}CredentialFiles/placeholderimage.png`,
           already_have_license: false,
           licenses_for: "",
           licenses_type: "",
@@ -1325,7 +1325,7 @@ class InstructorAdd extends Component {
           authorizationImagePath:
             this.state.ExeImagePath !== "" && this.state.ExeImagePath !== null
               ? this.state.ExeImagePath
-              : "https://api.permispop.fr/CredentialFiles/placeholderimage.png",
+              : `${process.env.REACT_APP_BASE_URL_FOR_IMAGES}CredentialFiles/placeholderimage.png`,
           folder: f,
         };
         var dataToInsertOfStep3 = JSON.stringify(eAInfo);
@@ -1336,7 +1336,7 @@ class InstructorAdd extends Component {
             this.state.businessKBISImage !== "" &&
             this.state.businessKBISImage !== null
               ? this.state.businessKBISImage
-              : "https://api.permispop.fr/CredentialFiles/placeholderimage.png",
+              : `${process.env.REACT_APP_BASE_URL_FOR_IMAGES}CredentialFiles/placeholderimage.png`,
           folder: f,
         };
         var dataToInsertOfStep4 = JSON.stringify(bInfo);

@@ -37,7 +37,7 @@ function Limitaions() {
 
   const loadData = () => {
     setCustomValue([]);
-    fetch("https://node.permispop.fr/api/dynamic/", {
+    fetch(`${process.env.REACT_APP_BASE_NODE}dynamic/`, {
       method: "GET",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("userdata"),
@@ -156,7 +156,7 @@ function Limitaions() {
     console.log(finduser);
     if (finduser === undefined) {
       // perform saving actions
-      fetch("https://node.permispop.fr/api/dynamic/adduserlimits", {
+      fetch(`${process.env.REACT_APP_BASE_NODE}dynamic/adduserlimits`, {
         method: "POST",
         headers: {
           Authorization: "Bearer " + localStorage.getItem("userdata"),
@@ -181,7 +181,7 @@ function Limitaions() {
   };
   const updateRecordToDb = () => {
     // perform saving actions
-    fetch("https://node.permispop.fr/api/dynamic/updateuserlimits", {
+    fetch(`${process.env.REACT_APP_BASE_NODE}dynamic/updateuserlimits`, {
       method: "POST",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("userdata"),
@@ -205,13 +205,16 @@ function Limitaions() {
     const confirm = window.confirm("Are you sure want to delete?" + id);
 
     if (confirm === true) {
-      fetch("https://node.permispop.fr/api/dynamic/removeuserlimits/" + id, {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("userdata"),
-          "content-type": "application/json",
-        },
-      })
+      fetch(
+        `${process.env.REACT_APP_BASE_NODE}dynamic/removeuserlimits/` + id,
+        {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("userdata"),
+            "content-type": "application/json",
+          },
+        }
+      )
         .then((res) => res.json())
         .then((resJson) => {
           console.log(resJson);

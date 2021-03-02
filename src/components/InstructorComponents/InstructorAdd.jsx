@@ -1849,7 +1849,7 @@ class InstructorAdd extends Component {
                                 type="file"
                                 bsClass="form-control"
                                 onChange={this.handleFileSelectforDL}
-                                accept="image/jpeg,application/pdf"
+                                accept="image/x-png,image/gif,image/jpeg,application/pdf"
                               />
                             </Col>
                           </Row>
@@ -1949,7 +1949,7 @@ class InstructorAdd extends Component {
                                 type="file"
                                 bsClass="form-control"
                                 onChange={this.handleFileSelectforEX}
-                                accept="image/jpeg,application/pdf"
+                                accept="image/x-png,image/gif,image/jpeg,application/pdf"
                               />
                             </Col>
                           </Row>

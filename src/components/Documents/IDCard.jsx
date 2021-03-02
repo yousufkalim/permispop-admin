@@ -19,7 +19,7 @@ class DrivingLicense extends Component {
           <Col md={6}>
             {console.log("this.props.Type", this.props.Type)}
             {this.props.frontIDPhoto || this.props.backIDPhoto ? (
-              this.props.frontIDPhoto ? (
+              this.props.Type === "fic" ? (
                 <FileDisplay file={this.props.frontIDPhoto}>
                   {console.log("1st")}
                 </FileDisplay>

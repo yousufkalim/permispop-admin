@@ -246,7 +246,7 @@ class Siret extends Component {
                                 type="file"
                                 bsClass="form-control"
                                 onChange={this.handleFrontFileSelect}
-                                accept="image/jpeg,application/pdf"
+                                accept="image/x-png,image/gif,image/jpeg,application/pdf"
                                 name="frontIDPhoto"
                                 id="frontIDPhoto"
                                 value=""

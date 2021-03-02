@@ -128,6 +128,7 @@ export class UserVehicle extends Component {
                           </td>
                           <td>
                             <i
+                              title="View Vehicle Details"
                               className="fa fa-file"
                               onClick={() =>
                                 this.setState({

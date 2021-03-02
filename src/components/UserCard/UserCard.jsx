@@ -292,7 +292,11 @@ export class UserCard extends Component {
       Password: this.state.password,
       NEPH: this.state.neph,
       NoOfHrsWanted: this.props.noOfHrsWanted,
-      Email: this.state.email,
+      // Email: this.state.email,
+      Email:
+        this.state.contactEmail !== null
+          ? this.state.contactEmail
+          : this.state.email,
       ContactEmail:
         this.state.contactEmail !== null
           ? this.state.contactEmail
@@ -1007,7 +1011,7 @@ export class UserCard extends Component {
                           type="file"
                           bsClass="form-control"
                           onChange={this.handleFrontFileSelect}
-                          accept="image/jpeg,application/pdf"
+                          accept="image/x-png,image/gif,image/jpeg,application/pdf"
                           name="frontIDPhoto"
                           id="frontIDPhoto"
                         />
@@ -1028,7 +1032,7 @@ export class UserCard extends Component {
                           type="file"
                           bsClass="form-control"
                           onChange={this.handleBackFileSelect}
-                          accept="image/jpeg,application/pdf"
+                          accept="image/x-png,image/gif,image/jpeg,application/pdf"
                           name="backIDPhoto"
                           id="backIDPhoto"
                         />

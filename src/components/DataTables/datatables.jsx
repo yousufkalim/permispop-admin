@@ -27,10 +27,12 @@ export default class DataTableCustom extends Component {
             ReactDOM.render(
               <React.Fragment>
                 <i
+                  title="Edit"
                   className="fa fa-pencil"
                   onClick={() => this.props.actions.onUpdate(cellData)}
                 ></i>
                 <i
+                  title="Delete"
                   className="fa fa-trash"
                   onClick={() => this.props.actions.onDelete(cellData.user.id)}
                 ></i>

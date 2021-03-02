@@ -285,7 +285,11 @@ function Limitaions() {
         <Row>
           <Col sm={12} className="info-row-table">
             <h3>Custom Limits for users</h3>
-            <i className="fa fa-plus-circle" onClick={handleShow}></i>
+            <i
+              title="Add Limits"
+              className="fa fa-plus-circle"
+              onClick={handleShow}
+            ></i>
           </Col>
           <Col sm={12}>
             {customValue.length > 0 ? (

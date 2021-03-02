@@ -233,6 +233,7 @@ export class UserMeetups extends Component {
           <>
             <div className="table-responsive" style={{ overflowX: "scroll" }}>
               <i
+                title="Add Meetup Point"
                 className="fa fa-plus-circle"
                 style={{ float: "right", fontSize: 18, margin: "15px 10px" }}
                 onClick={() => this.setState({ showAdd: true })}
@@ -256,10 +257,12 @@ export class UserMeetups extends Component {
                           <td>{meetup.city}</td>
                           <td>
                             <i
+                              title="Edit"
                               className="fa fa-pencil"
                               onClick={() => this.updateClick(meetup)}
                             ></i>
                             <i
+                              title="Delete"
                               className="fa fa-trash"
                               onClick={() => this.handleDeleteMeetup(meetup.id)}
                             ></i>

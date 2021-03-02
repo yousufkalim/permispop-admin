@@ -67,6 +67,7 @@ function UserInstructors(props) {
     <div className="table-responsive" style={{ overflowX: "scroll" }}>
       {!showAdd ? (
         <i
+          title="Add Instructor"
           className="fa fa-plus-circle"
           style={{ float: "right", fontSize: 18, margin: "15px 10px" }}
           onClick={() => setShowAdd(true)}

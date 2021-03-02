@@ -1288,6 +1288,7 @@ class UserDocuments extends Component {
               </td>
               <td>
                 <i
+                  title="View"
                   className="fa fa-file"
                   onClick={() =>
                     this.setState({
@@ -1304,10 +1305,12 @@ class UserDocuments extends Component {
                   }
                 ></i>
                 <i
+                  title="Edit"
                   className="fa fa-pencil"
                   onClick={() => this.handleUpdateCall(value)}
                 ></i>
                 <i
+                  title="Delete"
                   className="fa fa-trash"
                   onClick={() => this.handleDelete(value)}
                 ></i>
@@ -1331,6 +1334,7 @@ class UserDocuments extends Component {
               </td>
               <td>
                 <i
+                  title="View"
                   className="fa fa-file"
                   onClick={() =>
                     this.setState({
@@ -1347,10 +1351,12 @@ class UserDocuments extends Component {
                   }
                 ></i>
                 <i
+                  title="Edit"
                   className="fa fa-pencil"
                   onClick={() => this.handleUpdateCall(value)}
                 ></i>
                 <i
+                  title="Delete"
                   className="fa fa-trash"
                   onClick={() => this.handleDelete(value)}
                 ></i>
@@ -1414,6 +1420,7 @@ class UserDocuments extends Component {
                     </td>
                     <td>
                       <i
+                        title="View"
                         className="fa fa-file"
                         onClick={() =>
                           this.setState({
@@ -1444,6 +1451,7 @@ class UserDocuments extends Component {
                     </td>
                     <td>
                       <i
+                        title="View"
                         className="fa fa-file"
                         onClick={() =>
                           this.setState({
@@ -1475,6 +1483,7 @@ class UserDocuments extends Component {
                     </td>
                     <td>
                       <i
+                        title="View"
                         className="fa fa-file"
                         onClick={() =>
                           this.setState({
@@ -1505,6 +1514,7 @@ class UserDocuments extends Component {
                     </td>
                     <td>
                       <i
+                        title="View"
                         className="fa fa-file"
                         onClick={() =>
                           this.setState({
@@ -1535,6 +1545,7 @@ class UserDocuments extends Component {
                     </td>
                     <td>
                       <i
+                        title="View"
                         className="fa fa-file"
                         onClick={() =>
                           this.setState({
@@ -1565,6 +1576,7 @@ class UserDocuments extends Component {
                     </td>
                     <td>
                       <i
+                        title="View"
                         className="fa fa-file"
                         onClick={() =>
                           this.setState({
@@ -1595,6 +1607,7 @@ class UserDocuments extends Component {
                     </td>
                     <td>
                       <i
+                        title="View"
                         className="fa fa-file"
                         onClick={() =>
                           this.setState({
@@ -1616,6 +1629,7 @@ class UserDocuments extends Component {
                     </td>
                     <td>
                       <i
+                        title="Add Vehicle "
                         className="fa fa-plus-circle"
                         style={{ fontSize: 18 }}
                         onClick={this.handleShowModel}
@@ -1646,6 +1660,7 @@ class UserDocuments extends Component {
                     </td>
                     <td>
                       <i
+                        title="View"
                         className="fa fa-file"
                         onClick={() =>
                           this.setState({
@@ -1676,6 +1691,7 @@ class UserDocuments extends Component {
                     </td>
                     <td>
                       <i
+                        title="View"
                         className="fa fa-file"
                         onClick={() =>
                           this.setState({
@@ -1707,6 +1723,7 @@ class UserDocuments extends Component {
                     </td>
                     <td>
                       <i
+                        title="View"
                         className="fa fa-file"
                         onClick={() =>
                           this.setState({
@@ -1737,6 +1754,7 @@ class UserDocuments extends Component {
                     </td>
                     <td>
                       <i
+                        title="View"
                         className="fa fa-file"
                         onClick={() =>
                           this.setState({
@@ -1767,6 +1785,7 @@ class UserDocuments extends Component {
                     </td>
                     <td>
                       <i
+                        title="View"
                         className="fa fa-file"
                         onClick={() =>
                           this.setState({
@@ -1805,6 +1824,7 @@ class UserDocuments extends Component {
                     </td>
                     <td>
                       <i
+                        title="View"
                         className="fa fa-file"
                         onClick={() =>
                           this.setState({
@@ -1836,6 +1856,7 @@ class UserDocuments extends Component {
                     </td>
                     <td>
                       <i
+                        title="View"
                         className="fa fa-file"
                         onClick={() =>
                           this.setState({
@@ -1874,6 +1895,7 @@ class UserDocuments extends Component {
                     </td>
                     <td>
                       <i
+                        title="View"
                         className="fa fa-file"
                         onClick={() =>
                           this.setState({
@@ -1904,6 +1926,7 @@ class UserDocuments extends Component {
                     </td>
                     <td>
                       <i
+                        title="View"
                         className="fa fa-file"
                         onClick={() =>
                           this.setState({
@@ -1934,6 +1957,7 @@ class UserDocuments extends Component {
                     </td>
                     <td>
                       <i
+                        title="View"
                         className="fa fa-file"
                         onClick={() =>
                           this.setState({
@@ -1955,6 +1979,7 @@ class UserDocuments extends Component {
                     </td>
                     <td>
                       <i
+                        title="Add Vehicle "
                         className="fa fa-plus-circle"
                         style={{ fontSize: 18 }}
                         onClick={this.handleShowModel}
@@ -1985,6 +2010,7 @@ class UserDocuments extends Component {
                     </td>
                     <td>
                       <i
+                        title="View"
                         className="fa fa-file"
                         onClick={() =>
                           this.setState({
@@ -2015,6 +2041,7 @@ class UserDocuments extends Component {
                     </td>
                     <td>
                       <i
+                        title="View"
                         className="fa fa-file"
                         onClick={() =>
                           this.setState({
@@ -2046,6 +2073,7 @@ class UserDocuments extends Component {
                     </td>
                     <td>
                       <i
+                        title="View"
                         className="fa fa-file"
                         onClick={() =>
                           this.setState({
@@ -2076,6 +2104,7 @@ class UserDocuments extends Component {
                     </td>
                     <td>
                       <i
+                        title="View"
                         className="fa fa-file"
                         onClick={() =>
                           this.setState({
@@ -2097,6 +2126,7 @@ class UserDocuments extends Component {
                     </td>
                     <td>
                       <i
+                        title="Add Vehicle "
                         className="fa fa-plus-circle"
                         style={{ fontSize: 18 }}
                         onClick={this.handleShowModel}
@@ -2197,7 +2227,7 @@ class UserDocuments extends Component {
                                 id="VImage"
                                 bsClass="form-control"
                                 onChange={this.handleFileSelectForVImage}
-                                accept="image/jpeg"
+                                accept="image/x-png,image/gif,image/jpeg"
                               />
                             </Col>
                           </Row>
@@ -2381,7 +2411,7 @@ class UserDocuments extends Component {
                                 name="VCertificateImage"
                                 bsClass="form-control"
                                 onChange={this.handleFileSelectForVCertificate}
-                                accept="image/jpeg,application/pdf"
+                                accept="image/x-png,image/gif,image/jpeg,application/pdf"
                               />
                             </Col>
                           </Row>
@@ -2553,7 +2583,7 @@ class UserDocuments extends Component {
                               <FormControl
                                 type="file"
                                 onChange={this.handleFileSelectForTCImage}
-                                accept="image/jpeg,application/pdf"
+                                accept="image/x-png,image/gif,image/jpeg,application/pdf"
                                 bsClass="form-control"
                               />
                             </Col>
@@ -2684,7 +2714,7 @@ class UserDocuments extends Component {
                             id="VImage"
                             bsClass="form-control"
                             onChange={this.handleFileSelectForVImage}
-                            accept="image/jpeg"
+                            accept="image/x-png,image/gif,image/jpeg"
                           />
                         </Col>
                       </Row>
@@ -2852,7 +2882,7 @@ class UserDocuments extends Component {
                             name="VCertificateImage"
                             bsClass="form-control"
                             onChange={this.handleFileSelectForVCertificate}
-                            accept="image/jpeg,application/pdf"
+                            accept="image/x-png,image/gif,image/jpeg,application/pdf"
                           />
                         </Col>
                       </Row>
@@ -3020,7 +3050,7 @@ class UserDocuments extends Component {
                           <FormControl
                             type="file"
                             onChange={this.handleFileSelectForTCImage}
-                            accept="image/jpeg,application/pdf"
+                            accept="image/x-png,image/gif,image/jpeg,application/pdf"
                             bsClass="form-control"
                           />
                         </Col>

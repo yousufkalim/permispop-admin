@@ -21,7 +21,7 @@ class MembershipSetting extends Component {
       },
       (statusCode, pgkDetails) => {
         this.setState({ packages: pgkDetails });
-        console.log(pgkDetails);
+        // console.log(pgkDetails);
       }
     );
   }
@@ -47,7 +47,7 @@ class MembershipSetting extends Component {
                       <Col md={6}>
                         Free
                         <label className="switch">
-                          <input type="checkbox" checked />
+                          <input type="checkbox" defaultChecked />
                           <span className="slider round"></span>
                         </label>{" "}
                         Paid

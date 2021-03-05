@@ -10,6 +10,7 @@ import "./assets/css/pe-icon-7-stroke.css";
 import "react-datepicker/dist/react-datepicker.css";
 import "assets/sass/dashboard.scss";
 import "assets/sass/custom.scss";
+// import "mdbreact/dist/css/mdb.css";
 
 import AdminLayout from "layouts/Admin.jsx";
 import Login from "layouts/Login.jsx";

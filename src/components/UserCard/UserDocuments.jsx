@@ -13,7 +13,7 @@ import {
   FormGroup,
 } from "react-bootstrap";
 import FormInputs from "../../components/FormInputs/FormInputs";
-import Loader from "react-loader-spinner";
+// import Loader from "react-loader-spinner";
 import { Translation } from "react-i18next";
 import DatePicker from "react-datepicker";
 import "font-awesome/css/font-awesome.min.css";
@@ -101,7 +101,7 @@ class UserDocuments extends Component {
     };
   }
   componentWillMount() {
-    var tokn = localStorage.getItem("userdata");
+    // var tokn = localStorage.getItem("userdata");
     this.setState({
       // folder: `${this.props.id}_${this.props.firstName}_${this.props.surName}`,
       folder: `${this.props.id}`,
@@ -194,6 +194,7 @@ class UserDocuments extends Component {
           .filter((item) => item.documentName.includes("veh"))
           .map((item) => {
             newState[item.documentName] = item;
+            return null;
           });
         this.setState(
           {
@@ -254,7 +255,7 @@ class UserDocuments extends Component {
         token: tokn,
       },
       (statusCode, Response) => {
-        console.log("Result", Response);
+        // console.log("Result", Response);
         for (var i = 0; i < Response.length; i++) {
           if (Response[i].status === "false") {
             notVerfiedDoc = `${notVerfiedDoc}**${
@@ -269,7 +270,7 @@ class UserDocuments extends Component {
             token: tokn,
           },
           (statusCode, responseEmail) => {
-            console.log("email");
+            // console.log("email");
             alert("mail sent successfully");
           }
         );
@@ -364,8 +365,8 @@ class UserDocuments extends Component {
       VEndDateError,
       startDateOfTechError,
       endDateOfTechError,
-      VImageError,
-      VCertificateImageError,
+      // VImageError,
+      // VCertificateImageError,
     } = this.state;
     // conditionings
     if (
@@ -411,18 +412,18 @@ class UserDocuments extends Component {
           !VStartDateError &&
           !VEndDateError
         ) {
-          console.log("true");
+          // console.log("true");
           this.setState({ isAddDisable: false });
         } else {
-          console.log("false 2 inner");
+          // console.log("false 2 inner");
           this.setState({ isAddDisable: true });
         }
       } else {
-        console.log("false inner");
+        // console.log("false inner");
         this.setState({ isAddDisable: true });
       }
     } else {
-      console.log("false outer");
+      // console.log("false outer");
       this.setState({ isAddDisable: true });
     }
   };
@@ -837,8 +838,6 @@ class UserDocuments extends Component {
       endData: this.state.endDateOfTech,
       folder: this.state.folder,
     };
-    console.log("vehicleInsurance", vehicleInsurance);
-    console.log("vehicleTechnicalControl", vehicleTechnicalControl);
     let token = localStorage.getItem("userdata");
     // api call for posting Vehicle Insurance data
     var insuranceDetail,
@@ -993,7 +992,10 @@ class UserDocuments extends Component {
       if (!exists) {
         makeList.push(list);
       }
+      return null;
     });
+    makeList.sort((a, b) => a.Make.localeCompare(b.Make));
+
     this.setState({ brandList: makeList, brand: data.results[0].Make });
   };
   getVehicleModelData = async () => {
@@ -1011,6 +1013,8 @@ class UserDocuments extends Component {
     const filterData = data.results.filter(
       (item) => item.Make === this.state.brand
     );
+    filterData.sort((a, b) => a.Model.localeCompare(b.Model));
+    // console.log("filterData", filterData);
     this.setState({
       modelList: filterData,
       model: `${filterData[0] !== undefined && filterData[0].Model}(${
@@ -1022,13 +1026,13 @@ class UserDocuments extends Component {
 
   //start for vehicle upodate
   handleUpdateCall = (responseVehicle) => {
-    console.log(responseVehicle, "id is");
+    // console.log(responseVehicle, "id is");
 
     var insuranceDetail = JSON.parse(responseVehicle.vehichleInsuranceInfoId);
     var technicalControlDetial = JSON.parse(
       responseVehicle.technicalControlInfoID
     );
-    console.log("technicalControlDetial", technicalControlDetial);
+    // console.log("technicalControlDetial", technicalControlDetial);
 
     // update state data and open model
     this.setState(
@@ -1085,16 +1089,14 @@ class UserDocuments extends Component {
         detailID: responseVehicle?.id,
       },
       async () => {
-        console.log("this.state", this.state);
-        debugger;
+        // console.log("this.state", this.state);
+        // debugger;
         await this.getVehicleModelData();
         this.setState({
           model: responseVehicle.model.toUpperCase(),
           showEdit: true,
           // isAddDisable: false,
         });
-        console.log("startDateOfTech", this.state.startDateOfTech);
-        console.log("endDateOfTech", this.state.endDateOfTech);
       }
     );
   };
@@ -1144,7 +1146,7 @@ class UserDocuments extends Component {
         token,
       },
       (statusCode, responseAddVehicleInsurance) => {
-        console.log("responseAddVehicleInsurance", responseAddVehicleInsurance);
+        // console.log("responseAddVehicleInsurance", responseAddVehicleInsurance);
         // let vehicleInsuranceId = responseAddVehicleInsurance.id;
         // api call for adding technical control data
         this.WebServicesManager.putApiWithParams(
@@ -1155,7 +1157,7 @@ class UserDocuments extends Component {
             token,
           },
           (statusCode, responseAddVehicleTC) => {
-            console.log("responseAddVehicleTC", responseAddVehicleTC);
+            // console.log("responseAddVehicleTC", responseAddVehicleTC);
 
             // add vehicle detail
 
@@ -1185,9 +1187,9 @@ class UserDocuments extends Component {
                 token,
               },
               (statusCode, responseAddVehicle) => {
-                console.log("responseAddVehicle", responseAddVehicle);
+                // console.log("responseAddVehicle", responseAddVehicle);
 
-                debugger;
+                // debugger;
 
                 window.location.reload();
               }
@@ -1242,7 +1244,7 @@ class UserDocuments extends Component {
                   drivingSchoolVehiclesInfoId: JSON.stringify(vehicles),
                 };
               }
-              console.log(updateUserProfile);
+              // console.log(updateUserProfile);
               // update profile api call
               this.WebServicesManager.postApiCall(
                 {

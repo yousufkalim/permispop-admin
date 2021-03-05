@@ -112,7 +112,7 @@ class InstructorAdd extends Component {
     var x = jwtDecode(tokn);
     var userInfo = JSON.parse(Base64.decode(x.userData));
     this.setState({ isLoading: true });
-    console.log("this.props", this.props);
+    console.log("Status", userInfo.Status);
   }
 
   componentWillMount() {
@@ -981,12 +981,12 @@ class InstructorAdd extends Component {
     }
   };
 
-  handleAddIns = () => {
-    console.log("Add instructors clicked");
-    var tokn = localStorage.getItem("userdata");
-    var x = jwtDecode(tokn);
-    const userinfo = JSON.parse(Base64.decode(x.userData));
-  };
+  // handleAddIns = () => {
+  //   console.log("Add instructors clicked");
+  //   var tokn = localStorage.getItem("userdata");
+  //   var x = jwtDecode(tokn);
+  //   const userinfo = JSON.parse(Base64.decode(x.userData));
+  // };
 
   handleCheck = (e) => {
     this.setState({
@@ -1605,11 +1605,11 @@ class InstructorAdd extends Component {
                                 <br />
                                 <Autocomplete
                                   items={this.state.items}
-                                  shouldItemRender={(item, value) =>
-                                    item.label
-                                      .toLowerCase()
-                                      .indexOf(value.toLowerCase()) > -1
-                                  }
+                                  // shouldItemRender={(item, value) =>
+                                  //   item.label
+                                  //     .toLowerCase()
+                                  //     .indexOf(value.toLowerCase()) > -1
+                                  // }
                                   getItemValue={(item) => item.label}
                                   renderItem={(item, highlighted) => (
                                     <div
@@ -1696,7 +1696,6 @@ class InstructorAdd extends Component {
                                 help: this.state.cityError,
                                 readOnly: true,
                                 isImport: false,
-                                autoComplete: "off",
                               },
                             ]}
                           />

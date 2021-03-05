@@ -32,7 +32,7 @@ export class UpdateRequest extends Component {
         token,
       },
       (statusCode, responseRequest) => {
-        console.log("responseRequest", responseRequest);
+        // console.log("responseRequest", responseRequest);
         var pendingList = [];
         var completeList = [];
         if (responseRequest.length > 0) {
@@ -42,6 +42,7 @@ export class UpdateRequest extends Component {
             } else {
               pendingList.push({ ...request, user: JSON.parse(request.user) });
             }
+            return null;
           });
           this.setState({
             pendingRequest: pendingList,
@@ -77,7 +78,7 @@ export class UpdateRequest extends Component {
                   <div>
                     <Tabs
                       defaultActiveKey="pending"
-                      transition={false}
+                      transition="false"
                       id="noanim-tab-example"
                     >
                       <Tab eventKey="pending" title="Pending">

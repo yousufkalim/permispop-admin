@@ -54,6 +54,7 @@ export class UserCard extends Component {
       whichPlatform: "",
       giveOurPlatformTime: "",
       workWithOther: "",
+      isAddDisable: false,
     };
   }
 
@@ -106,11 +107,12 @@ export class UserCard extends Component {
       whichPlatform: this.props.whichPlatform,
       giveOurPlatformTime: this.props.giveOurPlatformTime,
       workWithOther: this.props.workWithOther,
+      isAddDisable: false,
     });
   }
   componentDidUpdate(prevProps, prevState) {
-    console.log("prev Props");
-    if (this.props.firstName !== this.state.firstName) {
+    // console.log("this.state", this.state);
+    if (this.props.email !== this.state.email) {
       this.setState({
         items: [],
         showModal: false,
@@ -145,6 +147,7 @@ export class UserCard extends Component {
         whichPlatform: this.props.whichPlatform,
         giveOurPlatformTime: this.props.giveOurPlatformTime,
         workWithOther: this.props.workWithOther,
+        isAddDisable: false,
       });
     }
   }
@@ -230,12 +233,12 @@ export class UserCard extends Component {
         }
         if (addressToSet.length === responseJson.features.length) {
           this.setState({ items: addressToSet }, () => {
-            console.log(
-              "Address to set",
-              addressToSet,
-              "state",
-              this.state.items
-            );
+            // console.log(
+            //   "Address to set",
+            //   addressToSet,
+            //   "state",
+            //   this.state.items
+            // );
           });
         }
       })
@@ -351,6 +354,9 @@ export class UserCard extends Component {
   };
 
   handleFunc = (days) => {
+    this.setState({
+      isAddDisable: true,
+    });
     var tokn = localStorage.getItem("userdata");
     var banTill = moment().add(days, "days").format();
     this.WebServicesManager.getApiWithParamCall(
@@ -404,7 +410,7 @@ export class UserCard extends Component {
                 token: tokn,
               },
               (statusCode, EResp) => {
-                console.log("data", EResp);
+                // console.log("data", EResp);
                 window.location.reload();
               }
             );
@@ -415,6 +421,9 @@ export class UserCard extends Component {
   };
 
   handleUnban = () => {
+    this.setState({
+      isAddDisable: true,
+    });
     var tokn = localStorage.getItem("userdata");
     this.WebServicesManager.getApiWithParamCall(
       {
@@ -465,7 +474,7 @@ export class UserCard extends Component {
                 token: tokn,
               },
               (statusCode, EResp) => {
-                console.log("data", EResp);
+                // console.log("data", EResp);
                 window.location.reload();
               }
             );
@@ -476,6 +485,10 @@ export class UserCard extends Component {
   };
 
   handlefuntDeActive = () => {
+    this.setState({
+      isAddDisable: true,
+    });
+
     var tokn = localStorage.getItem("userdata");
     this.WebServicesManager.getApiWithParamCall(
       {
@@ -526,7 +539,7 @@ export class UserCard extends Component {
                 token: tokn,
               },
               (statusCode, EResp) => {
-                console.log("data", EResp);
+                // console.log("data", EResp);
                 window.location.reload();
               }
             );
@@ -651,23 +664,38 @@ export class UserCard extends Component {
           <center>
             <Button
               varient="primary"
-              style={{ marginLeft: 10, marginTop: 10 }}
+              style={{ marginLeft: 10, marginTop: 10, width: 110 }}
+              disabled={this.state.isAddDisable}
               onClick={() => this.setState({ showModal: true })}
             >
               Update Data
             </Button>
             {this.state.banStatus === "" ? (
               <DropdownButton
+                disabled={this.state.isAddDisable}
                 bsStyle="default"
                 title="Ban User"
                 noCaret
                 id="dropdown-no-caret"
-                style={{ fontSize: "14px", marginLeft: 10, marginTop: 10 }}
+                style={{
+                  fontSize: "14px",
+                  marginLeft: 10,
+                  marginTop: 10,
+                  width: 110,
+                }}
               >
-                <MenuItem onClick={() => this.handleFunc(15)} eventKey="1">
+                <MenuItem
+                  disabled={this.state.isAddDisable}
+                  onClick={() => this.handleFunc(15)}
+                  eventKey="1"
+                >
                   15 Days
                 </MenuItem>
-                <MenuItem onClick={() => this.handleFunc(30)} eventKey="2">
+                <MenuItem
+                  disabled={this.state.isAddDisable}
+                  onClick={() => this.handleFunc(30)}
+                  eventKey="2"
+                >
                   30 Days
                 </MenuItem>
               </DropdownButton>
@@ -675,7 +703,8 @@ export class UserCard extends Component {
               <>
                 <Button
                   varient="primary"
-                  style={{ marginLeft: 10, marginTop: 10 }}
+                  style={{ marginLeft: 10, marginTop: 10, width: 110 }}
+                  disabled={this.state.isAddDisable}
                   onClick={this.handleUnban}
                 >
                   Un-Ban
@@ -685,19 +714,31 @@ export class UserCard extends Component {
               ""
             )}
             {this.state.banStatus === "" && this.state.banStatus !== "Ban" ? (
-              <Button
-                varient="primary"
-                style={{ marginLeft: 10, marginTop: 10 }}
-                onClick={this.handlefuntDeActive}
-              >
-                De-Active
-              </Button>
+              <>
+                <Button
+                  varient="primary"
+                  style={{ marginLeft: 10, marginTop: 10, width: 110 }}
+                  disabled={this.state.isAddDisable}
+                  onClick={this.handlefuntDeActive}
+                >
+                  De-Active
+                </Button>
+                <Button
+                  varient="primary"
+                  style={{ marginLeft: 10, marginTop: 10, width: 110 }}
+                  disabled={this.state.isAddDisable}
+                  onClick={this.handlefuntDeActive}
+                >
+                  Delete User
+                </Button>
+              </>
             ) : this.state.banStatus !== "Ban" ? (
               <>
                 {/* <p>De-Activated</p>  */}
                 <Button
                   varient="primary"
-                  style={{ marginLeft: 10, marginTop: 10 }}
+                  style={{ marginLeft: 10, marginTop: 10, width: 110 }}
+                  disabled={this.state.isAddDisable}
                   onClick={this.handleUnban}
                 >
                   Re-active
@@ -710,7 +751,7 @@ export class UserCard extends Component {
         </div>
         <hr />
         <div className="text-center">{this.props.socials}</div>
-        {console.log("My Custom", this.props)}
+        {/* {console.log("My Custom", this.props)} */}
         <Modal
           show={this.state.showModal}
           onHide={() => this.setState({ showModal: false })}
@@ -718,7 +759,6 @@ export class UserCard extends Component {
           keyboard={false}
           size="xl"
         >
-          {console.log(this.state.firstName, this.props.firstName)}
           <Modal.Header closeButton>
             <Modal.Title>Update Data</Modal.Title>
           </Modal.Header>
@@ -731,7 +771,6 @@ export class UserCard extends Component {
                       <div className="clearfix" />
                       <div className="container-flex">
                         <div>
-                          {console.log("My Custom 2", this.props)}
                           <div className="row">
                             <div className="col-md-6">
                               <FormGroup>
@@ -1016,7 +1055,10 @@ export class UserCard extends Component {
                           id="frontIDPhoto"
                         />
                         {this.state.frontIdPathError !== "" ? (
-                          <a href={this.state.frontIdPathError} target="_blank">
+                          <a
+                            href={this.state.frontIdPathError}
+                            target="noopener noreferrer"
+                          >
                             View current File
                           </a>
                         ) : (
@@ -1037,7 +1079,10 @@ export class UserCard extends Component {
                           id="backIDPhoto"
                         />
                         {this.state.backIdPathError !== "" ? (
-                          <a href={this.state.backIdPathError} target="_blank">
+                          <a
+                            href={this.state.backIdPathError}
+                            target="noopener noreferrer"
+                          >
                             View current File
                           </a>
                         ) : (

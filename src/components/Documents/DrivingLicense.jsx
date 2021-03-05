@@ -220,7 +220,7 @@ class DrivingLicense extends Component {
                 <a
                   href={this.state.dLic.drivingLisenceImagePath}
                   rel="noopener noreferrer"
-                  target="_blank"
+                  target="noopener noreferrer"
                 >
                   View file in new Tab.
                 </a>
@@ -356,7 +356,7 @@ class DrivingLicense extends Component {
                               {this.state.drivingLisenceImagePath !== "" ? (
                                 <a
                                   href={this.state.drivingLisenceImagePath}
-                                  target="_blank"
+                                  target="noopener noreferrer"
                                 >
                                   View current File
                                 </a>

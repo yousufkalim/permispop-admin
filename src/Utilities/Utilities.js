@@ -11,7 +11,10 @@ export default class Utilities {
 
   static ValidateEmail(mail) {
     // if (/^\w+([-]?\w+)*@\w+([-]?\w+)*(\w{2,3})+$/.test(mail)) {
-    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
+
+    // this next one commented by hamza
+    // if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
+    if (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
       return true;
     }
     return false;
@@ -26,7 +29,8 @@ export default class Utilities {
   }
 
   static ValidateCellNo(cell) {
-    if (/^(?:0\,\+)?[0-9\s]*$/.test(cell) && cell !== "") {
+    // if (/^(?:0\,\+)?[0-9\s]*$/.test(cell) && cell !== "")
+    if (/^(?:0,\+)?[0-9\s]*$/.test(cell) && cell !== "") {
       return true;
     }
     return false;

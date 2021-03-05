@@ -6,12 +6,12 @@ import {
   Col,
   ListGroup,
   ListGroupItem,
-  Checkbox,
+  // Checkbox,
   FormGroup,
   Button,
-  FormControl,
+  // FormControl,
   ControlLabel,
-  HelpBlock,
+  // HelpBlock,
 } from "react-bootstrap";
 import { Translation } from "react-i18next";
 import moment from "moment";
@@ -30,7 +30,7 @@ class Dashboard extends Component {
     super(props);
     this.state = {
       userCounts: null,
-      genderData: null,
+      genderData: {},
       userListWithBookingCount: [],
       limitaion: null,
       // booking cancel states
@@ -76,8 +76,9 @@ class Dashboard extends Component {
             resJson.genderCount.others,
           ],
         };
-        this.setState({ userCounts: resJson, genderData: dataPieLocal }, () =>
-          console.log("data", this.state)
+        this.setState(
+          { userCounts: resJson, genderData: dataPieLocal }
+          //  ,() => console.log("data", this.state)
         );
       })
       .catch((err) => console.log("error: ", err));
@@ -91,7 +92,7 @@ class Dashboard extends Component {
     })
       .then((res) => res.json())
       .then((resJson) => {
-        console.log(resJson, "res");
+        // console.log(resJson, "res");
         this.setState({ userListWithBookingCount: resJson });
       })
       .catch((e) => console.log(e));
@@ -270,6 +271,7 @@ class Dashboard extends Component {
                                 {t("Message/Reason")}{" "}
                                 <span className="text-red">*</span>
                                 <textarea
+                                  value=""
                                   className="form-control"
                                   rows="5"
                                   style={{ width: 400 }}

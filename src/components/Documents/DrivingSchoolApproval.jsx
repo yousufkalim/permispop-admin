@@ -124,7 +124,7 @@ class DrivingSchoolApproval extends Component {
                   <a
                     href={this.state.dsa.approvalCertificationImagePath}
                     rel="noopener noreferrer"
-                    target="_blank"
+                    target="noopener noreferrer"
                   >
                     View file in new Tab.
                   </a>
@@ -244,7 +244,7 @@ class DrivingSchoolApproval extends Component {
                                     href={
                                       this.state.approvalCertificationImagePath
                                     }
-                                    target="_blank"
+                                    target="noopener noreferrer"
                                   >
                                     View current File
                                   </a>

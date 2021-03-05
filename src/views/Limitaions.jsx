@@ -9,17 +9,17 @@ import {
   FormGroup,
   ControlLabel,
   FormControl,
-  ListGroup,
 } from "react-bootstrap";
 import { StatsCard } from "components/StatsCard/StatsCard.jsx";
 import DataTableCustom from "components/DataTables/datatables";
 import WebServicesManager from "WebServicesManager/WebServicesManager";
-import { updateDo } from "typescript";
+// import { updateDo } from "typescript";
 
 function Limitaions() {
-  const WebServicesManagers = useMemo(() => new WebServicesManager());
+  const WebServicesManagers = useMemo(() => new WebServicesManager(), []);
   const [userLimits, setUserLimits] = useState({});
-  const [updateLimit, setUpdateLimit] = useState();
+  // const [updateLimit, setUpdateLimit] = useState();
+  const [updateLimit] = useState();
   const [customValue, setCustomValue] = useState([]);
   const [show, setShow] = useState(false);
   const [showUpdate, setShowUpdate] = useState(false);
@@ -33,6 +33,7 @@ function Limitaions() {
   useEffect(() => {
     loadData();
     loadUserData();
+    // eslint-disable-next-line
   }, [updateLimit]);
 
   const loadData = () => {
@@ -76,6 +77,7 @@ function Limitaions() {
               : ``,
             item,
           ]);
+          return null;
         });
         setCustomValue(custom);
       })

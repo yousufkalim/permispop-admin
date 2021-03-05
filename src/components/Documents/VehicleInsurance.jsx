@@ -188,7 +188,7 @@ class VehicleInsurance extends Component {
                   <a
                     rel="noopener noreferrer"
                     href={this.state.vIns.greenCardImagePath}
-                    target="_blank"
+                    target="noopener noreferrer"
                   >
                     View file in new Tab.
                   </a>
@@ -319,7 +319,7 @@ class VehicleInsurance extends Component {
                                 this.state.greenCardImagePath !== null ? (
                                   <a
                                     href={this.state.greenCardImagePath}
-                                    target="_blank"
+                                    target="noopener noreferrer"
                                   >
                                     View current File
                                   </a>

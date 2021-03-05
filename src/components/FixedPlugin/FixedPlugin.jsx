@@ -12,7 +12,7 @@ class FixedPlugin extends Component {
     this.state = {
       classes: "dropdown show-dropdown open",
       bg_checked: true,
-      bgImage: this.props.bgImage
+      bgImage: this.props.bgImage,
     };
   }
   handleClick = () => {
@@ -165,7 +165,7 @@ class FixedPlugin extends Component {
               <div className="">
                 <a
                   href="https://www.creative-tim.com/product/light-bootstrap-dashboard-react?ref=lbdr-fixed-plugin"
-                  target="_blank"
+                  target="noopener noreferrer"
                   className="btn btn-success btn-block btn-fill"
                 >
                   Download free!
@@ -176,7 +176,7 @@ class FixedPlugin extends Component {
               <div className="">
                 <a
                   href="https://www.creative-tim.com/product/light-bootstrap-dashboard-pro-react?ref=lbdr-fixed-plugin"
-                  target="_blank"
+                  target="noopener noreferrer"
                   className="btn btn-warning btn-block btn-fill"
                 >
                   Buy Pro
@@ -186,7 +186,7 @@ class FixedPlugin extends Component {
             <li className="button-container">
               <a
                 href="https://demos.creative-tim.com/light-bootstrap-dashboard-react/#/documentation/getting-started?ref=lbdr-fixed-plugin"
-                target="_blank"
+                target="noopener noreferrer"
                 className="btn btn-fill btn-info"
               >
                 Documentation

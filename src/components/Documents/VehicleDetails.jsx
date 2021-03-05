@@ -68,7 +68,7 @@ class VehicleRegistration extends Component {
       endDateOfTechControl: technicalData?.endDateOfTechControl,
       technicalControlImagePath: technicalData?.technicalControlImagePath,
     });
-    debugger;
+    // debugger;
     console.log("this.state", this.state);
   }
 
@@ -94,7 +94,7 @@ class VehicleRegistration extends Component {
                       ? this.state.vehicleePhotosImagePath
                       : ""
                   }
-                  target="_blank"
+                  target="noopener noreferrer"
                 >
                   View Vehicle file.
                 </a>
@@ -117,7 +117,7 @@ class VehicleRegistration extends Component {
                       ? this.state.vehicleRegistrationCertificatePhotoImagePath
                       : ""
                   }
-                  target="_blank"
+                  target="noopener noreferrer"
                 >
                   View Registration file.
                 </a>
@@ -137,7 +137,7 @@ class VehicleRegistration extends Component {
                       ? this.state.technicalControlImagePath
                       : ""
                   }
-                  target="_blank"
+                  target="noopener noreferrer"
                   alt="techinal control"
                 >
                   View file in new Tab.
@@ -159,7 +159,7 @@ class VehicleRegistration extends Component {
                           ? this.state.greenCardImagePath
                           : ""
                       }
-                      target="_blank"
+                      target="noopener noreferrer"
                       alt="insurance Image"
                     >
                       View GreenCard file.

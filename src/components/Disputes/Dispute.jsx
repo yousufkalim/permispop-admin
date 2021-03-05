@@ -197,7 +197,7 @@ class Dispute extends Component {
   render() {
     return (
       <div className="content">
-        <a href="#" onClick={this.props.toggle}>
+        <a href="/admin/disputes" onClick={this.props.toggle}>
           {" "}
           <i className="fa fa-arrow-circle-left"></i>Back to list
         </a>

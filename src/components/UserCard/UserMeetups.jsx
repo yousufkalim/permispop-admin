@@ -85,6 +85,7 @@ export class UserMeetups extends Component {
     )
       .then((response) => response.json())
       .then((responseJson) => {
+        // console.log("res address", responseJson);
         var addressToSet = [];
         for (var i = 0; i < responseJson.features.length; i++) {
           addressToSet.push({
@@ -251,7 +252,7 @@ export class UserMeetups extends Component {
                   {this.state.meetupList.length > 0
                     ? this.state.meetupList.map((meetup, index) => (
                         <tr key={index}>
-                          {console.log("meetuop", meetup)}
+                          {/* {console.log("meetuop", meetup)} */}
                           <td>{meetup.meetUp}</td>
                           <td>{meetup.zipCode}</td>
                           <td>{meetup.city}</td>
@@ -288,10 +289,10 @@ export class UserMeetups extends Component {
                     </ControlLabel>
                     <Autocomplete
                       items={this.state.items}
-                      shouldItemRender={(item, value) =>
-                        item.label.toLowerCase().indexOf(value.toLowerCase()) >
-                        -1
-                      }
+                      // shouldItemRender={(item, value) =>
+                      //   item.label.toLowerCase().indexOf(value.toLowerCase()) >
+                      //   -1
+                      // }
                       getItemValue={(item) => item.label}
                       renderItem={(item, highlighted) => (
                         <div
@@ -380,10 +381,10 @@ export class UserMeetups extends Component {
                     </ControlLabel>
                     <Autocomplete
                       items={this.state.items}
-                      shouldItemRender={(item, value) =>
-                        item.label.toLowerCase().indexOf(value.toLowerCase()) >
-                        -1
-                      }
+                      // shouldItemRender={(item, value) =>
+                      //   item.label.toLowerCase().indexOf(value.toLowerCase()) >
+                      //   -1
+                      // }
                       getItemValue={(item) => item.label}
                       renderItem={(item, highlighted) => (
                         <div

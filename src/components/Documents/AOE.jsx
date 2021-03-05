@@ -185,7 +185,7 @@ class AOE extends Component {
                 <a
                   href={this.state.aoe.authorizationImagePath}
                   rel="noopener noreferrer"
-                  target="_blank"
+                  target="noopener noreferrer"
                 >
                   View file in new Tab.
                 </a>
@@ -301,7 +301,7 @@ class AOE extends Component {
                               {this.state.authorizationImagePath !== "" ? (
                                 <a
                                   href={this.state.authorizationImagePath}
-                                  target="_blank"
+                                  target="noopener noreferrer"
                                 >
                                   View current File
                                 </a>

@@ -15,7 +15,10 @@ class Footer extends Component {
           </nav>
           <p className="copyright pull-right">
             &copy; {new Date().getFullYear()}{" "}
-            <a href="https://www.falconconsulting.fr/" target="_blank">
+            <a
+              href="https://www.falconconsulting.fr/"
+              target="noopener noreferrer"
+            >
               Falcon Consulting
             </a>
             , made with love for a better web

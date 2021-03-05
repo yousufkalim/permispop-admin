@@ -179,7 +179,7 @@ class Siret extends Component {
                 <a
                   rel="noopener noreferrer"
                   href={this.state.siret.siratImagePath}
-                  target="_blank"
+                  target="noopener noreferrer"
                 >
                   View file in new Tab.
                 </a>
@@ -254,7 +254,7 @@ class Siret extends Component {
                               {this.state.siratImagePath !== "" ? (
                                 <a
                                   href={this.state.siratImagePath}
-                                  target="_blank"
+                                  target="noopener noreferrer"
                                 >
                                   View current File
                                 </a>

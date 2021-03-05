@@ -3,14 +3,14 @@ import WebServicesManager from "../../WebServicesManager/WebServicesManager";
 import InstructorAdd from "../InstructorComponents/InstructorAdd";
 
 function UserInstructors(props) {
-  const WebServicesManagers = useMemo(() => new WebServicesManager());
+  const WebServicesManagers = useMemo(() => new WebServicesManager(), []);
   const [instructors, setInstructors] = useState([]);
   const [updateList, setUpdateList] = useState(false);
   const [showAdd, setShowAdd] = useState(false);
 
   // fetch all instructors by driving school
   useEffect(() => {
-    console.log(props, "Props");
+    // console.log(props, "Props");
     var tokn = localStorage.getItem("userdata");
     WebServicesManagers.getApiWithParamCall(
       {
@@ -57,6 +57,7 @@ function UserInstructors(props) {
         });
       }
     );
+    // eslint-disable-next-line
   }, [updateList]);
 
   const updateData = () => {

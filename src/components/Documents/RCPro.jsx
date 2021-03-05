@@ -183,7 +183,7 @@ class RCPro extends Component {
                   <a
                     href={this.state.rc.insuranceImagePath}
                     rel="noopener noreferrer"
-                    target="_blank"
+                    target="noopener noreferrer"
                   >
                     View file in new Tab.
                   </a>
@@ -300,7 +300,7 @@ class RCPro extends Component {
                                 {this.state.insuranceImagePath !== "" ? (
                                   <a
                                     href={this.state.insuranceImagePath}
-                                    target="_blank"
+                                    target="noopener noreferrer"
                                   >
                                     View current File
                                   </a>

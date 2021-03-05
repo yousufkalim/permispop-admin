@@ -51,7 +51,7 @@ class DrivingLicense extends Component {
                     ? this.props.frontIDPhoto
                     : this.props.backIDPhoto
                 }
-                target="_blank"
+                target="noopener noreferrer"
               >
                 View file in new Tab.
               </a>

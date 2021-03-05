@@ -72,6 +72,7 @@ class ID extends Component {
                 if (item.status !== "true") {
                   docVarify = false;
                 }
+                return null;
               });
             } else if (responsePersonalDoc.length === 0) {
               docVarify = false;

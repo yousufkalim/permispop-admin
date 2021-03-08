@@ -37,7 +37,7 @@ class VehicleRegistration extends Component {
   async componentDidMount() {
     const { vehicleInfo, Type } = this.props;
     var vehicleInfoGet = vehicleInfo[`Vehicle${Type.split("veh")[1]}`];
-    console.log("sad", vehicleInfo[`Vehicle${Type.split("veh")[1]}`]);
+    // console.log("sad", vehicleInfo[`Vehicle${Type.split("veh")[1]}`]);
     var technicalData =
       vehicleInfoGet.technicalControlInfoID !== ""
         ? JSON.parse(vehicleInfoGet?.technicalControlInfoID)
@@ -69,7 +69,7 @@ class VehicleRegistration extends Component {
       technicalControlImagePath: technicalData?.technicalControlImagePath,
     });
     // debugger;
-    console.log("this.state", this.state);
+    // console.log("this.state", this.state);
   }
 
   render() {

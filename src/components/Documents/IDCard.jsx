@@ -9,7 +9,7 @@ class DrivingLicense extends Component {
     this.state = {};
   }
   componentDidMount() {
-    console.log(this.props.surName);
+    // console.log(this.props.surName);
   }
 
   render() {
@@ -17,22 +17,22 @@ class DrivingLicense extends Component {
       <Grid fluid>
         <Row>
           <Col md={6}>
-            {console.log("this.props.Type", this.props.Type)}
+            {/* {console.log("this.props.Type", this.props.Type)} */}
             {this.props.frontIDPhoto || this.props.backIDPhoto ? (
               this.props.Type === "fic" ? (
                 <FileDisplay file={this.props.frontIDPhoto}>
-                  {console.log("1st")}
+                  {/* {console.log("1st")} */}
                 </FileDisplay>
               ) : (
                 <FileDisplay file={this.props.backIDPhoto}>
-                  {console.log("2nd")}
+                  {/* {console.log("2nd")} */}
                 </FileDisplay>
               )
             ) : (
               <FileDisplay
                 file={`${process.env.REACT_APP_BASE_URL_FOR_IMAGES}CredentialFiles/placeholderimage.png`}
               >
-                {console.log("placeholder")}
+                {/* {console.log("placeholder")} */}
               </FileDisplay>
             )}
 

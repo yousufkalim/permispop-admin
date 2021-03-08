@@ -82,7 +82,7 @@ class DrivingSchoolApproval extends Component {
 
   handleSave = () => {
     var tokn = localStorage.getItem("userdata");
-    console.log("save");
+    // console.log("save");
     // save login will go here
     const perobj = {
       id: this.props.drivingSchoolApprovalInfoId,
@@ -100,7 +100,7 @@ class DrivingSchoolApproval extends Component {
         token: tokn,
       },
       (statusCode, Resp) => {
-        console.log("Resp", Resp);
+        // console.log("Resp", Resp);
         window.location.reload();
       }
     );

@@ -83,7 +83,7 @@ class VehicleInsurance extends Component {
 
   handleSave = () => {
     var tokn = localStorage.getItem("userdata");
-    console.log("save");
+    // console.log("save");
     // save login will go here
     const perobj = {
       id: this.props.vehicleInsuranceInfoId,
@@ -163,7 +163,7 @@ class VehicleInsurance extends Component {
         },
         (statusCode, Resp) => {
           // debugger;
-          console.log("Resp", Resp);
+          // console.log("Resp", Resp);
           window.location.reload();
         }
       );

@@ -19,7 +19,7 @@ class Dispute extends Component {
   WebServicesManager = new WebServicesManager();
   componentWillMount() {
     var tokn = localStorage.getItem("userdata");
-    console.log("props inner", this.props);
+    // console.log("props inner", this.props);
     this.WebServicesManager.getApiWithParamCall(
       {
         endPoint: "Dispute/GetDispute",
@@ -27,7 +27,7 @@ class Dispute extends Component {
         token: tokn,
       },
       (s, r) => {
-        console.log("r", r);
+        // console.log("r", r);
         this.setState({ disputeInfo: r[0] });
         this.WebServicesManager.getApiWithParamCall(
           {
@@ -37,7 +37,7 @@ class Dispute extends Component {
           },
           (s, rb) => {
             this.setState({ bInfo: rb });
-            console.log(rb);
+            // console.log(rb);
           }
         );
 

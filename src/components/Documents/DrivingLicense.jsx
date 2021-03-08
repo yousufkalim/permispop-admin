@@ -36,7 +36,7 @@ class DrivingLicense extends Component {
   };
   componentDidMount() {
     var tokn = localStorage.getItem("userdata");
-    console.log("this.props.DLID", this.props);
+    // console.log("this.props.DLID", this.props);
     // if (this.props.role === "DSInstructor") {
     //   var response = JSON.parse(this.props.drivingLisenceInfoId);
     //   if (response !== null) {
@@ -108,7 +108,7 @@ class DrivingLicense extends Component {
 
   handleSave = () => {
     var tokn = localStorage.getItem("userdata");
-    console.log("save");
+    // console.log("save");
     // save login will go here
     // if (this.props.role === "DSInstructor") {
     //   const perobj = {

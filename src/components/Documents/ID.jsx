@@ -103,7 +103,7 @@ class ID extends Component {
                       token: tokn,
                     },
                     (statusCode, Resp) => {
-                      console.log("Resp", Resp);
+                      // console.log("Resp", Resp);
                       if (mail_sent === false) {
                         this.WebServicesManager.getApiWithParamCall(
                           {
@@ -112,7 +112,7 @@ class ID extends Component {
                             token: tokn,
                           },
                           (statusCode, EResp) => {
-                            console.log("data", EResp);
+                            // console.log("data", EResp);
                             alert(
                               "All document Verified, mail sent successfully"
                             );
@@ -143,7 +143,7 @@ class ID extends Component {
                       token: tokn,
                     },
                     (statusCode, Resp) => {
-                      console.log("Resp", Resp);
+                      // console.log("Resp", Resp);
                     }
                   );
                 }

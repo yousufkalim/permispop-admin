@@ -83,7 +83,7 @@ class Siret extends Component {
 
   handleSave = () => {
     var tokn = localStorage.getItem("userdata");
-    console.log("save");
+    // console.log("save");
     // save login will go here
     // if (this.props.role === "DSInstructor") {
     //   const perobj = {
@@ -154,7 +154,7 @@ class Siret extends Component {
         token: tokn,
       },
       (statusCode, Resp) => {
-        console.log("Resp", Resp);
+        // console.log("Resp", Resp);
         window.location.reload();
       }
     );

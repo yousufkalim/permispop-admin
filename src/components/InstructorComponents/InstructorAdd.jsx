@@ -511,8 +511,8 @@ class InstructorAdd extends Component {
         this.setState({
           PasswordError: "Password must contain minimum length of 8",
         });
-        console.log(Utilities.ValidatePassword(this.state.Password));
-        console.log("PASSWORD", this.state.Password);
+        // console.log(Utilities.ValidatePassword(this.state.Password));
+        // console.log("PASSWORD", this.state.Password);
       } else if (this.state.Password === this.state.CPassword) {
         this.setState({
           CPasswordError: "",
@@ -834,7 +834,7 @@ class InstructorAdd extends Component {
           },
           (statusCode, response) => {
             // this.state.ImagePath =
-            console.log("Response file", response);
+            // console.log("Response file", response);
             if (
               response === null &&
               response === undefined &&
@@ -974,7 +974,7 @@ class InstructorAdd extends Component {
           token: tokn,
         },
         (statusCode, response) => {
-          console.log("response", response);
+          // console.log("response", response);
         }
       );
       setTimeout(() => window.location.reload(), 1000);
@@ -1202,7 +1202,7 @@ class InstructorAdd extends Component {
     )
       .then((response) => response.json())
       .then((responseJson) => {
-        console.log("res address", responseJson);
+        // console.log("res address", responseJson);
         var addressToSet = [];
         // debugger;
         for (var i = 0; i < responseJson.features.length; i++) {
@@ -1217,12 +1217,12 @@ class InstructorAdd extends Component {
         }
         if (addressToSet.length === responseJson.features.length) {
           this.setState({ items: addressToSet }, () => {
-            console.log(
-              "Address to set",
-              addressToSet,
-              "state",
-              this.state.items
-            );
+            // console.log(
+            //   "Address to set",
+            //   addressToSet,
+            //   "state",
+            //   this.state.items
+            // );
           });
         }
       })
@@ -1260,7 +1260,7 @@ class InstructorAdd extends Component {
     var x = jwtDecode(tokn);
     var userInfo = JSON.parse(Base64.decode(x.userData));
     this.setState({ showAddModel: false });
-    console.log("Submit", this.state);
+    // console.log("Submit", this.state);
     // debugger;
     const instructorInfo = {
       id: "",
@@ -1295,7 +1295,7 @@ class InstructorAdd extends Component {
         dataToInsert: PersonalInfo,
       },
       (statusCode, response) => {
-        console.log("Response Personal", response);
+        // console.log("Response Personal", response);
         var personalRefId = response.id;
         var f = response.id;
         // var f = response.id + "_" + response.firstName + "_" + response.surName;
@@ -1380,7 +1380,7 @@ class InstructorAdd extends Component {
                 dataToInsert: dataToPost,
               },
               (statusCode, response) => {
-                console.log("Meetup added 1");
+                // console.log("Meetup added 1");
                 //  update profile table for driving School to add instructor info here.
                 this.WebServicesManager.getApiWithParamCall(
                   {
@@ -1393,7 +1393,7 @@ class InstructorAdd extends Component {
                     const Instructros = JSON.parse(
                       responseUp.drivingSchoolInstructorInfoId
                     );
-                    console.log("Instructros", Instructros);
+                    // console.log("Instructros", Instructros);
                     var updateid = 0;
                     Object.entries(Instructros).forEach(([key, value]) => {
                       if (value === null) {
@@ -1433,7 +1433,7 @@ class InstructorAdd extends Component {
                       Long: responseUp.long,
                       Status: responseUp.status,
                     };
-                    console.log("info", info);
+                    // console.log("info", info);
                     const dataToUpdate = JSON.stringify(info);
                     this.WebServicesManager.postApiCall(
                       {
@@ -1442,7 +1442,7 @@ class InstructorAdd extends Component {
                         token: tokn,
                       },
                       (statusCode, responseNewUp) => {
-                        console.log("after update", responseNewUp);
+                        // console.log("after update", responseNewUp);
                         alert("Successfully Added");
                         this.props.update();
                       }

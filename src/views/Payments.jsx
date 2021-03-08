@@ -31,7 +31,7 @@ class Payments extends Component {
                 token: tokn,
               },
               (statusCode, responseUser) => {
-                console.log("respisswe", responseUser, item);
+                // console.log("respisswe", responseUser, item);
                 if (item.activated === "true") {
                   // debugger;
                   const resp = {
@@ -48,7 +48,7 @@ class Payments extends Component {
                       "ddd MMM DD YYYY"
                     ),
                   };
-                  console.log("resp");
+                  // console.log("resp");
                   this.setState({ users: [...this.state.users, resp] });
                 } else {
                   const resp = {
@@ -125,7 +125,6 @@ class Payments extends Component {
                             <tbody>
                               {this.state.inactiveusers.length > 0 ? (
                                 this.state.inactiveusers.map((item, idx) => {
-                                  console.log("item", item);
                                   return (
                                     <tr>
                                       <td>

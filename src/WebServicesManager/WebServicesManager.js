@@ -217,7 +217,7 @@ export default class WebServicesManager extends React.Component {
     })
       .then((response) => response.json())
       .then((responseJson) => {
-        console.log("Json Form of response", responseJson);
+        // console.log("Json Form of response", responseJson);
         let statusCode = responseJson.code;
         callback(statusCode, responseJson);
       })
@@ -452,7 +452,7 @@ export default class WebServicesManager extends React.Component {
     let headeris = {
       "Content-Type": "application/json",
     };
-    console.log(params);
+    // console.log(params);
     if (params.token !== undefined) {
       headeris["Authorization"] = "Bearer " + params.token;
     }

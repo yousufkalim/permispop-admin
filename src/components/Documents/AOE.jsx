@@ -92,7 +92,7 @@ class AOE extends Component {
 
   handleSave = () => {
     var tokn = localStorage.getItem("userdata");
-    console.log("save");
+    // console.log("save");
     // save login will go here
     // if (this.props.role === "DSInstructor") {
     //   const perobj = {

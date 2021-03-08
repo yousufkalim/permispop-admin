@@ -9,6 +9,7 @@ import UserInstructors from "components/UserCard/UserInstructors.jsx";
 import UserMeetups from "components/UserCard/UserMeetups.jsx";
 import "font-awesome/css/font-awesome.min.css";
 import { MDBDataTable } from "mdbreact";
+// import "mdbreact/dist/css/mdb.css";
 
 const $ = require("jquery");
 $.DataTable = require("datatables.net");
@@ -132,6 +133,7 @@ class Users extends Component {
               nvc = nvc + 1;
             }
           }
+          return null;
         });
         var verifiedUserData = { columns: columns, rows: VerifiedUser };
         var nonVerifiedUserData = { columns: columns, rows: NonVerifiedUser };
@@ -183,7 +185,10 @@ class Users extends Component {
             <Row>
               <Row>
                 <Col md={12}>
-                  <a href="#" onClick={() => window.location.reload()}>
+                  <a
+                    href="/admin/users"
+                    onClick={() => window.location.reload()}
+                  >
                     {" "}
                     <i className="fa fa-arrow-circle-left"></i>Back to list
                   </a>
@@ -195,9 +200,9 @@ class Users extends Component {
                     bgImage="https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400"
                     {...this.state.userDetails}
                   />
-                  {console.log("...this.state.userDetails", {
+                  {/* {console.log("...this.state.userDetails", {
                     ...this.state.userDetails,
-                  })}
+                  })} */}
                 </Col>
                 <Col md={8}>
                   <Card
@@ -206,19 +211,15 @@ class Users extends Component {
                     ctTableFullWidth
                     ctTableResponsive
                     content={
-                      <TabContainer className="content">
+                      <TabContainer id="content" className="content">
                         <Tabs defaultActiveKey={this.state.defualtTab}>
-                          <Tab eventKey="documents" title="Documents" id="1">
+                          <Tab eventKey="documents" title="Documents">
                             <UserDocuments {...this.state.userDetails} />
                           </Tab>
 
                           {/* instructor tabs */}
                           {this.state.userDetails.role === "DrivingSchool" ? (
-                            <Tab
-                              eventKey="instructor"
-                              title="Instructor"
-                              id="3"
-                            >
+                            <Tab eventKey="instructor" title="Instructor">
                               <UserInstructors
                                 {...this.state.userDetails}
                                 changeUser={this.changeUser}
@@ -231,13 +232,13 @@ class Users extends Component {
                           {this.state.userDetails.role === "Instructor" ||
                           this.state.userDetails.role === "DSInstructor" ||
                           this.state.userDetails.role === "CarRentalAgent" ? (
-                            <Tab eventKey="meetup" title="Meetup Points" id="4">
+                            <Tab eventKey="meetup" title="Meetup Points">
                               <UserMeetups {...this.state.userDetails} />
                             </Tab>
                           ) : (
                             ""
                           )}
-                          <Tab eventKey="Payments" title="Payments" id="2">
+                          <Tab eventKey="Payments" title="Payments">
                             <UserPayments {...this.state.userDetails} />
                           </Tab>
                         </Tabs>

@@ -13,7 +13,7 @@ class AdminNavbarLinks extends Component {
   componentDidMount() {
     var tokn = localStorage.getItem("userdata");
     if (tokn === null || tokn === "") {
-      console.log("this.prop", this.props);
+      // console.log("this.prop", this.props);
       window.location.replace("/login");
     } else {
       try {

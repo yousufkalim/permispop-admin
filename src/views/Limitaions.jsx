@@ -145,7 +145,7 @@ function Limitaions() {
         listis[indexofval].value = customis.value;
         setListAppend(listis);
         setNewCustom(newis);
-        console.log(newCustom);
+        // console.log(newCustom);
       }
     }
   };
@@ -155,7 +155,7 @@ function Limitaions() {
       (item) => item.user.id === newCustom.user
     );
     // debugger;
-    console.log(finduser);
+    // console.log(finduser);
     if (finduser === undefined) {
       // perform saving actions
       fetch(`${process.env.REACT_APP_BASE_NODE}dynamic/adduserlimits`, {
@@ -168,7 +168,7 @@ function Limitaions() {
       })
         .then((res) => res.json())
         .then((resJson) => {
-          console.log(resJson);
+          // console.log(resJson);
           setCustomLimitValue("");
           setFieldValue("");
           setListAppend([]);
@@ -193,7 +193,7 @@ function Limitaions() {
     })
       .then((res) => res.json())
       .then((resJson) => {
-        console.log(resJson);
+        // console.log(resJson);
         setCustomLimitValue("");
         setFieldValue("");
         setListAppend([]);
@@ -219,7 +219,7 @@ function Limitaions() {
       )
         .then((res) => res.json())
         .then((resJson) => {
-          console.log(resJson);
+          // console.log(resJson);
           loadData();
         })
         .catch((e) => console.log("delete error: ", e));

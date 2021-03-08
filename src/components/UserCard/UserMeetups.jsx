@@ -252,7 +252,6 @@ export class UserMeetups extends Component {
                   {this.state.meetupList.length > 0
                     ? this.state.meetupList.map((meetup, index) => (
                         <tr key={index}>
-                          {/* {console.log("meetuop", meetup)} */}
                           <td>{meetup.meetUp}</td>
                           <td>{meetup.zipCode}</td>
                           <td>{meetup.city}</td>
@@ -270,7 +269,7 @@ export class UserMeetups extends Component {
                           </td>
                         </tr>
                       ))
-                    : ""}
+                    : null}
                 </tbody>
               </table>
             </div>

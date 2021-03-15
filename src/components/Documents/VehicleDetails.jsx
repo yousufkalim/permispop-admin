@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Grid, Row, Col, Button } from "react-bootstrap";
+import { Grid, Row, Col } from "react-bootstrap";
 import WebServicesManager from "../../WebServicesManager/WebServicesManager";
 import FileDisplay from "components/Documents/FileDisplay.jsx";
 import moment from "moment";
@@ -216,9 +216,9 @@ class VehicleRegistration extends Component {
                   ? moment(this.state.endDateOfTechControl).format("DD/MM/YYYY")
                   : "N/A"}
                 <hr />
-                <Button varient="success" onClick={this.handleModelShow}>
+                {/* <Button varient="success" onClick={this.handleModelShow}>
                   Update Data
-                </Button>
+                </Button> */}
               </Col>
             </Row>
           </Grid>

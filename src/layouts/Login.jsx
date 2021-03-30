@@ -1,13 +1,21 @@
 import React, { Component } from "react";
-import { Grid, Row, Col, FormGroup, Button } from "react-bootstrap";
-import { Form, ControlLabel, FormControl } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Grid, Row, Col } from "react-bootstrap";
+// import { ControlLabel, FormControl } from "react-bootstrap";
+// import { Link } from "react-router-dom";
 import logo from "../assets/img/images/logo.png";
 import "../assets/sass/custom.scss";
 import WebServicesManager from "../WebServicesManager/WebServicesManager";
 import Utilities from "../Utilities/Utilities";
 import jwtDecode from "jwt-decode";
 import { Base64 } from "js-base64";
+import { Form, Input, Button, message } from "antd";
+import { UserOutlined, LockOutlined } from "@ant-design/icons";
+
+const validateMessages = {
+  types: {
+    email: "${name} is invalid!",
+  },
+};
 
 export default class Login extends Component {
   WebServicesManager = new WebServicesManager();
@@ -23,9 +31,9 @@ export default class Login extends Component {
       passwordError: "",
       isLoading: false,
       IsValid: false,
+      confirmLoading: false,
       passwordShow: true,
       typeChng: "password",
-
       ShowLoading: [
         <div class="spinner-border text-primary" role="status">
           <span class="sr-only">Loading...</span>
@@ -33,7 +41,9 @@ export default class Login extends Component {
       ],
     };
   }
-
+  error = () => {
+    message.error(this.state.notValidError, 3);
+  };
   // handler for all fields change
   handleChange = (e) => {
     this.setState({ [e.target.name]: e.target.value }, () => {});
@@ -51,35 +61,48 @@ export default class Login extends Component {
     }
   }
   LogIn = (e) => {
-    this.validationCheck(this.state);
-    e.preventDefault();
+    this.setState({ confirmLoading: true });
+    // this.validationCheck(this.state);
+    // e.preventDefault();
     const info = {
       Email: this.state.email,
       Password: this.state.password,
     };
-    var dataToLogIn = JSON.stringify(info);
-    this.WebServicesManager.LogIn(
-      { endPoint: "Personal/AdminLogin", dataToLogIn: dataToLogIn },
-      (statusCode, response) => {
-        if (response.returnStatus === true) {
-          this.functionData(response.data);
-        } else if (response.returnStatus === false) {
-          setTimeout(() => {
+    if (this.state.email && this.state.password) {
+      var dataToLogIn = JSON.stringify(info);
+      this.WebServicesManager.LogIn(
+        { endPoint: "Personal/AdminLogin", dataToLogIn: dataToLogIn },
+        (statusCode, response) => {
+          if (statusCode === 500 || response === undefined) {
             this.setState({
-              notValidError: "Your email or password wrong!",
-              isLoading: false,
+              confirmLoading: false,
             });
-          }, 4000);
-        } else {
-          setTimeout(() => {
-            this.setState({
-              notValidError: "Error from sever",
-              isLoading: false,
-            });
-          }, 1000);
+          } else {
+            if (response.returnStatus === true) {
+              this.functionData(response.data);
+            } else if (response.returnStatus === false) {
+              setTimeout(() => {
+                this.setState({
+                  notValidError: "Your email or password wrong!",
+                  // isLoading: false,
+                  confirmLoading: false,
+                });
+                this.error();
+              }, 4000);
+            } else {
+              setTimeout(() => {
+                this.setState({
+                  notValidError: "Error from sever",
+                  // isLoading: false,
+                  confirmLoading: false,
+                });
+                this.error();
+              }, 1000);
+            }
+          }
         }
-      }
-    );
+      );
+    }
   };
   componentWillMount() {
     // localStorage.setItem("userdata", "");
@@ -105,123 +128,219 @@ export default class Login extends Component {
       <div>
         <Grid fluid>
           <Row>
-            <Col md={6} sm={6} className="text-center p-4 full-height" xsHidden>
-              <img src={logo} alt="" className="img-fluid mx-auto" />
+            <Col className="bg-login p-login full-height">
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                }}
+              >
+                <div className="login-back-envelope">
+                  <img
+                    style={
+                      {
+                        // marginBottom: "px",
+                      }
+                    }
+                    src={logo}
+                    alt=""
+                  />
 
-              <p className="p-5">
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's standard dummy
-                text ever since the 1500s, when an unknown printer took a galley
-                of type and scrambled it to make a type specimen book. It has
-                survived not only five centuries, but also the leap into
-                electronic typesetting, remaining essentially unchanged. It was
-                popularised in the 1960s with the release of Letraset sheets
-                containing Lorem Ipsum passages, and more recently with desktop
-                publishing software like Aldus PageMaker including versions of
-                Lorem Ipsum.
-              </p>
-              <Link to={"/"}>
-                <Button className="cbtn my-3" bsSize="large">
-                  BACK TO WEBSITE
-                </Button>
-              </Link>
-
-              <p className="my-5">
-                Terms & Conditions <span className="px-2"> | </span>
-                Privacy Policy <span className="px-2"> | </span> Cookies
-              </p>
-            </Col>
-            <Col
-              md={5}
-              sm={5}
-              className="bg-login p-login full-height"
-              mdOffset={1}
-              smOffset={1}
-            >
-              <h2 className="t-white">Admin Login</h2>
-              <p className="t-white">
-                Enter your email and password to login with Permispop
-              </p>
-              <Form className="login-form">
-                <p className="helpingBlock">{this.state.emailError}</p>
-                <div className="blink">
-                  <p className="helpingBlockError">
-                    {this.state.notValidError}
+                  <h2 style={{ color: "#4b4d4b" }}>Admin Login</h2>
+                  <p style={{ color: "#4b4d4b" }}>
+                    Enter your email and password to login with Permispop
                   </p>
+
+                  <Form
+                    onFinish={this.onFinish}
+                    validateMessages={validateMessages}
+                    name="login"
+                    className="login-form"
+                    initialValues={{ remember: true }}
+                    // onFinish={onFinish}
+                  >
+                    <Form.Item
+                      name="Email"
+                      rules={[
+                        {
+                          type: "email",
+                        },
+                        {
+                          required: true,
+                          message: "Please input your E-mail!",
+                        },
+                      ]}
+                    >
+                      <Input
+                        style={{ borderRadius: "4px" }}
+                        name="email"
+                        value={this.state.email}
+                        onChange={this.handleChange}
+                        allowClear
+                        prefix={
+                          <UserOutlined className="site-form-item-icon" />
+                        }
+                        placeholder="aabc@xyz.com"
+                      />
+                    </Form.Item>
+                    <Form.Item
+                      name="password"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input your Password!",
+                        },
+                      ]}
+                    >
+                      <Input.Password
+                        style={{ borderRadius: "4px" }}
+                        name="password"
+                        type="password"
+                        placeholder="Password"
+                        value={this.state.password}
+                        onChange={this.handleChange}
+                        allowClear
+                        prefix={
+                          <LockOutlined className="site-form-item-icon" />
+                        }
+                      />
+                    </Form.Item>
+                    {/* <Form.Item>
+                      <Form.Item
+                        name="remember"
+                        valuePropName="checked"
+                        noStyle
+                      >
+                        <Checkbox>Remember me</Checkbox>
+                      </Form.Item>
+                    </Form.Item> */}
+
+                    <Form.Item noStyle shouldUpdate>
+                      {({ getFieldsError, getFieldsValue }) => (
+                        <Form.Item>
+                          <Button
+                            type={"primary"}
+                            htmlType="submit"
+                            loading={this.state.confirmLoading}
+                            className="login-form-button"
+                            style={
+                              getFieldsError().filter(
+                                ({ errors }) => errors.length
+                              ).length > 0 ||
+                              getFieldsValue("Email").Email === undefined ||
+                              getFieldsValue("Password").password === undefined
+                                ? {
+                                    borderColor: "#149e7a",
+                                    color: "black",
+                                    borderRadius: "4px",
+                                  }
+                                : {
+                                    background: "#149e7a",
+                                    borderColor: "#149e7a",
+                                    borderRadius: "4px",
+                                  }
+                            }
+                            onClick={this.LogIn}
+                            disabled={
+                              getFieldsError().filter(
+                                ({ errors }) => errors.length
+                              ).length > 0 ||
+                              getFieldsValue("Email").Email === undefined ||
+                              getFieldsValue("Password").password === undefined
+                                ? true
+                                : false
+                            }
+                          >
+                            Log in{" "}
+                          </Button>
+                        </Form.Item>
+                      )}
+                    </Form.Item>
+                  </Form>
+                  {/* <Form className="login-form">
+                    <p className="helpingBlock">{this.state.emailError}</p>
+                    <div className="blink">
+                      <p className="helpingBlockError">
+                        {this.state.notValidError}
+                      </p>
+                    </div>
+                    <FormGroup controlId="formEmail" className="inputWithIcon">
+                      <ControlLabel className="t-white">Email</ControlLabel>
+                      <FormControl
+                        type="email"
+                        className="c-in"
+                        name="email"
+                        onChange={this.handleChange}
+                        value={this.state.email}
+                        style={{ borderRadius: "4px" }}
+                      />
+                      <i
+                        style={{
+                          width: "20px",
+                          height: "20px",
+                          marginRight: "6px",
+                        }}
+                        className="fas fa-user"
+                        aria-hidden="true"
+                      ></i>
+                    </FormGroup>
+                    <p className="helpingBlock">{this.state.passwordError}</p>
+                    <FormGroup
+                      controlId="formPassword"
+                      className="inputWithIcon"
+                    >
+                      <ControlLabel className="t-white">Password</ControlLabel>
+                      <FormControl
+                        type={this.state.typeChng}
+                        className={"c-in"}
+                        name="password"
+                        onChange={this.handleChange}
+                        value={this.password}
+                        style={{ borderRadius: "4px" }}
+                      />
+                      {this.state.passwordShow ? (
+                        <i
+                          style={{
+                            width: "20px",
+                            height: "20px",
+                            margin: "2px",
+                          }}
+                          className="fa fa-eye fa-lg eyeIcon"
+                          aria-hidden="true"
+                          onClick={this.passwordShow}
+                        ></i>
+                      ) : (
+                        <i
+                          className="fas fa-eye"
+                          aria-hidden="true"
+                          onClick={this.passwordHide}
+                        ></i>
+                      )}
+                    </FormGroup>
+                    <FormGroup>
+                      <Row>
+                        <Col md={6}>
+                          <Button
+                            type="submit"
+                            block
+                            className="login-btn"
+                            onClick={this.LogIn}
+                            disabled={this.state.isLoading}
+                            style={{
+                              borderRadius: "4px",
+                              width: "412px",
+                              opacity: 1,
+                            }}
+                          >
+                            {this.state.isLoading ? "Loading..." : "LOGIN"}
+                          </Button>
+                        </Col>
+                      </Row>
+                    </FormGroup>
+                  </Form> */}
                 </div>
-                <FormGroup controlId="formEmail" className="inputWithIcon">
-                  <ControlLabel className="t-white">Email</ControlLabel>
-                  <FormControl
-                    type="email"
-                    className="c-in"
-                    name="email"
-                    onChange={this.handleChange}
-                    value={this.state.email}
-                  />
-                  <i className="fa fa-user fa-lg fa-fw" aria-hidden="true"></i>
-                </FormGroup>
-                <p className="helpingBlock">{this.state.passwordError}</p>
-                <FormGroup controlId="formPassword" className="inputWithIcon">
-                  <ControlLabel className="t-white">Password</ControlLabel>
-                  <FormControl
-                    type={this.state.typeChng}
-                    className={"c-in"}
-                    name="password"
-                    onChange={this.handleChange}
-                    value={this.password}
-                  />
-                  {this.state.passwordShow ? (
-                    <i
-                      className="fa fa-eye fa-lg eyeIcon"
-                      aria-hidden="true"
-                      onClick={this.passwordShow}
-                    ></i>
-                  ) : (
-                    <i
-                      className="fa fa-eye-slash fa-lg eyeIcon"
-                      aria-hidden="true"
-                      onClick={this.passwordHide}
-                    ></i>
-                  )}
-                </FormGroup>
-                {/* <FormGroup>
-                  <Row>
-                    <Col md={6} xs={6}>
-                      <Checkbox className="t-white">Remember me</Checkbox>
-                    </Col>
-                    <Col md={6} xs={6} className="p-3 f-r">
-                      <a href="" className="t-white">
-                        Forget Password
-                      </a>
-                    </Col>
-                  </Row>
-                </FormGroup> */}
-                <FormGroup>
-                  <Row>
-                    <Col md={6}>
-                      <Button
-                        type="submit"
-                        block
-                        className="login-btn"
-                        onClick={this.LogIn}
-                        disabled={this.state.isLoading}
-                      >
-                        {this.state.isLoading ? "Loading..." : "LOGIN"}
-                      </Button>
-                    </Col>
-                    {/* <Col md={6}>
-                      <Button
-                        block
-                        href="/register"
-                        type="submit"
-                        className="register-btn"
-                      >
-                        REGISTER NOW
-                      </Button>
-                    </Col> */}
-                  </Row>
-                </FormGroup>
-              </Form>
+              </div>
             </Col>
           </Row>
         </Grid>

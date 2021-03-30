@@ -505,6 +505,7 @@ body {
 .bg-login {
   position: relative;
  background: #1bbc9b;
+//  background: rgba(27, 188, 155, 1);
  //background: #848484;
   overflow: hidden;
 }
@@ -518,8 +519,8 @@ body {
   width: 100%;
   height: 100%;
   z-index: 1;
-  opacity: 0.3;
-  background-image: url("../img/images/bg-login.jpg");
+  opacity: 0.5;
+  background-image: url("../img/images/bg-login2.jpg");
   background-repeat: no-repeat;
   background-position: bottom;
   -ms-background-size: cover;
@@ -563,14 +564,14 @@ form {
   background-color: $primarybold !important;
   border: none !important;
   color: $white !important;
-  border-radius: 0px;
+  border-radius: 4px;
 }
 
 .login-btn:focus {
   background-color: $primarybold !important;
   border: none !important;
   color: $white !important;
-  border-radius: 0px;
+  border-radius: 4px;
 }
 
 .login-btn:hover {
@@ -1950,3 +1951,80 @@ table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before
 
   content: "";
 }
+
+.logo-login{
+  // margin-top: 26px;
+  // opacity: 1;
+  // width:14vh;
+  // // height:10vh;
+  // position: absolute;
+  // top: 1vh;
+  // left:94vh;
+  // z-index: 20;
+
+  
+}
+
+.login-reg-modal-custom {
+  // display: flex;
+  // flex-direction: row;
+
+}.login-reg-modal .ant-modal-content {
+  overflow: hidden;
+  border-radius:4px;
+  -moz-box-shadow: 3px 3px 5px #3b3b3b;
+  -webkit-box-shadow: 3px 3px 5px #3b3b3b;       
+  box-shadow: 3px 3px 5px #3b3b3b;
+}
+.login-form {
+  // max-width: 300px;
+  box-shadow:0;
+  margin-top:30px;
+}
+.login-form-forgot {
+  // float: right;
+}
+.ant-col-rtl .login-form-forgot {
+  // float: left;
+}
+.login-form-button {
+  // background: #0a8068!important;
+  // border-color: #0a8068!important;
+  width: 100%;
+  height: 40px;
+  margin-top:10px;
+
+}
+.ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #ff8c00;
+  // border-color: #ff8c00;
+}
+.ant-input-affix-wrapper{
+  max-height: 50px;
+}
+.ant-input-affix-wrapper:hover{
+  border-color: #ff8c00 !important; 
+  box-shadow: 0 0 8px 0 #ff8c00 !important;
+}
+.login-form input[type="password"], .login-form input[type="text"] {
+  border:none;
+  border-color: white !important; 
+  box-shadow: 0 0 8px 0 white !important;
+}
+
+.ant-input:focus{
+  border-right-width: 1px !important;
+    outline: 0;
+}.ant-form-item-explain.ant-form-item-explain-error {
+  color: red;
+}
+
+.login-back-envelope{
+    border-radius: 5px;
+    background-color:white ;
+    margin: 10px;
+    padding: 40px;
+    position:absolute;
+    z-index: 9999999;
+
+  }

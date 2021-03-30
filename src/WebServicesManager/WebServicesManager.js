@@ -1,5 +1,6 @@
 import React from "react";
 import Utilities from "Utilities/Utilities";
+import { message } from "antd";
 
 export default class WebServicesManager extends React.Component {
   baseUrl = process.env.REACT_APP_BASE_URL;
@@ -285,7 +286,15 @@ export default class WebServicesManager extends React.Component {
         let statusCode = responseJson.code;
         callback(statusCode, responseJson);
       })
-      .catch((error) => {});
+      .catch((error) => {
+        callback(500, undefined);
+        message.config({
+          maxCount: 1,
+        });
+        message.error({
+          content: error.message,
+        });
+      });
   }
 
   LogIn(params, callback) {

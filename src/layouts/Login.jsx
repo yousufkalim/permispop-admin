@@ -1,11 +1,11 @@
+import "../assets/sass/custom.scss";
 import React, { Component } from "react";
 import { Grid, Row, Col } from "react-bootstrap";
+import logo from "../assets/img/images/logo.png";
+import WebServicesManager from "../WebServicesManager/WebServicesManager";
 // import { ControlLabel, FormControl } from "react-bootstrap";
 // import { Link } from "react-router-dom";
-import logo from "../assets/img/images/logo.png";
-import "../assets/sass/custom.scss";
-import WebServicesManager from "../WebServicesManager/WebServicesManager";
-import Utilities from "../Utilities/Utilities";
+// import Utilities from "../Utilities/Utilities";
 import jwtDecode from "jwt-decode";
 import { Base64 } from "js-base64";
 import { Form, Input, Button, message } from "antd";
@@ -13,7 +13,8 @@ import { UserOutlined, LockOutlined } from "@ant-design/icons";
 
 const validateMessages = {
   types: {
-    email: "${name} is invalid!",
+    // eslint-disable-next-line
+    email: "Your ${name} is invalid!",
   },
 };
 
@@ -48,18 +49,18 @@ export default class Login extends Component {
   handleChange = (e) => {
     this.setState({ [e.target.name]: e.target.value }, () => {});
   };
-  validationCheck(state) {
-    if (Utilities.ValidateEmail(state.email)) {
-      this.setState({ emailError: "" });
-      if (Utilities.isValidString(state.password)) {
-        this.setState({ passwordError: "", isLoading: true });
-      } else {
-        this.setState({ passwordError: "Password is Invaild" });
-      }
-    } else {
-      this.setState({ emailError: "Email is Invaild" });
-    }
-  }
+  // validationCheck(state) {
+  //   if (Utilities.ValidateEmail(state.email)) {
+  //     this.setState({ emailError: "" });
+  //     if (Utilities.isValidString(state.password)) {
+  //       this.setState({ passwordError: "", isLoading: true });
+  //     } else {
+  //       this.setState({ passwordError: "Password is Invaild" });
+  //     }
+  //   } else {
+  //     this.setState({ emailError: "Email is Invaild" });
+  //   }
+  // }
   LogIn = (e) => {
     this.setState({ confirmLoading: true });
     // this.validationCheck(this.state);
@@ -83,7 +84,7 @@ export default class Login extends Component {
             } else if (response.returnStatus === false) {
               setTimeout(() => {
                 this.setState({
-                  notValidError: "Your email or password wrong!",
+                  notValidError: "Your email or password is incorrect!",
                   // isLoading: false,
                   confirmLoading: false,
                 });
@@ -105,6 +106,10 @@ export default class Login extends Component {
     }
   };
   componentWillMount() {
+    // localStorage.setItem("userdata", "");
+    localStorage.setItem("reload", "true");
+  }
+  componentDidMount() {
     // localStorage.setItem("userdata", "");
     localStorage.setItem("reload", "true");
   }
@@ -138,19 +143,19 @@ export default class Login extends Component {
               >
                 <div className="login-back-envelope">
                   <img
-                    style={
-                      {
-                        // marginBottom: "px",
-                      }
-                    }
+                    style={{
+                      marginTop: "-10px",
+                      marginLeft: "38px",
+                      width: "80%",
+                    }}
                     src={logo}
                     alt=""
                   />
 
-                  <h2 style={{ color: "#4b4d4b" }}>Admin Login</h2>
+                  {/* <h2 style={{ color: "#4b4d4b" }}>Admin Login</h2>
                   <p style={{ color: "#4b4d4b" }}>
                     Enter your email and password to login with Permispop
-                  </p>
+                  </p> */}
 
                   <Form
                     onFinish={this.onFinish}
@@ -158,7 +163,6 @@ export default class Login extends Component {
                     name="login"
                     className="login-form"
                     initialValues={{ remember: true }}
-                    // onFinish={onFinish}
                   >
                     <Form.Item
                       name="Email"
@@ -168,7 +172,7 @@ export default class Login extends Component {
                         },
                         {
                           required: true,
-                          message: "Please input your E-mail!",
+                          message: "Please input a valid E-mail!",
                         },
                       ]}
                     >
@@ -206,6 +210,7 @@ export default class Login extends Component {
                         }
                       />
                     </Form.Item>
+
                     {/* <Form.Item>
                       <Form.Item
                         name="remember"
@@ -219,6 +224,7 @@ export default class Login extends Component {
                     <Form.Item noStyle shouldUpdate>
                       {({ getFieldsError, getFieldsValue }) => (
                         <Form.Item>
+                          {console.log(getFieldsValue("Email").Email)}
                           <Button
                             type={"primary"}
                             htmlType="submit"
@@ -231,8 +237,8 @@ export default class Login extends Component {
                               getFieldsValue("Email").Email === undefined ||
                               getFieldsValue("Password").password === undefined
                                 ? {
-                                    borderColor: "#149e7a",
-                                    color: "black",
+                                    // borderColor: "#149e7a",
+                                    // color: "lightgray",
                                     borderRadius: "4px",
                                   }
                                 : {
@@ -241,7 +247,6 @@ export default class Login extends Component {
                                     borderRadius: "4px",
                                   }
                             }
-                            onClick={this.LogIn}
                             disabled={
                               getFieldsError().filter(
                                 ({ errors }) => errors.length
@@ -251,6 +256,7 @@ export default class Login extends Component {
                                 ? true
                                 : false
                             }
+                            onClick={this.LogIn}
                           >
                             Log in{" "}
                           </Button>

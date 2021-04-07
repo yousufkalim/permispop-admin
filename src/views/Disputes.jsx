@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import Dispute from "components/Disputes/Dispute.jsx";
 import { Card } from "components/Card/Card.jsx";
-import { Grid, Row, Col, Table, Button } from "react-bootstrap";
+import { Grid, Row, Col, Table } from "react-bootstrap";
 import WebServicesManager from "WebServicesManager/WebServicesManager";
+import { motion } from "framer-motion";
 
 class Disputes extends Component {
   constructor(props) {
@@ -123,7 +124,20 @@ class Disputes extends Component {
                                     : "Pending"}
                                 </td>
                                 <td className="text-center">
-                                  <Button
+                                  <motion.div
+                                    whileHover={{ scale: 1.2 }}
+                                    whileTap={{ scale: 0.8 }}
+                                    onClick={(e) => {
+                                      this.toggle(prop.id);
+                                    }}
+                                    style={{ margin: "6px 14px 6px 14px" }}
+                                  >
+                                    <i
+                                      title="View More"
+                                      className=" fas fa-eye fa-2x package-icon"
+                                    ></i>
+                                  </motion.div>
+                                  {/* <Button
                                     disabled={
                                       prop.status === "close" ? true : false
                                     }
@@ -136,7 +150,7 @@ class Disputes extends Component {
                                       title="View More"
                                       style={{ color: "#fff" }}
                                     ></li>
-                                  </Button>
+                                  </Button> */}
                                 </td>
                               </tr>
                             );

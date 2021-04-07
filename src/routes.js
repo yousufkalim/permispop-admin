@@ -1,6 +1,7 @@
 import Dashboard from "views/Dashboard.jsx";
 import Packages from "views/Packages.jsx";
 import Users from "views/Users.jsx";
+import CloseBooking from "views/CloseBooking.jsx";
 import Payments from "views/Payments.jsx";
 import Disputes from "views/Disputes.jsx";
 import UpdateRequest from "views/UpdateRequest";
@@ -25,6 +26,13 @@ const dashboardRoutes = [
     name: "Users",
     icon: "pe-7s-users",
     component: Users,
+    layout: "/admin",
+  },
+  {
+    path: "/CloseBooking",
+    name: "Close Booking",
+    icon: "pe-7s-users",
+    component: CloseBooking,
     layout: "/admin",
   },
   {

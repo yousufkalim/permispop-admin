@@ -9,6 +9,8 @@ import UserInstructors from "components/UserCard/UserInstructors.jsx";
 import UserMeetups from "components/UserCard/UserMeetups.jsx";
 import "font-awesome/css/font-awesome.min.css";
 import { MDBDataTable } from "mdbreact";
+// import { Button } from "antd";
+import { motion } from "framer-motion";
 // import "mdbreact/dist/css/mdb.css";
 
 const $ = require("jquery");
@@ -184,7 +186,32 @@ class Users extends Component {
           {this.state.showDetails ? (
             <Row>
               <Row>
-                <Col md={12}>
+                <div
+                  style={{
+                    float: "left",
+                    margin: "-20px 0px 6px 20px",
+                  }}
+                >
+                  <motion.div
+                    title="Go Back"
+                    whileHover={{ scale: 1.2 }}
+                    whileTap={{ scale: 0.8 }}
+                    style={{
+                      position: "relative",
+                      zIndex: "1000",
+                    }}
+                    // onClick={this.props.toggle}
+                    onClick={() => window.location.reload()}
+                  >
+                    <a href="/admin/users">
+                      <i
+                        className="fas fa-arrow-left fa-2x"
+                        style={{ color: "#149e7a" }}
+                      ></i>
+                    </a>
+                  </motion.div>
+                </div>
+                {/* <Col md={12}>
                   <a
                     href="/admin/users"
                     onClick={() => window.location.reload()}
@@ -192,7 +219,7 @@ class Users extends Component {
                     {" "}
                     <i className="fa fa-arrow-circle-left"></i>Back to list
                   </a>
-                </Col>
+                </Col> */}
               </Row>
               <Row>
                 <Col md={4}>
@@ -251,43 +278,28 @@ class Users extends Component {
           ) : (
             <Row>
               <Col md={12}>
-                <Card
-                  title="Users"
-                  category=""
-                  ctTableFullWidth
-                  ctTableResponsive
-                  content={
-                    <Tabs
-                      defaultActiveKey="inactiveuser"
-                      id="noanim-tab-example"
-                    >
-                      <Tab eventKey="inactiveuser" title="Non Verified">
-                        <Row
-                          className="table-responseive"
-                          style={{ margin: 10 }}
-                        >
-                          <MDBDataTable
-                            bordered
-                            data={this.state.dataNV}
-                            className="dataTableNew"
-                          />
-                        </Row>
-                      </Tab>
-                      <Tab eventKey="verfied" title="Verified">
-                        <Row
-                          className="table-responseive"
-                          style={{ margin: 10 }}
-                        >
-                          <MDBDataTable
-                            bordered
-                            data={this.state.dataV}
-                            className="dataTableNew"
-                          />
-                        </Row>
-                      </Tab>
-                    </Tabs>
-                  }
-                />
+                <Tabs defaultActiveKey="inactiveuser" id="noanim-tab-example">
+                  <Tab eventKey="inactiveuser" title="Non Verified">
+                    <Row className="table-responseive" style={{ margin: 10 }}>
+                      <MDBDataTable
+                        bordered
+                        data={this.state.dataNV}
+                        className="dataTableNew"
+                        entriesOptions={[20, 50, 100]}
+                      />
+                    </Row>
+                  </Tab>
+                  <Tab eventKey="verfied" title="Verified">
+                    <Row className="table-responseive" style={{ margin: 10 }}>
+                      <MDBDataTable
+                        bordered
+                        data={this.state.dataV}
+                        className="dataTableNew"
+                        entriesOptions={[20, 50, 100]}
+                      />
+                    </Row>
+                  </Tab>
+                </Tabs>
               </Col>
             </Row>
           )}

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Grid, Row, Col } from "react-bootstrap";
 
-import Card from "components/Card/Card.jsx";
 import WebServicesManager from "../../WebServicesManager/WebServicesManager";
+// import { Modal } from "antd";
 
 class MembershipSetting extends Component {
   constructor(props) {
@@ -31,53 +31,108 @@ class MembershipSetting extends Component {
         <Grid fluid>
           <Row>
             <Col md={12}>
-              <Card
-                title="Settings"
-                category=""
-                ctTableFullWidth
-                ctTableResponsive
-                content={
-                  <Grid fluid>
-                    <Row>
-                      <Col md={6}>Role</Col>
-                      <Col md={6}>Membership Type</Col>
-                    </Row>
-                    <Row>
-                      <Col md={6}>Student Membership</Col>
-                      <Col md={6}>
-                        Free
-                        <label className="switch">
-                          <input type="checkbox" defaultChecked />
-                          <span className="slider round"></span>
-                        </label>{" "}
-                        Paid
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col md={6}>Instructor Membership</Col>
-                      <Col md={6}>
-                        Free
-                        <label className="switch">
-                          <input type="checkbox" />
-                          <span className="slider round"></span>
-                        </label>{" "}
-                        Paid
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col md={6}>Driving Membership</Col>
-                      <Col md={6}>
-                        Free
-                        <label className="switch">
-                          <input type="checkbox" />
-                          <span className="slider round"></span>
-                        </label>{" "}
-                        Paid
-                      </Col>
-                    </Row>
-                  </Grid>
-                }
-              />
+              <Grid fluid>
+                <Row
+                  style={{
+                    borderBottom: "1px solid #f0f0f0",
+                    marginBottom: "20px",
+                    paddingBottom: "20px",
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Col md={6}>
+                    {" "}
+                    <div style={{ marginLeft: "60px" }}>Role</div>
+                  </Col>
+
+                  <Col md={6}>
+                    {" "}
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "Center",
+                      }}
+                    >
+                      Membership Type
+                    </div>
+                  </Col>
+                </Row>
+                <Row
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Col md={6}>Student Membership</Col>
+                  <Col
+                    md={6}
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <div>Free</div>
+                    <label className="switch">
+                      <input type="checkbox" defaultChecked />
+                      <span className="slider round"></span>
+                    </label>{" "}
+                    <div>Paid</div>
+                  </Col>
+                </Row>
+                <Row
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Col md={6}>Instructor Membership</Col>
+                  <Col
+                    md={6}
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <div>Free</div>
+                    <label className="switch">
+                      <input type="checkbox" />
+                      <span className="slider round"></span>
+                    </label>{" "}
+                    <div>Paid</div>
+                  </Col>
+                </Row>
+                <Row
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Col md={6}>Driving Membership</Col>
+                  <Col
+                    md={6}
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <div>Free</div>
+                    <label className="switch">
+                      <input type="checkbox" />
+                      <span className="slider round"></span>
+                    </label>{" "}
+                    <div>Paid</div>
+                  </Col>
+                </Row>
+              </Grid>
             </Col>
           </Row>
         </Grid>

@@ -1,0 +1,198 @@
+import React, { Component } from "react";
+import {
+  Grid,
+  Row,
+  Col,
+  FormGroup,
+  ControlLabel,
+  Button,
+} from "react-bootstrap";
+import { Translation } from "react-i18next";
+import moment from "moment";
+
+import { Card } from "components/Card/Card.jsx";
+
+class CloseBooking extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      userCounts: null,
+      userListWithBookingCount: [],
+      limitaion: null,
+      // booking cancel states
+      startDate: moment().format("YYYY-MM-DD"),
+      endDate: moment().format("YYYY-MM-DD"),
+      message: "",
+    };
+  }
+  componentDidMount() {
+    const token = localStorage.getItem("userdata");
+
+    // fetch data for booking counts limit
+    fetch(`${process.env.REACT_APP_BASE_NODE}dynamic/getBookingCounts`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((resJson) => {
+        // console.log(resJson, "res");
+        this.setState({ userListWithBookingCount: resJson });
+      })
+      .catch((e) => console.log(e));
+
+    // get limitations
+    fetch(`${process.env.REACT_APP_BASE_NODE}dynamic/`, {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("userdata"),
+        "content-type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((resJson) => {
+        this.setState({ limitaions: resJson });
+      })
+      .catch((e) => console.log(e));
+  }
+
+  closeBookingRange = () => {
+    const { startDate, endDate, message } = this.state;
+
+    const info = {
+      message,
+      startDate: startDate + "T00:00:00Z",
+      endDate: endDate + "T23:59:00",
+    };
+    fetch(`${process.env.REACT_APP_BASE_NODE}/dynamic/closerangebooking`, {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("userdata"),
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(info),
+    })
+      .then((res) => res.json())
+      .then((resJson) => {
+        alert(resJson);
+        document.getElementById("reasontoclose").value = "";
+        this.setState({
+          startDate: moment().format("YYYY-MM-DD"),
+          endDate: moment().format("YYYY-MM-DD"),
+          message: "",
+        });
+      })
+      .catch((e) => console.log(e));
+  };
+
+  render() {
+    return (
+      <div className="content">
+        <Grid fluid>
+          <Row>
+            <Translation>
+              {(t) => (
+                <Col md={12}>
+                  <Card
+                    id="chartHours"
+                    title="Close Booking"
+                    category="Close All booking in between two dates"
+                    content={
+                      <div className="ct-chart">
+                        <Row>
+                          <Col md={4}>
+                            <FormGroup>
+                              <ControlLabel>
+                                {t("Start Date")}{" "}
+                                <span className="text-red">*</span>
+                              </ControlLabel>
+                              <input
+                                type="date"
+                                className="form-control"
+                                name="pickDate"
+                                id="pickdate"
+                                value={moment(this.state.startDate).format(
+                                  "YYYY-MM-DD"
+                                )}
+                                max={moment().format("YYYY-MM-DD")}
+                                onChange={(event) => {
+                                  this.setState({
+                                    startDate: event.target.value,
+                                  });
+                                }}
+                              />
+                            </FormGroup>
+                          </Col>
+                          <Col md={4}>
+                            <FormGroup>
+                              <ControlLabel>
+                                {t("End Date")}{" "}
+                                <span className="text-red">*</span>
+                              </ControlLabel>
+                              <input
+                                type="date"
+                                className="form-control"
+                                name="pickDate"
+                                id="pickdate"
+                                value={moment(this.state.endDate).format(
+                                  "YYYY-MM-DD"
+                                )}
+                                min={moment().format("YYYY-MM-DD")}
+                                onChange={(event) => {
+                                  this.setState({
+                                    endDate: event.target.value,
+                                  });
+                                }}
+                              />
+                            </FormGroup>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col md={6}>
+                            <FormGroup>
+                              <ControlLabel>
+                                {t("Message/Reason")}{" "}
+                                <span className="text-red">*</span>
+                                <textarea
+                                  value=""
+                                  className="form-control"
+                                  rows="5"
+                                  style={{ width: 400 }}
+                                  onChange={(e) =>
+                                    this.setState({ message: e.target.value })
+                                  }
+                                  id="reasontoclose"
+                                >
+                                  {this.state.message}
+                                </textarea>
+                              </ControlLabel>
+                            </FormGroup>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col md={12}>
+                            <Button
+                              variant="danger"
+                              disabled={this.state.message === ""}
+                              onClick={this.closeBookingRange}
+                            >
+                              Close Bookings
+                            </Button>
+                          </Col>
+                        </Row>
+                      </div>
+                    }
+                  />
+                </Col>
+              )}
+            </Translation>
+            <Col md={4}></Col>
+          </Row>
+        </Grid>
+      </div>
+    );
+  }
+}
+
+export default CloseBooking;

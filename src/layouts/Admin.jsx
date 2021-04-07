@@ -176,13 +176,24 @@ class Admin extends Component {
           color={this.state.color}
           hasImage={this.state.hasImage}
         />
-        <div id="main-panel" className="main-panel" ref="mainPanel">
+        <div
+          id="main-panel"
+          className="main-panel"
+          ref="mainPanel"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-start",
+          }}
+        >
           <AdminNavbar
             {...this.props}
             brandText={this.getBrandText(this.props.location.pathname)}
           />
           <Switch>{this.getRoutes(routes)}</Switch>
-          <Footer />
+          <div style={{ marginTop: "auto" }}>
+            <Footer />
+          </div>
         </div>
       </div>
     );

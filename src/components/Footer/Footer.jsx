@@ -6,7 +6,10 @@ class Footer extends Component {
     return (
       <footer className="footer">
         <Grid fluid>
-          <nav className="pull-left">
+          <nav
+            // className="pull-left"
+            style={{}}
+          >
             <ul>
               <li>
                 <a href="#pablo">PermisPop</a>

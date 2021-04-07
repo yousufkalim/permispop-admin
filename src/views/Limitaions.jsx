@@ -4,7 +4,7 @@ import {
   Row,
   Col,
   Modal,
-  Button,
+  // Button,
   Form,
   FormGroup,
   ControlLabel,
@@ -14,6 +14,8 @@ import { StatsCard } from "components/StatsCard/StatsCard.jsx";
 import DataTableCustom from "components/DataTables/datatables";
 import WebServicesManager from "WebServicesManager/WebServicesManager";
 // import { updateDo } from "typescript";
+import { Button } from "antd";
+import { motion } from "framer-motion";
 
 function Limitaions() {
   const WebServicesManagers = useMemo(() => new WebServicesManager(), []);
@@ -151,6 +153,7 @@ function Limitaions() {
   };
 
   const AddRecordToDb = () => {
+    debugger;
     var finduser = userLimits.customValues.find(
       (item) => item.user.id === newCustom.user
     );
@@ -287,11 +290,33 @@ function Limitaions() {
         <Row>
           <Col sm={12} className="info-row-table">
             <h3>Custom Limits for users</h3>
-            <i
-              title="Add Limits"
-              className="fa fa-plus-circle"
-              onClick={handleShow}
-            ></i>
+            <div
+              style={{
+                float: "right",
+              }}
+            >
+              <motion.div
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.8 }}
+                style={{
+                  position: "relative",
+                  zIndex: "1000",
+                }}
+                onClick={handleShow}
+              >
+                <div
+                  style={{
+                    backgroundColor: "#149e7a",
+                    padding: "10px 15px 10px 15px",
+                    borderRadius: "50%",
+                    color: "white",
+                    margin: "16px 20px 0px 2px",
+                  }}
+                >
+                  <i className="fas fa-plus" style={{ color: "white" }}></i>
+                </div>
+              </motion.div>
+            </div>
           </Col>
           <Col sm={12}>
             {customValue.length > 0 ? (
@@ -390,11 +415,12 @@ function Limitaions() {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleShow}>
+          {/* <Button variant="secondary" onClick={handleShow}>
             Close
-          </Button>
+          </Button> */}
           <Button
-            variant="primary"
+            size="large"
+            className="btn btn-success"
             onClick={AddRecordToDb}
             disabled={listAppend.length <= 0 || newCustom.user === undefined}
           >

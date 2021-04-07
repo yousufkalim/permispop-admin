@@ -16,7 +16,7 @@ body {
   height: 100%;
 }
 .main-panel {
-  min-height: 90%;
+  min-height: 100%;
 }
 
 .navIcon {
@@ -778,7 +778,7 @@ form {
 .cField {
   padding: 20px 0;
   width: 100%;
-  overflow: scroll;
+  // overflow: scroll;
 
   row {
     width: 100%;
@@ -1276,7 +1276,7 @@ form {
 .btn:hover {
   background-color:darkorange;
   border: solid 2px;
-  border-color:darkorange  !important;
+  border-color:darkorange;
   border-radius: 4px;
   color: gray;
 }
@@ -1657,6 +1657,8 @@ a {
 }
 .navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:not(.btn):hover, .navbar-default .navbar-nav > .active > a:not(.btn):focus, .navbar-default .navbar-nav > li > a:not(.btn):hover, .navbar-default .navbar-nav > li > a:not(.btn):focus{
     color:#9A9A9A;
+    margin-top:10px !important;
+
 }
 
 .table>thead:first-child>tr:first-child>th {
@@ -1768,9 +1770,9 @@ a {
 }
 
 .user-booking-count-div {
-  margin: 30px 0 30px;
-    min-height: 245px;
-    max-height: 350px;
+  margin: 10px 0 10px;
+    min-height: 236px;
+    max-height: 236px;
     overflow-y: scroll;
 }
 
@@ -2022,9 +2024,123 @@ table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before
 .login-back-envelope{
     border-radius: 5px;
     background-color:white ;
-    margin: 10px;
+    margin: 60px;
     padding: 40px;
     position:absolute;
     z-index: 9999999;
+    opacity: 0.96;
+    width: 440px;
+    overflow: hidden;
+    
+@media (max-width: 772px){
+  width: 340px;
+    }
+    @media (max-width: 348px){
+      width: 300px;
+        }
+  }
+  .Package-btn{
+    background-color:$primary;
+    margin:10px;
+    border-radius:50%;
+    padding:20px 10px 20px 10px; 
+    display:flex;
+    flex-direction:row;
+    justify-content:center;
+    align-items:center; color: $primary;
+    
+  }
+  .Package-btn:hover {
+    background-color:$primary;
+    border:none;
+  }
+  .Package-btn:focus {
+    background-color:$primary;
+    border:none;
+  }
+  .package-icon{
+    color: $primary;
+  }
+
+  .add-package-button{
+    background-color:$primary;
+    float:right;
+    color: white;
+    border-radius: 4px;
 
   }
+  .add-package-button:hover{
+    background-color: white;
+    color: $primary;
+    border-color:$primary;
+  }
+  .add-package-button:focus{
+    background-color: white;
+    color: $primary;
+    border-color:$primary;
+  }
+  .add-mp-modal{
+    overflow: hidden;
+  border-radius:4px;
+  }
+  .btn-success{
+    border-radius:4px;
+  }
+  .btn-success:focus{
+    border-radius:4px;
+    border: solid 2px $primary !important;
+    background-color: $primary !important;
+  }
+  .btn-success:hover{
+    color: white;
+  }
+
+  .fa-remove{
+    color:red;
+  }
+  .nav-tabs {
+    // border:none;
+}
+.table-bordered {
+  background-color:white  !important;
+}
+input:checked + .slider {
+  background-color: $primary !important;
+}
+
+.ant-table-tbody{
+    font-weight: 400;
+    color: #777;
+    font-family: "Roboto","Helvetica Neue",Arial,sans-serif;
+
+}
+
+.ant-table-thead{
+  color: #333333;
+  background-color: #149e7a;
+  font-weight: 300;
+  font-family: "Roboto","Helvetica Neue",Arial,sans-serif;
+}
+
+.ant-table-column-sorter-up.active {
+  color: #149e7a !important;
+}
+.ant-table-column-sorter-down.active {
+  color: #149e7a !important;
+}
+.ant-table-filter-trigger.active .anticon{
+  color: #149e7a !important;
+}
+.ant-table-filter-trigger.active{
+  color: #149e7a !important;
+}
+.icon-search{
+  color: #fff;
+}
+.add-package-button:hover .icon-search{
+  color: #149e7a;
+}
+
+.add-package-button:focus .icon-search{
+  color: #149e7a;
+}

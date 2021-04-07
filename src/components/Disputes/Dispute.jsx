@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import { Card } from "components/Card/Card.jsx";
-import { Grid, Row, Col, Button } from "react-bootstrap";
+import { Grid, Row, Col } from "react-bootstrap";
 import WebServicesManager from "WebServicesManager/WebServicesManager";
 import $ from "jquery";
 import moment from "moment";
+import { Button } from "antd";
+import { motion } from "framer-motion";
 
 class Dispute extends Component {
   constructor(props) {
@@ -197,10 +199,30 @@ class Dispute extends Component {
   render() {
     return (
       <div className="content">
-        <a href="/admin/disputes" onClick={this.props.toggle}>
-          {" "}
-          <i className="fa fa-arrow-circle-left"></i>Back to list
-        </a>
+        <div
+          style={{
+            float: "left",
+            margin: "-20px 0px 6px 20px",
+          }}
+        >
+          <motion.div
+            title="Go Back"
+            whileHover={{ scale: 1.2 }}
+            whileTap={{ scale: 0.8 }}
+            style={{
+              position: "relative",
+              zIndex: "1000",
+            }}
+            onClick={this.props.toggle}
+          >
+            <a href="/admin/disputes">
+              <i
+                className="fas fa-arrow-left fa-2x"
+                style={{ color: "#149e7a" }}
+              ></i>
+            </a>
+          </motion.div>
+        </div>
         <Grid fluid>
           <Row>
             <Col md={12}>

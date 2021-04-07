@@ -3,7 +3,7 @@ import moment from "moment";
 import WebServicesManager from "../../WebServicesManager/WebServicesManager";
 import {
   Button,
-  Modal,
+  // Modal,
   Grid,
   Row,
   Col,
@@ -14,7 +14,11 @@ import {
   DropdownButton,
   MenuItem,
 } from "react-bootstrap";
+import { Modal } from "antd";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
 import Autocomplete from "react-autocomplete";
+
+const { confirm } = Modal;
 
 export class UserCard extends Component {
   WebServicesManager = new WebServicesManager();
@@ -270,6 +274,9 @@ export class UserCard extends Component {
   };
 
   handleSave = () => {
+    this.setState({
+      isAddDisable: true,
+    });
     // debugger;
     var tokn = localStorage.getItem("userdata");
     const data = {
@@ -347,8 +354,14 @@ export class UserCard extends Component {
                 window.location.reload();
               }
             );
+            this.setState({
+              isAddDisable: false,
+            });
           }
         );
+        this.setState({
+          isAddDisable: false,
+        });
       }
     );
   };
@@ -549,6 +562,104 @@ export class UserCard extends Component {
     );
   };
 
+  showConfirmDelete = () => {
+    confirm({
+      title: "Are you sure you want to delete this User?",
+      icon: <ExclamationCircleOutlined />,
+      content: "All data regarding the user will be deleted!",
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      onOk: () => {
+        this.handlefuntDeActive();
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
+  showConfirmBan1 = () => {
+    confirm({
+      title: "Are you sure you want to Ban this User?",
+      icon: <ExclamationCircleOutlined />,
+      content: "The User will be banned for 15 days!",
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      onOk: () => {
+        this.handleFunc(15);
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
+  showConfirmBan2 = () => {
+    confirm({
+      title: "Are you sure you want to Ban this User?",
+      icon: <ExclamationCircleOutlined />,
+      content: "The User will be banned for 30 days!",
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      onOk: () => {
+        this.handleFunc(30);
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
+
+  showConfirmDeactive = () => {
+    confirm({
+      title: "Are you sure you want to De-activate this User?",
+      icon: <ExclamationCircleOutlined />,
+      // content: "The User will be De-activated!",
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      onOk: () => {
+        this.handlefuntDeActive();
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
+
+  showConfirmReactive = () => {
+    confirm({
+      title: "Are you sure you want to Re-activate this User?",
+      icon: <ExclamationCircleOutlined />,
+      // content: "The User will be De-activated!",
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      onOk: () => {
+        this.handleUnban();
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
+  showConfirmUnban = () => {
+    confirm({
+      title: "Are you sure you want to Un-ban this User?",
+      icon: <ExclamationCircleOutlined />,
+      // content: "The User will be De-activated!",
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      onOk: () => {
+        this.handleUnban();
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
   render() {
     return (
       <div className="card card-user">
@@ -574,7 +685,7 @@ export class UserCard extends Component {
                 <small>{this.props.surName}</small>
                 <hr />
               </h4>
-              <table className="table table-striped">
+              <table className="table">
                 <tbody>
                   <tr>
                     <th>Email</th>
@@ -661,14 +772,22 @@ export class UserCard extends Component {
           ) : (
             ""
           )}
-          <center>
+          <center style={{ margin: "4px" }}>
             <Button
               varient="primary"
-              style={{ marginLeft: 10, marginTop: 10, width: 110 }}
+              style={{
+                marginLeft: 10,
+                marginTop: 10,
+                width: 110,
+                color: "white",
+                backgroundColor: "#149e7a",
+                border: "0",
+                borderRadius: "4px",
+              }}
               disabled={this.state.isAddDisable}
               onClick={() => this.setState({ showModal: true })}
             >
-              Update Data
+              Update User
             </Button>
             {this.state.banStatus === "" ? (
               <DropdownButton
@@ -682,18 +801,22 @@ export class UserCard extends Component {
                   marginLeft: 10,
                   marginTop: 10,
                   width: 110,
+                  color: "white",
+                  backgroundColor: "#ff7700",
+                  border: "0",
+                  borderRadius: "4px",
                 }}
               >
                 <MenuItem
                   disabled={this.state.isAddDisable}
-                  onClick={() => this.handleFunc(15)}
+                  onClick={() => this.showConfirmBan1()}
                   eventKey="1"
                 >
                   15 Days
                 </MenuItem>
                 <MenuItem
                   disabled={this.state.isAddDisable}
-                  onClick={() => this.handleFunc(30)}
+                  onClick={() => this.showConfirmBan2()}
                   eventKey="2"
                 >
                   30 Days
@@ -703,9 +826,17 @@ export class UserCard extends Component {
               <>
                 <Button
                   varient="primary"
-                  style={{ marginLeft: 10, marginTop: 10, width: 110 }}
+                  style={{
+                    marginLeft: 10,
+                    marginTop: 10,
+                    width: 110,
+                    color: "white",
+                    backgroundColor: "#ff7700",
+                    border: "0",
+                    borderRadius: "4px",
+                  }}
                   disabled={this.state.isAddDisable}
-                  onClick={this.handleUnban}
+                  onClick={this.showConfirmUnban}
                 >
                   Un-Ban
                 </Button>
@@ -717,19 +848,35 @@ export class UserCard extends Component {
               <>
                 <Button
                   varient="primary"
-                  style={{ marginLeft: 10, marginTop: 10, width: 110 }}
+                  style={{
+                    marginLeft: 10,
+                    marginTop: 10,
+                    width: 110,
+                    color: "white",
+                    backgroundColor: "red",
+                    border: "0",
+                    borderRadius: "4px",
+                  }}
                   disabled={this.state.isAddDisable}
-                  onClick={this.handlefuntDeActive}
+                  onClick={() => this.showConfirmDelete()}
                 >
-                  De-Active
+                  Delete User
                 </Button>
                 <Button
                   varient="primary"
-                  style={{ marginLeft: 10, marginTop: 10, width: 110 }}
+                  style={{
+                    marginLeft: 10,
+                    marginTop: 10,
+                    width: 110,
+                    color: "white",
+                    backgroundColor: "#ff7700",
+                    border: "0",
+                    borderRadius: "4px",
+                  }}
                   disabled={this.state.isAddDisable}
-                  onClick={this.handlefuntDeActive}
+                  onClick={this.showConfirmDeactive}
                 >
-                  Delete User
+                  De-Active
                 </Button>
               </>
             ) : this.state.banStatus !== "Ban" ? (
@@ -737,9 +884,17 @@ export class UserCard extends Component {
                 {/* <p>De-Activated</p>  */}
                 <Button
                   varient="primary"
-                  style={{ marginLeft: 10, marginTop: 10, width: 110 }}
+                  style={{
+                    marginLeft: 10,
+                    marginTop: 10,
+                    width: 110,
+                    color: "white",
+                    backgroundColor: "#ff7700",
+                    border: "0",
+                    borderRadius: "4px",
+                  }}
                   disabled={this.state.isAddDisable}
-                  onClick={this.handleUnban}
+                  onClick={this.showConfirmReactive}
                 >
                   Re-active
                 </Button>
@@ -753,365 +908,364 @@ export class UserCard extends Component {
         <div className="text-center">{this.props.socials}</div>
         {/* {console.log("My Custom", this.props)} */}
         <Modal
-          show={this.state.showModal}
-          onHide={() => this.setState({ showModal: false })}
-          backdrop="static"
-          keyboard={false}
-          size="xl"
+          // className="update-modal"
+          title="Update Data"
+          visible={this.state.showModal}
+          style={{ marginTop: "-80px" }}
+          onOk={this.handleSave}
+          onCancel={() => this.setState({ showModal: false })}
+          footer={null}
         >
-          <Modal.Header closeButton>
-            <Modal.Title>Update Data</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <div className="content">
-              <Grid fluid>
-                <Row>
-                  <Col md={12}>
-                    <form>
-                      <div className="clearfix" />
-                      <div className="container-flex">
-                        <div>
-                          <div className="row">
-                            <div className="col-md-6">
-                              <FormGroup>
-                                <ControlLabel>First Name</ControlLabel>
-                                <FormControl
-                                  className="form-control"
-                                  value={this.state.firstName}
-                                  onChange={(e) => {
-                                    this.setState({
-                                      firstName: e.target.value,
-                                    });
-                                  }}
-                                />
-                              </FormGroup>
-                            </div>
-                            <div className="col-md-6">
-                              <FormGroup>
-                                <ControlLabel>Sur Name</ControlLabel>
-                                <FormControl
-                                  className="form-control"
-                                  value={this.state.surName}
-                                  onChange={(e) => {
-                                    this.setState({ surName: e.target.value });
-                                  }}
-                                ></FormControl>
-                              </FormGroup>
-                            </div>
+          <div className="content">
+            <Grid fluid>
+              <Row>
+                <Col md={12}>
+                  <form>
+                    <div className="clearfix" />
+                    <div className="container-flex">
+                      <div>
+                        <div className="row">
+                          <div className="col-md-6">
+                            <FormGroup>
+                              <ControlLabel>First Name</ControlLabel>
+                              <FormControl
+                                className="form-control"
+                                value={this.state.firstName}
+                                onChange={(e) => {
+                                  this.setState({
+                                    firstName: e.target.value,
+                                  });
+                                }}
+                              />
+                            </FormGroup>
                           </div>
-                          {this.props.role !== "DrivingSchool" ? (
-                            <div className="row">
-                              <div className="col-md-6">
-                                <FormGroup>
-                                  <ControlLabel>DOB</ControlLabel>
-                                  <FormControl
-                                    className="form-control"
-                                    type="date"
-                                    value={moment(this.state.dob).format(
-                                      "YYYY-MM-DD"
-                                    )}
-                                    onChange={(e) => {
-                                      this.setState({ dob: e.target.value });
-                                    }}
-                                  />
-                                </FormGroup>
-                              </div>
-                              <div className="col-md-6">
-                                <FormGroup>
-                                  <ControlLabel>Gender</ControlLabel>
-                                  <FormControl
-                                    componentClass="select"
-                                    name="gender"
-                                    value={this.state.gender}
-                                    onChange={(e) =>
-                                      this.setState({ gender: e.target.value })
-                                    }
-                                  >
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
-                                    <option value="Other">Other</option>
-                                  </FormControl>
-                                </FormGroup>
-                              </div>
-                            </div>
-                          ) : (
-                            ""
-                          )}
-                          <div className="row">
-                            <div className="col-md-6">
-                              <FormGroup>
-                                <ControlLabel>Email</ControlLabel>
-                                <FormControl
-                                  className="form-control"
-                                  value={
-                                    this.state.contactEmail === "" ||
-                                    this.state.contactEmail === null
-                                      ? this.state.email
-                                      : this.state.contactEmail
-                                  }
-                                  onChange={(e) => {
-                                    this.setState({
-                                      contactEmail: e.target.value,
-                                    });
-                                  }}
-                                ></FormControl>
-                              </FormGroup>
-                            </div>
-                            <div className="col-md-6">
-                              <FormGroup>
-                                <ControlLabel>Phone</ControlLabel>
-                                <FormControl
-                                  className="form-control"
-                                  maxLength={10}
-                                  onChange={(e) => {
-                                    this.setState({ phone: e.target.value });
-                                  }}
-                                  value={this.state.phone}
-                                />
-                              </FormGroup>
-                            </div>
+                          <div className="col-md-6">
+                            <FormGroup>
+                              <ControlLabel>Sur Name</ControlLabel>
+                              <FormControl
+                                className="form-control"
+                                value={this.state.surName}
+                                onChange={(e) => {
+                                  this.setState({ surName: e.target.value });
+                                }}
+                              ></FormControl>
+                            </FormGroup>
                           </div>
+                        </div>
+                        {this.props.role !== "DrivingSchool" ? (
                           <div className="row">
                             <div className="col-md-6">
                               <FormGroup>
-                                <ControlLabel>Second Email</ControlLabel>
+                                <ControlLabel>DOB</ControlLabel>
                                 <FormControl
                                   className="form-control"
-                                  value={this.state.secondEmail}
-                                  onChange={(e) => {
-                                    this.setState({
-                                      secondEmail: e.target.value,
-                                    });
-                                  }}
-                                ></FormControl>
-                              </FormGroup>
-                            </div>
-                            <div className="col-md-6">
-                              <FormGroup>
-                                <ControlLabel>Second Phone</ControlLabel>
-                                <FormControl
-                                  className="form-control"
-                                  maxLength={10}
-                                  onChange={(e) => {
-                                    this.setState({
-                                      secondPhone: e.target.value,
-                                    });
-                                  }}
-                                  value={this.state.secondPhone}
-                                />
-                              </FormGroup>
-                            </div>
-                          </div>
-
-                          <div className="row">
-                            <Col md={6} className="address-in">
-                              <FormGroup>
-                                <ControlLabel>
-                                  Address <span className="text-red"></span>
-                                </ControlLabel>
-                                <br />
-                                <Autocomplete
-                                  items={this.state.items}
-                                  // shouldItemRender={(item, value) =>
-                                  //     item.label.toLowerCase().indexOf(value.toLowerCase()) > -1
-                                  // }
-                                  getItemValue={(item) => item.label}
-                                  renderItem={(item, highlighted) => (
-                                    <div
-                                      key={item.id}
-                                      style={{
-                                        backgroundColor: highlighted
-                                          ? "#eee"
-                                          : "transparent",
-                                      }}
-                                    >
-                                      {item.label}
-                                    </div>
+                                  type="date"
+                                  value={moment(this.state.dob).format(
+                                    "YYYY-MM-DD"
                                   )}
-                                  wrapperStyle={{
-                                    display: "block",
-                                  }}
-                                  menuStyle={{
-                                    zIndex: "1",
-                                    position: "static",
-                                    borderRadius: "3px",
-                                    boxShadow: "0 2px 12px rgba(0, 0, 0, 0.1)",
-                                    background: "rgba(255, 255, 255, 0.9)",
-                                    padding: "2px 0",
-                                    fontSize: "90%",
-                                    overflow: "auto",
-                                    maxHeight: "50%",
-                                  }}
-                                  inputProps={{ className: "form-control" }}
-                                  value={this.state.address}
-                                  onChange={this.getAddress}
-                                  onSelect={this.SetAddress}
-                                />
-                                <HelpBlock>{this.state.addressError}</HelpBlock>
-                              </FormGroup>
-                            </Col>
-                            <div className="col-md-6">
-                              <FormGroup>
-                                <ControlLabel>Complement</ControlLabel>
-                                <FormControl
-                                  className="form-control"
-                                  value={this.state.complement}
                                   onChange={(e) => {
-                                    this.setState({
-                                      complement: e.target.value,
-                                    });
+                                    this.setState({ dob: e.target.value });
                                   }}
                                 />
                               </FormGroup>
                             </div>
+                            <div className="col-md-6">
+                              <FormGroup>
+                                <ControlLabel>Gender</ControlLabel>
+                                <FormControl
+                                  componentClass="select"
+                                  name="gender"
+                                  value={this.state.gender}
+                                  onChange={(e) =>
+                                    this.setState({ gender: e.target.value })
+                                  }
+                                >
+                                  <option value="Male">Male</option>
+                                  <option value="Female">Female</option>
+                                  <option value="Other">Other</option>
+                                </FormControl>
+                              </FormGroup>
+                            </div>
                           </div>
+                        ) : (
+                          ""
+                        )}
+                        <div className="row">
+                          <div className="col-md-6">
+                            <FormGroup>
+                              <ControlLabel>Email</ControlLabel>
+                              <FormControl
+                                className="form-control"
+                                value={
+                                  this.state.contactEmail === "" ||
+                                  this.state.contactEmail === null
+                                    ? this.state.email
+                                    : this.state.contactEmail
+                                }
+                                onChange={(e) => {
+                                  this.setState({
+                                    contactEmail: e.target.value,
+                                  });
+                                }}
+                              ></FormControl>
+                            </FormGroup>
+                          </div>
+                          <div className="col-md-6">
+                            <FormGroup>
+                              <ControlLabel>Phone</ControlLabel>
+                              <FormControl
+                                className="form-control"
+                                maxLength={10}
+                                onChange={(e) => {
+                                  this.setState({ phone: e.target.value });
+                                }}
+                                value={this.state.phone}
+                              />
+                            </FormGroup>
+                          </div>
+                        </div>
+                        <div className="row">
+                          <div className="col-md-6">
+                            <FormGroup>
+                              <ControlLabel>Second Email</ControlLabel>
+                              <FormControl
+                                className="form-control"
+                                value={this.state.secondEmail}
+                                onChange={(e) => {
+                                  this.setState({
+                                    secondEmail: e.target.value,
+                                  });
+                                }}
+                              ></FormControl>
+                            </FormGroup>
+                          </div>
+                          <div className="col-md-6">
+                            <FormGroup>
+                              <ControlLabel>Second Phone</ControlLabel>
+                              <FormControl
+                                className="form-control"
+                                maxLength={10}
+                                onChange={(e) => {
+                                  this.setState({
+                                    secondPhone: e.target.value,
+                                  });
+                                }}
+                                value={this.state.secondPhone}
+                              />
+                            </FormGroup>
+                          </div>
+                        </div>
+
+                        <div className="row">
+                          <Col md={6} className="address-in">
+                            <FormGroup>
+                              <ControlLabel>
+                                Address <span className="text-red"></span>
+                              </ControlLabel>
+                              <br />
+                              <Autocomplete
+                                items={this.state.items}
+                                // shouldItemRender={(item, value) =>
+                                //     item.label.toLowerCase().indexOf(value.toLowerCase()) > -1
+                                // }
+                                getItemValue={(item) => item.label}
+                                renderItem={(item, highlighted) => (
+                                  <div
+                                    key={item.id}
+                                    style={{
+                                      backgroundColor: highlighted
+                                        ? "#eee"
+                                        : "transparent",
+                                    }}
+                                  >
+                                    {item.label}
+                                  </div>
+                                )}
+                                wrapperStyle={{
+                                  display: "block",
+                                }}
+                                menuStyle={{
+                                  zIndex: "1",
+                                  position: "static",
+                                  borderRadius: "3px",
+                                  boxShadow: "0 2px 12px rgba(0, 0, 0, 0.1)",
+                                  background: "rgba(255, 255, 255, 0.9)",
+                                  padding: "2px 0",
+                                  fontSize: "90%",
+                                  overflow: "auto",
+                                  maxHeight: "50%",
+                                }}
+                                inputProps={{ className: "form-control" }}
+                                value={this.state.address}
+                                onChange={this.getAddress}
+                                onSelect={this.SetAddress}
+                              />
+                              <HelpBlock>{this.state.addressError}</HelpBlock>
+                            </FormGroup>
+                          </Col>
+                          <div className="col-md-6">
+                            <FormGroup>
+                              <ControlLabel>Complement</ControlLabel>
+                              <FormControl
+                                className="form-control"
+                                value={this.state.complement}
+                                onChange={(e) => {
+                                  this.setState({
+                                    complement: e.target.value,
+                                  });
+                                }}
+                              />
+                            </FormGroup>
+                          </div>
+                        </div>
+                        <div className="row">
+                          <div className="col-md-6">
+                            <FormGroup>
+                              <ControlLabel>ZipCode</ControlLabel>
+                              <FormControl
+                                className="form-control"
+                                onChange={(e) => {
+                                  this.setState({
+                                    highWayCodeDate: e.target.value,
+                                  });
+                                }}
+                                value={this.state.zip}
+                              />
+                              <HelpBlock style={{ color: "red", fontSize: 12 }}>
+                                {this.state.zipError}
+                              </HelpBlock>
+                            </FormGroup>
+                          </div>
+                          <div className="col-md-6">
+                            <FormGroup>
+                              <ControlLabel>City</ControlLabel>
+                              <FormControl
+                                className="form-control"
+                                value={this.state.city}
+                                onChange={(e) => {
+                                  this.setState({ city: e.target.value });
+                                }}
+                              />
+                            </FormGroup>
+                          </div>
+                        </div>
+                        {this.props.role === "Student" ? (
                           <div className="row">
                             <div className="col-md-6">
                               <FormGroup>
-                                <ControlLabel>ZipCode</ControlLabel>
+                                <ControlLabel>Highway Code Date</ControlLabel>
                                 <FormControl
                                   className="form-control"
+                                  type="date"
+                                  value={moment(
+                                    this.state.highWayCodeDate
+                                  ).format("YYYY-MM-DD")}
                                   onChange={(e) => {
                                     this.setState({
                                       highWayCodeDate: e.target.value,
                                     });
                                   }}
-                                  value={this.state.zip}
                                 />
-                                <HelpBlock
-                                  style={{ color: "red", fontSize: 12 }}
-                                >
-                                  {this.state.zipError}
-                                </HelpBlock>
                               </FormGroup>
                             </div>
                             <div className="col-md-6">
                               <FormGroup>
-                                <ControlLabel>City</ControlLabel>
+                                <ControlLabel>NEPH number</ControlLabel>
                                 <FormControl
                                   className="form-control"
-                                  value={this.state.city}
+                                  maxLength={12}
                                   onChange={(e) => {
-                                    this.setState({ city: e.target.value });
+                                    this.setState({ neph: e.target.value });
                                   }}
+                                  value={this.state.neph}
                                 />
                               </FormGroup>
                             </div>
                           </div>
-                          {this.props.role === "Student" ? (
-                            <div className="row">
-                              <div className="col-md-6">
-                                <FormGroup>
-                                  <ControlLabel>Highway Code Date</ControlLabel>
-                                  <FormControl
-                                    className="form-control"
-                                    type="date"
-                                    value={moment(
-                                      this.state.highWayCodeDate
-                                    ).format("YYYY-MM-DD")}
-                                    onChange={(e) => {
-                                      this.setState({
-                                        highWayCodeDate: e.target.value,
-                                      });
-                                    }}
-                                  />
-                                </FormGroup>
-                              </div>
-                              <div className="col-md-6">
-                                <FormGroup>
-                                  <ControlLabel>NEPH number</ControlLabel>
-                                  <FormControl
-                                    className="form-control"
-                                    maxLength={12}
-                                    onChange={(e) => {
-                                      this.setState({ neph: e.target.value });
-                                    }}
-                                    value={this.state.neph}
-                                  />
-                                </FormGroup>
-                              </div>
-                            </div>
-                          ) : (
-                            ""
-                          )}
-                        </div>
+                        ) : (
+                          ""
+                        )}
                       </div>
-                      <div className="clearfix" />
-                    </form>
-                  </Col>
-                  {this.props.role !== "DrivingSchool" ? (
-                    <Row style={{ padding: "20px 0px" }}>
-                      <Col md={6}>
-                        <ControlLabel>
-                          Upload front of your ID Card/Passport/Residence permit
-                          <span className="text-red">*</span>
-                        </ControlLabel>
-                        <FormControl
-                          type="file"
-                          bsClass="form-control"
-                          onChange={this.handleFrontFileSelect}
-                          accept="image/x-png,image/gif,image/jpeg,application/pdf"
-                          name="frontIDPhoto"
-                          id="frontIDPhoto"
-                        />
-                        {this.state.frontIdPathError !== "" ? (
-                          <a
-                            href={this.state.frontIdPathError}
-                            target="noopener noreferrer"
-                          >
-                            View current File
-                          </a>
-                        ) : (
-                          ""
-                        )}
-                      </Col>
-                      <Col md={6}>
-                        <ControlLabel>
-                          Upload back of your ID Card/Passport/Residence permit
-                          <span className="text-red">*</span>
-                        </ControlLabel>
-                        <FormControl
-                          type="file"
-                          bsClass="form-control"
-                          onChange={this.handleBackFileSelect}
-                          accept="image/x-png,image/gif,image/jpeg,application/pdf"
-                          name="backIDPhoto"
-                          id="backIDPhoto"
-                        />
-                        {this.state.backIdPathError !== "" ? (
-                          <a
-                            href={this.state.backIdPathError}
-                            target="noopener noreferrer"
-                          >
-                            View current File
-                          </a>
-                        ) : (
-                          ""
-                        )}
-                      </Col>
-                    </Row>
-                  ) : (
-                    ""
-                  )}
+                    </div>
+                    <div className="clearfix" />
+                  </form>
+                </Col>
+                {this.props.role !== "DrivingSchool" ? (
+                  <Row style={{ padding: "20px 0px" }}>
+                    <Col md={6}>
+                      <ControlLabel>
+                        Upload front of your ID Card/Passport/Residence permit
+                        <span className="text-red">*</span>
+                      </ControlLabel>
+                      <FormControl
+                        type="file"
+                        bsClass="form-control"
+                        onChange={this.handleFrontFileSelect}
+                        accept="image/x-png,image/gif,image/jpeg,application/pdf"
+                        name="frontIDPhoto"
+                        id="frontIDPhoto"
+                      />
+                      {this.state.frontIdPathError !== "" ? (
+                        <a
+                          href={this.state.frontIdPathError}
+                          target="noopener noreferrer"
+                        >
+                          View current File
+                        </a>
+                      ) : (
+                        ""
+                      )}
+                    </Col>
+                    <Col md={6}>
+                      <ControlLabel>
+                        Upload back of your ID Card/Passport/Residence permit
+                        <span className="text-red">*</span>
+                      </ControlLabel>
+                      <FormControl
+                        type="file"
+                        bsClass="form-control"
+                        onChange={this.handleBackFileSelect}
+                        accept="image/x-png,image/gif,image/jpeg,application/pdf"
+                        name="backIDPhoto"
+                        id="backIDPhoto"
+                      />
+                      {this.state.backIdPathError !== "" ? (
+                        <a
+                          href={this.state.backIdPathError}
+                          target="noopener noreferrer"
+                        >
+                          View current File
+                        </a>
+                      ) : (
+                        ""
+                      )}
+                    </Col>
+                  </Row>
+                ) : (
+                  ""
+                )}
+                <Row>
+                  <Button
+                    type="primary"
+                    style={{
+                      float: "right",
+                      marginLeft: 10,
+                      marginTop: 10,
+                      width: 110,
+                      color: "white",
+                      backgroundColor: "#149e7a",
+                      border: "0",
+                      borderRadius: "4px",
+                    }}
+                    onClick={this.handleSave}
+                    disabled={this.state.isAddDisable}
+                  >
+                    Update
+                  </Button>
                 </Row>
-              </Grid>
-            </div>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button
-              variant="secondary"
-              onClick={() => this.setState({ showModal: false })}
-            >
-              Close
-            </Button>
-            <Button
-              variant="primary"
-              disabled={this.state.disableSubmit}
-              onClick={this.handleSave}
-            >
-              Update
-            </Button>
-          </Modal.Footer>
+              </Row>
+            </Grid>
+          </div>
         </Modal>
       </div>
     );

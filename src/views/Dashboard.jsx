@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ChartistGraph from "react-chartist";
+import CountUp from "react-countup";
 import {
   Grid,
   Row,
@@ -7,13 +8,13 @@ import {
   ListGroup,
   ListGroupItem,
   // Checkbox,
-  FormGroup,
-  Button,
+  // FormGroup,
+  // Button,
   // FormControl,
-  ControlLabel,
+  // ControlLabel,
   // HelpBlock,
 } from "react-bootstrap";
-import { Translation } from "react-i18next";
+// import { Translation } from "react-i18next";
 import moment from "moment";
 
 import { Card } from "components/Card/Card.jsx";
@@ -64,18 +65,35 @@ class Dashboard extends Component {
           resJson.genderCount.male +
           resJson.genderCount.female +
           resJson.genderCount.others;
+        console.log(resJson.genderCount.others);
         var dataPieLocal = {
           labels: [
-            `${((resJson.genderCount.male * 100) / countUser).toFixed(2)}%`,
-            `${((resJson.genderCount.female * 100) / countUser).toFixed(2)}%`,
-            `${((resJson.genderCount.others * 100) / countUser).toFixed(2)}%`,
+            // `${((resJson.genderCount.male * 100) / countUser).toFixed(2)}%`,
+            // `${((resJson.genderCount.female * 100) / countUser).toFixed(2)}%`,
+            // `${((resJson.genderCount.others * 100) / countUser).toFixed(2)}%`,
           ],
           series: [
-            resJson.genderCount.male,
-            resJson.genderCount.female,
-            resJson.genderCount.others,
+            // resJson.genderCount.male, resJson.genderCount.female
           ],
         };
+        if (resJson.genderCount.male > 0) {
+          dataPieLocal.labels.push(
+            `${((resJson.genderCount.male * 100) / countUser).toFixed(2)}%`
+          );
+          dataPieLocal.series.push(resJson.genderCount.male);
+        }
+        if (resJson.genderCount.female > 0) {
+          dataPieLocal.labels.push(
+            `${((resJson.genderCount.female * 100) / countUser).toFixed(2)}%`
+          );
+          dataPieLocal.series.push(resJson.genderCount.female);
+        }
+        if (resJson.genderCount.others > 0) {
+          dataPieLocal.labels.push(
+            `${((resJson.genderCount.others * 100) / countUser).toFixed(2)}%`
+          );
+          dataPieLocal.series.push(resJson.genderCount.others);
+        }
         this.setState(
           { userCounts: resJson, genderData: dataPieLocal }
           //  ,() => console.log("data", this.state)
@@ -175,22 +193,31 @@ class Dashboard extends Component {
               <Col lg={3} sm={6}>
                 <StatsCard
                   bigIcon={<i className="pe-7s-study text-warning" />}
+                  statsValue={
+                    <CountUp end={100} />
+                    // userCounts.students
+                  }
                   statsText="Students"
-                  statsValue={userCounts.students}
                 />
               </Col>
               <Col lg={3} sm={6}>
                 <StatsCard
                   bigIcon={<i className="pe-7s-users text-success" />}
+                  statsValue={
+                    <CountUp end={100} />
+                    // userCounts.instructors
+                  }
                   statsText="Intructors"
-                  statsValue={userCounts.instructors}
                 />
               </Col>
               <Col lg={3} sm={6}>
                 <StatsCard
                   bigIcon={<i className="pe-7s-home text-danger" />}
+                  statsValue={
+                    <CountUp end={100} />
+                    // userCounts.drivingSchool
+                  }
                   statsText="Driving School"
-                  statsValue={userCounts.drivingSchool}
                   statsIcon={<i className="fa fa-users" />}
                   statsIconText={`Instructor Attached: ${userCounts.dsInstructor}`}
                 />
@@ -198,15 +225,18 @@ class Dashboard extends Component {
               <Col lg={3} sm={6}>
                 <StatsCard
                   bigIcon={<i className="pe-7s-car text-info" />}
+                  statsValue={
+                    <CountUp end={100} />
+                    // userCounts.carRantal
+                  }
                   statsText="Rental Car Company"
-                  statsValue={userCounts.carRantal}
                 />
               </Col>
             </Row>
           ) : (
             ""
           )}
-          <Row>
+          {/* <Row>
             <Translation>
               {(t) => (
                 <Col md={12}>
@@ -304,7 +334,7 @@ class Dashboard extends Component {
               )}
             </Translation>
             <Col md={4}></Col>
-          </Row>
+          </Row> */}
 
           <Row>
             <Col md={6}>
@@ -331,15 +361,21 @@ class Dashboard extends Component {
                     <small className="text-muted">Send Reports via mail</small>
                     <div className="user-booking-count-div">
                       <ListGroup varient="flush">
-                        {this.state.userListWithBookingCount.map((item) => (
-                          <ListGroupItem
-                            key={item.user_id}
-                            className="custome_list_item"
-                          >
-                            <span>{item.user}</span>
-                            <span className="number">{item.bookingCount}</span>
-                          </ListGroupItem>
-                        ))}
+                        {this.state.userListWithBookingCount.map((item) =>
+                          item.bookingCount !== 0 ? (
+                            <ListGroupItem
+                              key={item.user_id}
+                              className="custome_list_item"
+                            >
+                              <span>{item.user}</span>
+                              <span className="number">
+                                {item.bookingCount}
+                              </span>
+                            </ListGroupItem>
+                          ) : (
+                            ""
+                          )
+                        )}
                       </ListGroup>
                     </div>
                   </>

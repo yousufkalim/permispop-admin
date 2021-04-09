@@ -193,30 +193,21 @@ class Dashboard extends Component {
               <Col lg={3} sm={6}>
                 <StatsCard
                   bigIcon={<i className="pe-7s-study text-warning" />}
-                  statsValue={
-                    <CountUp end={100} />
-                    // userCounts.students
-                  }
+                  statsValue={<CountUp end={userCounts.students} />}
                   statsText="Students"
                 />
               </Col>
               <Col lg={3} sm={6}>
                 <StatsCard
                   bigIcon={<i className="pe-7s-users text-success" />}
-                  statsValue={
-                    <CountUp end={100} />
-                    // userCounts.instructors
-                  }
+                  statsValue={<CountUp end={userCounts.instructors} />}
                   statsText="Intructors"
                 />
               </Col>
               <Col lg={3} sm={6}>
                 <StatsCard
                   bigIcon={<i className="pe-7s-home text-danger" />}
-                  statsValue={
-                    <CountUp end={100} />
-                    // userCounts.drivingSchool
-                  }
+                  statsValue={<CountUp end={userCounts.drivingSchool} />}
                   statsText="Driving School"
                   statsIcon={<i className="fa fa-users" />}
                   statsIconText={`Instructor Attached: ${userCounts.dsInstructor}`}
@@ -225,10 +216,7 @@ class Dashboard extends Component {
               <Col lg={3} sm={6}>
                 <StatsCard
                   bigIcon={<i className="pe-7s-car text-info" />}
-                  statsValue={
-                    <CountUp end={100} />
-                    // userCounts.carRantal
-                  }
+                  statsValue={<CountUp end={userCounts.carRantal} />}
                   statsText="Rental Car Company"
                 />
               </Col>

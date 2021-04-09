@@ -1,9 +1,9 @@
-import { Table, Button, Input, Space } from "antd";
 import React, { Component } from "react";
 import { Grid, Row, Col } from "react-bootstrap";
+import { Table, Button, Input, Space } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
-import WebServicesManager from "../../WebServicesManager/WebServicesManager";
 import Highlighter from "react-highlight-words";
+import WebServicesManager from "../../WebServicesManager/WebServicesManager";
 
 // import { LoadingOutlined } from "@ant-design/icons";
 // import Card from "components/Card/Card.jsx";
@@ -102,6 +102,7 @@ class PackageList extends Component {
                 searchedColumn: dataIndex,
               });
             }}
+            style={{ color: "#149e7a" }}
           >
             Filter
           </Button>
@@ -169,6 +170,7 @@ class PackageList extends Component {
         key: "number",
         align: "center",
         fontWeight: 400,
+        width: 100,
         sorter: (a, b) => a.number - b.number,
         ...this.getColumnSearchProps("number"),
       },
@@ -177,6 +179,7 @@ class PackageList extends Component {
         dataIndex: "name",
         key: "name",
         align: "center",
+        width: 160,
         sorter: (a, b) => a.name.length - b.name.length,
         ...this.getColumnSearchProps("name"),
       },
@@ -185,6 +188,7 @@ class PackageList extends Component {
         dataIndex: "duration",
         key: "duration",
         align: "center",
+        width: 160,
         filters: [
           {
             text: "Monthly",
@@ -207,6 +211,7 @@ class PackageList extends Component {
         dataIndex: "price",
         key: "price",
         align: "center",
+        width: 160,
         sorter: (a, b) => a.price - b.price,
         ...this.getColumnSearchProps("price"),
       },
@@ -215,6 +220,7 @@ class PackageList extends Component {
         dataIndex: "role",
         key: "role",
         align: "center",
+        width: 160,
         filters: [
           {
             text: "Student",
@@ -239,10 +245,9 @@ class PackageList extends Component {
           <Row>
             <Col md={12}>
               <Table
-                // loading={{ indicator: antIcon }}
                 style={{ padding: "5px 10px 5px 10px" }}
                 sticky={true}
-                scroll={{ y: 434 }}
+                scroll={{ y: 434, x: 0 }}
                 columns={columns}
                 onChange={this.onChange}
                 pagination={{
@@ -266,54 +271,6 @@ class PackageList extends Component {
                   duration: item.type,
                 }))}
               ></Table>
-              {/* <Table
-                hover
-                style={{
-                  backgroundColor: "white",
-                }}
-              >
-                {console.log(this.state.packages)}
-                <thead>
-                  <tr>
-                    {thArray.map((prop, key) => {
-                      return <th key={key}>{prop}</th>;
-                    })}
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.state.packages.map((prop, key) => {
-                    return (
-                      <tr key={key}>
-                        <td
-                        // key={key}
-                        >
-                          {key + 1}
-                        </td>
-                        <td
-                        // key={key}
-                        >
-                          {prop.name}
-                        </td>
-                        <td
-                        // key={key}
-                        >
-                          {prop.type}
-                        </td>
-                        <td
-                        // key={key}
-                        >
-                          {prop.price}
-                        </td>
-                        <td
-                        // key={key}
-                        >
-                          {prop.role}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </Table> */}
             </Col>
           </Row>
         </Grid>

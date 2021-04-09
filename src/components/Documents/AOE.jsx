@@ -167,7 +167,7 @@ class AOE extends Component {
         token: tokn,
       },
       (statusCode, Resp) => {
-        console.log("Resp", Resp);
+        // console.log("Resp", Resp);
         window.location.reload();
       }
     );

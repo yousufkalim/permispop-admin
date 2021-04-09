@@ -8,52 +8,13 @@ import UserPayments from "components/UserCard/UserPayments.jsx";
 import UserInstructors from "components/UserCard/UserInstructors.jsx";
 import UserMeetups from "components/UserCard/UserMeetups.jsx";
 import "font-awesome/css/font-awesome.min.css";
-import { MDBDataTable } from "mdbreact";
-// import { Button } from "antd";
 import { motion } from "framer-motion";
-// import "mdbreact/dist/css/mdb.css";
+import { Table, Button, Input, Space } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
+import Highlighter from "react-highlight-words";
 
 const $ = require("jquery");
 $.DataTable = require("datatables.net");
-
-const columns = [
-  {
-    label: "#",
-    field: "key",
-    sort: "asc",
-    width: 150,
-  },
-  {
-    label: "Name",
-    field: "name",
-    sort: "asc",
-    width: 270,
-  },
-  {
-    label: "Role",
-    field: "role",
-    sort: "asc",
-    width: 200,
-  },
-  {
-    label: "Active",
-    field: "active",
-    sort: "asc",
-    width: 100,
-  },
-  {
-    label: "Document Verfied",
-    field: "docV",
-    sort: "asc",
-    width: 150,
-  },
-  {
-    label: "View Details",
-    field: "details",
-    sort: "asc",
-    width: 100,
-  },
-];
 
 class Users extends Component {
   constructor(props) {
@@ -69,12 +30,12 @@ class Users extends Component {
       dataV: {},
       dataNV: {},
       defualtTab: "documents",
+      searchText: "",
+      searchedColumn: "",
     };
   }
   WebServicesManager = new WebServicesManager();
-  handleClick(obj) {
-    this.setState({ showDetails: !this.state.showDetails, userDetails: obj });
-  }
+
   componentWillMount() {
     var nonVerified = [];
     var verfied = [];
@@ -89,7 +50,6 @@ class Users extends Component {
         token: tokn,
       },
       (statusCode, response) => {
-        // console.log("r",r);
         response.map((item) => {
           if (
             item.role !== "Admin" &&
@@ -102,18 +62,9 @@ class Users extends Component {
                 key: vc,
                 name: item.firstName + " " + item.surName,
                 role: item.role,
-                active: (
-                  <i className="fa fa-check" style={{ color: "green" }}></i>
-                ),
-                docV: (
-                  <i className="fa fa-check" style={{ color: "green" }}></i>
-                ),
-                details: (
-                  <span onClick={() => this.handleClick(item)} id={item.id}>
-                    <li className="fa fa-eye fa-2x" title="View More"></li>
-                  </span>
-                ),
-                clickEvent: () => this.handleClick(item),
+                active: true,
+                docV: true,
+                details: item,
               });
               vc = vc + 1;
             } else {
@@ -121,24 +72,17 @@ class Users extends Component {
                 key: nvc,
                 name: item.firstName + " " + item.surName,
                 role: item.role,
-                active: (
-                  <i className="fa fa-check" style={{ color: "green" }}></i>
-                ),
-                docV: <i className="fa fa-remove" style={{ color: "red" }}></i>,
-                details: (
-                  <span onClick={() => this.handleClick(item)} id={item.id}>
-                    <li className="fa fa-eye fa-2x" title="View More"></li>
-                  </span>
-                ),
-                clickEvent: () => this.handleClick(item),
+                active: true,
+                docV: false,
+                details: item,
               });
               nvc = nvc + 1;
             }
           }
           return null;
         });
-        var verifiedUserData = { columns: columns, rows: VerifiedUser };
-        var nonVerifiedUserData = { columns: columns, rows: NonVerifiedUser };
+        var verifiedUserData = { rows: VerifiedUser };
+        var nonVerifiedUserData = { rows: NonVerifiedUser };
         this.setState(
           {
             allUsers: response,
@@ -163,8 +107,9 @@ class Users extends Component {
       }
     );
   }
-  componentDidMount() {}
-
+  handleClick(obj) {
+    this.setState({ showDetails: !this.state.showDetails, userDetails: obj });
+  }
   changeUser = (id) => {
     var token = localStorage.getItem("userdata");
     this.WebServicesManager.getApiWithParamCall(
@@ -178,8 +123,246 @@ class Users extends Component {
       }
     );
   };
+  ////////////////////// Searching function ////////////////////////
 
+  getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }) => (
+      <div style={{ padding: 8 }}>
+        <Input
+          ref={(node) => {
+            this.searchInput = node;
+          }}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() =>
+            this.handleSearch(selectedKeys, confirm, dataIndex)
+          }
+          style={{ width: 188, marginBottom: 8, display: "block" }}
+        />
+        <Space>
+          <Button
+            className="add-package-button"
+            type="primary"
+            onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined className="icon-search" />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Search
+          </Button>
+          <Button
+            type="primary"
+            className="add-package-button"
+            onClick={() => this.handleReset(clearFilters)}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Reset
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              confirm({ closeDropdown: false });
+              this.setState({
+                searchText: selectedKeys[0],
+                searchedColumn: dataIndex,
+              });
+            }}
+            style={{ color: "#149e7a" }}
+          >
+            Filter
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex]
+        ? record[dataIndex]
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
+        : "",
+    onFilterDropdownVisibleChange: (visible) => {
+      if (visible) {
+        setTimeout(() => this.searchInput.select(), 100);
+      }
+    },
+    render: (text) =>
+      this.state.searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
+          searchWords={[this.state.searchText]}
+          autoEscape
+          textToHighlight={text ? text.toString() : ""}
+        />
+      ) : (
+        text
+      ),
+  });
+  ////////////////////// Handle For Search ////////////////////////
+
+  handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    this.setState({
+      searchText: selectedKeys[0],
+      searchedColumn: dataIndex,
+    });
+  };
+
+  ////////////////////// Handle For Resetting Search ////////////////////////
+
+  handleReset = (clearFilters) => {
+    clearFilters();
+    this.setState({ searchText: "" });
+  };
+
+  ////////////////////// On Filter / Sorter / Pagination change ////////////////////////
+
+  onChange = (pagination, filters, sorter, extra) => {
+    // console.log("params", pagination, filters, sorter, extra);
+  };
   render() {
+    const columns = [
+      {
+        title: "SR. #",
+        dataIndex: "number",
+        key: "number",
+        align: "center",
+        fontWeight: 400,
+        width: 100,
+
+        sorter: (a, b) => a.number - b.number,
+        ...this.getColumnSearchProps("number"),
+      },
+      {
+        title: "Name",
+        dataIndex: "name",
+        key: "name",
+        align: "center",
+        width: 160,
+        sorter: (a, b) => a.name.length - b.name.length,
+        ...this.getColumnSearchProps("name"),
+      },
+      {
+        title: "Role",
+        dataIndex: "role",
+        key: "role",
+        align: "center",
+        width: 160,
+        filters: [
+          {
+            text: "Student",
+            value: "Student",
+          },
+          {
+            text: "Instructor",
+            value: "Instructor",
+          },
+          {
+            text: "Driving School",
+            value: "DrivingSchool",
+          },
+          {
+            text: "Car Rental Agent",
+            value: "CarRentalAgent",
+          },
+        ],
+        onFilter: (value, record) => record.role.indexOf(value) === 0,
+        sorter: (a, b) => a.role.length - b.role.length,
+      },
+      {
+        title: "Active",
+        dataIndex: "active",
+        key: "active",
+        align: "center",
+        width: 160,
+        render: (active) => (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              flexDirection: "row",
+              justifyContent: "center",
+            }}
+          >
+            {active === true ? (
+              <i className="fa fa-check" style={{ color: "green" }}></i>
+            ) : (
+              <i className="fa fa-remove" style={{ color: "red" }}></i>
+            )}
+          </div>
+        ),
+      },
+      {
+        title: "Document Verified",
+        dataIndex: "docV",
+        key: "docV",
+        align: "center",
+        width: 160,
+        render: (docV) => (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              flexDirection: "row",
+              justifyContent: "center",
+            }}
+          >
+            {docV === true ? (
+              <i className="fa fa-check" style={{ color: "green" }}></i>
+            ) : (
+              <i className="fa fa-remove" style={{ color: "red" }}></i>
+            )}
+          </div>
+        ),
+      },
+      {
+        title: "View Details",
+        dataIndex: "details",
+        key: "details",
+        align: "center",
+        width: 160,
+        render: (detail) => (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              flexDirection: "row",
+              justifyContent: "center",
+            }}
+          >
+            <motion.div
+              whileHover={{ scale: 1.2 }}
+              whileTap={{ scale: 0.8 }}
+              style={{
+                margin: "6px 6px 6px 6px",
+                width: "10%",
+                borderRadius: "50%",
+              }}
+            >
+              <i
+                style={{ fontSize: "20px" }}
+                title="View More"
+                className="fa fa-eye fa-2xl  package-icon simple-btn"
+                onClick={() => this.handleClick(detail)}
+              ></i>
+            </motion.div>
+          </div>
+        ),
+      },
+    ];
     return (
       <div className="content">
         <Grid fluid>
@@ -278,25 +461,103 @@ class Users extends Component {
           ) : (
             <Row>
               <Col md={12}>
+                <h3
+                  style={{
+                    fontSize: "22px",
+                    fontWeight: "300",
+                    color: "#333333",
+                    marginTop: "-10px",
+                    marginBottom: "20px",
+                  }}
+                >
+                  Users
+                </h3>
                 <Tabs defaultActiveKey="inactiveuser" id="noanim-tab-example">
                   <Tab eventKey="inactiveuser" title="Non Verified">
                     <Row className="table-responseive" style={{ margin: 10 }}>
-                      <MDBDataTable
+                      {/* <MDBDataTable
                         bordered
                         data={this.state.dataNV}
                         className="dataTableNew"
-                        entriesOptions={[20, 50, 100]}
-                      />
+                        entries
+                        Options={[20, 50, 100]}
+                      /> */}
+                      <Table
+                        // loading={{ indicator: antIcon }}
+                        style={{ padding: "5px 10px 5px 10px" }}
+                        sticky={true}
+                        scroll={{ y: 434, x: 0 }}
+                        columns={columns}
+                        // onChange={this.onChange}
+                        pagination={{
+                          position: ["bottomCenter"],
+                          size: "small",
+                          showQuickJumper: true,
+                          defaultPageSize: 20,
+                          defaultCurrent: 1,
+                          showSizeChanger: true,
+                          pageSizeOptions: [20, 50, 100],
+
+                          showTotal: (total, range) =>
+                            `${range[0]}-${range[1]} of ${total} items`,
+                        }}
+                        dataSource={
+                          this.state.dataNV.rows !== undefined
+                            ? this.state.dataNV.rows.map((item, index) => ({
+                                key: index + 1,
+                                number: item.key,
+                                name: item.name,
+                                role: item.role,
+                                active: item.active,
+                                docV: item.docV,
+                                details: item.details,
+                              }))
+                            : ""
+                        }
+                      ></Table>
                     </Row>
                   </Tab>
                   <Tab eventKey="verfied" title="Verified">
                     <Row className="table-responseive" style={{ margin: 10 }}>
-                      <MDBDataTable
+                      {/* <MDBDataTable
                         bordered
                         data={this.state.dataV}
                         className="dataTableNew"
                         entriesOptions={[20, 50, 100]}
-                      />
+                      /> */}
+                      <Table
+                        // loading={{ indicator: antIcon }}
+                        style={{ padding: "5px 10px 5px 10px" }}
+                        sticky={true}
+                        scroll={{ y: 434, x: 0 }}
+                        columns={columns}
+                        // onChange={this.onChange}
+                        pagination={{
+                          position: ["bottomCenter"],
+                          size: "small",
+                          showQuickJumper: true,
+                          defaultPageSize: 20,
+                          defaultCurrent: 1,
+                          showSizeChanger: true,
+                          pageSizeOptions: [20, 50, 100],
+
+                          showTotal: (total, range) =>
+                            `${range[0]}-${range[1]} of ${total} items`,
+                        }}
+                        dataSource={
+                          this.state.dataNV.rows !== undefined
+                            ? this.state.dataV.rows.map((item, index) => ({
+                                key: index + 1,
+                                number: item.key,
+                                name: item.name,
+                                role: item.role,
+                                active: item.active,
+                                docV: item.docV,
+                                details: item.details,
+                              }))
+                            : ""
+                        }
+                      ></Table>
                     </Row>
                   </Tab>
                 </Tabs>

@@ -11,11 +11,12 @@ import {
   FormControl,
 } from "react-bootstrap";
 import { StatsCard } from "components/StatsCard/StatsCard.jsx";
-import DataTableCustom from "components/DataTables/datatables";
+// import DataTableCustom from "components/DataTables/datatables";
 import WebServicesManager from "WebServicesManager/WebServicesManager";
-// import { updateDo } from "typescript";
-import { Button } from "antd";
+import { Button, Table, Popconfirm, Space, Input } from "antd";
 import { motion } from "framer-motion";
+import { SearchOutlined } from "@ant-design/icons";
+import Highlighter from "react-highlight-words";
 
 function Limitaions() {
   const WebServicesManagers = useMemo(() => new WebServicesManager(), []);
@@ -31,6 +32,8 @@ function Limitaions() {
   const [updateCustom, setUpdateCustom] = useState(null);
   const [listAppend, setListAppend] = useState([]);
   const [userList, setUserList] = useState([]);
+  const [searchedColumn, setsearchedColumn] = useState([]);
+  const [searchText, setsearchText] = useState([]);
 
   useEffect(() => {
     loadData();
@@ -55,27 +58,47 @@ function Limitaions() {
           custom.push([
             `${item.user.FirstName} ${item.user.SurName}`,
             item.user.Role,
+            // item.user.Role !== "Student"
+            //   ? `<ul>
+            //     <li>Max Vehicle Add = ${
+            //       item.user.Role === "Instructor"
+            //         ? item.vehicleAddLimitInstructor !== undefined
+            //           ? item.vehicleAddLimitInstructor
+            //           : resJson.vehicleAddLimitInstructor
+            //         : item.vehicleAddLimitDrivingSchool !== undefined
+            //         ? item.vehicleAddLimitDrivingSchool
+            //         : resJson.vehicleAddLimitDrivingSchool
+            //     }</li>
+            //     ${
+            //       item.user.Role === "DrivingSchool"
+            //         ? `<li>Max Instructor Add = ${
+            //             item.instructorAddLimit !== undefined
+            //               ? item.instructorAddLimit
+            //               : resJson.instructorAddLimit
+            //           }</li>`
+            //         : ""
+            //     }
+            //   </ul>`
+            //   : ``,
             item.user.Role !== "Student"
-              ? `<ul>
-                <li>Max Vehicle Add = ${
-                  item.user.Role === "Instructor"
-                    ? item.vehicleAddLimitInstructor !== undefined
-                      ? item.vehicleAddLimitInstructor
-                      : resJson.vehicleAddLimitInstructor
-                    : item.vehicleAddLimitDrivingSchool !== undefined
-                    ? item.vehicleAddLimitDrivingSchool
-                    : resJson.vehicleAddLimitDrivingSchool
-                }</li>
-                ${
+              ? [
+                  `Max Vehicle Add = ${
+                    item.user.Role === "Instructor"
+                      ? item.vehicleAddLimitInstructor !== undefined
+                        ? item.vehicleAddLimitInstructor
+                        : resJson.vehicleAddLimitInstructor
+                      : item.vehicleAddLimitDrivingSchool !== undefined
+                      ? item.vehicleAddLimitDrivingSchool
+                      : resJson.vehicleAddLimitDrivingSchool
+                  }`,
                   item.user.Role === "DrivingSchool"
-                    ? `<li>Max Instructor Add = ${
+                    ? `\nMax Instructor Add = ${
                         item.instructorAddLimit !== undefined
                           ? item.instructorAddLimit
                           : resJson.instructorAddLimit
-                      }</li>`
-                    : ""
-                }
-              </ul>`
+                      }`
+                    : "",
+                ]
               : ``,
             item,
           ]);
@@ -207,26 +230,22 @@ function Limitaions() {
   };
 
   const handleDelete = (id) => {
-    const confirm = window.confirm("Are you sure want to delete?" + id);
-
-    if (confirm === true) {
-      fetch(
-        `${process.env.REACT_APP_BASE_NODE}dynamic/removeuserlimits/` + id,
-        {
-          method: "GET",
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("userdata"),
-            "content-type": "application/json",
-          },
-        }
-      )
-        .then((res) => res.json())
-        .then((resJson) => {
-          // console.log(resJson);
-          loadData();
-        })
-        .catch((e) => console.log("delete error: ", e));
-    }
+    // const confirm = window.confirm(
+    //   "Are you sure want to delete this Custom limit?"
+    // );
+    fetch(`${process.env.REACT_APP_BASE_NODE}dynamic/removeuserlimits/` + id, {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("userdata"),
+        "content-type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((resJson) => {
+        // console.log(resJson);
+        loadData();
+      })
+      .catch((e) => console.log("delete error: ", e));
   };
 
   // useEffect(() => {
@@ -248,10 +267,216 @@ function Limitaions() {
     setFieldValue(fieldValue + 1);
   };
 
-  const actions = {
-    onDelete: handleDelete,
-    onUpdate: handleUpdateClick,
+  ////////////////////// Searching function ////////////////////////
+
+  const getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }) => (
+      <div style={{ padding: 8 }}>
+        <Input
+          // ref={(node) => {
+          //   this.searchInput = node;
+          // }}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{ width: 188, marginBottom: 8, display: "block" }}
+        />
+        <Space>
+          <Button
+            className="add-package-button"
+            type="primary"
+            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined className="icon-search" />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Search
+          </Button>
+          <Button
+            type="primary"
+            className="add-package-button"
+            onClick={() => handleReset(clearFilters)}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Reset
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              confirm({ closeDropdown: false });
+              setsearchedColumn(dataIndex);
+              setsearchText(selectedKeys[0]);
+            }}
+            style={{ color: "#149e7a" }}
+          >
+            Filter
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex]
+        ? record[dataIndex]
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
+        : "",
+    // onFilterDropdownVisibleChange: (visible) => {
+    //   if (visible) {
+    //     setTimeout(() => this.searchInput.select(), 100);
+    //   }
+    // },
+    render: (text) =>
+      searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
+          searchWords={[searchText]}
+          autoEscape
+          textToHighlight={text ? text.toString() : ""}
+        />
+      ) : (
+        text
+      ),
+  });
+
+  ////////////////////// Handle For Search ////////////////////////
+
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    setsearchedColumn(dataIndex);
+    setsearchText(selectedKeys[0]);
   };
+
+  ////////////////////// Handle For Resetting Search ////////////////////////
+
+  const handleReset = (clearFilters) => {
+    clearFilters();
+    setsearchText("");
+  };
+
+  const columns = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      align: "center",
+      width: 160,
+      sorter: (a, b) => a.name.length - b.name.length,
+      ...getColumnSearchProps("name"),
+      // ...getColumnSearchProps("name") !== undefined
+      // ? ...getColumnSearchProps("name")
+      // :""
+
+      // ...this.getColumnSearchProps("name"),
+    },
+    {
+      title: "Role",
+      dataIndex: "role",
+      key: "role",
+      align: "center",
+      width: 160,
+      filters: [
+        {
+          text: "Instructor",
+          value: "Instructor",
+        },
+        {
+          text: "DSInstructor",
+          value: "DSInstructor",
+        },
+
+        {
+          text: "DrivingSchool",
+          value: "DrivingSchool",
+        },
+        {
+          text: "CarRentalAgent",
+          value: "CarRentalAgent",
+        },
+      ],
+      onFilter: (value, record) => record.role.indexOf(value) === 0,
+      sorter: (a, b) => a.role.length - b.role.length,
+    },
+    {
+      title: "Fields",
+      dataIndex: "fields",
+      key: "fields",
+      align: "center",
+      width: 160,
+      // sorter: (a, b) => a.fields.length - b.fields.length,
+      // ...this.getColumnSearchProps("fields"),
+    },
+    {
+      title: "Action",
+      dataIndex: "action",
+      key: "action",
+      align: "center",
+      width: 160,
+      render: (data) => (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            flexDirection: "row",
+            justifyContent: "center",
+          }}
+        >
+          <motion.div
+            whileHover={{ scale: 1.2 }}
+            whileTap={{ scale: 0.8 }}
+            style={{
+              margin: "6px 6px 6px 6px",
+              width: "10%",
+              borderRadius: "50%",
+            }}
+          >
+            <i
+              style={{ fontSize: "20px" }}
+              title="Edit"
+              className="fa fa-pencil  package-icon simple-btn"
+              onClick={() => handleUpdateClick(data)}
+            ></i>
+          </motion.div>
+          <Popconfirm
+            title="Are you sure want to delete this Custom limit?"
+            onConfirm={() => handleDelete(data.user.id)}
+            okText="Yes"
+            cancelText="No"
+          >
+            <motion.div
+              whileHover={{ scale: 1.2 }}
+              whileTap={{ scale: 0.8 }}
+              style={{
+                margin: "6px 6px 6px 6px",
+                width: "10%",
+                borderRadius: "50%",
+              }}
+            >
+              <i
+                style={{ fontSize: "20px" }}
+                title="Delete"
+                className="fa fa-trash simple-btn package-icon"
+                // onClick={() => handleDelete(data.user.id)}
+              ></i>
+            </motion.div>
+          </Popconfirm>
+        </div>
+      ),
+    },
+  ];
 
   return (
     <div className="content">
@@ -289,7 +514,17 @@ function Limitaions() {
         </Row>
         <Row>
           <Col sm={12} className="info-row-table">
-            <h3>Custom Limits for users</h3>
+            <h3
+              style={{
+                fontSize: "22px",
+                fontWeight: "300",
+                color: "#333333",
+                marginTop: "20px",
+                marginBottom: "20px",
+              }}
+            >
+              Custom Limits for users
+            </h3>
             <div
               style={{
                 float: "right",
@@ -319,16 +554,32 @@ function Limitaions() {
             </div>
           </Col>
           <Col sm={12}>
-            {customValue.length > 0 ? (
-              <DataTableCustom
-                columns={columns}
-                data={customValue}
-                actionCol={3}
-                actions={actions}
-              />
-            ) : (
-              ""
-            )}
+            <Table
+              // loading={{ indicator: antIcon }}
+              style={{ padding: "5px 10px 5px 10px", whiteSpace: "pre" }}
+              sticky={true}
+              scroll={{ y: 434, x: 0 }}
+              columns={columns}
+              // onChange={this.onChange}
+              pagination={{
+                position: ["bottomCenter"],
+                size: "small",
+                showQuickJumper: true,
+                defaultPageSize: 20,
+                defaultCurrent: 1,
+                showSizeChanger: true,
+                pageSizeOptions: [20, 50, 100],
+
+                showTotal: (total, range) =>
+                  `${range[0]}-${range[1]} of ${total} items`,
+              }}
+              dataSource={customValue.map((item, index) => ({
+                name: item[0],
+                role: item[1],
+                fields: item[2],
+                action: item[3],
+              }))}
+            ></Table>
           </Col>
         </Row>
       </Grid>
@@ -555,11 +806,16 @@ function Limitaions() {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleUpdateShow}>
+          <Button
+            size="large"
+            className="btn btn-success"
+            onClick={handleUpdateShow}
+          >
             Close
           </Button>
           <Button
-            variant="primary"
+            size="large"
+            className="btn btn-success"
             onClick={updateRecordToDb}
             disabled={updateCustom && updateCustom.user === undefined}
           >
@@ -573,12 +829,12 @@ function Limitaions() {
 
 export default Limitaions;
 
-const columns = [
-  { title: "Name" },
-  { title: "Role" },
-  { title: "Fields" },
-  {
-    title: "Action",
-    value: "Action here",
-  },
-];
+// const columns = [
+//   { title: "Name" },
+//   { title: "Role" },
+//   { title: "Fields" },
+//   {
+//     title: "Action",
+//     value: "Action here",
+//   },
+// ];

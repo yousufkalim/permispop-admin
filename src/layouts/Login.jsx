@@ -224,7 +224,6 @@ export default class Login extends Component {
                     <Form.Item noStyle shouldUpdate>
                       {({ getFieldsError, getFieldsValue }) => (
                         <Form.Item>
-                          {console.log(getFieldsValue("Email").Email)}
                           <Button
                             type={"primary"}
                             htmlType="submit"

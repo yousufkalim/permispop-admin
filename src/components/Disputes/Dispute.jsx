@@ -188,7 +188,6 @@ class Dispute extends Component {
             token: tokn,
           },
           (statusCode, response) => {
-            console.log("update", response);
             this.props.toggle();
             window.location.reload();
           }

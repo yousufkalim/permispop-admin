@@ -26,6 +26,7 @@ export default class DataTableCustom extends Component {
           createdCell: (td, cellData, rowData, row, col) =>
             ReactDOM.render(
               <React.Fragment>
+                {/* {console.log("celldata", cellData)} */}
                 <i
                   title="Edit"
                   className="fa fa-pencil"

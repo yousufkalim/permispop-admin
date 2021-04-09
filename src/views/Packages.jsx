@@ -68,6 +68,7 @@ class Packages extends Component {
           <AddUpdatePackage toggle={this.toggle} />
         </Modal>
         <div id="setting-panel"></div>
+
         <header
           className="pull-right"
           style={{

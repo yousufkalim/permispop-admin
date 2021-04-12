@@ -7,11 +7,19 @@ import {
   ControlLabel,
   FormControl,
 } from "react-bootstrap";
-import { Button } from "antd";
-
+import { Button, message } from "antd";
+import WebServicesManager from "../../WebServicesManager/WebServicesManager";
 // import { Card } from "components/Card/Card.jsx";
 // import Button from "components/CustomButton/CustomButton.jsx";
-import WebServicesManager from "../../WebServicesManager/WebServicesManager";
+
+const success = () => {
+  message.config({
+    maxCount: 1,
+  });
+  message.success({
+    content: "Membership Added Successfully!",
+  });
+};
 
 class AddUpdatePackage extends Component {
   constructor(props) {
@@ -70,6 +78,7 @@ class AddUpdatePackage extends Component {
           loading: false,
         });
         this.props.toggle();
+        success();
         // window.location.reload();
       }
     );

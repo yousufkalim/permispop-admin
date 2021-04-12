@@ -15,8 +15,17 @@ import { StatsCard } from "components/StatsCard/StatsCard.jsx";
 import WebServicesManager from "WebServicesManager/WebServicesManager";
 import { Button, Table, Popconfirm, Space, Input } from "antd";
 import { motion } from "framer-motion";
-import { SearchOutlined } from "@ant-design/icons";
+import { SearchOutlined, LoadingOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
+
+const antIcon = (
+  <div>
+    <LoadingOutlined
+      style={{ fontSize: 46, color: "#149e7a", marginTop: "20px" }}
+      spin
+    />
+  </div>
+);
 
 function Limitaions() {
   const WebServicesManagers = useMemo(() => new WebServicesManager(), []);
@@ -34,6 +43,7 @@ function Limitaions() {
   const [userList, setUserList] = useState([]);
   const [searchedColumn, setsearchedColumn] = useState([]);
   const [searchText, setsearchText] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     loadData();
@@ -105,6 +115,7 @@ function Limitaions() {
           return null;
         });
         setCustomValue(custom);
+        setLoading(false);
       })
       .catch((e) => console.log("error loading: ", e));
   };
@@ -555,7 +566,27 @@ function Limitaions() {
           </Col>
           <Col sm={12}>
             <Table
-              // loading={{ indicator: antIcon }}
+              loading={{
+                indicator: antIcon,
+                spinning: loading,
+                size: "large",
+              }}
+              locale={
+                loading
+                  ? {
+                      emptyText: (
+                        <div>
+                          <br></br>
+                          <br></br>
+                          <br></br>
+                          <br></br>
+                          <br></br>
+                          <br></br>
+                        </div>
+                      ),
+                    }
+                  : {}
+              }
               style={{ padding: "5px 10px 5px 10px", whiteSpace: "pre" }}
               sticky={true}
               scroll={{ y: 434, x: 0 }}

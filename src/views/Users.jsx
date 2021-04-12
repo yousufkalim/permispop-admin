@@ -10,11 +10,20 @@ import UserMeetups from "components/UserCard/UserMeetups.jsx";
 import "font-awesome/css/font-awesome.min.css";
 import { motion } from "framer-motion";
 import { Table, Button, Input, Space } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import { SearchOutlined, LoadingOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
 
 const $ = require("jquery");
 $.DataTable = require("datatables.net");
+
+const antIcon = (
+  <div>
+    <LoadingOutlined
+      style={{ fontSize: 46, color: "#149e7a", marginTop: "30px" }}
+      spin
+    />
+  </div>
+);
 
 class Users extends Component {
   constructor(props) {
@@ -32,6 +41,7 @@ class Users extends Component {
       defualtTab: "documents",
       searchText: "",
       searchedColumn: "",
+      loading: true,
     };
   }
   WebServicesManager = new WebServicesManager();
@@ -50,6 +60,7 @@ class Users extends Component {
         token: tokn,
       },
       (statusCode, response) => {
+        console.log("response", response);
         response.map((item) => {
           if (
             item.role !== "Admin" &&
@@ -79,6 +90,8 @@ class Users extends Component {
               nvc = nvc + 1;
             }
           }
+          this.setState({ loading: false });
+
           return null;
         });
         var verifiedUserData = { rows: VerifiedUser };
@@ -483,7 +496,27 @@ class Users extends Component {
                         Options={[20, 50, 100]}
                       /> */}
                       <Table
-                        // loading={{ indicator: antIcon }}
+                        loading={{
+                          indicator: antIcon,
+                          spinning: this.state.loading,
+                          size: "large",
+                        }}
+                        locale={
+                          this.state.loading
+                            ? {
+                                emptyText: (
+                                  <div>
+                                    <br></br>
+                                    <br></br>
+                                    <br></br>
+                                    <br></br>
+                                    <br></br>
+                                    <br></br>
+                                  </div>
+                                ),
+                              }
+                            : {}
+                        }
                         style={{ padding: "5px 10px 5px 10px" }}
                         sticky={true}
                         scroll={{ y: 434, x: 0 }}

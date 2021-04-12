@@ -2,12 +2,21 @@ import React, { Component } from "react";
 import { Grid, Row, Col, Tabs, Tab } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { Table, Button, Input, Space } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import { SearchOutlined, LoadingOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
 import { motion } from "framer-motion";
 
 // import { Card } from "components/Card/Card.jsx";
 import WebServicesManager from "WebServicesManager/WebServicesManager";
+
+const antIcon = (
+  <div>
+    <LoadingOutlined
+      style={{ fontSize: 46, color: "#149e7a", marginTop: "30px" }}
+      spin
+    />
+  </div>
+);
 
 export class UpdateRequest extends Component {
   WebServicesManager = new WebServicesManager();
@@ -16,6 +25,7 @@ export class UpdateRequest extends Component {
     this.state = {
       pendingRequest: [],
       completed: [],
+      loading: true,
     };
   }
 
@@ -51,6 +61,7 @@ export class UpdateRequest extends Component {
           this.setState({
             pendingRequest: pendingList,
             completed: completeList,
+            loading: false,
           });
         }
       }
@@ -392,6 +403,27 @@ export class UpdateRequest extends Component {
                       className="table-responsive"
                     >
                       <Table
+                        loading={{
+                          indicator: antIcon,
+                          spinning: this.state.loading,
+                          size: "large",
+                        }}
+                        locale={
+                          this.state.loading
+                            ? {
+                                emptyText: (
+                                  <div>
+                                    <br></br>
+                                    <br></br>
+                                    <br></br>
+                                    <br></br>
+                                    <br></br>
+                                    <br></br>
+                                  </div>
+                                ),
+                              }
+                            : {}
+                        }
                         style={{ padding: "5px 10px 5px 10px" }}
                         sticky={true}
                         scroll={{ y: 434, x: 300 }}
@@ -427,6 +459,27 @@ export class UpdateRequest extends Component {
                       className="table-responsive"
                     >
                       <Table
+                        loading={{
+                          indicator: antIcon,
+                          spinning: this.state.loading,
+                          size: "large",
+                        }}
+                        locale={
+                          this.state.loading
+                            ? {
+                                emptyText: (
+                                  <div>
+                                    <br></br>
+                                    <br></br>
+                                    <br></br>
+                                    <br></br>
+                                    <br></br>
+                                    <br></br>
+                                  </div>
+                                ),
+                              }
+                            : {}
+                        }
                         style={{ padding: "5px 10px 5px 10px" }}
                         sticky={true}
                         scroll={{ y: 434, x: 0 }}

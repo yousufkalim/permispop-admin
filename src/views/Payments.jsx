@@ -1,12 +1,21 @@
 import React, { Component } from "react";
 import { Grid, Row, Col, Tabs, Tab } from "react-bootstrap";
 import { Button, Input, Space, Table } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import { SearchOutlined, LoadingOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
 // import { motion } from "framer-motion";
 
 import WebServicesManager from "WebServicesManager/WebServicesManager";
 import moment from "moment";
+
+const antIcon = (
+  <div>
+    <LoadingOutlined
+      style={{ fontSize: 46, color: "#149e7a", marginTop: "30px" }}
+      spin
+    />
+  </div>
+);
 
 class Payments extends Component {
   WebServicesManager = new WebServicesManager();
@@ -15,6 +24,7 @@ class Payments extends Component {
     this.state = {
       users: [],
       inactiveusers: [],
+      loading: true,
     };
   }
   componentWillMount() {
@@ -74,9 +84,11 @@ class Payments extends Component {
                 }
               }
             );
+
             return null;
           });
         }
+        this.setState({ loading: false });
       }
     );
   }
@@ -395,6 +407,27 @@ class Payments extends Component {
                         </tbody>
                       </table> */}
                       <Table
+                        loading={{
+                          indicator: antIcon,
+                          spinning: this.state.loading,
+                          size: "large",
+                        }}
+                        locale={
+                          this.state.loading
+                            ? {
+                                emptyText: (
+                                  <div>
+                                    <br></br>
+                                    <br></br>
+                                    <br></br>
+                                    <br></br>
+                                    <br></br>
+                                    <br></br>
+                                  </div>
+                                ),
+                              }
+                            : {}
+                        }
                         style={{ padding: "5px 10px 5px 10px" }}
                         sticky={true}
                         scroll={{ y: 434, x: 0 }}
@@ -432,6 +465,27 @@ class Payments extends Component {
                       className="table-responsive"
                     >
                       <Table
+                        loading={{
+                          indicator: antIcon,
+                          spinning: this.state.loading,
+                          size: "large",
+                        }}
+                        locale={
+                          this.state.loading
+                            ? {
+                                emptyText: (
+                                  <div>
+                                    <br></br>
+                                    <br></br>
+                                    <br></br>
+                                    <br></br>
+                                    <br></br>
+                                    <br></br>
+                                  </div>
+                                ),
+                              }
+                            : {}
+                        }
                         style={{ padding: "5px 10px 5px 10px" }}
                         sticky={true}
                         scroll={{ y: 434, x: 0 }}

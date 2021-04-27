@@ -118,7 +118,7 @@ class UserPayments extends Component {
             }}
           >
             <div className="" style={{ padding: "20px" }}>
-              <span style={{ fontSize: "16px" }}>Not a memebr.</span>
+              <span style={{ fontSize: "16px" }}>N'est pas un membre.</span>
             </div>
           </div>
         </div>
@@ -136,8 +136,8 @@ class UserPayments extends Component {
           >
             <div className="" style={{ padding: "20px" }}>
               <span style={{ fontSize: "16px" }}>
-                MemberShip is not required for <b>{this.props.role}</b> type of
-                users.
+                L'adhésion n'est pas requise pour les utilisateurs de type{" "}
+                <b>{this.props.role}</b>.
               </span>
             </div>
           </div>

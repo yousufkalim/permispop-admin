@@ -11,6 +11,7 @@ import "font-awesome/css/font-awesome.min.css";
 import { motion } from "framer-motion";
 import { Table, Button, Input, Space } from "antd";
 import { SearchOutlined, LoadingOutlined } from "@ant-design/icons";
+import { Translation } from "react-i18next";
 import Highlighter from "react-highlight-words";
 
 const $ = require("jquery");
@@ -260,7 +261,7 @@ class Users extends Component {
         ...this.getColumnSearchProps("number"),
       },
       {
-        title: "Name",
+        title: <Translation>{(t) => t("Name")}</Translation>,
         dataIndex: "name",
         key: "name",
         align: "center",
@@ -269,26 +270,26 @@ class Users extends Component {
         ...this.getColumnSearchProps("name"),
       },
       {
-        title: "Role",
+        title: <Translation>{(t) => t("Role")}</Translation>,
         dataIndex: "role",
         key: "role",
         align: "center",
         width: 160,
         filters: [
           {
-            text: "Student",
+            text: <Translation>{(t) => t("Student")}</Translation>,
             value: "Student",
           },
           {
-            text: "Instructor",
+            text: <Translation>{(t) => t("Instructor")}</Translation>,
             value: "Instructor",
           },
           {
-            text: "Driving School",
+            text: <Translation>{(t) => t("Driving School")}</Translation>,
             value: "DrivingSchool",
           },
           {
-            text: "Car Rental Agent",
+            text: <Translation>{(t) => t("Car Rental Agent")}</Translation>,
             value: "CarRentalAgent",
           },
         ],
@@ -296,7 +297,7 @@ class Users extends Component {
         sorter: (a, b) => a.role.length - b.role.length,
       },
       {
-        title: "Active",
+        title: <Translation>{(t) => t("Active")}</Translation>,
         dataIndex: "active",
         key: "active",
         align: "center",
@@ -319,7 +320,7 @@ class Users extends Component {
         ),
       },
       {
-        title: "Document Verified",
+        title: <Translation>{(t) => t("Document Verified")}</Translation>,
         dataIndex: "docV",
         key: "docV",
         align: "center",
@@ -342,7 +343,7 @@ class Users extends Component {
         ),
       },
       {
-        title: "View Details",
+        title: <Translation>{(t) => t("View Details")}</Translation>,
         dataIndex: "details",
         key: "details",
         align: "center",
@@ -377,37 +378,39 @@ class Users extends Component {
       },
     ];
     return (
-      <div className="content">
-        <Grid fluid>
-          {this.state.showDetails ? (
-            <Row>
-              <Row>
-                <div
-                  style={{
-                    float: "left",
-                    margin: "-20px 0px 6px 20px",
-                  }}
-                >
-                  <motion.div
-                    title="Go Back"
-                    whileHover={{ scale: 1.2 }}
-                    whileTap={{ scale: 0.8 }}
-                    style={{
-                      position: "relative",
-                      zIndex: "1000",
-                    }}
-                    // onClick={this.props.toggle}
-                    onClick={() => window.location.reload()}
-                  >
-                    <a href="/admin/users">
-                      <i
-                        className="fas fa-arrow-left fa-2x"
-                        style={{ color: "#149e7a" }}
-                      ></i>
-                    </a>
-                  </motion.div>
-                </div>
-                {/* <Col md={12}>
+      <Translation>
+        {(t) => (
+          <div className="content">
+            <Grid fluid>
+              {this.state.showDetails ? (
+                <Row>
+                  <Row>
+                    <div
+                      style={{
+                        float: "left",
+                        margin: "-20px 0px 6px 20px",
+                      }}
+                    >
+                      <motion.div
+                        title="Go Back"
+                        whileHover={{ scale: 1.2 }}
+                        whileTap={{ scale: 0.8 }}
+                        style={{
+                          position: "relative",
+                          zIndex: "1000",
+                        }}
+                        // onClick={this.props.toggle}
+                        onClick={() => window.location.reload()}
+                      >
+                        <a href="/admin/users">
+                          <i
+                            className="fas fa-arrow-left fa-2x"
+                            style={{ color: "#149e7a" }}
+                          ></i>
+                        </a>
+                      </motion.div>
+                    </div>
+                    {/* <Col md={12}>
                   <a
                     href="/admin/users"
                     onClick={() => window.location.reload()}
@@ -416,189 +419,207 @@ class Users extends Component {
                     <i className="fa fa-arrow-circle-left"></i>Back to list
                   </a>
                 </Col> */}
-              </Row>
-              <Row>
-                <Col md={4}>
-                  <UserCard
-                    bgImage="https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400"
-                    {...this.state.userDetails}
-                  />
-                  {/* {console.log("...this.state.userDetails", {
+                  </Row>
+                  <Row>
+                    <Col md={4}>
+                      <UserCard
+                        bgImage="https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400"
+                        {...this.state.userDetails}
+                      />
+                      {/* {console.log("...this.state.userDetails", {
                     ...this.state.userDetails,
                   })} */}
-                </Col>
-                <Col md={8}>
-                  <Card
-                    title=""
-                    category=""
-                    ctTableFullWidth
-                    ctTableResponsive
-                    content={
-                      <TabContainer id="content" className="content">
-                        <Tabs defaultActiveKey={this.state.defualtTab}>
-                          <Tab eventKey="documents" title="Documents">
-                            <UserDocuments {...this.state.userDetails} />
-                          </Tab>
+                    </Col>
+                    <Col md={8}>
+                      <Card
+                        title=""
+                        category=""
+                        ctTableFullWidth
+                        ctTableResponsive
+                        content={
+                          <TabContainer id="content" className="content">
+                            <Tabs defaultActiveKey={this.state.defualtTab}>
+                              <Tab eventKey="documents" title={t("Documents")}>
+                                <UserDocuments {...this.state.userDetails} />
+                              </Tab>
 
-                          {/* instructor tabs */}
-                          {this.state.userDetails.role === "DrivingSchool" ? (
-                            <Tab eventKey="instructor" title="Instructor">
-                              <UserInstructors
-                                {...this.state.userDetails}
-                                changeUser={this.changeUser}
-                              />
-                            </Tab>
-                          ) : (
-                            ""
-                          )}
-                          {/* meetup tabs */}
-                          {this.state.userDetails.role === "Instructor" ||
-                          this.state.userDetails.role === "DSInstructor" ||
-                          this.state.userDetails.role === "CarRentalAgent" ? (
-                            <Tab eventKey="meetup" title="Meetup Points">
-                              <UserMeetups {...this.state.userDetails} />
-                            </Tab>
-                          ) : (
-                            ""
-                          )}
-                          <Tab eventKey="Payments" title="Payments">
-                            <UserPayments {...this.state.userDetails} />
-                          </Tab>
-                        </Tabs>
-                      </TabContainer>
-                    }
-                  />
-                </Col>
-              </Row>
-            </Row>
-          ) : (
-            <Row>
-              <Col md={12}>
-                <h3
-                  style={{
-                    fontSize: "22px",
-                    fontWeight: "300",
-                    color: "#333333",
-                    marginTop: "-10px",
-                    marginBottom: "20px",
-                  }}
-                >
-                  Users
-                </h3>
-                <Tabs defaultActiveKey="inactiveuser" id="noanim-tab-example">
-                  <Tab eventKey="inactiveuser" title="Non Verified">
-                    <Row className="table-responseive" style={{ margin: 10 }}>
-                      {/* <MDBDataTable
+                              {/* instructor tabs */}
+                              {this.state.userDetails.role ===
+                              "DrivingSchool" ? (
+                                <Tab
+                                  eventKey="instructor"
+                                  title={t("Instructor")}
+                                >
+                                  <UserInstructors
+                                    {...this.state.userDetails}
+                                    changeUser={this.changeUser}
+                                  />
+                                </Tab>
+                              ) : (
+                                ""
+                              )}
+                              {/* meetup tabs */}
+                              {this.state.userDetails.role === "Instructor" ||
+                              this.state.userDetails.role === "DSInstructor" ||
+                              this.state.userDetails.role ===
+                                "CarRentalAgent" ? (
+                                <Tab
+                                  eventKey="meetup"
+                                  title={t("Meetup Points")}
+                                >
+                                  <UserMeetups {...this.state.userDetails} />
+                                </Tab>
+                              ) : (
+                                ""
+                              )}
+                              <Tab eventKey="Payments" title={t("Payments")}>
+                                <UserPayments {...this.state.userDetails} />
+                              </Tab>
+                            </Tabs>
+                          </TabContainer>
+                        }
+                      />
+                    </Col>
+                  </Row>
+                </Row>
+              ) : (
+                <Row>
+                  <Col md={12}>
+                    <h3
+                      style={{
+                        fontSize: "22px",
+                        fontWeight: "300",
+                        color: "#333333",
+                        marginTop: "-10px",
+                        marginBottom: "20px",
+                      }}
+                    >
+                      {t("Users")}
+                    </h3>
+                    <Tabs
+                      defaultActiveKey="inactiveuser"
+                      id="noanim-tab-example"
+                    >
+                      <Tab eventKey="inactiveuser" title={t("Non Verified")}>
+                        <Row
+                          className="table-responseive"
+                          style={{ margin: 10 }}
+                        >
+                          {/* <MDBDataTable
                         bordered
                         data={this.state.dataNV}
                         className="dataTableNew"
                         entries
                         Options={[20, 50, 100]}
                       /> */}
-                      <Table
-                        loading={{
-                          indicator: antIcon,
-                          spinning: this.state.loading,
-                          size: "large",
-                        }}
-                        locale={
-                          this.state.loading
-                            ? {
-                                emptyText: (
-                                  <div>
-                                    <br></br>
-                                    <br></br>
-                                    <br></br>
-                                    <br></br>
-                                    <br></br>
-                                    <br></br>
-                                  </div>
-                                ),
-                              }
-                            : {}
-                        }
-                        style={{ padding: "5px 10px 5px 10px" }}
-                        sticky={true}
-                        scroll={{ y: 434, x: 0 }}
-                        columns={columns}
-                        // onChange={this.onChange}
-                        pagination={{
-                          position: ["bottomCenter"],
-                          size: "small",
-                          showQuickJumper: true,
-                          defaultPageSize: 20,
-                          defaultCurrent: 1,
-                          showSizeChanger: true,
-                          pageSizeOptions: [20, 50, 100],
+                          <Table
+                            loading={{
+                              indicator: antIcon,
+                              spinning: this.state.loading,
+                              size: "large",
+                            }}
+                            locale={
+                              this.state.loading
+                                ? {
+                                    emptyText: (
+                                      <div>
+                                        <br></br>
+                                        <br></br>
+                                        <br></br>
+                                        <br></br>
+                                        <br></br>
+                                        <br></br>
+                                      </div>
+                                    ),
+                                  }
+                                : {}
+                            }
+                            style={{ padding: "5px 10px 5px 10px" }}
+                            sticky={true}
+                            scroll={{ y: "60vh", x: 0 }}
+                            columns={columns}
+                            pagination={{
+                              position: ["bottomCenter"],
+                              size: "small",
+                              showQuickJumper: true,
+                              defaultPageSize: 20,
+                              defaultCurrent: 1,
+                              showSizeChanger: true,
+                              pageSizeOptions: [20, 50, 100],
 
-                          showTotal: (total, range) =>
-                            `${range[0]}-${range[1]} of ${total} items`,
-                        }}
-                        dataSource={
-                          this.state.dataNV.rows !== undefined
-                            ? this.state.dataNV.rows.map((item, index) => ({
-                                key: index + 1,
-                                number: item.key,
-                                name: item.name,
-                                role: item.role,
-                                active: item.active,
-                                docV: item.docV,
-                                details: item.details,
-                              }))
-                            : ""
-                        }
-                      ></Table>
-                    </Row>
-                  </Tab>
-                  <Tab eventKey="verfied" title="Verified">
-                    <Row className="table-responseive" style={{ margin: 10 }}>
-                      {/* <MDBDataTable
+                              showTotal: (total, range) =>
+                                `${range[0]}-${range[1]} of ${total} items`,
+                            }}
+                            dataSource={
+                              this.state.dataNV.rows !== undefined
+                                ? this.state.dataNV.rows.map((item, index) => ({
+                                    key: index + 1,
+                                    number: item.key,
+                                    name: item.name,
+                                    role: item.role,
+                                    active: item.active,
+                                    docV: item.docV,
+                                    details: item.details,
+                                  }))
+                                : ""
+                            }
+                          ></Table>
+                        </Row>
+                      </Tab>
+                      <Tab eventKey="verfied" title={t("Verified")}>
+                        <Row
+                          className="table-responseive"
+                          style={{ margin: 10 }}
+                        >
+                          {/* <MDBDataTable
                         bordered
                         data={this.state.dataV}
                         className="dataTableNew"
                         entriesOptions={[20, 50, 100]}
                       /> */}
-                      <Table
-                        // loading={{ indicator: antIcon }}
-                        style={{ padding: "5px 10px 5px 10px" }}
-                        sticky={true}
-                        scroll={{ y: 434, x: 0 }}
-                        columns={columns}
-                        // onChange={this.onChange}
-                        pagination={{
-                          position: ["bottomCenter"],
-                          size: "small",
-                          showQuickJumper: true,
-                          defaultPageSize: 20,
-                          defaultCurrent: 1,
-                          showSizeChanger: true,
-                          pageSizeOptions: [20, 50, 100],
+                          <Table
+                            // loading={{ indicator: antIcon }}
+                            style={{ padding: "5px 10px 5px 10px" }}
+                            sticky={true}
+                            scroll={{ y: "60vh", x: 0 }}
+                            columns={columns}
+                            // onChange={this.onChange}
+                            pagination={{
+                              position: ["bottomCenter"],
+                              size: "small",
+                              showQuickJumper: true,
+                              defaultPageSize: 20,
+                              defaultCurrent: 1,
+                              showSizeChanger: true,
+                              pageSizeOptions: [20, 50, 100],
 
-                          showTotal: (total, range) =>
-                            `${range[0]}-${range[1]} of ${total} items`,
-                        }}
-                        dataSource={
-                          this.state.dataNV.rows !== undefined
-                            ? this.state.dataV.rows.map((item, index) => ({
-                                key: index + 1,
-                                number: item.key,
-                                name: item.name,
-                                role: item.role,
-                                active: item.active,
-                                docV: item.docV,
-                                details: item.details,
-                              }))
-                            : ""
-                        }
-                      ></Table>
-                    </Row>
-                  </Tab>
-                </Tabs>
-              </Col>
-            </Row>
-          )}
-        </Grid>
-      </div>
+                              showTotal: (total, range) =>
+                                `${range[0]}-${range[1]} of ${total} items`,
+                            }}
+                            dataSource={
+                              this.state.dataNV.rows !== undefined
+                                ? this.state.dataV.rows.map((item, index) => ({
+                                    key: index + 1,
+                                    number: item.key,
+                                    name: item.name,
+                                    role: item.role,
+                                    active: item.active,
+                                    docV: item.docV,
+                                    details: item.details,
+                                  }))
+                                : ""
+                            }
+                          ></Table>
+                        </Row>
+                      </Tab>
+                    </Tabs>
+                  </Col>
+                </Row>
+              )}
+            </Grid>
+          </div>
+        )}
+      </Translation>
     );
   }
 }

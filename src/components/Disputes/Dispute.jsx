@@ -6,6 +6,7 @@ import $ from "jquery";
 import moment from "moment";
 import { Button } from "antd";
 import { motion } from "framer-motion";
+import { Translation } from "react-i18next";
 
 class Dispute extends Component {
   constructor(props) {
@@ -197,240 +198,255 @@ class Dispute extends Component {
   };
   render() {
     return (
-      <div className="content">
-        <div
-          style={{
-            float: "left",
-            margin: "-20px 0px 6px 20px",
-          }}
-        >
-          <motion.div
-            title="Go Back"
-            whileHover={{ scale: 1.2 }}
-            whileTap={{ scale: 0.8 }}
-            style={{
-              position: "relative",
-              zIndex: "1000",
-            }}
-            onClick={this.props.toggle}
-          >
-            <a href="/admin/disputes">
-              <i
-                className="fas fa-arrow-left fa-2x"
-                style={{ color: "#149e7a" }}
-              ></i>
-            </a>
-          </motion.div>
-        </div>
-        <Grid fluid>
-          <Row>
-            <Col md={12}>
-              <Card
-                title="Take Action"
-                category=""
-                ctTableFullWidth
-                ctTableResponsive
-                content={
-                  <Grid>
-                    <Row>
-                      <Col md={10}>
-                        Change Status:{" "}
-                        <select
-                          className="form-control"
-                          onChange={this.handleStatusChange}
-                        >
-                          <option value="-1"></option>
-                          <option value="Open">Open </option>
-                          <option value="Closed">Closed </option>
-                          <option value="Student Suspended">
-                            Student Suspended{" "}
-                          </option>
-                          <option value="Intructor Suspended">
-                            Instructor Suspended{" "}
-                          </option>
-                        </select>
-                      </Col>
-                    </Row>
-                    <br />
-                    <Row>
-                      <Col md={5}>
-                        Comments:{" "}
-                        <textarea
-                          className="form-control"
-                          rows="3"
-                          id="txtCmt"
-                        ></textarea>
-                      </Col>
-                      <Col md={5}>
-                        <Button
-                          id="btnSubmit"
-                          onClick={this.submit}
-                          style={{ marginTop: 30 }}
-                        >
-                          Submit
-                        </Button>
-                      </Col>
-                    </Row>
-                    <br />
-                    <br />
-                    <b>Status</b>: {this.state.disputeInfo.status}
-                    {this.state.disputeInfo.status === "Student Suspended" ? (
-                      <Button
-                        onClick={() => this.activateUser(this.state.sInfo.id)}
-                        style={{ marginLeft: 20 }}
-                      >
-                        Activate Student
-                      </Button>
-                    ) : this.state.disputeInfo.status ===
-                      "Instructor Suspended" ? (
-                      <Button
-                        onClick={() => this.activateUser(this.state.iInfo.id)}
-                        style={{ marginLeft: 20 }}
-                      >
-                        Activate Instructor
-                      </Button>
-                    ) : (
-                      ""
-                    )}
-                    <br />
-                    <b>Admin Comment</b>: {this.state.disputeInfo.adminComments}
-                  </Grid>
-                }
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col md={12}>
-              <Card
-                title="Dispute Details"
-                category=""
-                ctTableFullWidth
-                ctTableResponsive
-                content={
-                  <Grid>
-                    <Row>
-                      <Col md={6}>
-                        Date:{" "}
-                        {moment(this.state.disputeInfo.feedBackDate).format(
-                          "DD/MM/YYYY"
+      <Translation>
+        {(t) => (
+          <div className="content">
+            <div
+              style={{
+                float: "left",
+                margin: "-20px 0px 6px 20px",
+              }}
+            >
+              <motion.div
+                title={t("Go Back")}
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.8 }}
+                style={{
+                  position: "relative",
+                  zIndex: "1000",
+                }}
+                onClick={this.props.toggle}
+              >
+                <a href="/admin/disputes">
+                  <i
+                    className="fas fa-arrow-left fa-2x"
+                    style={{ color: "#149e7a" }}
+                  ></i>
+                </a>
+              </motion.div>
+            </div>
+            <Grid fluid>
+              <Row>
+                <Col md={12}>
+                  <Card
+                    title={t("Take Action")}
+                    category=""
+                    ctTableFullWidth
+                    ctTableResponsive
+                    content={
+                      <Grid>
+                        <Row>
+                          <Col md={10}>
+                            {t("Change Status")}:
+                            <select
+                              className="form-control"
+                              onChange={this.handleStatusChange}
+                            >
+                              <option value="-1"></option>
+                              <option value="Open">Open </option>
+                              <option value="Closed">Closed </option>
+                              <option value="Student Suspended">
+                                Student Suspended{" "}
+                              </option>
+                              <option value="Intructor Suspended">
+                                Instructor Suspended{" "}
+                              </option>
+                            </select>
+                          </Col>
+                        </Row>
+                        <br />
+                        <Row>
+                          <Col md={5}>
+                            {t("Comments")}:
+                            <textarea
+                              className="form-control"
+                              rows="3"
+                              id="txtCmt"
+                            ></textarea>
+                          </Col>
+                          <Col md={5}>
+                            <Button
+                              id="btnSubmit"
+                              onClick={this.submit}
+                              style={{ marginTop: 30 }}
+                            >
+                              {t("Submit")}
+                            </Button>
+                          </Col>
+                        </Row>
+                        <br />
+                        <br />
+                        <b>{t("Status")}</b>: {this.state.disputeInfo.status}
+                        {this.state.disputeInfo.status ===
+                        "Student Suspended" ? (
+                          <Button
+                            onClick={() =>
+                              this.activateUser(this.state.sInfo.id)
+                            }
+                            style={{ marginLeft: 20 }}
+                          >
+                            {t("Activate Student")}
+                          </Button>
+                        ) : this.state.disputeInfo.status ===
+                          "Instructor Suspended" ? (
+                          <Button
+                            onClick={() =>
+                              this.activateUser(this.state.iInfo.id)
+                            }
+                            style={{ marginLeft: 20 }}
+                          >
+                            {t("Activate Instructor")}
+                          </Button>
+                        ) : (
+                          ""
                         )}
-                      </Col>
-                      <Col md={6}>
-                        Raised From: {this.state.disputeInfo.disputingFrom}
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col md={6}>
-                        Dispute : {this.state.disputeInfo.dispute}
-                      </Col>
-                      <Col md={6}>
-                        Comments : {this.state.disputeInfo.comment}
-                      </Col>
-                    </Row>
-                  </Grid>
-                }
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col md={12}>
-              <Card
-                title="Booking Details"
-                category=""
-                ctTableFullWidth
-                ctTableResponsive
-                content={
-                  <Grid>
-                    <Row>
-                      <Col md={4}>
-                        Date:{" "}
-                        {moment(this.state.bInfo.bookingDate).format(
-                          "DD/MM/YYYY"
-                        )}
-                      </Col>
-                      <Col md={4}>Start Time: {this.state.bInfo.startTime}</Col>
-                    </Row>
-                    <Row>
-                      <Col md={4}>
-                        End Time :{" "}
-                        {moment(this.state.bInfo.endTime).format("HH:mm")}
-                      </Col>
-                    </Row>
-                  </Grid>
-                }
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col md={6}>
-              <Card
-                title="Student"
-                category=""
-                ctTableFullWidth
-                ctTableResponsive
-                bg={
-                  this.state.disputeInfo.disputingFrom === "Student"
-                    ? "lightgreen"
-                    : "orange"
-                }
-                content={
-                  <div className="content">
-                    <li className="fa fa-user" />
-                    {this.state.sInfo.firstName +
-                      " " +
-                      this.state.sInfo.surName}
-                    <hr />
-                    <li className="fa fa-envelope" />
-                    {this.state.sInfo.email}
-                    <hr />
-                    <li className="fa fa-phone" />
-                    {this.state.sInfo.phone}
-                    <hr />
-                    <li className="fa fa-building" />
-                    {this.state.sInfo.city} <span> {this.state.sInfo.zip}</span>
-                    <br />
-                    <li className="fa fa-map" />
-                    {this.state.sInfo.address}
-                  </div>
-                }
-              />
-            </Col>
-            <Col md={6}>
-              <Card
-                title="Instructor"
-                category=""
-                ctTableFullWidth
-                ctTableResponsive
-                bg={
-                  this.state.disputeInfo.disputingFrom === "Student"
-                    ? "orange"
-                    : "lightgreen"
-                }
-                content={
-                  <div className="content">
-                    <li className="fa fa-user" />
-                    {this.state.iInfo.firstName +
-                      " " +
-                      this.state.iInfo.surName}
-                    <hr />
-                    <li className="fa fa-envelope" />
-                    {this.state.iInfo.email}
-                    <hr />
-                    <li className="fa fa-phone" />
-                    {this.state.iInfo.phone}
-                    <hr />
-                    <li className="fa fa-building" />
-                    {this.state.iInfo.city} <span> {this.state.iInfo.zip}</span>
-                    <br />
-                    <li className="fa fa-map" />
-                    {this.state.iInfo.address}
-                  </div>
-                }
-              />
-            </Col>
-          </Row>
-        </Grid>
-      </div>
+                        <br />
+                        <b>{t("Admin Comment")}</b>:{" "}
+                        {this.state.disputeInfo.adminComments}
+                      </Grid>
+                    }
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col md={12}>
+                  <Card
+                    title={t("Dispute Details")}
+                    category=""
+                    ctTableFullWidth
+                    ctTableResponsive
+                    content={
+                      <Grid>
+                        <Row>
+                          <Col md={6}>
+                            {t("Date")}:{" "}
+                            {moment(this.state.disputeInfo.feedBackDate).format(
+                              "DD/MM/YYYY"
+                            )}
+                          </Col>
+                          <Col md={6}>
+                            {t("Raised From")}:{" "}
+                            {this.state.disputeInfo.disputingFrom}
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col md={6}>
+                            {t("Dispute")} : {this.state.disputeInfo.dispute}
+                          </Col>
+                          <Col md={6}>
+                            {t("Comments")} : {this.state.disputeInfo.comment}
+                          </Col>
+                        </Row>
+                      </Grid>
+                    }
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col md={12}>
+                  <Card
+                    title={t("Booking Details")}
+                    category=""
+                    ctTableFullWidth
+                    ctTableResponsive
+                    content={
+                      <Grid>
+                        <Row>
+                          <Col md={4}>
+                            {t("Date")}:{" "}
+                            {moment(this.state.bInfo.bookingDate).format(
+                              "DD/MM/YYYY"
+                            )}
+                          </Col>
+                          <Col md={4}>
+                            {t("Start Time")}: {this.state.bInfo.startTime}
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col md={4}>
+                            {t("End Time")} :{" "}
+                            {moment(this.state.bInfo.endTime).format("HH:mm")}
+                          </Col>
+                        </Row>
+                      </Grid>
+                    }
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col md={6}>
+                  <Card
+                    title="Student"
+                    category=""
+                    ctTableFullWidth
+                    ctTableResponsive
+                    bg={
+                      this.state.disputeInfo.disputingFrom === "Student"
+                        ? "lightgreen"
+                        : "orange"
+                    }
+                    content={
+                      <div className="content">
+                        <li className="fa fa-user" />
+                        {this.state.sInfo.firstName +
+                          " " +
+                          this.state.sInfo.surName}
+                        <hr />
+                        <li className="fa fa-envelope" />
+                        {this.state.sInfo.email}
+                        <hr />
+                        <li className="fa fa-phone" />
+                        {this.state.sInfo.phone}
+                        <hr />
+                        <li className="fa fa-building" />
+                        {this.state.sInfo.city}{" "}
+                        <span> {this.state.sInfo.zip}</span>
+                        <br />
+                        <li className="fa fa-map" />
+                        {this.state.sInfo.address}
+                      </div>
+                    }
+                  />
+                </Col>
+                <Col md={6}>
+                  <Card
+                    title="Instructor"
+                    category=""
+                    ctTableFullWidth
+                    ctTableResponsive
+                    bg={
+                      this.state.disputeInfo.disputingFrom === "Student"
+                        ? "orange"
+                        : "lightgreen"
+                    }
+                    content={
+                      <div className="content">
+                        <li className="fa fa-user" />
+                        {this.state.iInfo.firstName +
+                          " " +
+                          this.state.iInfo.surName}
+                        <hr />
+                        <li className="fa fa-envelope" />
+                        {this.state.iInfo.email}
+                        <hr />
+                        <li className="fa fa-phone" />
+                        {this.state.iInfo.phone}
+                        <hr />
+                        <li className="fa fa-building" />
+                        {this.state.iInfo.city}{" "}
+                        <span> {this.state.iInfo.zip}</span>
+                        <br />
+                        <li className="fa fa-map" />
+                        {this.state.iInfo.address}
+                      </div>
+                    }
+                  />
+                </Col>
+              </Row>
+            </Grid>
+          </div>
+        )}
+      </Translation>
     );
   }
 }

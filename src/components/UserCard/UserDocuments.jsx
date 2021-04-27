@@ -1395,8 +1395,8 @@ class UserDocuments extends Component {
             <Table striped hover>
               <thead>
                 <tr>
-                  <th>Document </th>
-                  <th>Verification Status </th>
+                  <th>{t("Document")}</th>
+                  <th>{t("Verification Status")}</th>
                   <th> </th>
                 </tr>
               </thead>
@@ -1404,11 +1404,11 @@ class UserDocuments extends Component {
                 <tbody>
                   <tr>
                     <td colSpan="3">
-                      <h3>Personal Detail</h3>
+                      <h3>{t("Personal Detail")}</h3>
                     </td>
                   </tr>
                   <tr>
-                    <td>Front Id</td>
+                    <td>{t("Front Id")}</td>
                     <td>
                       {this.state.frontDoc === undefined ? (
                         <i className="fa fa-remove"></i>
@@ -1439,7 +1439,7 @@ class UserDocuments extends Component {
                     </td>
                   </tr>
                   <tr>
-                    <td>Back Id</td>
+                    <td>{t("Back Id")}</td>
                     <td>
                       {this.state.backDoc === undefined ? (
                         <i className="fa fa-remove"></i>
@@ -1471,7 +1471,7 @@ class UserDocuments extends Component {
                   </tr>
 
                   <tr>
-                    <td>Driving License</td>
+                    <td>{t("Driving License")}</td>
                     <td>
                       {this.state.drvLic === undefined ? (
                         <i className="fa fa-remove"></i>
@@ -1502,7 +1502,7 @@ class UserDocuments extends Component {
                     </td>
                   </tr>
                   <tr>
-                    <td>Authorization to Exercise</td>
+                    <td>{t("Authorization to Exercise")}</td>
                     <td>
                       {this.state.exeDoc === undefined ? (
                         <i className="fa fa-remove"></i>
@@ -1533,7 +1533,7 @@ class UserDocuments extends Component {
                     </td>
                   </tr>
                   <tr>
-                    <td>KBL</td>
+                    <td>{t("KBL")}</td>
                     <td>
                       {this.state.kbl === undefined ? (
                         <i className="fa fa-remove"></i>
@@ -1564,7 +1564,7 @@ class UserDocuments extends Component {
                     </td>
                   </tr>
                   <tr>
-                    <td>RC Pro</td>
+                    <td>{t("RC Pro")}</td>
                     <td>
                       {this.state.rc === undefined ? (
                         <i className="fa fa-remove"></i>
@@ -1595,7 +1595,7 @@ class UserDocuments extends Component {
                     </td>
                   </tr>
                   <tr>
-                    <td>Green Card</td>
+                    <td>{t("Green Card")}</td>
                     <td>
                       {this.state.greenCard === undefined ? (
                         <i className="fa fa-remove"></i>
@@ -1627,7 +1627,7 @@ class UserDocuments extends Component {
                   </tr>
                   <tr>
                     <td colSpan="2">
-                      <h3>Vehicle Details</h3>
+                      <h3>{t("Vehicle Details")}</h3>
                     </td>
                     <td>
                       <i
@@ -1644,11 +1644,11 @@ class UserDocuments extends Component {
                 <tbody>
                   <tr>
                     <td colSpan="3">
-                      <h3>Personal Detail</h3>
+                      <h3>{t("Personal Detail")}</h3>
                     </td>
                   </tr>
                   <tr>
-                    <td>Front Id</td>
+                    <td>{t("Front Id")}</td>
                     <td>
                       {this.state.frontDoc === undefined ? (
                         <i className="fa fa-remove"></i>
@@ -1679,7 +1679,7 @@ class UserDocuments extends Component {
                     </td>
                   </tr>
                   <tr>
-                    <td>Back Id</td>
+                    <td>{t("Back Id")}</td>
                     <td>
                       {this.state.backDoc === undefined ? (
                         <i className="fa fa-remove"></i>
@@ -1711,7 +1711,7 @@ class UserDocuments extends Component {
                   </tr>
 
                   <tr>
-                    <td>Driving License</td>
+                    <td>{t("Driving License")}</td>
                     <td>
                       {this.state.drvLic === undefined ? (
                         <i className="fa fa-remove"></i>
@@ -1742,7 +1742,7 @@ class UserDocuments extends Component {
                     </td>
                   </tr>
                   <tr>
-                    <td>Authorization to Exercise</td>
+                    <td>{t("Authorization to Exercise")}</td>
                     <td>
                       {this.state.exeDoc === undefined ? (
                         <i className="fa fa-remove"></i>
@@ -1773,7 +1773,7 @@ class UserDocuments extends Component {
                     </td>
                   </tr>
                   <tr>
-                    <td>KBL DS</td>
+                    <td>{t("KBL DS")}</td>
                     <td>
                       {this.state.kbl === undefined ? (
                         <i className="fa fa-remove"></i>
@@ -1808,11 +1808,11 @@ class UserDocuments extends Component {
                 <tbody>
                   <tr>
                     <td colSpan="3">
-                      <h3>Personal Detail</h3>
+                      <h3>{t("Personal Detail")}</h3>
                     </td>
                   </tr>
                   <tr>
-                    <td>Front Id</td>
+                    <td>{t("Front Id")}</td>
                     <td>
                       {this.state.frontDoc === undefined ? (
                         <i className="fa fa-remove"></i>
@@ -1844,7 +1844,7 @@ class UserDocuments extends Component {
                   </tr>
                   <tr>
                     {" "}
-                    <td>Back Id</td>
+                    <td>{t("Back Id")}</td>
                     <td>
                       {this.state.backDoc === undefined ? (
                         <i className="fa fa-remove"></i>
@@ -1879,11 +1879,11 @@ class UserDocuments extends Component {
                 <tbody>
                   <tr>
                     <td colSpan="3">
-                      <h3>Personal Detail</h3>
+                      <h3>{t("Personal Detai")}l</h3>
                     </td>
                   </tr>
                   <tr>
-                    <td>Driving School Approval</td>
+                    <td>{t("Driving School Approval")}</td>
                     <td>
                       {this.state.dsa === undefined ? (
                         <i className="fa fa-remove"></i>
@@ -1914,7 +1914,7 @@ class UserDocuments extends Component {
                     </td>
                   </tr>
                   <tr>
-                    <td>KBL</td>
+                    <td>{t("KBL")}</td>
                     <td>
                       {this.state.kbl === undefined ? (
                         <i className="fa fa-remove"></i>
@@ -1945,7 +1945,7 @@ class UserDocuments extends Component {
                     </td>
                   </tr>
                   <tr>
-                    <td>RC Pro</td>
+                    <td>{t("RC Pro")}</td>
                     <td>
                       {this.state.rc === undefined ? (
                         <i className="fa fa-remove"></i>
@@ -1977,7 +1977,7 @@ class UserDocuments extends Component {
                   </tr>
                   <tr>
                     <td colSpan="2">
-                      <h3>Vehicle Details</h3>
+                      <h3>{t("Vehicle Details")}</h3>
                     </td>
                     <td>
                       <i
@@ -1994,11 +1994,11 @@ class UserDocuments extends Component {
                 <tbody>
                   <tr>
                     <td colSpan="3">
-                      <h3>Personal Detail</h3>
+                      <h3>{t("Personal Detail")}</h3>
                     </td>
                   </tr>
                   <tr>
-                    <td>Front Id</td>
+                    <td>{t("Front Id")}</td>
                     <td>
                       {this.state.frontDoc === undefined ? (
                         <i className="fa fa-remove"></i>
@@ -2029,7 +2029,7 @@ class UserDocuments extends Component {
                     </td>
                   </tr>
                   <tr>
-                    <td>Back Id</td>
+                    <td>{t("Back Id")}</td>
                     <td>
                       {this.state.backDoc === undefined ? (
                         <i className="fa fa-remove"></i>
@@ -2061,7 +2061,7 @@ class UserDocuments extends Component {
                   </tr>
 
                   <tr>
-                    <td>KBL</td>
+                    <td>{t("KBL")}</td>
                     <td>
                       {this.state.kbl === undefined ? (
                         <i className="fa fa-remove"></i>
@@ -2092,7 +2092,7 @@ class UserDocuments extends Component {
                     </td>
                   </tr>
                   <tr>
-                    <td>RC Pro</td>
+                    <td>{t("RC Pro")}</td>
                     <td>
                       {this.state.rc === undefined ? (
                         <i className="fa fa-remove"></i>
@@ -2124,11 +2124,11 @@ class UserDocuments extends Component {
                   </tr>
                   <tr>
                     <td colSpan="2">
-                      <h3>Vehicle Details</h3>
+                      <h3>{t("Vehicle Details")}</h3>
                     </td>
                     <td>
                       <i
-                        title="Add Vehicle "
+                        title={t("Add Vehicle")}
                         className="fa fa-plus-circle"
                         style={{ fontSize: 18 }}
                         onClick={this.handleShowModel}
@@ -2140,8 +2140,8 @@ class UserDocuments extends Component {
               )}
             </Table>
             <Button onClick={this.maildata}>
-              <li className="fa fa-envelope  fa-1x"></li>Send Email Non-Verified
-              Document
+              <li className="fa fa-envelope  fa-1x"></li>
+              {t("Send Email Non-Verified Document")}
             </Button>
             {/* add data model */}
             <Modal
@@ -2150,7 +2150,9 @@ class UserDocuments extends Component {
               onHide={this.handleShowModel}
               className="modelVehicle"
             >
-              <Modal.Header closeButton>{t("Add Vehicle")}</Modal.Header>
+              <Modal.Header className="add-veh-header" closeButton>
+                {t("Add Vehicle")}
+              </Modal.Header>
               <Modal.Body>
                 <Translation>
                   {(t) => (
@@ -2294,7 +2296,7 @@ class UserDocuments extends Component {
                                 <Translation>
                                   {(t) => (
                                     <ControlLabel>
-                                      {t("Gearbox")}{" "}
+                                      {t("GearBox")}{" "}
                                       <span className="text-red">*</span>
                                     </ControlLabel>
                                   )}

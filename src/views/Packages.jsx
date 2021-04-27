@@ -4,6 +4,7 @@ import AddUpdatePackage from "../../src/components/Packages/AddUpdatePackage";
 // import Button from "components/CustomButton/CustomButton.jsx";
 import MembershipSetting from "../../src/components/Packages/MembershipSetting";
 import { Modal } from "antd";
+import { Translation } from "react-i18next";
 import { motion } from "framer-motion";
 
 class Packages extends Component {
@@ -46,9 +47,11 @@ class Packages extends Component {
   };
   render() {
     return (
+      <Translation>
+                      {(t) =>(
       <div>
         <Modal
-          title="Settings"
+          title={t("Settings")}
           visible={this.state.isModalVisible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
@@ -58,7 +61,7 @@ class Packages extends Component {
           <MembershipSetting />
         </Modal>
         <Modal
-          title="Package Details"
+          title={t("Package Details")}
           visible={this.state.isAddModalVisible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
@@ -104,7 +107,7 @@ class Packages extends Component {
         </header>
         <PackageList toggle={this.toggle} addUpdate={this.state.addUpdate} />
       </div>
-    );
+    )}</Translation>);
   }
 }
 

@@ -16,6 +16,7 @@ import {
 } from "react-bootstrap";
 import { Modal } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { Translation } from "react-i18next";
 import Autocomplete from "react-autocomplete";
 
 const { confirm } = Modal;
@@ -562,6 +563,24 @@ export class UserCard extends Component {
     );
   };
 
+  handleDelete = () => {
+    this.setState({
+      isAddDisable: true,
+    });
+
+    var tokn = localStorage.getItem("userdata");
+    this.WebServicesManager.postApiCall(
+      {
+        endPoint: `Personal/RemoveSpecificData?id=${this.props.id}`,
+        token: tokn,
+      },
+      (statusCode, resp) => {
+        console.log(resp);
+        // window.location.reload();
+      }
+    );
+  };
+
   showConfirmDelete = () => {
     confirm({
       title: "Are you sure you want to delete this User?",
@@ -571,7 +590,7 @@ export class UserCard extends Component {
       okType: "danger",
       cancelText: "No",
       onOk: () => {
-        this.handlefuntDeActive();
+        this.handleDelete();
       },
       onCancel() {
         console.log("Cancel");
@@ -662,168 +681,124 @@ export class UserCard extends Component {
   };
   render() {
     return (
-      <div className="card card-user">
-        <div className="image">
-          <img src={this.props.bgImage} alt="..." />
-        </div>
-        <div className="content">
-          <div className="author">
-            {/* <a href="#pablo"> */}
-            <img
-              className="avatar border-gray"
-              src={
-                this.props.photo !== ""
-                  ? this.props.photo
-                  : "data:image/png;base64,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"
-              }
-              alt="..."
-            />
-            <div className="content">
-              <h4 className="title">
-                {this.props.firstName}
-                <br />
-                <small>{this.props.surName}</small>
-                <hr />
-              </h4>
-              <table className="table">
-                <tbody>
-                  <tr>
-                    <th>Email</th>
-                    <td>
-                      {this.props.contactEmail === "" ||
-                      this.props.contactEmail === null
-                        ? this.props.email
-                        : this.props.contactEmail}
-                    </td>
-                  </tr>
-                  {this.props.role !== "DrivingSchool" ? (
-                    <tr>
-                      <th>Date of Birth</th>
-                      <td>{moment(this.props.dob).format("DD MMM YYYY")}</td>
-                    </tr>
-                  ) : (
-                    ""
-                  )}
-                  <tr>
-                    <th>Address</th>
-                    <td>{this.props.address}</td>
-                  </tr>
-                  <tr>
-                    <th>City</th>
-                    <td>{this.props.city}</td>
-                  </tr>
-                  <tr>
-                    <th>Phone</th>
-                    <td>{this.props.phone}</td>
-                  </tr>
-                  {this.props.role !== "Student" ? (
-                    <>
-                      <tr>
-                        <th>Will work on our Platform for</th>
-                        {this.props.giveOurPlatformTime !== null &&
-                        this.props.giveOurPlatformTime !== undefined ? (
-                          <td>{this.props.giveOurPlatformTime} (hr/month)</td>
-                        ) : (
-                          <td>N/A</td>
-                        )}
-                      </tr>
-                      <tr>
-                        <th>Working On Other Platform</th>
-                        {this.props.workWithOther === "true" ? (
-                          <td>{this.props.whichPlatform}</td>
-                        ) : (
-                          <td>N/A</td>
-                        )}
-                      </tr>
-                      <tr>
-                        <th>Spoken Language/s</th>
-                        {this.props.spokenLanguage.length > 0 ? (
-                          <td>{this.props.spokenLanguage.join(", ")}</td>
-                        ) : (
-                          <td>N/A</td>
-                        )}
-                      </tr>
-                    </>
-                  ) : (
-                    <tr>
-                      <th>Spoken Language/s</th>
-                      {this.props.spokenLanguage.length > 0 ? (
-                        <td>{this.props.spokenLanguage.join(", ")}</td>
-                      ) : (
-                        <td>N/A</td>
-                      )}
-                    </tr>
-                  )}
-                </tbody>
-              </table>
+      <Translation>
+        {(t) => (
+          <div className="card card-user">
+            <div className="image">
+              <img src={this.props.bgImage} alt="..." />
             </div>
-            {/* </a> */}
-          </div>
-          <p
-            className="description text-center"
-            style={{ fontWeight: "bold", fontSize: 16 }}
-          >
-            {this.props.role}
-          </p>
-          {this.state.banDate !== "" ? (
-            <p className="text-center" style={{ fontSize: 10 }}>
-              Ban till: {moment(this.state.banDate).format("DD/MM/YYYY")}
-            </p>
-          ) : (
-            ""
-          )}
-          <center style={{ margin: "4px" }}>
-            <Button
-              varient="primary"
-              style={{
-                marginLeft: 10,
-                marginTop: 10,
-                width: 110,
-                color: "white",
-                backgroundColor: "#149e7a",
-                border: "0",
-                borderRadius: "4px",
-              }}
-              disabled={this.state.isAddDisable}
-              onClick={() => this.setState({ showModal: true })}
-            >
-              Update User
-            </Button>
-            {this.state.banStatus === "" ? (
-              <DropdownButton
-                disabled={this.state.isAddDisable}
-                bsStyle="default"
-                title="Ban User"
-                noCaret
-                id="dropdown-no-caret"
-                style={{
-                  fontSize: "14px",
-                  marginLeft: 10,
-                  marginTop: 10,
-                  width: 110,
-                  color: "white",
-                  backgroundColor: "#ff7700",
-                  border: "0",
-                  borderRadius: "4px",
-                }}
+            <div className="content">
+              <div className="author">
+                {/* <a href="#pablo"> */}
+                <img
+                  className="avatar border-gray"
+                  src={
+                    this.props.photo !== ""
+                      ? this.props.photo
+                      : "data:image/png;base64,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"
+                  }
+                  alt="..."
+                />
+                <div className="content">
+                  <h4 className="title">
+                    {this.props.firstName}
+                    <br />
+                    <small>{this.props.surName}</small>
+                    <hr />
+                  </h4>
+                  <table className="table">
+                    <tbody>
+                      <tr>
+                        <th>{t("Email")}</th>
+                        <td>
+                          {this.props.contactEmail === "" ||
+                          this.props.contactEmail === null
+                            ? this.props.email
+                            : this.props.contactEmail}
+                        </td>
+                      </tr>
+                      {this.props.role !== "DrivingSchool" ? (
+                        <tr>
+                          <th>{t("Date of Birth")}</th>
+                          <td>
+                            {moment(this.props.dob).format("DD MMM YYYY")}
+                          </td>
+                        </tr>
+                      ) : (
+                        ""
+                      )}
+                      <tr>
+                        <th>{t("Address")}</th>
+                        <td>{this.props.address}</td>
+                      </tr>
+                      <tr>
+                        <th>{t("City")}</th>
+                        <td>{this.props.city}</td>
+                      </tr>
+                      <tr>
+                        <th>{t("Phone")}</th>
+                        <td>{this.props.phone}</td>
+                      </tr>
+                      {this.props.role !== "Student" ? (
+                        <>
+                          <tr>
+                            <th>{t("Will work on our Platform for")}</th>
+                            {this.props.giveOurPlatformTime !== null &&
+                            this.props.giveOurPlatformTime !== undefined ? (
+                              <td>
+                                {this.props.giveOurPlatformTime} (hr/month)
+                              </td>
+                            ) : (
+                              <td>N/A</td>
+                            )}
+                          </tr>
+                          <tr>
+                            <th>{t("Working On Other Platform")}</th>
+                            {this.props.workWithOther === "true" ? (
+                              <td>{this.props.whichPlatform}</td>
+                            ) : (
+                              <td>N/A</td>
+                            )}
+                          </tr>
+                          <tr>
+                            <th>{t("Spoken Language/s")}</th>
+                            {this.props.spokenLanguage.length > 0 ? (
+                              <td>{this.props.spokenLanguage.join(", ")}</td>
+                            ) : (
+                              <td>N/A</td>
+                            )}
+                          </tr>
+                        </>
+                      ) : (
+                        <tr>
+                          <th>{t("Spoken Language/s")}</th>
+                          {this.props.spokenLanguage.length > 0 ? (
+                            <td>{this.props.spokenLanguage.join(", ")}</td>
+                          ) : (
+                            <td>N/A</td>
+                          )}
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+                {/* </a> */}
+              </div>
+              <p
+                className="description text-center"
+                style={{ fontWeight: "bold", fontSize: 16 }}
               >
-                <MenuItem
-                  disabled={this.state.isAddDisable}
-                  onClick={() => this.showConfirmBan1()}
-                  eventKey="1"
-                >
-                  15 Days
-                </MenuItem>
-                <MenuItem
-                  disabled={this.state.isAddDisable}
-                  onClick={() => this.showConfirmBan2()}
-                  eventKey="2"
-                >
-                  30 Days
-                </MenuItem>
-              </DropdownButton>
-            ) : this.state.banStatus !== "DeActive" ? (
-              <>
+                {this.props.role}
+              </p>
+              {this.state.banDate !== "" ? (
+                <p className="text-center" style={{ fontSize: 10 }}>
+                  {t("Ban till:")}{" "}
+                  {moment(this.state.banDate).format("DD/MM/YYYY")}
+                </p>
+              ) : (
+                ""
+              )}
+              <center style={{ margin: "4px" }}>
                 <Button
                   varient="primary"
                   style={{
@@ -831,443 +806,523 @@ export class UserCard extends Component {
                     marginTop: 10,
                     width: 110,
                     color: "white",
-                    backgroundColor: "#ff7700",
+                    backgroundColor: "#149e7a",
                     border: "0",
                     borderRadius: "4px",
                   }}
                   disabled={this.state.isAddDisable}
-                  onClick={this.showConfirmUnban}
+                  onClick={() => this.setState({ showModal: true })}
                 >
-                  Un-Ban
+                  {t("Update User")}
                 </Button>
-              </>
-            ) : (
-              ""
-            )}
-            {this.state.banStatus === "" && this.state.banStatus !== "Ban" ? (
-              <>
-                <Button
-                  varient="primary"
-                  style={{
-                    marginLeft: 10,
-                    marginTop: 10,
-                    width: 110,
-                    color: "white",
-                    backgroundColor: "red",
-                    border: "0",
-                    borderRadius: "4px",
-                  }}
-                  disabled={this.state.isAddDisable}
-                  onClick={() => this.showConfirmDelete()}
-                >
-                  Delete User
-                </Button>
-                <Button
-                  varient="primary"
-                  style={{
-                    marginLeft: 10,
-                    marginTop: 10,
-                    width: 110,
-                    color: "white",
-                    backgroundColor: "#ff7700",
-                    border: "0",
-                    borderRadius: "4px",
-                  }}
-                  disabled={this.state.isAddDisable}
-                  onClick={this.showConfirmDeactive}
-                >
-                  De-Active
-                </Button>
-              </>
-            ) : this.state.banStatus !== "Ban" ? (
-              <>
-                {/* <p>De-Activated</p>  */}
-                <Button
-                  varient="primary"
-                  style={{
-                    marginLeft: 10,
-                    marginTop: 10,
-                    width: 110,
-                    color: "white",
-                    backgroundColor: "#ff7700",
-                    border: "0",
-                    borderRadius: "4px",
-                  }}
-                  disabled={this.state.isAddDisable}
-                  onClick={this.showConfirmReactive}
-                >
-                  Re-active
-                </Button>
-              </>
-            ) : (
-              ""
-            )}
-          </center>
-        </div>
-        <hr />
-        <div className="text-center">{this.props.socials}</div>
-        {/* {console.log("My Custom", this.props)} */}
-        <Modal
-          // className="update-modal"
-          title="Update Data"
-          visible={this.state.showModal}
-          style={{ marginTop: "-80px" }}
-          onOk={this.handleSave}
-          onCancel={() => this.setState({ showModal: false })}
-          footer={null}
-        >
-          <div className="content">
-            <Grid fluid>
-              <Row>
-                <Col md={12}>
-                  <form>
-                    <div className="clearfix" />
-                    <div className="container-flex">
-                      <div>
-                        <div className="row">
-                          <div className="col-md-6">
-                            <FormGroup>
-                              <ControlLabel>First Name</ControlLabel>
-                              <FormControl
-                                className="form-control"
-                                value={this.state.firstName}
-                                onChange={(e) => {
-                                  this.setState({
-                                    firstName: e.target.value,
-                                  });
-                                }}
-                              />
-                            </FormGroup>
-                          </div>
-                          <div className="col-md-6">
-                            <FormGroup>
-                              <ControlLabel>Sur Name</ControlLabel>
-                              <FormControl
-                                className="form-control"
-                                value={this.state.surName}
-                                onChange={(e) => {
-                                  this.setState({ surName: e.target.value });
-                                }}
-                              ></FormControl>
-                            </FormGroup>
-                          </div>
-                        </div>
-                        {this.props.role !== "DrivingSchool" ? (
-                          <div className="row">
-                            <div className="col-md-6">
-                              <FormGroup>
-                                <ControlLabel>DOB</ControlLabel>
-                                <FormControl
-                                  className="form-control"
-                                  type="date"
-                                  value={moment(this.state.dob).format(
-                                    "YYYY-MM-DD"
-                                  )}
-                                  onChange={(e) => {
-                                    this.setState({ dob: e.target.value });
-                                  }}
-                                />
-                              </FormGroup>
-                            </div>
-                            <div className="col-md-6">
-                              <FormGroup>
-                                <ControlLabel>Gender</ControlLabel>
-                                <FormControl
-                                  componentClass="select"
-                                  name="gender"
-                                  value={this.state.gender}
-                                  onChange={(e) =>
-                                    this.setState({ gender: e.target.value })
-                                  }
-                                >
-                                  <option value="Male">Male</option>
-                                  <option value="Female">Female</option>
-                                  <option value="Other">Other</option>
-                                </FormControl>
-                              </FormGroup>
-                            </div>
-                          </div>
-                        ) : (
-                          ""
-                        )}
-                        <div className="row">
-                          <div className="col-md-6">
-                            <FormGroup>
-                              <ControlLabel>Email</ControlLabel>
-                              <FormControl
-                                className="form-control"
-                                value={
-                                  this.state.contactEmail === "" ||
-                                  this.state.contactEmail === null
-                                    ? this.state.email
-                                    : this.state.contactEmail
-                                }
-                                onChange={(e) => {
-                                  this.setState({
-                                    contactEmail: e.target.value,
-                                  });
-                                }}
-                              ></FormControl>
-                            </FormGroup>
-                          </div>
-                          <div className="col-md-6">
-                            <FormGroup>
-                              <ControlLabel>Phone</ControlLabel>
-                              <FormControl
-                                className="form-control"
-                                maxLength={10}
-                                onChange={(e) => {
-                                  this.setState({ phone: e.target.value });
-                                }}
-                                value={this.state.phone}
-                              />
-                            </FormGroup>
-                          </div>
-                        </div>
-                        <div className="row">
-                          <div className="col-md-6">
-                            <FormGroup>
-                              <ControlLabel>Second Email</ControlLabel>
-                              <FormControl
-                                className="form-control"
-                                value={this.state.secondEmail}
-                                onChange={(e) => {
-                                  this.setState({
-                                    secondEmail: e.target.value,
-                                  });
-                                }}
-                              ></FormControl>
-                            </FormGroup>
-                          </div>
-                          <div className="col-md-6">
-                            <FormGroup>
-                              <ControlLabel>Second Phone</ControlLabel>
-                              <FormControl
-                                className="form-control"
-                                maxLength={10}
-                                onChange={(e) => {
-                                  this.setState({
-                                    secondPhone: e.target.value,
-                                  });
-                                }}
-                                value={this.state.secondPhone}
-                              />
-                            </FormGroup>
-                          </div>
-                        </div>
-
-                        <div className="row">
-                          <Col md={6} className="address-in">
-                            <FormGroup>
-                              <ControlLabel>
-                                Address <span className="text-red"></span>
-                              </ControlLabel>
-                              <br />
-                              <Autocomplete
-                                items={this.state.items}
-                                // shouldItemRender={(item, value) =>
-                                //     item.label.toLowerCase().indexOf(value.toLowerCase()) > -1
-                                // }
-                                getItemValue={(item) => item.label}
-                                renderItem={(item, highlighted) => (
-                                  <div
-                                    key={item.id}
-                                    style={{
-                                      backgroundColor: highlighted
-                                        ? "#eee"
-                                        : "transparent",
-                                    }}
-                                  >
-                                    {item.label}
-                                  </div>
-                                )}
-                                wrapperStyle={{
-                                  display: "block",
-                                }}
-                                menuStyle={{
-                                  zIndex: "1",
-                                  position: "static",
-                                  borderRadius: "3px",
-                                  boxShadow: "0 2px 12px rgba(0, 0, 0, 0.1)",
-                                  background: "rgba(255, 255, 255, 0.9)",
-                                  padding: "2px 0",
-                                  fontSize: "90%",
-                                  overflow: "auto",
-                                  maxHeight: "50%",
-                                }}
-                                inputProps={{ className: "form-control" }}
-                                value={this.state.address}
-                                onChange={this.getAddress}
-                                onSelect={this.SetAddress}
-                              />
-                              <HelpBlock>{this.state.addressError}</HelpBlock>
-                            </FormGroup>
-                          </Col>
-                          <div className="col-md-6">
-                            <FormGroup>
-                              <ControlLabel>Complement</ControlLabel>
-                              <FormControl
-                                className="form-control"
-                                value={this.state.complement}
-                                onChange={(e) => {
-                                  this.setState({
-                                    complement: e.target.value,
-                                  });
-                                }}
-                              />
-                            </FormGroup>
-                          </div>
-                        </div>
-                        <div className="row">
-                          <div className="col-md-6">
-                            <FormGroup>
-                              <ControlLabel>ZipCode</ControlLabel>
-                              <FormControl
-                                className="form-control"
-                                onChange={(e) => {
-                                  this.setState({
-                                    highWayCodeDate: e.target.value,
-                                  });
-                                }}
-                                value={this.state.zip}
-                              />
-                              <HelpBlock style={{ color: "red", fontSize: 12 }}>
-                                {this.state.zipError}
-                              </HelpBlock>
-                            </FormGroup>
-                          </div>
-                          <div className="col-md-6">
-                            <FormGroup>
-                              <ControlLabel>City</ControlLabel>
-                              <FormControl
-                                className="form-control"
-                                value={this.state.city}
-                                onChange={(e) => {
-                                  this.setState({ city: e.target.value });
-                                }}
-                              />
-                            </FormGroup>
-                          </div>
-                        </div>
-                        {this.props.role === "Student" ? (
-                          <div className="row">
-                            <div className="col-md-6">
-                              <FormGroup>
-                                <ControlLabel>Highway Code Date</ControlLabel>
-                                <FormControl
-                                  className="form-control"
-                                  type="date"
-                                  value={moment(
-                                    this.state.highWayCodeDate
-                                  ).format("YYYY-MM-DD")}
-                                  onChange={(e) => {
-                                    this.setState({
-                                      highWayCodeDate: e.target.value,
-                                    });
-                                  }}
-                                />
-                              </FormGroup>
-                            </div>
-                            <div className="col-md-6">
-                              <FormGroup>
-                                <ControlLabel>NEPH number</ControlLabel>
-                                <FormControl
-                                  className="form-control"
-                                  maxLength={12}
-                                  onChange={(e) => {
-                                    this.setState({ neph: e.target.value });
-                                  }}
-                                  value={this.state.neph}
-                                />
-                              </FormGroup>
-                            </div>
-                          </div>
-                        ) : (
-                          ""
-                        )}
-                      </div>
-                    </div>
-                    <div className="clearfix" />
-                  </form>
-                </Col>
-                {this.props.role !== "DrivingSchool" ? (
-                  <Row style={{ padding: "20px 0px" }}>
-                    <Col md={6}>
-                      <ControlLabel>
-                        Upload front of your ID Card/Passport/Residence permit
-                        <span className="text-red">*</span>
-                      </ControlLabel>
-                      <FormControl
-                        type="file"
-                        bsClass="form-control"
-                        onChange={this.handleFrontFileSelect}
-                        accept="image/x-png,image/gif,image/jpeg,application/pdf"
-                        name="frontIDPhoto"
-                        id="frontIDPhoto"
-                      />
-                      {this.state.frontIdPathError !== "" ? (
-                        <a
-                          href={this.state.frontIdPathError}
-                          target="noopener noreferrer"
-                        >
-                          View current File
-                        </a>
-                      ) : (
-                        ""
-                      )}
-                    </Col>
-                    <Col md={6}>
-                      <ControlLabel>
-                        Upload back of your ID Card/Passport/Residence permit
-                        <span className="text-red">*</span>
-                      </ControlLabel>
-                      <FormControl
-                        type="file"
-                        bsClass="form-control"
-                        onChange={this.handleBackFileSelect}
-                        accept="image/x-png,image/gif,image/jpeg,application/pdf"
-                        name="backIDPhoto"
-                        id="backIDPhoto"
-                      />
-                      {this.state.backIdPathError !== "" ? (
-                        <a
-                          href={this.state.backIdPathError}
-                          target="noopener noreferrer"
-                        >
-                          View current File
-                        </a>
-                      ) : (
-                        ""
-                      )}
-                    </Col>
-                  </Row>
-                ) : (
-                  ""
-                )}
-                <Row>
-                  <Button
-                    type="primary"
+                {this.state.banStatus === "" ? (
+                  <DropdownButton
+                    disabled={this.state.isAddDisable}
+                    bsStyle="default"
+                    title={t("Ban User")}
+                    noCaret
+                    id="dropdown-no-caret"
                     style={{
-                      float: "right",
+                      fontSize: "14px",
                       marginLeft: 10,
                       marginTop: 10,
                       width: 110,
                       color: "white",
-                      backgroundColor: "#149e7a",
+                      backgroundColor: "#ff7700",
                       border: "0",
                       borderRadius: "4px",
                     }}
-                    onClick={this.handleSave}
-                    disabled={this.state.isAddDisable}
                   >
-                    Update
-                  </Button>
-                </Row>
-              </Row>
-            </Grid>
+                    <MenuItem
+                      disabled={this.state.isAddDisable}
+                      onClick={() => this.showConfirmBan1()}
+                      eventKey="1"
+                    >
+                      {t("15 Days")}
+                    </MenuItem>
+                    <MenuItem
+                      disabled={this.state.isAddDisable}
+                      onClick={() => this.showConfirmBan2()}
+                      eventKey="2"
+                    >
+                      {t("30 Days")}
+                    </MenuItem>
+                  </DropdownButton>
+                ) : this.state.banStatus !== "DeActive" ? (
+                  <>
+                    <Button
+                      varient="primary"
+                      style={{
+                        marginLeft: 10,
+                        marginTop: 10,
+                        width: 110,
+                        color: "white",
+                        backgroundColor: "#ff7700",
+                        border: "0",
+                        borderRadius: "4px",
+                      }}
+                      disabled={this.state.isAddDisable}
+                      onClick={this.showConfirmUnban}
+                    >
+                      {t("Un-Ban")}
+                    </Button>
+                  </>
+                ) : (
+                  ""
+                )}
+                {this.state.banStatus === "" &&
+                this.state.banStatus !== "Ban" ? (
+                  <>
+                    <Button
+                      varient="primary"
+                      style={{
+                        marginLeft: 10,
+                        marginTop: 10,
+                        width: 110,
+                        color: "white",
+                        backgroundColor: "red",
+                        border: "0",
+                        borderRadius: "4px",
+                      }}
+                      disabled={this.state.isAddDisable}
+                      onClick={() => this.showConfirmDelete()}
+                    >
+                      {t("Delete User")}
+                    </Button>
+                    <Button
+                      varient="primary"
+                      style={{
+                        marginLeft: 10,
+                        marginTop: 10,
+                        width: 110,
+                        color: "white",
+                        backgroundColor: "#ff7700",
+                        border: "0",
+                        borderRadius: "4px",
+                      }}
+                      disabled={this.state.isAddDisable}
+                      onClick={this.showConfirmDeactive}
+                    >
+                      {t("De-Active")}
+                    </Button>
+                  </>
+                ) : this.state.banStatus !== "Ban" ? (
+                  <>
+                    {/* <p>De-Activated</p>  */}
+                    <Button
+                      varient="primary"
+                      style={{
+                        marginLeft: 10,
+                        marginTop: 10,
+                        width: 110,
+                        color: "white",
+                        backgroundColor: "#ff7700",
+                        border: "0",
+                        borderRadius: "4px",
+                      }}
+                      disabled={this.state.isAddDisable}
+                      onClick={this.showConfirmReactive}
+                    >
+                      {t("Re-Active")}
+                    </Button>
+                  </>
+                ) : (
+                  ""
+                )}
+              </center>
+            </div>
+            <hr />
+            <div className="text-center">{this.props.socials}</div>
+            {/* {console.log("My Custom", this.props)} */}
+            <Modal
+              className="update-modal"
+              title="Update Data"
+              visible={this.state.showModal}
+              style={{ marginTop: "-80px" }}
+              onOk={this.handleSave}
+              onCancel={() => this.setState({ showModal: false })}
+              footer={null}
+            >
+              <div className="content">
+                <Grid fluid>
+                  <Row>
+                    <Col md={12}>
+                      <form>
+                        <div className="clearfix" />
+                        <div className="container-flex">
+                          <div>
+                            <div className="row">
+                              <div className="col-md-6">
+                                <FormGroup>
+                                  <ControlLabel>{t("First Name")}</ControlLabel>
+                                  <FormControl
+                                    className="form-control"
+                                    value={this.state.firstName}
+                                    onChange={(e) => {
+                                      this.setState({
+                                        firstName: e.target.value,
+                                      });
+                                    }}
+                                  />
+                                </FormGroup>
+                              </div>
+                              <div className="col-md-6">
+                                <FormGroup>
+                                  <ControlLabel>{t("Sur Name")}</ControlLabel>
+                                  <FormControl
+                                    className="form-control"
+                                    value={this.state.surName}
+                                    onChange={(e) => {
+                                      this.setState({
+                                        surName: e.target.value,
+                                      });
+                                    }}
+                                  ></FormControl>
+                                </FormGroup>
+                              </div>
+                            </div>
+                            {this.props.role !== "DrivingSchool" ? (
+                              <div className="row">
+                                <div className="col-md-6">
+                                  <FormGroup>
+                                    <ControlLabel>{t("DOB")}</ControlLabel>
+                                    <FormControl
+                                      className="form-control"
+                                      type="date"
+                                      value={moment(this.state.dob).format(
+                                        "YYYY-MM-DD"
+                                      )}
+                                      onChange={(e) => {
+                                        this.setState({ dob: e.target.value });
+                                      }}
+                                    />
+                                  </FormGroup>
+                                </div>
+                                <div className="col-md-6">
+                                  <FormGroup>
+                                    <ControlLabel>{t("Gender")}</ControlLabel>
+                                    <FormControl
+                                      componentClass="select"
+                                      name="gender"
+                                      value={this.state.gender}
+                                      onChange={(e) =>
+                                        this.setState({
+                                          gender: e.target.value,
+                                        })
+                                      }
+                                    >
+                                      <option value="Male">{t("Male")}</option>
+                                      <option value="Female">
+                                        {t("Female")}
+                                      </option>
+                                      <option value="Other">
+                                        {t("Other")}
+                                      </option>
+                                    </FormControl>
+                                  </FormGroup>
+                                </div>
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                            <div className="row">
+                              <div className="col-md-6">
+                                <FormGroup>
+                                  <ControlLabel>{t("Email")}</ControlLabel>
+                                  <FormControl
+                                    className="form-control"
+                                    value={
+                                      this.state.contactEmail === "" ||
+                                      this.state.contactEmail === null
+                                        ? this.state.email
+                                        : this.state.contactEmail
+                                    }
+                                    onChange={(e) => {
+                                      this.setState({
+                                        contactEmail: e.target.value,
+                                      });
+                                    }}
+                                  ></FormControl>
+                                </FormGroup>
+                              </div>
+                              <div className="col-md-6">
+                                <FormGroup>
+                                  <ControlLabel>{t("Phone")}</ControlLabel>
+                                  <FormControl
+                                    className="form-control"
+                                    maxLength={10}
+                                    onChange={(e) => {
+                                      this.setState({ phone: e.target.value });
+                                    }}
+                                    value={this.state.phone}
+                                  />
+                                </FormGroup>
+                              </div>
+                            </div>
+                            {/* <div className="row">
+                              <div className="col-md-6">
+                                <FormGroup>
+                                  <ControlLabel>
+                                    {t("Second Email")}
+                                  </ControlLabel>
+                                  <FormControl
+                                    className="form-control"
+                                    value={this.state.secondEmail}
+                                    onChange={(e) => {
+                                      this.setState({
+                                        secondEmail: e.target.value,
+                                      });
+                                    }}
+                                  ></FormControl>
+                                </FormGroup>
+                              </div>
+                              <div className="col-md-6">
+                                <FormGroup>
+                                  <ControlLabel>
+                                    {t("Second Phone")}
+                                  </ControlLabel>
+                                  <FormControl
+                                    className="form-control"
+                                    maxLength={10}
+                                    onChange={(e) => {
+                                      this.setState({
+                                        secondPhone: e.target.value,
+                                      });
+                                    }}
+                                    value={this.state.secondPhone}
+                                  />
+                                </FormGroup>
+                              </div>
+                            </div> */}
+
+                            <div className="row">
+                              <Col md={6} className="address-in">
+                                <FormGroup>
+                                  <ControlLabel>
+                                    {t("Address")}{" "}
+                                    <span className="text-red"></span>
+                                  </ControlLabel>
+                                  <br />
+                                  <Autocomplete
+                                    items={this.state.items}
+                                    // shouldItemRender={(item, value) =>
+                                    //     item.label.toLowerCase().indexOf(value.toLowerCase()) > -1
+                                    // }
+                                    getItemValue={(item) => item.label}
+                                    renderItem={(item, highlighted) => (
+                                      <div
+                                        key={item.id}
+                                        style={{
+                                          backgroundColor: highlighted
+                                            ? "#eee"
+                                            : "transparent",
+                                        }}
+                                      >
+                                        {item.label}
+                                      </div>
+                                    )}
+                                    wrapperStyle={{
+                                      display: "block",
+                                    }}
+                                    menuStyle={{
+                                      zIndex: "1",
+                                      position: "static",
+                                      borderRadius: "3px",
+                                      boxShadow:
+                                        "0 2px 12px rgba(0, 0, 0, 0.1)",
+                                      background: "rgba(255, 255, 255, 0.9)",
+                                      padding: "2px 0",
+                                      fontSize: "90%",
+                                      overflow: "auto",
+                                      maxHeight: "50%",
+                                    }}
+                                    inputProps={{ className: "form-control" }}
+                                    value={this.state.address}
+                                    onChange={this.getAddress}
+                                    onSelect={this.SetAddress}
+                                  />
+                                  <HelpBlock>
+                                    {this.state.addressError}
+                                  </HelpBlock>
+                                </FormGroup>
+                              </Col>
+                              <div className="col-md-6">
+                                <FormGroup>
+                                  <ControlLabel>Complement</ControlLabel>
+                                  <FormControl
+                                    className="form-control"
+                                    value={this.state.complement}
+                                    onChange={(e) => {
+                                      this.setState({
+                                        complement: e.target.value,
+                                      });
+                                    }}
+                                  />
+                                </FormGroup>
+                              </div>
+                            </div>
+                            <div className="row">
+                              <div className="col-md-6">
+                                <FormGroup>
+                                  <ControlLabel>Zip Code</ControlLabel>
+                                  <FormControl
+                                    className="form-control"
+                                    onChange={(e) => {
+                                      this.setState({
+                                        highWayCodeDate: e.target.value,
+                                      });
+                                    }}
+                                    value={this.state.zip}
+                                  />
+                                  <HelpBlock
+                                    style={{ color: "red", fontSize: 12 }}
+                                  >
+                                    {this.state.zipError}
+                                  </HelpBlock>
+                                </FormGroup>
+                              </div>
+                              <div className="col-md-6">
+                                <FormGroup>
+                                  <ControlLabel>{t("City")}</ControlLabel>
+                                  <FormControl
+                                    className="form-control"
+                                    value={this.state.city}
+                                    onChange={(e) => {
+                                      this.setState({ city: e.target.value });
+                                    }}
+                                  />
+                                </FormGroup>
+                              </div>
+                            </div>
+                            {this.props.role === "Student" ? (
+                              <div className="row">
+                                <div className="col-md-6">
+                                  <FormGroup>
+                                    <ControlLabel>
+                                      {t("Highway Code Date")}
+                                    </ControlLabel>
+                                    <FormControl
+                                      className="form-control"
+                                      type="date"
+                                      value={moment(
+                                        this.state.highWayCodeDate
+                                      ).format("YYYY-MM-DD")}
+                                      onChange={(e) => {
+                                        this.setState({
+                                          highWayCodeDate: e.target.value,
+                                        });
+                                      }}
+                                    />
+                                  </FormGroup>
+                                </div>
+                                <div className="col-md-6">
+                                  <FormGroup>
+                                    <ControlLabel>
+                                      {t("NEPH number")}
+                                    </ControlLabel>
+                                    <FormControl
+                                      className="form-control"
+                                      maxLength={12}
+                                      onChange={(e) => {
+                                        this.setState({ neph: e.target.value });
+                                      }}
+                                      value={this.state.neph}
+                                    />
+                                  </FormGroup>
+                                </div>
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+                        <div className="clearfix" />
+                      </form>
+                    </Col>
+                    {this.props.role !== "DrivingSchool" ? (
+                      <Row style={{ padding: "20px 0px" }}>
+                        <Col md={6}>
+                          <ControlLabel>
+                            {t(
+                              "Upload front of your ID Card/Passport/Residence permit"
+                            )}
+                            <span className="text-red">*</span>
+                          </ControlLabel>
+                          <FormControl
+                            type="file"
+                            bsClass="form-control"
+                            onChange={this.handleFrontFileSelect}
+                            accept="image/x-png,image/gif,image/jpeg,application/pdf"
+                            name="frontIDPhoto"
+                            id="frontIDPhoto"
+                          />
+                          {this.state.frontIdPathError !== "" ? (
+                            <a
+                              href={this.state.frontIdPathError}
+                              target="noopener noreferrer"
+                            >
+                              {t("View current File")}
+                            </a>
+                          ) : (
+                            ""
+                          )}
+                        </Col>
+                        <Col md={6}>
+                          <ControlLabel>
+                            {t(
+                              "Upload back of your ID Card/Passport/Residence permit"
+                            )}
+                            <span className="text-red">*</span>
+                          </ControlLabel>
+                          <FormControl
+                            type="file"
+                            bsClass="form-control"
+                            onChange={this.handleBackFileSelect}
+                            accept="image/x-png,image/gif,image/jpeg,application/pdf"
+                            name="backIDPhoto"
+                            id="backIDPhoto"
+                          />
+                          {this.state.backIdPathError !== "" ? (
+                            <a
+                              href={this.state.backIdPathError}
+                              target="noopener noreferrer"
+                            >
+                              {t("View current File")}
+                            </a>
+                          ) : (
+                            ""
+                          )}
+                        </Col>
+                      </Row>
+                    ) : (
+                      ""
+                    )}
+                    <Row>
+                      <Button
+                        // type="primary"
+                        style={{
+                          float: "right",
+                          marginLeft: 10,
+                          marginTop: 10,
+                          width: 110,
+                          color: "white",
+                          backgroundColor: "#149e7a",
+                          border: "0",
+                          borderRadius: "4px",
+                        }}
+                        onClick={this.handleSave}
+                        disabled={this.state.isAddDisable}
+                      >
+                        {t("Update")}
+                      </Button>
+                    </Row>
+                  </Row>
+                </Grid>
+              </div>
+            </Modal>
           </div>
-        </Modal>
-      </div>
+        )}
+      </Translation>
     );
   }
 }

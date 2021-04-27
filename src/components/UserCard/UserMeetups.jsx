@@ -234,7 +234,7 @@ export class UserMeetups extends Component {
           <>
             <div className="table-responsive" style={{ overflowX: "scroll" }}>
               <i
-                title="Add Meetup Point"
+                title={t("Add Meetup Point")}
                 className="fa fa-plus-circle"
                 style={{ float: "right", fontSize: 18, margin: "15px 10px" }}
                 onClick={() => this.setState({ showAdd: true })}
@@ -242,10 +242,10 @@ export class UserMeetups extends Component {
               <table className="table table-bordered">
                 <thead>
                   <tr>
-                    <th>Address</th>
-                    <th>ZipCode</th>
-                    <th>City</th>
-                    <th>Actions</th>
+                    <th>{t("Address")}</th>
+                    <th>{t("Zip Code")}</th>
+                    <th>{t("City")}</th>
+                    <th>{t("Actions")}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -257,12 +257,12 @@ export class UserMeetups extends Component {
                           <td>{meetup.city}</td>
                           <td>
                             <i
-                              title="Edit"
+                              title={t("Edit")}
                               className="fa fa-pencil"
                               onClick={() => this.updateClick(meetup)}
                             ></i>
                             <i
-                              title="Delete"
+                              title={t("Delete")}
                               className="fa fa-trash"
                               onClick={() => this.handleDeleteMeetup(meetup.id)}
                             ></i>
@@ -333,7 +333,7 @@ export class UserMeetups extends Component {
                   <Row>
                     <Col md={6}>
                       <FormGroup>
-                        <ControlLabel>ZipCode</ControlLabel>
+                        <ControlLabel>{t("Zip Code")}</ControlLabel>
                         <FormControl
                           type="text"
                           disabled={true}
@@ -343,7 +343,7 @@ export class UserMeetups extends Component {
                     </Col>
                     <Col md={6}>
                       <FormGroup>
-                        <ControlLabel>City</ControlLabel>
+                        <ControlLabel>{t("City")}</ControlLabel>
                         <FormControl
                           type="text"
                           disabled={true}
@@ -425,7 +425,7 @@ export class UserMeetups extends Component {
                   <Row>
                     <Col md={6}>
                       <FormGroup>
-                        <ControlLabel>ZipCode</ControlLabel>
+                        <ControlLabel>{t("Zip Code")}</ControlLabel>
                         <FormControl
                           type="text"
                           disabled={true}
@@ -435,7 +435,7 @@ export class UserMeetups extends Component {
                     </Col>
                     <Col md={6}>
                       <FormGroup>
-                        <ControlLabel>City</ControlLabel>
+                        <ControlLabel>{t("City")}</ControlLabel>
                         <FormControl
                           type="text"
                           disabled={true}

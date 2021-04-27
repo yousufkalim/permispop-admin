@@ -17,6 +17,7 @@ import { Button, Table, Popconfirm, Space, Input } from "antd";
 import { motion } from "framer-motion";
 import { SearchOutlined, LoadingOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
+import { Translation } from "react-i18next";
 
 const antIcon = (
   <div>
@@ -380,7 +381,7 @@ function Limitaions() {
 
   const columns = [
     {
-      title: "Name",
+      title: <Translation>{(t) => t("Name")}</Translation>,
       dataIndex: "name",
       key: "name",
       align: "center",
@@ -394,27 +395,27 @@ function Limitaions() {
       // ...this.getColumnSearchProps("name"),
     },
     {
-      title: "Role",
+      title: <Translation>{(t) => t("Role")}</Translation>,
       dataIndex: "role",
       key: "role",
       align: "center",
       width: 160,
       filters: [
         {
-          text: "Instructor",
+          text: <Translation>{(t) => t("Instructor")}</Translation>,
           value: "Instructor",
         },
         {
-          text: "DSInstructor",
+          text: <Translation>{(t) => t("DSInstructor")}</Translation>,
           value: "DSInstructor",
         },
 
         {
-          text: "DrivingSchool",
+          text: <Translation>{(t) => t("DrivingSchool")}</Translation>,
           value: "DrivingSchool",
         },
         {
-          text: "CarRentalAgent",
+          text: <Translation>{(t) => t("CarRentalAgent")}</Translation>,
           value: "CarRentalAgent",
         },
       ],
@@ -422,7 +423,7 @@ function Limitaions() {
       sorter: (a, b) => a.role.length - b.role.length,
     },
     {
-      title: "Fields",
+      title: <Translation>{(t) => t("Fields")}</Translation>,
       dataIndex: "fields",
       key: "fields",
       align: "center",
@@ -431,7 +432,7 @@ function Limitaions() {
       // ...this.getColumnSearchProps("fields"),
     },
     {
-      title: "Action",
+      title: <Translation>{(t) => t("Action")}</Translation>,
       dataIndex: "action",
       key: "action",
       align: "center",
@@ -462,7 +463,7 @@ function Limitaions() {
             ></i>
           </motion.div>
           <Popconfirm
-            title="Are you sure want to delete this Custom limit?"
+            title="Voulez-vous vraiment supprimer cette limite personnalisée?"
             onConfirm={() => handleDelete(data.user.id)}
             okText="Yes"
             cancelText="No"
@@ -490,382 +491,385 @@ function Limitaions() {
   ];
 
   return (
-    <div className="content">
-      <Grid fluid>
-        <Row>
-          <Col lg={3} sm={6}>
-            <StatsCard
-              bigIcon={<i className="pe-7s-plus text-success" />}
-              statsText="Vehicle Add Limit Instructor"
-              statsValue={userLimits.vehicleAddLimitInstructor}
-            />
-          </Col>
+    <Translation>
+      {(t) => (
+        <div className="content">
+          <Grid fluid>
+            <Row>
+              <Col lg={3} sm={6}>
+                <StatsCard
+                  bigIcon={<i className="pe-7s-plus text-success" />}
+                  statsText={t("Vehicle Add Limit Instructor")}
+                  statsValue={userLimits.vehicleAddLimitInstructor}
+                />
+              </Col>
 
-          <Col lg={3} sm={6}>
-            <StatsCard
-              bigIcon={<i className="pe-7s-plus text-primary" />}
-              statsText="Vehicle Add Limit Driving School"
-              statsValue={userLimits.vehicleAddLimitDrivingSchool}
-            />
-          </Col>
-          <Col lg={3} sm={6}>
-            <StatsCard
-              bigIcon={<i className="pe-7s-plus text-warning" />}
-              statsText="DrivingSchool Instructor Limit"
-              statsValue={userLimits.instructorAddLimit}
-            />
-          </Col>
-          <Col lg={3} sm={6}>
-            <StatsCard
-              bigIcon={<i className="pe-7s-note text-danger" />}
-              statsText="Max Booking Allowed/Week"
-              statsValue={userLimits.maxBookingLimit}
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col sm={12} className="info-row-table">
-            <h3
-              style={{
-                fontSize: "22px",
-                fontWeight: "300",
-                color: "#333333",
-                marginTop: "20px",
-                marginBottom: "20px",
-              }}
-            >
-              Custom Limits for users
-            </h3>
-            <div
-              style={{
-                float: "right",
-              }}
-            >
-              <motion.div
-                whileHover={{ scale: 1.2 }}
-                whileTap={{ scale: 0.8 }}
-                style={{
-                  position: "relative",
-                  zIndex: "1000",
-                }}
-                onClick={handleShow}
-              >
-                <div
+              <Col lg={3} sm={6}>
+                <StatsCard
+                  bigIcon={<i className="pe-7s-plus text-primary" />}
+                  statsText={t("Vehicle Add Limit Driving School")}
+                  statsValue={userLimits.vehicleAddLimitDrivingSchool}
+                />
+              </Col>
+              <Col lg={3} sm={6}>
+                <StatsCard
+                  bigIcon={<i className="pe-7s-plus text-warning" />}
+                  statsText={t("DrivingSchool Instructor Limit")}
+                  statsValue={userLimits.instructorAddLimit}
+                />
+              </Col>
+              <Col lg={3} sm={6}>
+                <StatsCard
+                  bigIcon={<i className="pe-7s-note text-danger" />}
+                  statsText={t("Max Booking Allowed/Week")}
+                  statsValue={userLimits.maxBookingLimit}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col sm={12} className="info-row-table">
+                <h3
                   style={{
-                    backgroundColor: "#149e7a",
-                    padding: "10px 15px 10px 15px",
-                    borderRadius: "50%",
-                    color: "white",
-                    margin: "16px 20px 0px 2px",
+                    fontSize: "22px",
+                    fontWeight: "300",
+                    color: "#333333",
+                    marginTop: "20px",
+                    marginBottom: "20px",
                   }}
                 >
-                  <i className="fas fa-plus" style={{ color: "white" }}></i>
+                  {t("Custom Limits for users")}
+                </h3>
+                <div
+                  style={{
+                    float: "right",
+                  }}
+                >
+                  <motion.div
+                    whileHover={{ scale: 1.2 }}
+                    whileTap={{ scale: 0.8 }}
+                    style={{
+                      position: "relative",
+                      zIndex: "1000",
+                    }}
+                    onClick={handleShow}
+                  >
+                    <div
+                      style={{
+                        backgroundColor: "#149e7a",
+                        padding: "10px 15px 10px 15px",
+                        borderRadius: "50%",
+                        color: "white",
+                        margin: "16px 20px 0px 2px",
+                      }}
+                    >
+                      <i className="fas fa-plus" style={{ color: "white" }}></i>
+                    </div>
+                  </motion.div>
                 </div>
-              </motion.div>
-            </div>
-          </Col>
-          <Col sm={12}>
-            <Table
-              loading={{
-                indicator: antIcon,
-                spinning: loading,
-                size: "large",
-              }}
-              locale={
-                loading
-                  ? {
-                      emptyText: (
-                        <div>
-                          <br></br>
-                          <br></br>
-                          <br></br>
-                          <br></br>
-                          <br></br>
-                          <br></br>
-                        </div>
-                      ),
-                    }
-                  : {}
-              }
-              style={{ padding: "5px 10px 5px 10px", whiteSpace: "pre" }}
-              sticky={true}
-              scroll={{ y: 434, x: 0 }}
-              columns={columns}
-              // onChange={this.onChange}
-              pagination={{
-                position: ["bottomCenter"],
-                size: "small",
-                showQuickJumper: true,
-                defaultPageSize: 20,
-                defaultCurrent: 1,
-                showSizeChanger: true,
-                pageSizeOptions: [20, 50, 100],
+              </Col>
+              <Col sm={12}>
+                <Table
+                  loading={{
+                    indicator: antIcon,
+                    spinning: loading,
+                    size: "large",
+                  }}
+                  locale={
+                    loading
+                      ? {
+                          emptyText: (
+                            <div>
+                              <br></br>
+                              <br></br>
+                              <br></br>
+                              <br></br>
+                              <br></br>
+                              <br></br>
+                            </div>
+                          ),
+                        }
+                      : {}
+                  }
+                  style={{ padding: "5px 10px 5px 10px", whiteSpace: "pre" }}
+                  sticky={true}
+                  scroll={{ y: "70vh", x: 0 }}
+                  columns={columns}
+                  // onChange={this.onChange}
+                  pagination={{
+                    position: ["bottomCenter"],
+                    size: "small",
+                    showQuickJumper: true,
+                    defaultPageSize: 20,
+                    defaultCurrent: 1,
+                    showSizeChanger: true,
+                    pageSizeOptions: [20, 50, 100],
 
-                showTotal: (total, range) =>
-                  `${range[0]}-${range[1]} of ${total} items`,
-              }}
-              dataSource={customValue.map((item, index) => ({
-                name: item[0],
-                role: item[1],
-                fields: item[2],
-                action: item[3],
-              }))}
-            ></Table>
-          </Col>
-        </Row>
-      </Grid>
-      {/* give user special limitations */}
-      <Modal show={show} onHide={handleShow}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add Special Limitations</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <FormGroup>
-              <ControlLabel>User</ControlLabel>
-              <FormControl
-                componentClass="select"
-                name="gender"
-                value={newCustom.user ? newCustom.user : ""}
-                onChange={(e) => {
-                  setNewCustom({ ...newCustom, user: e.target.value });
-                }}
-              >
-                <React.Fragment>
-                  <option>Select User</option>
-                  {userList.map((item) => (
-                    <option key={item.id} value={item.id}>
-                      {item.firstName + " " + item.surName}
-                    </option>
-                  ))}
-                </React.Fragment>
-              </FormControl>
-            </FormGroup>
-            <Row>
-              <Col sm={5}>
+                    showTotal: (total, range) =>
+                      `${range[0]}-${range[1]} of ${total} items`,
+                  }}
+                  dataSource={customValue.map((item, index) => ({
+                    name: item[0],
+                    role: item[1],
+                    fields: item[2],
+                    action: item[3],
+                  }))}
+                ></Table>
+              </Col>
+            </Row>
+          </Grid>
+          {/* give user special limitations */}
+          <Modal show={show} onHide={handleShow}>
+            <Modal.Header closeButton>
+              <Modal.Title>{t("Add Special Limitations")}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form>
                 <FormGroup>
-                  <ControlLabel>Field</ControlLabel>
+                  <ControlLabel>{t("User")}</ControlLabel>
                   <FormControl
                     componentClass="select"
-                    name="field to add"
-                    value={fieldValue}
-                    onChange={(e) => setFieldValue(e.target.value)}
+                    name="gender"
+                    value={newCustom.user ? newCustom.user : ""}
+                    onChange={(e) => {
+                      setNewCustom({ ...newCustom, user: e.target.value });
+                    }}
                   >
                     <React.Fragment>
-                      <option value="">Select Field</option>
-                      <option value="instructorAddLimit">
-                        Instructor Add Limit
-                      </option>
-                      <option value="vehicleAddLimit">Vehicle Add Limit</option>
+                      <option>{t("Select User")}</option>
+                      {userList.map((item) => (
+                        <option key={item.id} value={item.id}>
+                          {item.firstName + " " + item.surName}
+                        </option>
+                      ))}
                     </React.Fragment>
                   </FormControl>
                 </FormGroup>
-              </Col>
-              <Col sm={5}>
-                <FormGroup>
-                  <ControlLabel>Value</ControlLabel>
-                  <FormControl
-                    type="number"
-                    name="fieldvalue"
-                    value={customLimitValue}
-                    min={1}
-                    onChange={(e) => setCustomLimitValue(e.target.value)}
-                  />
-                </FormGroup>
-              </Col>
-              <Col sm={2}>
-                <FormGroup>
-                  <ControlLabel style={{ visibility: "hidden" }}>
-                    i
-                  </ControlLabel>
-                  <FormControl
-                    type="submit"
-                    className="btn btn-success"
-                    name="add"
-                    value="Add"
-                    disabled={fieldValue === "" || customLimitValue <= 0}
-                    onClick={addNewRecord}
-                  />
-                </FormGroup>
-              </Col>
-            </Row>
-            <div className="customWrap">
-              {listAppend.map((item, index) => (
-                <li key={index}>{`${item.key} = ${item.value}`}</li>
-              ))}
-            </div>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          {/* <Button variant="secondary" onClick={handleShow}>
+                <Row>
+                  <Col sm={5}>
+                    <FormGroup>
+                      <ControlLabel>{t("Field")}</ControlLabel>
+                      <FormControl
+                        componentClass="select"
+                        name="field to add"
+                        value={fieldValue}
+                        onChange={(e) => setFieldValue(e.target.value)}
+                      >
+                        <React.Fragment>
+                          <option value="">{t("Select Field")}</option>
+                          <option value="instructorAddLimit">
+                            {t("Instructor Add Limit")}
+                          </option>
+                          <option value="vehicleAddLimit">
+                            {t("Vehicle Add Limit")}
+                          </option>
+                        </React.Fragment>
+                      </FormControl>
+                    </FormGroup>
+                  </Col>
+                  <Col sm={5}>
+                    <FormGroup>
+                      <ControlLabel>{t("Value")}</ControlLabel>
+                      <FormControl
+                        type="number"
+                        name="fieldvalue"
+                        value={customLimitValue}
+                        min={1}
+                        onChange={(e) => setCustomLimitValue(e.target.value)}
+                      />
+                    </FormGroup>
+                  </Col>
+                  <Col sm={2}>
+                    <FormGroup>
+                      <ControlLabel style={{ visibility: "hidden" }}>
+                        i
+                      </ControlLabel>
+                      <FormControl
+                        type="submit"
+                        className="btn btn-success"
+                        name="add"
+                        value={t("Add")}
+                        disabled={fieldValue === "" || customLimitValue <= 0}
+                        onClick={addNewRecord}
+                      />
+                    </FormGroup>
+                  </Col>
+                </Row>
+                <div className="customWrap">
+                  {listAppend.map((item, index) => (
+                    <li key={index}>{`${item.key} = ${item.value}`}</li>
+                  ))}
+                </div>
+              </Form>
+            </Modal.Body>
+            <Modal.Footer>
+              {/* <Button variant="secondary" onClick={handleShow}>
             Close
           </Button> */}
-          <Button
-            size="large"
-            className="btn btn-success"
-            onClick={AddRecordToDb}
-            disabled={listAppend.length <= 0 || newCustom.user === undefined}
-          >
-            Add Record
-          </Button>
-        </Modal.Footer>
-      </Modal>
-      {/* update user special limitations */}
-      <Modal show={showUpdate} onHide={handleUpdateShow}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add Special Limitations</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <FormGroup>
-              <ControlLabel>User</ControlLabel>
-              <FormControl
-                type="text"
-                name="gender"
-                value={
-                  updateCustom
-                    ? `${updateCustom.user.FirstName} ${updateCustom.user.SurName}`
-                    : ""
+              <Button
+                size="large"
+                className="btn btn-success"
+                onClick={AddRecordToDb}
+                disabled={
+                  listAppend.length <= 0 || newCustom.user === undefined
                 }
-                readOnly={true}
-              />
-            </FormGroup>
-            <Row>
-              {updateCustom !== null ? (
-                <React.Fragment>
-                  {updateCustom.vehicleAddLimitInstructor ? (
+              >
+                {t("Add Record")}
+              </Button>
+            </Modal.Footer>
+          </Modal>
+          {/* update user special limitations */}
+          <Modal show={showUpdate} onHide={handleUpdateShow}>
+            <Modal.Header closeButton>
+              <Modal.Title>{t("Add Special Limitations")}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form>
+                <FormGroup>
+                  <ControlLabel>{t("User")}</ControlLabel>
+                  <FormControl
+                    type="text"
+                    name="gender"
+                    value={
+                      updateCustom
+                        ? `${updateCustom.user.FirstName} ${updateCustom.user.SurName}`
+                        : ""
+                    }
+                    readOnly={true}
+                  />
+                </FormGroup>
+                <Row>
+                  {updateCustom !== null ? (
                     <React.Fragment>
-                      <Col sm={6}>
-                        <FormGroup>
-                          <ControlLabel>Field</ControlLabel>
-                          <FormControl
-                            type="text"
-                            name="field"
-                            value="Vehicle Add Limit"
-                            readOnly={true}
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col sm={6}>
-                        <FormGroup>
-                          <ControlLabel>Value</ControlLabel>
-                          <FormControl
-                            type="number"
-                            name="fieldvalue"
-                            value={updateCustom.vehicleAddLimitInstructor}
-                            min={1}
-                            onChange={(e) =>
-                              handleUpdateField(e, "vehicleAddLimitInstructor")
-                            }
-                          />
-                        </FormGroup>
-                      </Col>
+                      {updateCustom.vehicleAddLimitInstructor ? (
+                        <React.Fragment>
+                          <Col sm={6}>
+                            <FormGroup>
+                              <ControlLabel>{t("Field")}</ControlLabel>
+                              <FormControl
+                                type="text"
+                                name="field"
+                                value="Vehicle Add Limit"
+                                readOnly={true}
+                              />
+                            </FormGroup>
+                          </Col>
+                          <Col sm={6}>
+                            <FormGroup>
+                              <ControlLabel>{t("Value")}</ControlLabel>
+                              <FormControl
+                                type="number"
+                                name="fieldvalue"
+                                value={updateCustom.vehicleAddLimitInstructor}
+                                min={1}
+                                onChange={(e) =>
+                                  handleUpdateField(
+                                    e,
+                                    "vehicleAddLimitInstructor"
+                                  )
+                                }
+                              />
+                            </FormGroup>
+                          </Col>
+                        </React.Fragment>
+                      ) : (
+                        ""
+                      )}
+                      {updateCustom.vehicleAddLimitDrivingSchool ? (
+                        <React.Fragment>
+                          <Col sm={6}>
+                            <FormGroup>
+                              <ControlLabel>{t("Field")}</ControlLabel>
+                              <FormControl
+                                type="text"
+                                name="field"
+                                value="Vehicle Add Limit"
+                                readOnly={true}
+                              />
+                            </FormGroup>
+                          </Col>
+                          <Col sm={6}>
+                            <FormGroup>
+                              <ControlLabel>{t("Value")}</ControlLabel>
+                              <FormControl
+                                type="number"
+                                name="fieldvalue"
+                                value={
+                                  updateCustom.vehicleAddLimitDrivingSchool
+                                }
+                                min={1}
+                                onChange={(e) =>
+                                  handleUpdateField(
+                                    e,
+                                    "vehicleAddLimitDrivingSchool"
+                                  )
+                                }
+                              />
+                            </FormGroup>
+                          </Col>
+                        </React.Fragment>
+                      ) : (
+                        ""
+                      )}
+                      {updateCustom.instructorAddLimit ? (
+                        <React.Fragment>
+                          <Col sm={6}>
+                            <FormGroup>
+                              <ControlLabel>{t("Field")}</ControlLabel>
+                              <FormControl
+                                type="text"
+                                name="field"
+                                value="Instructor Add Limit"
+                                readOnly={true}
+                              />
+                            </FormGroup>
+                          </Col>
+                          <Col sm={6}>
+                            <FormGroup>
+                              <ControlLabel>{t("Value")}</ControlLabel>
+                              <FormControl
+                                type="number"
+                                name="fieldvalue"
+                                value={updateCustom.instructorAddLimit}
+                                min={1}
+                                onChange={(e) =>
+                                  handleUpdateField(e, "instructorAddLimit")
+                                }
+                              />
+                            </FormGroup>
+                          </Col>
+                        </React.Fragment>
+                      ) : (
+                        ""
+                      )}
                     </React.Fragment>
                   ) : (
                     ""
                   )}
-                  {updateCustom.vehicleAddLimitDrivingSchool ? (
-                    <React.Fragment>
-                      <Col sm={6}>
-                        <FormGroup>
-                          <ControlLabel>Field</ControlLabel>
-                          <FormControl
-                            type="text"
-                            name="field"
-                            value="Vehicle Add Limit"
-                            readOnly={true}
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col sm={6}>
-                        <FormGroup>
-                          <ControlLabel>Value</ControlLabel>
-                          <FormControl
-                            type="number"
-                            name="fieldvalue"
-                            value={updateCustom.vehicleAddLimitDrivingSchool}
-                            min={1}
-                            onChange={(e) =>
-                              handleUpdateField(
-                                e,
-                                "vehicleAddLimitDrivingSchool"
-                              )
-                            }
-                          />
-                        </FormGroup>
-                      </Col>
-                    </React.Fragment>
-                  ) : (
-                    ""
-                  )}
-                  {updateCustom.instructorAddLimit ? (
-                    <React.Fragment>
-                      <Col sm={6}>
-                        <FormGroup>
-                          <ControlLabel>Field</ControlLabel>
-                          <FormControl
-                            type="text"
-                            name="field"
-                            value="Instructor Add Limit"
-                            readOnly={true}
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col sm={6}>
-                        <FormGroup>
-                          <ControlLabel>Value</ControlLabel>
-                          <FormControl
-                            type="number"
-                            name="fieldvalue"
-                            value={updateCustom.instructorAddLimit}
-                            min={1}
-                            onChange={(e) =>
-                              handleUpdateField(e, "instructorAddLimit")
-                            }
-                          />
-                        </FormGroup>
-                      </Col>
-                    </React.Fragment>
-                  ) : (
-                    ""
-                  )}
-                </React.Fragment>
-              ) : (
-                ""
-              )}
-            </Row>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button
-            size="large"
-            className="btn btn-success"
-            onClick={handleUpdateShow}
-          >
-            Close
-          </Button>
-          <Button
-            size="large"
-            className="btn btn-success"
-            onClick={updateRecordToDb}
-            disabled={updateCustom && updateCustom.user === undefined}
-          >
-            Update Record
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </div>
+                </Row>
+              </Form>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button
+                size="large"
+                className="btn btn-success"
+                onClick={handleUpdateShow}
+              >
+                Close
+              </Button>
+              <Button
+                size="large"
+                className="btn btn-success"
+                onClick={updateRecordToDb}
+                disabled={updateCustom && updateCustom.user === undefined}
+              >
+                Update Record
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </div>
+      )}
+    </Translation>
   );
 }
 
 export default Limitaions;
-
-// const columns = [
-//   { title: "Name" },
-//   { title: "Role" },
-//   { title: "Fields" },
-//   {
-//     title: "Action",
-//     value: "Action here",
-//   },
-// ];

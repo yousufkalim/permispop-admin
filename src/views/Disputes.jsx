@@ -6,6 +6,7 @@ import { Button, Input, Space, Table } from "antd";
 import { SearchOutlined, LoadingOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
 import { motion } from "framer-motion";
+import { Translation } from "react-i18next";
 
 const antIcon = (
   <div>
@@ -83,7 +84,7 @@ class Disputes extends Component {
             size="small"
             style={{ width: 90 }}
           >
-            Search
+            <Translation>{(t) => t("Search")}</Translation>
           </Button>
           <Button
             type="primary"
@@ -92,7 +93,7 @@ class Disputes extends Component {
             size="small"
             style={{ width: 90 }}
           >
-            Reset
+            <Translation>{(t) => t("Reset")}</Translation>
           </Button>
           <Button
             type="link"
@@ -106,7 +107,7 @@ class Disputes extends Component {
             }}
             style={{ color: "#149e7a" }}
           >
-            Filter
+            <Translation>{(t) => t("Filter")}</Translation>
           </Button>
         </Space>
       </div>
@@ -165,7 +166,7 @@ class Disputes extends Component {
   render() {
     const columns = [
       {
-        title: "Disputes",
+        title: <Translation>{(t) => t("Disputes")}</Translation>,
         children: [
           {
             title: "Sr. #",
@@ -179,10 +180,10 @@ class Disputes extends Component {
         ],
       },
       {
-        title: "Raised By",
+        title: <Translation>{(t) => t("Raised By")}</Translation>,
         children: [
           {
-            title: "Name",
+            title: <Translation>{(t) => t("Name")}</Translation>,
             dataIndex: "nameRB",
             key: "nameRB",
             align: "center",
@@ -191,18 +192,18 @@ class Disputes extends Component {
             ...this.getColumnSearchProps("nameRB"),
           },
           {
-            title: "Role",
+            title: <Translation>{(t) => t("Role")}</Translation>,
             dataIndex: "roleRB",
             key: "roleRB",
             align: "center",
             width: 160,
             filters: [
               {
-                text: "Student",
+                text: <Translation>{(t) => t("Student")}</Translation>,
                 value: "Student",
               },
               {
-                text: "Instructor",
+                text: <Translation>{(t) => t("Instructor")}</Translation>,
                 value: "Instructor",
               },
             ],
@@ -213,10 +214,10 @@ class Disputes extends Component {
       },
 
       {
-        title: "Raised Against",
+        title: <Translation>{(t) => t("Raised Against")}</Translation>,
         children: [
           {
-            title: "Name",
+            title: <Translation>{(t) => t("Name")}</Translation>,
             dataIndex: "nameRA",
             key: "nameRA",
             align: "center",
@@ -225,14 +226,18 @@ class Disputes extends Component {
             ...this.getColumnSearchProps("nameRA"),
           },
           {
-            title: "Role",
+            title: <Translation>{(t) => t("Role")}</Translation>,
             dataIndex: "roleRA",
             key: "roleRA",
             align: "center",
             width: 200,
             filters: [
               {
-                text: "Instructor/DrivingSchool",
+                text: (
+                  <Translation>
+                    {(t) => t("Instructor/DrivingSchool")}
+                  </Translation>
+                ),
                 value: "Instructor/DrivingSchool",
               },
             ],
@@ -245,21 +250,21 @@ class Disputes extends Component {
         title: "",
         children: [
           {
-            title: "Comments",
+            title: <Translation>{(t) => t("Comments")}</Translation>,
             dataIndex: "comments",
             key: "comments",
             align: "center",
             width: 160,
           },
           {
-            title: "Status",
+            title: <Translation>{(t) => t("Status")}</Translation>,
             dataIndex: "status",
             key: "status",
             align: "center",
             width: 160,
           },
           {
-            title: "View details",
+            title: <Translation>{(t) => t("View details")}</Translation>,
             dataIndex: "details",
             key: "details",
             align: "center",
@@ -296,23 +301,25 @@ class Disputes extends Component {
       return <Dispute toggle={this.toggle} id={this.state.disputeId}></Dispute>;
     else
       return (
-        <div className="content">
-          <Grid fluid>
-            <Row>
-              <Col md={12}>
-                <h3
-                  style={{
-                    fontSize: "22px",
-                    fontWeight: "300",
-                    color: "#333333",
-                    marginTop: "-10px",
-                    marginBottom: "20px",
-                  }}
-                >
-                  Disputes
-                </h3>
-                <div className="table-responsive">
-                  {/* <Table bordered>
+        <Translation>
+          {(t) => (
+            <div className="content">
+              <Grid fluid>
+                <Row>
+                  <Col md={12}>
+                    <h3
+                      style={{
+                        fontSize: "22px",
+                        fontWeight: "300",
+                        color: "#333333",
+                        marginTop: "-10px",
+                        marginBottom: "20px",
+                      }}
+                    >
+                      {t("Disputes")}
+                    </h3>
+                    <div className="table-responsive">
+                      {/* <Table bordered>
                     <thead>
                       <tr
                         style={{
@@ -401,77 +408,79 @@ class Disputes extends Component {
                       })}
                     </tbody>
                   </Table> */}
-                  <Table
-                    loading={{
-                      indicator: antIcon,
-                      spinning: this.state.loading,
-                      size: "large",
-                    }}
-                    locale={
-                      this.state.loading
-                        ? {
-                            emptyText: (
-                              <div>
-                                <br></br>
-                                <br></br>
-                                <br></br>
-                                <br></br>
-                                <br></br>
-                                <br></br>
-                              </div>
-                            ),
-                          }
-                        : {}
-                    }
-                    style={{ padding: "5px 10px 5px 10px" }}
-                    sticky={true}
-                    scroll={{ y: 434 }}
-                    columns={columns}
-                    pagination={{
-                      position: ["bottomCenter"],
-                      size: "small",
-                      showQuickJumper: true,
-                      defaultPageSize: 20,
-                      defaultCurrent: 1,
-                      showSizeChanger: true,
-                      pageSizeOptions: [20, 50, 100],
+                      <Table
+                        loading={{
+                          indicator: antIcon,
+                          spinning: this.state.loading,
+                          size: "large",
+                        }}
+                        locale={
+                          this.state.loading
+                            ? {
+                                emptyText: (
+                                  <div>
+                                    <br></br>
+                                    <br></br>
+                                    <br></br>
+                                    <br></br>
+                                    <br></br>
+                                    <br></br>
+                                  </div>
+                                ),
+                              }
+                            : {}
+                        }
+                        style={{ padding: "5px 10px 5px 10px" }}
+                        sticky={true}
+                        scroll={{ y: 434 }}
+                        columns={columns}
+                        pagination={{
+                          position: ["bottomCenter"],
+                          size: "small",
+                          showQuickJumper: true,
+                          defaultPageSize: 20,
+                          defaultCurrent: 1,
+                          showSizeChanger: true,
+                          pageSizeOptions: [20, 50, 100],
 
-                      showTotal: (total, range) =>
-                        `${range[0]}-${range[1]} of ${total} items`,
-                    }}
-                    dataSource={this.state.users.map((item, index) => ({
-                      key: index,
-                      number: index + 1,
-                      nameRB:
-                        item.disputingFrom.toLowerCase() === "student"
-                          ? item.studentID
-                          : item.instructorID,
-                      roleRB: item.disputingFrom,
-                      nameRA:
-                        item.disputingFrom.toLowerCase() === "student"
-                          ? item.instructorID
-                          : item.studentID,
-                      roleRA:
-                        item.disputingFrom.toLowerCase() !== "student"
-                          ? "Student"
-                          : "Instructor/DrivingSchool",
-                      comments:
-                        item.adminComments !== null &&
-                        item.adminComments !== "null"
-                          ? item.adminComments
-                          : "No Comment",
-                      status:
-                        item.status !== null && item.status !== "null"
-                          ? item.status
-                          : "Pending",
-                      details: item.id,
-                    }))}
-                  ></Table>
-                </div>
-              </Col>
-            </Row>
-          </Grid>
-        </div>
+                          showTotal: (total, range) =>
+                            `${range[0]}-${range[1]} of ${total} items`,
+                        }}
+                        dataSource={this.state.users.map((item, index) => ({
+                          key: index,
+                          number: index + 1,
+                          nameRB:
+                            item.disputingFrom.toLowerCase() === "student"
+                              ? item.studentID
+                              : item.instructorID,
+                          roleRB: item.disputingFrom,
+                          nameRA:
+                            item.disputingFrom.toLowerCase() === "student"
+                              ? item.instructorID
+                              : item.studentID,
+                          roleRA:
+                            item.disputingFrom.toLowerCase() !== "student"
+                              ? "Student"
+                              : "Instructor/DrivingSchool",
+                          comments:
+                            item.adminComments !== null &&
+                            item.adminComments !== "null"
+                              ? item.adminComments
+                              : "No Comment",
+                          status:
+                            item.status !== null && item.status !== "null"
+                              ? item.status
+                              : "Pending",
+                          details: item.id,
+                        }))}
+                      ></Table>
+                    </div>
+                  </Col>
+                </Row>
+              </Grid>
+            </div>
+          )}
+        </Translation>
       );
   }
 }

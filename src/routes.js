@@ -1,3 +1,4 @@
+import React from "react";
 import Dashboard from "views/Dashboard.jsx";
 import Packages from "views/Packages.jsx";
 import Users from "views/Users.jsx";
@@ -6,59 +7,61 @@ import Payments from "views/Payments.jsx";
 import Disputes from "views/Disputes.jsx";
 import UpdateRequest from "views/UpdateRequest";
 import Limitaions from "views/Limitaions";
+import { Translation } from "react-i18next";
+
 const dashboardRoutes = [
   {
     path: "/dashboard",
-    name: "Dashboard",
+    name: <Translation>{(t) => t("Dashboard")}</Translation>,
     icon: "pe-7s-graph",
     component: Dashboard,
     layout: "/admin",
   },
   {
     path: "/Packages",
-    name: "Membership Packages",
+    name: <Translation>{(t) => t("Membership Packages")}</Translation>,
     icon: "pe-7s-key",
     component: Packages,
     layout: "/admin",
   },
   {
     path: "/users",
-    name: "Users",
+    name: <Translation>{(t) => t("Users")}</Translation>,
     icon: "pe-7s-users",
     component: Users,
     layout: "/admin",
   },
   {
     path: "/CloseBooking",
-    name: "Close Booking",
+    name: <Translation>{(t) => t("Close Booking")}</Translation>,
     icon: "pe-7s-users",
     component: CloseBooking,
     layout: "/admin",
   },
   {
     path: "/payments",
-    name: "Payments",
+    name: <Translation>{(t) => t("Payments")}</Translation>,
     icon: "pe-7s-cash",
     component: Payments,
     layout: "/admin",
   },
   {
     path: "/disputes",
-    name: "Disputes",
+    name: <Translation>{(t) => t("Disputes")}</Translation>,
     icon: "pe-7s-attention",
     component: Disputes,
     layout: "/admin",
   },
   {
     path: "/updateRequest",
-    name: "Update Requests",
+    name: <Translation>{(t) => t("Update Requests")}</Translation>,
     icon: "pe-7s-edit",
     component: UpdateRequest,
     layout: "/admin",
   },
   {
     path: "/limitaions",
-    name: "User Limitations",
+    name: <Translation>{(t) => t("User Limitations")}</Translation>,
     icon: "pe-7s-lock",
     component: Limitaions,
     layout: "/admin",

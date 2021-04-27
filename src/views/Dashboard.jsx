@@ -14,7 +14,7 @@ import {
   // ControlLabel,
   // HelpBlock,
 } from "react-bootstrap";
-// import { Translation } from "react-i18next";
+import { Translation } from "react-i18next";
 import moment from "moment";
 
 import { Card } from "components/Card/Card.jsx";
@@ -22,7 +22,11 @@ import { StatsCard } from "components/StatsCard/StatsCard.jsx";
 import Switch from "react-switch";
 
 var legendPieLocal = {
-  names: ["Male", "Female", "Others"],
+  names: [
+    <Translation>{(t) => t("Male")}</Translation>,
+    <Translation>{(t) => t("Female")}</Translation>,
+    <Translation>{(t) => t("Others")}</Translation>,
+  ],
   types: ["info", "danger", "warning"],
 };
 
@@ -186,45 +190,47 @@ class Dashboard extends Component {
   render() {
     const { userCounts } = this.state;
     return (
-      <div className="content">
-        <Grid fluid>
-          {userCounts !== null ? (
-            <Row>
-              <Col lg={3} sm={6}>
-                <StatsCard
-                  bigIcon={<i className="pe-7s-study text-warning" />}
-                  statsValue={<CountUp end={userCounts.students} />}
-                  statsText="Students"
-                />
-              </Col>
-              <Col lg={3} sm={6}>
-                <StatsCard
-                  bigIcon={<i className="pe-7s-users text-success" />}
-                  statsValue={<CountUp end={userCounts.instructors} />}
-                  statsText="Intructors"
-                />
-              </Col>
-              <Col lg={3} sm={6}>
-                <StatsCard
-                  bigIcon={<i className="pe-7s-home text-danger" />}
-                  statsValue={<CountUp end={userCounts.drivingSchool} />}
-                  statsText="Driving School"
-                  statsIcon={<i className="fa fa-users" />}
-                  statsIconText={`Instructor Attached: ${userCounts.dsInstructor}`}
-                />
-              </Col>
-              <Col lg={3} sm={6}>
-                <StatsCard
-                  bigIcon={<i className="pe-7s-car text-info" />}
-                  statsValue={<CountUp end={userCounts.carRantal} />}
-                  statsText="Rental Car Company"
-                />
-              </Col>
-            </Row>
-          ) : (
-            ""
-          )}
-          {/* <Row>
+      <Translation>
+        {(t) => (
+          <div className="content">
+            <Grid fluid>
+              {userCounts !== null ? (
+                <Row>
+                  <Col lg={3} sm={6}>
+                    <StatsCard
+                      bigIcon={<i className="pe-7s-study text-warning" />}
+                      statsValue={<CountUp end={userCounts.students} />}
+                      statsText={t("Students")}
+                    />
+                  </Col>
+                  <Col lg={3} sm={6}>
+                    <StatsCard
+                      bigIcon={<i className="pe-7s-users text-success" />}
+                      statsValue={<CountUp end={userCounts.instructors} />}
+                      statsText={t("Instructors")}
+                    />
+                  </Col>
+                  <Col lg={3} sm={6}>
+                    <StatsCard
+                      bigIcon={<i className="pe-7s-home text-danger" />}
+                      statsValue={<CountUp end={userCounts.drivingSchool} />}
+                      statsText={t("Driving School")}
+                      statsIcon={<i className="fa fa-users" />}
+                      statsIconText={`Instructeurs attachés: ${userCounts.dsInstructor}`}
+                    />
+                  </Col>
+                  <Col lg={3} sm={6}>
+                    <StatsCard
+                      bigIcon={<i className="pe-7s-car text-info" />}
+                      statsValue={<CountUp end={userCounts.carRantal} />}
+                      statsText={t("Rental Car Company")}
+                    />
+                  </Col>
+                </Row>
+              ) : (
+                ""
+              )}
+              {/* <Row>
             <Translation>
               {(t) => (
                 <Col md={12}>
@@ -324,75 +330,86 @@ class Dashboard extends Component {
             <Col md={4}></Col>
           </Row> */}
 
-          <Row>
-            <Col md={6}>
-              <Card
-                id="User Booking Counts"
-                title="Booking Count"
-                category="Users with max booking count"
-                stats="current week"
-                statsIcon="fa fa-calendar"
-                content={
-                  <>
-                    <Switch
-                      onChange={(checked) => this.changeMailingStatus(checked)}
-                      checked={
-                        this.state.limitaions !== undefined
-                          ? this.state.limitaions.mailReports
-                          : true
-                      }
-                      name="withOther"
-                      offColor="#888"
-                      onColor="#149e7a"
-                    />
-                    <br />
-                    <small className="text-muted">Send Reports via mail</small>
-                    <div className="user-booking-count-div">
-                      <ListGroup varient="flush">
-                        {this.state.userListWithBookingCount.map((item) =>
-                          item.bookingCount !== 0 ? (
-                            <ListGroupItem
-                              key={item.user_id}
-                              className="custome_list_item"
-                            >
-                              <span>{item.user}</span>
-                              <span className="number">
-                                {item.bookingCount}
-                              </span>
-                            </ListGroupItem>
-                          ) : (
-                            ""
-                          )
-                        )}
-                      </ListGroup>
-                    </div>
-                  </>
-                }
-              />
-            </Col>
+              <Row>
+                <Col md={6}>
+                  <Card
+                    id="User Booking Counts"
+                    title={t("Booking Count")}
+                    category={t("Users with max booking count")}
+                    stats={t("current week")}
+                    statsIcon="fa fa-calendar"
+                    content={
+                      <>
+                        <Switch
+                          onChange={(checked) =>
+                            this.changeMailingStatus(checked)
+                          }
+                          checked={
+                            this.state.limitaions !== undefined
+                              ? this.state.limitaions.mailReports
+                              : true
+                          }
+                          name="withOther"
+                          offColor="#888"
+                          onColor="#149e7a"
+                        />
+                        <br />
+                        <small className="text-muted">
+                          {t("Send Reports via mail")}
+                        </small>
+                        <div className="user-booking-count-div">
+                          <ListGroup varient="flush">
+                            {this.state.userListWithBookingCount.map((item) =>
+                              item.bookingCount !== 0 ? (
+                                <ListGroupItem
+                                  key={item.user_id}
+                                  className="custome_list_item"
+                                >
+                                  <span>{item.user}</span>
+                                  <span className="number">
+                                    {item.bookingCount}
+                                  </span>
+                                </ListGroupItem>
+                              ) : (
+                                ""
+                              )
+                            )}
+                          </ListGroup>
+                        </div>
+                      </>
+                    }
+                  />
+                </Col>
 
-            <Col md={6}>
-              <Card
-                title="Gender Count"
-                category="Number of user by gender register to platform"
-                content={
-                  <div
-                    id="chartPreferences"
-                    className="ct-chart ct-perfect-fourth"
-                  >
-                    <ChartistGraph data={this.state.genderData} type="Pie" />
-                  </div>
-                }
-                legend={
-                  <div className="legend">
-                    {this.createLegend(legendPieLocal)}
-                  </div>
-                }
-              />
-            </Col>
-          </Row>
-        </Grid>
-      </div>
+                <Col md={6}>
+                  <Card
+                    title={t("Gender Count")}
+                    category={t(
+                      "Number of user by gender register to platform"
+                    )}
+                    content={
+                      <div
+                        id="chartPreferences"
+                        className="ct-chart ct-perfect-fourth"
+                      >
+                        <ChartistGraph
+                          data={this.state.genderData}
+                          type="Pie"
+                        />
+                      </div>
+                    }
+                    legend={
+                      <div className="legend">
+                        {this.createLegend(legendPieLocal)}
+                      </div>
+                    }
+                  />
+                </Col>
+              </Row>
+            </Grid>
+          </div>
+        )}
+      </Translation>
     );
   }
 }

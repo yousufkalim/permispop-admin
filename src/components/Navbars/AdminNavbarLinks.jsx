@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { NavItem, Nav } from "react-bootstrap";
 import jwtDecode from "jwt-decode";
 import { Base64 } from "js-base64";
+import { Translation } from "react-i18next";
 
 class AdminNavbarLinks extends Component {
   constructor(props) {
@@ -42,23 +43,27 @@ class AdminNavbarLinks extends Component {
     //   </div>
     // );
     return (
-      <div>
-        <Nav>
-          <NavItem eventKey={1} href="#">
-            <i className="fa fa-dashboard" />
-            <p className="hidden-lg hidden-md">Dashboard</p>
-          </NavItem>
-        </Nav>
-        <Nav pullRight>
-          <NavItem eventKey={1} href="#">
-            Account
-          </NavItem>
-          <NavItem eventKey={3} href="/login">
-            Log out
-            <i onClick={this.delData}></i>
-          </NavItem>
-        </Nav>
-      </div>
+      <Translation>
+        {(t) => (
+          <div>
+            <Nav>
+              <NavItem eventKey={1} href="#">
+                <i className="fa fa-dashboard" />
+                <p className="hidden-lg hidden-md">Dashboard</p>
+              </NavItem>
+            </Nav>
+            <Nav pullRight>
+              <NavItem eventKey={1} href="#">
+                {t("Account")}
+              </NavItem>
+              <NavItem eventKey={3} href="/login">
+                {t("Log out")}
+                <i onClick={this.delData}></i>
+              </NavItem>
+            </Nav>
+          </div>
+        )}
+      </Translation>
     );
   }
 }

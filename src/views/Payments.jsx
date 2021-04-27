@@ -3,6 +3,7 @@ import { Grid, Row, Col, Tabs, Tab } from "react-bootstrap";
 import { Button, Input, Space, Table } from "antd";
 import { SearchOutlined, LoadingOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
+import { Translation } from "react-i18next";
 // import { motion } from "framer-motion";
 
 import WebServicesManager from "WebServicesManager/WebServicesManager";
@@ -220,14 +221,14 @@ class Payments extends Component {
   render() {
     const columns = [
       {
-        title: "Verify",
+        title: <Translation>{(t) => t("Verify")}</Translation>,
         dataIndex: "verify",
         key: "verify",
         align: "center",
         width: 160,
       },
       {
-        title: "Name",
+        title: <Translation>{(t) => t("Name")}</Translation>,
         dataIndex: "name",
         key: "name",
         width: 160,
@@ -237,7 +238,7 @@ class Payments extends Component {
       },
 
       {
-        title: "Gender",
+        title: <Translation>{(t) => t("Gender")}</Translation>,
         dataIndex: "gender",
         key: "gender",
         width: 160,
@@ -247,7 +248,7 @@ class Payments extends Component {
       },
 
       {
-        title: "Email",
+        title: <Translation>{(t) => t("Email")}</Translation>,
         dataIndex: "email",
         key: "email",
         width: 160,
@@ -256,7 +257,7 @@ class Payments extends Component {
         ...this.getColumnSearchProps("email"),
       },
       {
-        title: "Address",
+        title: <Translation>{(t) => t("Address")}</Translation>,
         dataIndex: "address",
         key: "address",
         width: 160,
@@ -265,14 +266,14 @@ class Payments extends Component {
         ...this.getColumnSearchProps("address"),
       },
       {
-        title: "Start Date",
+        title: <Translation>{(t) => t("Start Date")}</Translation>,
         dataIndex: "startDate",
         key: "startDate",
         width: 160,
         align: "center",
       },
       {
-        title: "Expire Date",
+        title: <Translation>{(t) => t("Expiry Date")}</Translation>,
         dataIndex: "expiryDate",
         key: "expiryDate",
         width: 160,
@@ -282,7 +283,7 @@ class Payments extends Component {
 
     const columnsVerified = [
       {
-        title: "Name",
+        title: <Translation>{(t) => t("Name")}</Translation>,
         dataIndex: "name",
         key: "name",
         width: 160,
@@ -292,7 +293,7 @@ class Payments extends Component {
       },
 
       {
-        title: "Gender",
+        title: <Translation>{(t) => t("Gender")}</Translation>,
         dataIndex: "gender",
         key: "gender",
         width: 160,
@@ -302,7 +303,7 @@ class Payments extends Component {
       },
 
       {
-        title: "Email",
+        title: <Translation>{(t) => t("Email")}</Translation>,
         dataIndex: "email",
         key: "email",
         width: 160,
@@ -311,7 +312,7 @@ class Payments extends Component {
         ...this.getColumnSearchProps("email"),
       },
       {
-        title: "Address",
+        title: <Translation>{(t) => t("Address")}</Translation>,
         dataIndex: "address",
         key: "address",
         width: 160,
@@ -320,14 +321,14 @@ class Payments extends Component {
         ...this.getColumnSearchProps("address"),
       },
       {
-        title: "Start Date",
+        title: <Translation>{(t) => t("Start Date")}</Translation>,
         dataIndex: "startDate",
         key: "startDate",
         width: 160,
         align: "center",
       },
       {
-        title: "Expire Date",
+        title: <Translation>{(t) => t("Expire Date")}</Translation>,
         dataIndex: "expiryDate",
         key: "expiryDate",
         width: 160,
@@ -335,33 +336,35 @@ class Payments extends Component {
       },
     ];
     return (
-      <div className="content">
-        <Grid fluid>
-          <Row>
-            <Col md={12}>
-              <h3
-                style={{
-                  fontSize: "22px",
-                  fontWeight: "300",
-                  color: "#333333",
-                  marginTop: "-10px",
-                  marginBottom: "20px",
-                }}
-              >
-                Payment Verification
-              </h3>
-              <div>
-                <Tabs
-                  defaultActiveKey="inactiveuser"
-                  transition={false}
-                  id="noanim-tab-example"
-                >
-                  <Tab eventKey="inactiveuser" title="Non Verified">
-                    <div
-                      style={{ padding: "10px 20px", marginTop: "5px" }}
-                      className="table-responsive"
+      <Translation>
+        {(t) => (
+          <div className="content">
+            <Grid fluid>
+              <Row>
+                <Col md={12}>
+                  <h3
+                    style={{
+                      fontSize: "22px",
+                      fontWeight: "300",
+                      color: "#333333",
+                      marginTop: "-10px",
+                      marginBottom: "20px",
+                    }}
+                  >
+                    {t("Payment Verification")}
+                  </h3>
+                  <div>
+                    <Tabs
+                      defaultActiveKey="inactiveuser"
+                      transition={false}
+                      id="noanim-tab-example"
                     >
-                      {/* <table className="table table-striped table-bordered">
+                      <Tab eventKey="inactiveuser" title={t("Non Verified")}>
+                        <div
+                          style={{ padding: "10px 20px", marginTop: "5px" }}
+                          className="table-responsive"
+                        >
+                          {/* <table className="table table-striped table-bordered">
                         <thead>
                           <th>Verify</th>
                           <th>Name</th>
@@ -406,120 +409,122 @@ class Payments extends Component {
                           )}
                         </tbody>
                       </table> */}
-                      <Table
-                        loading={{
-                          indicator: antIcon,
-                          spinning: this.state.loading,
-                          size: "large",
-                        }}
-                        locale={
-                          this.state.loading
-                            ? {
-                                emptyText: (
-                                  <div>
-                                    <br></br>
-                                    <br></br>
-                                    <br></br>
-                                    <br></br>
-                                    <br></br>
-                                    <br></br>
-                                  </div>
-                                ),
-                              }
-                            : {}
-                        }
-                        style={{ padding: "5px 10px 5px 10px" }}
-                        sticky={true}
-                        scroll={{ y: 434, x: 0 }}
-                        columns={columns}
-                        pagination={{
-                          position: ["bottomCenter"],
-                          size: "small",
-                          showQuickJumper: true,
-                          defaultPageSize: 20,
-                          defaultCurrent: 1,
-                          showSizeChanger: true,
-                          pageSizeOptions: [20, 50, 100],
+                          <Table
+                            loading={{
+                              indicator: antIcon,
+                              spinning: this.state.loading,
+                              size: "large",
+                            }}
+                            locale={
+                              this.state.loading
+                                ? {
+                                    emptyText: (
+                                      <div>
+                                        <br></br>
+                                        <br></br>
+                                        <br></br>
+                                        <br></br>
+                                        <br></br>
+                                        <br></br>
+                                      </div>
+                                    ),
+                                  }
+                                : {}
+                            }
+                            style={{ padding: "5px 10px 5px 10px" }}
+                            sticky={true}
+                            scroll={{ y: "70vh", x: 0 }}
+                            columns={columns}
+                            pagination={{
+                              position: ["bottomCenter"],
+                              size: "small",
+                              showQuickJumper: true,
+                              defaultPageSize: 20,
+                              defaultCurrent: 1,
+                              showSizeChanger: true,
+                              pageSizeOptions: [20, 50, 100],
 
-                          showTotal: (total, range) =>
-                            `${range[0]}-${range[1]} of ${total} items`,
-                        }}
-                        dataSource={this.state.inactiveusers.map(
-                          (item, index) => ({
-                            key: index,
-                            verify: "",
-                            name: `${item.firstName} ${item.surName}`,
-                            gender: item.gender,
-                            email: item.email,
-                            address: item.address,
-                            startDate: item.pkgActiveDate,
-                            expiryDate: item.pkgExpireDate,
-                          })
-                        )}
-                      ></Table>
-                    </div>
-                  </Tab>
-                  <Tab eventKey="activeusers" title="Verified">
-                    <div
-                      style={{ padding: "10px 10px", marginTop: "5px" }}
-                      className="table-responsive"
-                    >
-                      <Table
-                        loading={{
-                          indicator: antIcon,
-                          spinning: this.state.loading,
-                          size: "large",
-                        }}
-                        locale={
-                          this.state.loading
-                            ? {
-                                emptyText: (
-                                  <div>
-                                    <br></br>
-                                    <br></br>
-                                    <br></br>
-                                    <br></br>
-                                    <br></br>
-                                    <br></br>
-                                  </div>
-                                ),
-                              }
-                            : {}
-                        }
-                        style={{ padding: "5px 10px 5px 10px" }}
-                        sticky={true}
-                        scroll={{ y: 434, x: 0 }}
-                        columns={columnsVerified}
-                        pagination={{
-                          position: ["bottomCenter"],
-                          size: "small",
-                          showQuickJumper: true,
-                          defaultPageSize: 20,
-                          defaultCurrent: 1,
-                          showSizeChanger: true,
-                          pageSizeOptions: [20, 50, 100],
+                              showTotal: (total, range) =>
+                                `${range[0]}-${range[1]} of ${total} items`,
+                            }}
+                            dataSource={this.state.inactiveusers.map(
+                              (item, index) => ({
+                                key: index,
+                                verify: "",
+                                name: `${item.firstName} ${item.surName}`,
+                                gender: item.gender,
+                                email: item.email,
+                                address: item.address,
+                                startDate: item.pkgActiveDate,
+                                expiryDate: item.pkgExpireDate,
+                              })
+                            )}
+                          ></Table>
+                        </div>
+                      </Tab>
+                      <Tab eventKey="activeusers" title={t("Verified")}>
+                        <div
+                          style={{ padding: "10px 10px", marginTop: "5px" }}
+                          className="table-responsive"
+                        >
+                          <Table
+                            loading={{
+                              indicator: antIcon,
+                              spinning: this.state.loading,
+                              size: "large",
+                            }}
+                            locale={
+                              this.state.loading
+                                ? {
+                                    emptyText: (
+                                      <div>
+                                        <br></br>
+                                        <br></br>
+                                        <br></br>
+                                        <br></br>
+                                        <br></br>
+                                        <br></br>
+                                      </div>
+                                    ),
+                                  }
+                                : {}
+                            }
+                            style={{ padding: "5px 10px 5px 10px" }}
+                            sticky={true}
+                            scroll={{ y: "70vh", x: 0 }}
+                            columns={columnsVerified}
+                            pagination={{
+                              position: ["bottomCenter"],
+                              size: "small",
+                              showQuickJumper: true,
+                              defaultPageSize: 20,
+                              defaultCurrent: 1,
+                              showSizeChanger: true,
+                              pageSizeOptions: [20, 50, 100],
 
-                          showTotal: (total, range) =>
-                            `${range[0]}-${range[1]} of ${total} items`,
-                        }}
-                        dataSource={this.state.users.map((item, index) => ({
-                          key: index,
-                          name: `${item.firstName} ${item.surName}`,
-                          gender: item.gender,
-                          email: item.email,
-                          address: item.address,
-                          startDate: item.pkgActiveDate,
-                          expiryDate: item.pkgExpireDate,
-                        }))}
-                      ></Table>
-                    </div>
-                  </Tab>
-                </Tabs>
-              </div>
-            </Col>
-          </Row>
-        </Grid>
-      </div>
+                              showTotal: (total, range) =>
+                                `${range[0]}-${range[1]} of ${total} items`,
+                            }}
+                            dataSource={this.state.users.map((item, index) => ({
+                              key: index,
+                              name: `${item.firstName} ${item.surName}`,
+                              gender: item.gender,
+                              email: item.email,
+                              address: item.address,
+                              startDate: item.pkgActiveDate,
+                              expiryDate: item.pkgExpireDate,
+                            }))}
+                          ></Table>
+                        </div>
+                      </Tab>
+                    </Tabs>
+                  </div>
+                </Col>
+              </Row>
+            </Grid>
+          </div>
+        )}
+      </Translation>
     );
   }
 }

@@ -4,6 +4,7 @@ import { Table, Button, Input, Space } from "antd";
 import { SearchOutlined, LoadingOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
 import WebServicesManager from "../../WebServicesManager/WebServicesManager";
+import { Translation } from "react-i18next";
 
 const antIcon = (
   <div>
@@ -71,7 +72,7 @@ class PackageList extends Component {
           ref={(node) => {
             this.searchInput = node;
           }}
-          placeholder={`Search ${dataIndex}`}
+          placeholder={`Rechercher`}
           value={selectedKeys[0]}
           onChange={(e) =>
             setSelectedKeys(e.target.value ? [e.target.value] : [])
@@ -90,7 +91,7 @@ class PackageList extends Component {
             size="small"
             style={{ width: 90 }}
           >
-            Search
+            <Translation>{(t) => t("Search")}</Translation>
           </Button>
           <Button
             type="primary"
@@ -99,7 +100,7 @@ class PackageList extends Component {
             size="small"
             style={{ width: 90 }}
           >
-            Reset
+            <Translation>{(t) => t("Reset")}</Translation>
           </Button>
           <Button
             type="link"
@@ -113,7 +114,7 @@ class PackageList extends Component {
             }}
             style={{ color: "#149e7a" }}
           >
-            Filter
+            <Translation>{(t) => t("Filter")}</Translation>
           </Button>
         </Space>
       </div>
@@ -174,7 +175,7 @@ class PackageList extends Component {
   render() {
     const columns = [
       {
-        title: "Sr. No.",
+        title: <Translation>{(t) => t("Sr. No.")}</Translation>,
         dataIndex: "number",
         key: "number",
         align: "center",
@@ -184,7 +185,7 @@ class PackageList extends Component {
         ...this.getColumnSearchProps("number"),
       },
       {
-        title: "Name",
+        title: <Translation>{(t) => t("Name")}</Translation>,
         dataIndex: "name",
         key: "name",
         align: "center",
@@ -193,22 +194,22 @@ class PackageList extends Component {
         ...this.getColumnSearchProps("name"),
       },
       {
-        title: "Duration",
+        title: <Translation>{(t) => t("Duration")}</Translation>,
         dataIndex: "duration",
         key: "duration",
         align: "center",
         width: 160,
         filters: [
           {
-            text: "Monthly",
+            text: <Translation>{(t) => t("Monthly")}</Translation>,
             value: "Monthly",
           },
           {
-            text: "Quarterly",
+            text: <Translation>{(t) => t("Quarterly")}</Translation>,
             value: "Quarterly",
           },
           {
-            text: "Yearly",
+            text: <Translation>{(t) => t("Yearly")}</Translation>,
             value: "Yearly",
           },
         ],
@@ -216,7 +217,7 @@ class PackageList extends Component {
         sorter: (a, b) => a.duration.length - b.duration.length,
       },
       {
-        title: "Price",
+        title: <Translation>{(t) => t("Price")}</Translation>,
         dataIndex: "price",
         key: "price",
         align: "center",
@@ -225,22 +226,22 @@ class PackageList extends Component {
         ...this.getColumnSearchProps("price"),
       },
       {
-        title: "Role",
+        title: <Translation>{(t) => t("Role")}</Translation>,
         dataIndex: "role",
         key: "role",
         align: "center",
         width: 160,
         filters: [
           {
-            text: "Student",
+            text: <Translation>{(t) => t("Student")}</Translation>,
             value: "Student",
           },
           {
-            text: "Instructor",
+            text: <Translation>{(t) => t("Instructor")}</Translation>,
             value: "Instructor",
           },
           {
-            text: "Driving School",
+            text: <Translation>{(t) => t("Driving School")}</Translation>,
             value: "Driving School",
           },
         ],
@@ -277,7 +278,7 @@ class PackageList extends Component {
                 }
                 style={{ padding: "5px 10px 5px 10px" }}
                 sticky={true}
-                scroll={{ y: 434, x: 0 }}
+                scroll={{ y: "70vh", x: 0 }}
                 columns={columns}
                 onChange={this.onChange}
                 pagination={{

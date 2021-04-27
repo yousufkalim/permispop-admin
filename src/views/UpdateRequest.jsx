@@ -5,6 +5,7 @@ import { Table, Button, Input, Space } from "antd";
 import { SearchOutlined, LoadingOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
 import { motion } from "framer-motion";
+import { Translation } from "react-i18next";
 
 // import { Card } from "components/Card/Card.jsx";
 import WebServicesManager from "WebServicesManager/WebServicesManager";
@@ -283,7 +284,7 @@ export class UpdateRequest extends Component {
 
       ////////////////// Responsive Normal //////////////////////
       {
-        title: "Name",
+        title: <Translation>{(t) => t("Name")}</Translation>,
         dataIndex: "name",
         key: "name",
         align: "center",
@@ -292,7 +293,7 @@ export class UpdateRequest extends Component {
         ...this.getColumnSearchProps("name"),
       },
       {
-        title: "Update Field",
+        title: <Translation>{(t) => t("Update Field")}</Translation>,
         dataIndex: "field",
         key: "field",
         responsive: ["sm"],
@@ -301,14 +302,14 @@ export class UpdateRequest extends Component {
         ...this.getColumnSearchProps("field"),
       },
       {
-        title: "Description",
+        title: <Translation>{(t) => t("Description")}</Translation>,
         dataIndex: "description",
         key: "description",
         responsive: ["sm"],
         align: "center",
       },
       {
-        title: "Action",
+        title: <Translation>{(t) => t("Action")}</Translation>,
         dataIndex: "action",
         key: "action",
         responsive: ["sm"],
@@ -328,7 +329,7 @@ export class UpdateRequest extends Component {
               style={{ margin: "5px 10px" }}
               onClick={() => this.MakeRequestComplete(item.id)}
             >
-              Complete
+              <Translation>{(t) => t("Complete")}</Translation>
             </Button>
             <Link
               to={{
@@ -341,7 +342,7 @@ export class UpdateRequest extends Component {
                 className="btn btn-success"
                 style={{ margin: "5px 10px" }}
               >
-                Update Profile
+                <Translation>{(t) => t("Update Profile")}</Translation>
               </Button>
             </Link>
           </div>
@@ -350,7 +351,7 @@ export class UpdateRequest extends Component {
     ];
     const columnsCompleted = [
       {
-        title: "Name",
+        title: <Translation>{(t) => t("Name")}</Translation>,
         dataIndex: "name",
         key: "name",
         align: "center",
@@ -359,7 +360,7 @@ export class UpdateRequest extends Component {
         ...this.getColumnSearchProps("name"),
       },
       {
-        title: "Update Field",
+        title: <Translation>{(t) => t("Update Field")}</Translation>,
         dataIndex: "field",
         key: "field",
         align: "center",
@@ -368,7 +369,7 @@ export class UpdateRequest extends Component {
         ...this.getColumnSearchProps("field"),
       },
       {
-        title: "Description",
+        title: <Translation>{(t) => t("Description")}</Translation>,
         dataIndex: "description",
         key: "description",
         align: "center",
@@ -376,145 +377,149 @@ export class UpdateRequest extends Component {
       },
     ];
     return (
-      <div className="content">
-        <Grid fluid>
-          <Row>
-            <Col md={12}>
-              <h3
-                style={{
-                  fontSize: "22px",
-                  fontWeight: "300",
-                  color: "#333333",
-                  marginTop: "-10px",
-                  marginBottom: "20px",
-                }}
-              >
-                Update Profile Data Request
-              </h3>
-              <div>
-                <Tabs
-                  defaultActiveKey="pending"
-                  transition="false"
-                  id="noanim-tab-example"
-                >
-                  <Tab eventKey="pending" title="Pending">
-                    <div
-                      style={{ padding: "10px 20px", marginTop: "5px" }}
-                      className="table-responsive"
+      <Translation>
+        {(t) => (
+          <div className="content">
+            <Grid fluid>
+              <Row>
+                <Col md={12}>
+                  <h3
+                    style={{
+                      fontSize: "22px",
+                      fontWeight: "300",
+                      color: "#333333",
+                      marginTop: "-10px",
+                      marginBottom: "20px",
+                    }}
+                  >
+                    {t("Update Profile Data Request")}
+                  </h3>
+                  <div>
+                    <Tabs
+                      defaultActiveKey="pending"
+                      transition="false"
+                      id="noanim-tab-example"
                     >
-                      <Table
-                        loading={{
-                          indicator: antIcon,
-                          spinning: this.state.loading,
-                          size: "large",
-                        }}
-                        locale={
-                          this.state.loading
-                            ? {
-                                emptyText: (
-                                  <div>
-                                    <br></br>
-                                    <br></br>
-                                    <br></br>
-                                    <br></br>
-                                    <br></br>
-                                    <br></br>
-                                  </div>
-                                ),
-                              }
-                            : {}
-                        }
-                        style={{ padding: "5px 10px 5px 10px" }}
-                        sticky={true}
-                        scroll={{ y: 434, x: 300 }}
-                        columns={columns}
-                        // onChange={this.onChange}
-                        pagination={{
-                          position: ["bottomCenter"],
-                          size: "small",
-                          showQuickJumper: true,
-                          defaultPageSize: 20,
-                          defaultCurrent: 1,
-                          showSizeChanger: true,
-                          pageSizeOptions: [20, 50, 100],
+                      <Tab eventKey="pending" title={t("Pending")}>
+                        <div
+                          style={{ padding: "10px 20px", marginTop: "5px" }}
+                          className="table-responsive"
+                        >
+                          <Table
+                            loading={{
+                              indicator: antIcon,
+                              spinning: this.state.loading,
+                              size: "large",
+                            }}
+                            locale={
+                              this.state.loading
+                                ? {
+                                    emptyText: (
+                                      <div>
+                                        <br></br>
+                                        <br></br>
+                                        <br></br>
+                                        <br></br>
+                                        <br></br>
+                                        <br></br>
+                                      </div>
+                                    ),
+                                  }
+                                : {}
+                            }
+                            style={{ padding: "5px 10px 5px 10px" }}
+                            sticky={true}
+                            scroll={{ y: 434, x: 300 }}
+                            columns={columns}
+                            // onChange={this.onChange}
+                            pagination={{
+                              position: ["bottomCenter"],
+                              size: "small",
+                              showQuickJumper: true,
+                              defaultPageSize: 20,
+                              defaultCurrent: 1,
+                              showSizeChanger: true,
+                              pageSizeOptions: [20, 50, 100],
 
-                          showTotal: (total, range) =>
-                            `${range[0]}-${range[1]} of ${total} items`,
-                        }}
-                        dataSource={this.state.pendingRequest.map(
-                          (item, index) => ({
-                            key: index,
-                            name: `${item.user.firstName} ${item.user.surName}`,
-                            action: item,
-                            description: item.description,
-                            field: item.updateField,
-                          })
-                        )}
-                      ></Table>
-                    </div>
-                  </Tab>
-                  <Tab eventKey="completed" title="Completed">
-                    <div
-                      style={{ padding: "10px 10px", marginTop: "5px" }}
-                      className="table-responsive"
-                    >
-                      <Table
-                        loading={{
-                          indicator: antIcon,
-                          spinning: this.state.loading,
-                          size: "large",
-                        }}
-                        locale={
-                          this.state.loading
-                            ? {
-                                emptyText: (
-                                  <div>
-                                    <br></br>
-                                    <br></br>
-                                    <br></br>
-                                    <br></br>
-                                    <br></br>
-                                    <br></br>
-                                  </div>
-                                ),
-                              }
-                            : {}
-                        }
-                        style={{ padding: "5px 10px 5px 10px" }}
-                        sticky={true}
-                        scroll={{ y: 434, x: 0 }}
-                        columns={columnsCompleted}
-                        pagination={{
-                          position: ["bottomCenter"],
-                          size: "small",
-                          showQuickJumper: true,
-                          defaultPageSize: 20,
-                          defaultCurrent: 1,
-                          showSizeChanger: true,
-                          pageSizeOptions: [20, 50, 100],
-
-                          showTotal: (total, range) =>
-                            `${range[0]}-${range[1]} of ${total} items`,
-                        }}
-                        dataSource={
-                          this.state.completed.length > 0
-                            ? this.state.completed.map((item, index) => ({
+                              showTotal: (total, range) =>
+                                `${range[0]}-${range[1]} of ${total} items`,
+                            }}
+                            dataSource={this.state.pendingRequest.map(
+                              (item, index) => ({
                                 key: index,
                                 name: `${item.user.firstName} ${item.user.surName}`,
+                                action: item,
                                 description: item.description,
                                 field: item.updateField,
-                              }))
-                            : ""
-                        }
-                      ></Table>
-                    </div>
-                  </Tab>
-                </Tabs>
-              </div>
-            </Col>
-          </Row>
-        </Grid>
-      </div>
+                              })
+                            )}
+                          ></Table>
+                        </div>
+                      </Tab>
+                      <Tab eventKey="completed" title={t("Completed")}>
+                        <div
+                          style={{ padding: "10px 10px", marginTop: "5px" }}
+                          className="table-responsive"
+                        >
+                          <Table
+                            loading={{
+                              indicator: antIcon,
+                              spinning: this.state.loading,
+                              size: "large",
+                            }}
+                            locale={
+                              this.state.loading
+                                ? {
+                                    emptyText: (
+                                      <div>
+                                        <br></br>
+                                        <br></br>
+                                        <br></br>
+                                        <br></br>
+                                        <br></br>
+                                        <br></br>
+                                      </div>
+                                    ),
+                                  }
+                                : {}
+                            }
+                            style={{ padding: "5px 10px 5px 10px" }}
+                            sticky={true}
+                            scroll={{ y: "70vh", x: 0 }}
+                            columns={columnsCompleted}
+                            pagination={{
+                              position: ["bottomCenter"],
+                              size: "small",
+                              showQuickJumper: true,
+                              defaultPageSize: 20,
+                              defaultCurrent: 1,
+                              showSizeChanger: true,
+                              pageSizeOptions: [20, 50, 100],
+
+                              showTotal: (total, range) =>
+                                `${range[0]}-${range[1]} of ${total} items`,
+                            }}
+                            dataSource={
+                              this.state.completed.length > 0
+                                ? this.state.completed.map((item, index) => ({
+                                    key: index,
+                                    name: `${item.user.firstName} ${item.user.surName}`,
+                                    description: item.description,
+                                    field: item.updateField,
+                                  }))
+                                : ""
+                            }
+                          ></Table>
+                        </div>
+                      </Tab>
+                    </Tabs>
+                  </div>
+                </Col>
+              </Row>
+            </Grid>
+          </div>
+        )}
+      </Translation>
     );
   }
 }

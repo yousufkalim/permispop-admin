@@ -8,7 +8,6 @@ import {
   FormGroup,
   HelpBlock,
   Radio,
-  Panel,
 } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import Autocomplete from "react-autocomplete";
@@ -19,6 +18,7 @@ import Utilities from "../../Utilities/Utilities";
 import jwtDecode from "jwt-decode";
 import { Base64 } from "js-base64";
 import { Translation } from "react-i18next";
+import { Modal } from "antd";
 
 class InstructorAdd extends Component {
   WebServicesManager = new WebServicesManager();
@@ -139,6 +139,9 @@ class InstructorAdd extends Component {
           window.location.replace("/login");
         }
       }
+    }
+    if (prevProps.showAddModel !== this.props.showAddModel) {
+      this.setState({ isModalVisible: true });
     }
   }
 
@@ -1456,6 +1459,24 @@ class InstructorAdd extends Component {
       }
     );
   };
+
+  showModal = () => {
+    this.setState({
+      isModalVisible: true,
+    });
+  };
+  handleOk = () => {
+    this.setState({
+      isModalVisible: false,
+    });
+  };
+
+  handleCancel = () => {
+    this.setState({
+      isModalVisible: false,
+    });
+  };
+
   render() {
     return (
       <Translation>
@@ -1465,666 +1486,657 @@ class InstructorAdd extends Component {
               className={this.props.showAddModel ? "form-show" : "form-hide"}
             >
               <Grid className="panel-grid">
-                <Panel
+                {/* <Panel
                   style={{
                     boxShadow: "2px 2px 2px 2px #ccc",
                     margin: "10px 0px",
                   }}
                 >
-                  <Panel.Body>
-                    <Translation>
-                      {(t) => (
-                        <label className="my-3 ml-1 reg-Label">
-                          {t("Identity Of Instructor")}
-                        </label>
-                      )}
-                    </Translation>
-                    <form className="cField" onSubmit={this.onSubmit}>
-                      <Row>
-                        <Grid>
-                          <FormInputs
-                            ncols={["col-md-4", "col-md-3", "col-md-3"]}
-                            properties={[
-                              {
-                                label: "First Name",
-                                type: "text",
-                                bsClass: "form-control",
-                                name: "fName",
-                                value: this.state.fName,
-                                onChange: this.validationCheck,
-                                help: this.state.fNameError,
-                                isImport: false,
-                                autoComplete: "off",
-                              },
-                              {
-                                label: "Surname",
-                                type: "text",
-                                bsClass: "form-control",
-                                name: "sName",
-                                value: this.state.sName,
-                                onChange: this.validationCheckForSName,
-                                help: this.state.sNameError,
-                                isImport: false,
-                                autoComplete: "off",
-                              },
-                              {
-                                label: "Upload Image",
-                                type: "file",
-                                bsClass: "form-control",
-                                onChange: this.handleFileSelectForPropic,
-                                isImport: true,
-                                accept: "image/jpeg,application/pdf",
-                              },
-                            ]}
-                          />
-                          <Row>
-                            <Col md={4}>
+                  <Panel.Body></Panel.Body>
+                </Panel> */}
+                <Modal
+                  title={t("Identity Of Instructor")}
+                  visible={this.state.isModalVisible}
+                  onOk={this.handleOk}
+                  onCancel={this.handleCancel}
+                  footer={null}
+                  className="add-inst-modal"
+                >
+                  <form className="cField" onSubmit={this.onSubmit}>
+                    <Row>
+                      <Grid>
+                        <FormInputs
+                          ncols={["col-md-4", "col-md-3", "col-md-3"]}
+                          properties={[
+                            {
+                              label: "First Name",
+                              type: "text",
+                              bsClass: "form-control",
+                              name: "fName",
+                              value: this.state.fName,
+                              onChange: this.validationCheck,
+                              help: this.state.fNameError,
+                              isImport: false,
+                              autoComplete: "off",
+                            },
+                            {
+                              label: "Surname",
+                              type: "text",
+                              bsClass: "form-control",
+                              name: "sName",
+                              value: this.state.sName,
+                              onChange: this.validationCheckForSName,
+                              help: this.state.sNameError,
+                              isImport: false,
+                              autoComplete: "off",
+                            },
+                            {
+                              label: "Upload Image",
+                              type: "file",
+                              bsClass: "form-control",
+                              onChange: this.handleFileSelectForPropic,
+                              isImport: true,
+                              accept: "image/jpeg,application/pdf",
+                            },
+                          ]}
+                        />
+                        <Row>
+                          <Col md={4}>
+                            <Translation>
+                              {(t) => (
+                                <ControlLabel>
+                                  {t("Date of Birth")}{" "}
+                                  <span className="text-red">*</span>
+                                </ControlLabel>
+                              )}
+                            </Translation>
+                            <DatePicker
+                              selected={this.state.bDate}
+                              className="form-control"
+                              dateFormat="dd/MM/yyyy"
+                              onChange={(date) =>
+                                this.validationCheckForBDate(date)
+                              }
+                              placeholderText="DD/MM/YYYY"
+                              openToDate={new Date("2000/01/01")}
+                              autoComplete="off"
+                            />
+                            <HelpBlock>{t(this.state.bDateError)}</HelpBlock>
+                          </Col>
+                          <Col md={3}>
+                            <Translation>
+                              {(t) => (
+                                <ControlLabel>
+                                  {t("Place of Birth")}{" "}
+                                  <span className="text-red">*</span>
+                                </ControlLabel>
+                              )}
+                            </Translation>
+                            <FormControl
+                              type="text"
+                              name="bPlace"
+                              id="bPlace"
+                              className="form-control"
+                              onChange={this.validationCheckforBPlace}
+                              autoComplete="off"
+                            />
+                            <HelpBlock>{t(this.state.bPlaceError)}</HelpBlock>
+                          </Col>
+                          <Col md={3}>
+                            <Translation>
+                              {(t) => (
+                                <ControlLabel>
+                                  {t("Gender")}{" "}
+                                  <span className="text-red">*</span>
+                                </ControlLabel>
+                              )}
+                            </Translation>
+                            <br />
+                            <FormControl
+                              componentClass="select"
+                              name="gender"
+                              value={this.state.gender}
+                              onChange={this.handleChange}
+                            >
                               <Translation>
                                 {(t) => (
-                                  <ControlLabel>
-                                    {t("Date of Birth")}{" "}
-                                    <span className="text-red">*</span>
-                                  </ControlLabel>
+                                  <React.Fragment>
+                                    <option value="Male">{t("Male")}</option>
+                                    <option value="Female">
+                                      {t("Female")}
+                                    </option>
+                                    <option value="Other">{t("Other")}</option>
+                                  </React.Fragment>
                                 )}
                               </Translation>
-                              <DatePicker
-                                selected={this.state.bDate}
-                                className="form-control"
-                                dateFormat="dd/MM/yyyy"
-                                onChange={(date) =>
-                                  this.validationCheckForBDate(date)
-                                }
-                                placeholderText="DD/MM/YYYY"
-                                openToDate={new Date("2000/01/01")}
-                                autoComplete="off"
-                              />
-                              <HelpBlock>{t(this.state.bDateError)}</HelpBlock>
-                            </Col>
-                            <Col md={3}>
+                            </FormControl>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col md={5}>
+                            <FormGroup>
                               <Translation>
                                 {(t) => (
                                   <ControlLabel>
-                                    {t("Place of Birth")}{" "}
-                                    <span className="text-red">*</span>
-                                  </ControlLabel>
-                                )}
-                              </Translation>
-                              <FormControl
-                                type="text"
-                                name="bPlace"
-                                id="bPlace"
-                                className="form-control"
-                                onChange={this.validationCheckforBPlace}
-                                autoComplete="off"
-                              />
-                              <HelpBlock>{t(this.state.bPlaceError)}</HelpBlock>
-                            </Col>
-                            <Col md={3}>
-                              <Translation>
-                                {(t) => (
-                                  <ControlLabel>
-                                    {t("Gender")}{" "}
+                                    {t("Address")}{" "}
                                     <span className="text-red">*</span>
                                   </ControlLabel>
                                 )}
                               </Translation>
                               <br />
+                              <Autocomplete
+                                items={this.state.items}
+                                // shouldItemRender={(item, value) =>
+                                //   item.label
+                                //     .toLowerCase()
+                                //     .indexOf(value.toLowerCase()) > -1
+                                // }
+                                getItemValue={(item) => item.label}
+                                renderItem={(item, highlighted) => (
+                                  <div
+                                    key={item.id}
+                                    style={{
+                                      backgroundColor: highlighted
+                                        ? "#eee"
+                                        : "transparent",
+                                    }}
+                                  >
+                                    {item.label}
+                                  </div>
+                                )}
+                                wrapperStyle={{
+                                  display: "block",
+                                }}
+                                menuStyle={{
+                                  zIndex: "1",
+                                  position: "static",
+                                  borderRadius: "3px",
+                                  boxShadow: "0 2px 12px rgba(0, 0, 0, 0.1)",
+                                  background: "rgba(255, 255, 255, 0.9)",
+                                  padding: "2px 0",
+                                  fontSize: "90%",
+                                  overflow: "auto",
+                                  maxHeight: "50%",
+                                }}
+                                inputProps={{
+                                  className: "form-control",
+                                }}
+                                value={this.state.address}
+                                onChange={this.getAddress}
+                                onSelect={this.SetAddress}
+                              />
+                              <HelpBlock>
+                                {t(this.state.addressError)}
+                              </HelpBlock>
+                            </FormGroup>
+                          </Col>
+                          <Col md={5}>
+                            <FormGroup>
+                              <Translation>
+                                {(t) => (
+                                  <ControlLabel>
+                                    {t("Complement")}
+                                    {/* <span className="text-red">*</span> */}
+                                  </ControlLabel>
+                                )}
+                              </Translation>
                               <FormControl
-                                componentClass="select"
-                                name="gender"
-                                value={this.state.gender}
+                                type="text"
+                                name="complement"
+                                value={this.state.complement}
                                 onChange={this.handleChange}
-                              >
-                                <Translation>
-                                  {(t) => (
-                                    <React.Fragment>
-                                      <option value="Male">{t("Male")}</option>
-                                      <option value="Female">
-                                        {t("Female")}
-                                      </option>
-                                      <option value="Other">
-                                        {t("Other")}
-                                      </option>
-                                    </React.Fragment>
-                                  )}
-                                </Translation>
-                              </FormControl>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col md={5}>
-                              <FormGroup>
-                                <Translation>
-                                  {(t) => (
-                                    <ControlLabel>
-                                      {t("Address")}{" "}
-                                      <span className="text-red">*</span>
-                                    </ControlLabel>
-                                  )}
-                                </Translation>
-                                <br />
-                                <Autocomplete
-                                  items={this.state.items}
-                                  // shouldItemRender={(item, value) =>
-                                  //   item.label
-                                  //     .toLowerCase()
-                                  //     .indexOf(value.toLowerCase()) > -1
-                                  // }
-                                  getItemValue={(item) => item.label}
-                                  renderItem={(item, highlighted) => (
-                                    <div
-                                      key={item.id}
-                                      style={{
-                                        backgroundColor: highlighted
-                                          ? "#eee"
-                                          : "transparent",
-                                      }}
-                                    >
-                                      {item.label}
-                                    </div>
-                                  )}
-                                  wrapperStyle={{
-                                    display: "block",
-                                  }}
-                                  menuStyle={{
-                                    zIndex: "1",
-                                    position: "static",
-                                    borderRadius: "3px",
-                                    boxShadow: "0 2px 12px rgba(0, 0, 0, 0.1)",
-                                    background: "rgba(255, 255, 255, 0.9)",
-                                    padding: "2px 0",
-                                    fontSize: "90%",
-                                    overflow: "auto",
-                                    maxHeight: "50%",
-                                  }}
-                                  inputProps={{
-                                    className: "form-control",
-                                  }}
-                                  value={this.state.address}
-                                  onChange={this.getAddress}
-                                  onSelect={this.SetAddress}
-                                />
-                                <HelpBlock>
-                                  {t(this.state.addressError)}
-                                </HelpBlock>
-                              </FormGroup>
-                            </Col>
-                            <Col md={5}>
-                              <FormGroup>
-                                <Translation>
-                                  {(t) => (
-                                    <ControlLabel>
-                                      {t("Complement")}
-                                      {/* <span className="text-red">*</span> */}
-                                    </ControlLabel>
-                                  )}
-                                </Translation>
-                                <FormControl
-                                  type="text"
-                                  name="complement"
-                                  value={this.state.complement}
-                                  onChange={this.handleChange}
-                                  autoComplete="off"
-                                />
-                                <HelpBlock>{t(this.state.cityError)}</HelpBlock>
-                              </FormGroup>
-                            </Col>
-                          </Row>
-                          <FormInputs
-                            ncols={["col-md-5", "col-md-5"]}
-                            properties={[
-                              {
-                                label: "ZIP CODE",
-                                type: "text",
-                                bsClass: "form-control",
-                                name: "zip",
-                                value: this.state.zip,
-                                onChange: this.handleChange,
-                                help: this.state.zipError,
-                                readOnly: true,
-                                isImport: false,
-                                autoComplete: "off",
-                              },
-                              {
-                                label: "City",
-                                type: "text",
-                                bsClass: "form-control",
-                                name: "city",
-                                value: this.state.city,
-                                onChange: this.handleChange,
-                                autoComplete: "off",
-                                help: this.state.cityError,
-                                readOnly: true,
-                                isImport: false,
-                              },
-                            ]}
-                          />
-                          <FormInputs
-                            ncols={["col-md-5", "col-md-5"]}
-                            properties={[
-                              {
-                                label: "Email",
-                                type: "email",
-                                bsClass: "form-control",
-                                name: "email",
-                                value: this.state.email,
-                                onChange: this.validationCheckforEmail,
-                                help: this.state.emailError,
-                                isImport: false,
-                                autoComplete: "off",
-                              },
-                              {
-                                label: "Phone",
-                                type: "text",
-                                bsClass: "form-control",
-                                name: "Phone",
-                                value: this.state.Phone,
-                                onChange: this.validationCheckforPhone,
-                                help: this.state.PhoneError,
-                                isImport: false,
-                                maxLength: 10,
-                                autoComplete: "off",
-                              },
-                            ]}
-                          />
-                          <FormInputs
-                            ncols={["col-md-5", "col-md-5"]}
-                            properties={[
-                              {
-                                label: "Email (2nd email)",
-                                type: "email",
-                                bsClass: "form-control",
-                                name: "email2",
-                                value: this.state.email2,
-                                onChange: this.handleChange,
-                                isImport: true,
-                                autoComplete: "off",
-                                help: this.state.email2Error,
-                              },
-                              {
-                                label: "Phone (2nd phone)",
-                                type: "text",
-                                bsClass: "form-control",
-                                name: "Phone2",
-                                value: this.state.Phone2,
-                                onChange: this.handleChange,
-                                isImport: true,
-                                autoComplete: "off",
-                                maxLength: 10,
-                              },
-                            ]}
-                          />
-                          <FormInputs
-                            ncols={["col-md-5", "col-md-5"]}
-                            properties={[
-                              {
-                                label: "Password",
-                                type: "password",
-                                bsClass: "form-control",
-                                name: "Password",
-                                value: this.state.Password,
-                                onChange: this.validationCheckforPassword,
-                                help: this.state.PasswordError,
-                                isImport: false,
-                                autoComplete: "off",
-                              },
-                              {
-                                label: "Confirm Password",
-                                type: "password",
-                                bsClass: "form-control",
-                                name: "CPassword",
-                                value: this.state.CPassword,
-                                onChange: this.validationCheckforCPassword,
-                                help: this.state.CPasswordError,
-                                isImport: false,
-                                autoComplete: "off",
-                              },
-                            ]}
-                          />
-                        </Grid>
-                      </Row>
-                      <Row>
-                        <Grid>
-                          <Row>
-                            <label className="my-3 ml-1 reg-Label">
-                              {t("Driver's License")}
-                            </label>
-                          </Row>
-                          <Row>
-                            <Col md={4}>
-                              <Translation>
-                                {(t) => (
-                                  <ControlLabel>
-                                    {t("Number")}{" "}
-                                    <span className="text-red">*</span>
-                                  </ControlLabel>
-                                )}
-                              </Translation>
-                              <FormControl
-                                type="text"
-                                name="Dnumber"
-                                id="Dnumber"
-                                onChange={this.validationCheckForLicenseNumber}
-                                bsClass="form-control"
                                 autoComplete="off"
                               />
-                              <HelpBlock>
-                                {t(this.state.DnumberError)}
-                              </HelpBlock>
-                            </Col>
-                            <Col md={3}>
-                              <Translation>
-                                {(t) => (
-                                  <ControlLabel>
-                                    {t("Date of Obtaining")}{" "}
-                                    <span className="text-red">*</span>
-                                  </ControlLabel>
-                                )}
-                              </Translation>
-                              <DatePicker
-                                selected={this.state.DdateofObtain}
-                                className="form-control"
-                                dateFormat="dd/MM/yyyy"
-                                onChange={(date) =>
-                                  this.validationCheckForDateOFob(date)
-                                }
-                                autoComplete="off"
-                                placeholderText="DD/MM/YYYY"
-                              />
-                              <HelpBlock>
-                                {t(this.state.DdateofObtainError)}
-                              </HelpBlock>
-                            </Col>
-                            <Col md={3}>
-                              <Translation>
-                                {(t) => (
-                                  <ControlLabel>
-                                    {t("Scan and Upload your Driving License")}{" "}
-                                    <span className="text-red">*</span>
-                                  </ControlLabel>
-                                )}
-                              </Translation>
-                              <FormControl
-                                type="file"
-                                bsClass="form-control"
-                                onChange={this.handleFileSelectforDL}
-                                accept="image/x-png,image/gif,image/jpeg,application/pdf"
-                              />
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col md={4}>
-                              <Translation>
-                                {(t) => (
-                                  <ControlLabel>
-                                    {t("End Date")}{" "}
-                                    <span className="text-red">*</span>
-                                  </ControlLabel>
-                                )}
-                              </Translation>
-                              <DatePicker
-                                selected={this.state.DEndDate}
-                                className="form-control"
-                                dateFormat="dd/MM/yyyy"
-                                onChange={(date) =>
-                                  this.validationCheckForValidityD(date)
-                                }
-                                placeholderText="DD/MM/YYYY"
-                                autoComplete="off"
-                              />
-                              <HelpBlock>
-                                {t(this.state.DEndDateError)}
-                              </HelpBlock>
-                            </Col>
-                          </Row>
-                        </Grid>
-                      </Row>
-                      <Row>
-                        <Grid>
-                          <Row>
+                              <HelpBlock>{t(this.state.cityError)}</HelpBlock>
+                            </FormGroup>
+                          </Col>
+                        </Row>
+                        <FormInputs
+                          ncols={["col-md-5", "col-md-5"]}
+                          properties={[
+                            {
+                              label: "Zip Code",
+                              type: "text",
+                              bsClass: "form-control",
+                              name: "zip",
+                              value: this.state.zip,
+                              onChange: this.handleChange,
+                              help: this.state.zipError,
+                              readOnly: true,
+                              isImport: false,
+                              autoComplete: "off",
+                            },
+                            {
+                              label: "City",
+                              type: "text",
+                              bsClass: "form-control",
+                              name: "city",
+                              value: this.state.city,
+                              onChange: this.handleChange,
+                              autoComplete: "off",
+                              help: this.state.cityError,
+                              readOnly: true,
+                              isImport: false,
+                            },
+                          ]}
+                        />
+                        <FormInputs
+                          ncols={["col-md-5", "col-md-5"]}
+                          properties={[
+                            {
+                              label: "Email",
+                              type: "email",
+                              bsClass: "form-control",
+                              name: "email",
+                              value: this.state.email,
+                              onChange: this.validationCheckforEmail,
+                              help: this.state.emailError,
+                              isImport: false,
+                              autoComplete: "off",
+                            },
+                            {
+                              label: "Phone",
+                              type: "text",
+                              bsClass: "form-control",
+                              name: "Phone",
+                              value: this.state.Phone,
+                              onChange: this.validationCheckforPhone,
+                              help: this.state.PhoneError,
+                              isImport: false,
+                              maxLength: 10,
+                              autoComplete: "off",
+                            },
+                          ]}
+                        />
+                        <FormInputs
+                          ncols={["col-md-5", "col-md-5"]}
+                          properties={[
+                            {
+                              label: "Email (2nd email)",
+                              type: "email",
+                              bsClass: "form-control",
+                              name: "email2",
+                              value: this.state.email2,
+                              onChange: this.handleChange,
+                              isImport: true,
+                              autoComplete: "off",
+                              help: this.state.email2Error,
+                            },
+                            {
+                              label: "Phone (2nd phone)",
+                              type: "text",
+                              bsClass: "form-control",
+                              name: "Phone2",
+                              value: this.state.Phone2,
+                              onChange: this.handleChange,
+                              isImport: true,
+                              autoComplete: "off",
+                              maxLength: 10,
+                            },
+                          ]}
+                        />
+                        <FormInputs
+                          ncols={["col-md-5", "col-md-5"]}
+                          properties={[
+                            {
+                              label: "Password",
+                              type: "password",
+                              bsClass: "form-control",
+                              name: "Password",
+                              value: this.state.Password,
+                              onChange: this.validationCheckforPassword,
+                              help: this.state.PasswordError,
+                              isImport: false,
+                              autoComplete: "off",
+                            },
+                            {
+                              label: "Confirm Password",
+                              type: "password",
+                              bsClass: "form-control",
+                              name: "CPassword",
+                              value: this.state.CPassword,
+                              onChange: this.validationCheckforCPassword,
+                              help: this.state.CPasswordError,
+                              isImport: false,
+                              autoComplete: "off",
+                            },
+                          ]}
+                        />
+                      </Grid>
+                    </Row>
+                    <Row>
+                      <Grid>
+                        <Row>
+                          <label className="my-3 ml-1 reg-Label">
+                            {t("Driver's License")}
+                          </label>
+                        </Row>
+                        <Row>
+                          <Col md={4}>
                             <Translation>
                               {(t) => (
-                                <label className="my-3 ml-1 reg-Label">
-                                  {t("Authorization to Exercise")}
-                                </label>
+                                <ControlLabel>
+                                  {t("Number")}{" "}
+                                  <span className="text-red">*</span>
+                                </ControlLabel>
                               )}
                             </Translation>
-                          </Row>
-                          <Row>
-                            <Col md={4}>
-                              <Translation>
-                                {(t) => (
-                                  <ControlLabel>
-                                    {t("Date of the authorization to exercise")}{" "}
-                                    <span className="text-red">*</span>
-                                  </ControlLabel>
-                                )}
-                              </Translation>
-                              <DatePicker
-                                selected={this.state.DateOfAuth}
-                                className="form-control"
-                                dateFormat="dd/MM/yyyy"
-                                onChange={(date) =>
-                                  this.validationCheckForExDate(date)
-                                }
-                                autoComplete="off"
-                                placeholderText="DD/MM/YYYY"
-                              />
-                              <HelpBlock>
-                                {t(this.state.DateOfAuthError)}
-                              </HelpBlock>
-                            </Col>
-                            <Col md={3}>
-                              <Translation>
-                                {(t) => (
-                                  <ControlLabel>
-                                    {t("Issuing Authority")}{" "}
-                                    <span className="text-red">*</span>
-                                  </ControlLabel>
-                                )}
-                              </Translation>
-                              <FormControl
-                                type="text"
-                                name="IssuingAuth"
-                                id="IssuingAuth"
-                                onChange={this.validationCheckForAuthority}
-                                bsClass="form-control"
-                                autoComplete="off"
-                              />
-                              <HelpBlock>
-                                {t(this.state.IssuingAuthError)}
-                              </HelpBlock>
-                            </Col>
-                            <Col md={3}>
-                              <Translation>
-                                {(t) => (
-                                  <ControlLabel>
-                                    {t("Scan and upload your authorization")}{" "}
-                                    <span className="text-red">*</span>
-                                  </ControlLabel>
-                                )}
-                              </Translation>
-                              <FormControl
-                                type="file"
-                                bsClass="form-control"
-                                onChange={this.handleFileSelectforEX}
-                                accept="image/x-png,image/gif,image/jpeg,application/pdf"
-                              />
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col md={4}>
-                              <Translation>
-                                {(t) => (
-                                  <ControlLabel>
-                                    {t("Expiration date")}{" "}
-                                    <span className="text-red">*</span>
-                                  </ControlLabel>
-                                )}
-                              </Translation>
-                              <DatePicker
-                                selected={this.state.DateofExpire}
-                                className="form-control"
-                                dateFormat="dd/MM/yyyy"
-                                onChange={(date) =>
-                                  this.validationCheckForDateOfExpire(date)
-                                }
-                                autoComplete="off"
-                                placeholderText="DD/MM/YYYY"
-                              />
-                              <HelpBlock>
-                                {t(this.state.DateofExpireError)}
-                              </HelpBlock>
-                            </Col>
-                          </Row>
-                        </Grid>
-                      </Row>
+                            <FormControl
+                              type="text"
+                              name="Dnumber"
+                              id="Dnumber"
+                              onChange={this.validationCheckForLicenseNumber}
+                              bsClass="form-control"
+                              autoComplete="off"
+                            />
+                            <HelpBlock>{t(this.state.DnumberError)}</HelpBlock>
+                          </Col>
+                          <Col md={3}>
+                            <Translation>
+                              {(t) => (
+                                <ControlLabel>
+                                  {t("Date of Obtaining")}{" "}
+                                  <span className="text-red">*</span>
+                                </ControlLabel>
+                              )}
+                            </Translation>
+                            <DatePicker
+                              selected={this.state.DdateofObtain}
+                              className="form-control"
+                              dateFormat="dd/MM/yyyy"
+                              onChange={(date) =>
+                                this.validationCheckForDateOFob(date)
+                              }
+                              autoComplete="off"
+                              placeholderText="DD/MM/YYYY"
+                            />
+                            <HelpBlock>
+                              {t(this.state.DdateofObtainError)}
+                            </HelpBlock>
+                          </Col>
+                          <Col md={3}>
+                            <Translation>
+                              {(t) => (
+                                <ControlLabel>
+                                  {t("Scan and Upload your Driving License")}{" "}
+                                  <span className="text-red">*</span>
+                                </ControlLabel>
+                              )}
+                            </Translation>
+                            <FormControl
+                              type="file"
+                              bsClass="form-control"
+                              onChange={this.handleFileSelectforDL}
+                              accept="image/x-png,image/gif,image/jpeg,application/pdf"
+                            />
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col md={4}>
+                            <Translation>
+                              {(t) => (
+                                <ControlLabel>
+                                  {t("End Date")}{" "}
+                                  <span className="text-red">*</span>
+                                </ControlLabel>
+                              )}
+                            </Translation>
+                            <DatePicker
+                              selected={this.state.DEndDate}
+                              className="form-control"
+                              dateFormat="dd/MM/yyyy"
+                              onChange={(date) =>
+                                this.validationCheckForValidityD(date)
+                              }
+                              placeholderText="DD/MM/YYYY"
+                              autoComplete="off"
+                            />
+                            <HelpBlock>{t(this.state.DEndDateError)}</HelpBlock>
+                          </Col>
+                        </Row>
+                      </Grid>
+                    </Row>
+                    <Row>
+                      <Grid>
+                        <Row>
+                          <Translation>
+                            {(t) => (
+                              <label className="my-3 ml-1 reg-Label">
+                                {t("Authorization to Exercise")}
+                              </label>
+                            )}
+                          </Translation>
+                        </Row>
+                        <Row>
+                          <Col md={4}>
+                            <Translation>
+                              {(t) => (
+                                <ControlLabel>
+                                  {t("Date of the authorization to exercise")}{" "}
+                                  <span className="text-red">*</span>
+                                </ControlLabel>
+                              )}
+                            </Translation>
+                            <DatePicker
+                              selected={this.state.DateOfAuth}
+                              className="form-control"
+                              dateFormat="dd/MM/yyyy"
+                              onChange={(date) =>
+                                this.validationCheckForExDate(date)
+                              }
+                              autoComplete="off"
+                              placeholderText="DD/MM/YYYY"
+                            />
+                            <HelpBlock>
+                              {t(this.state.DateOfAuthError)}
+                            </HelpBlock>
+                          </Col>
+                          <Col md={3}>
+                            <Translation>
+                              {(t) => (
+                                <ControlLabel>
+                                  {t("Issuing Authority")}{" "}
+                                  <span className="text-red">*</span>
+                                </ControlLabel>
+                              )}
+                            </Translation>
+                            <FormControl
+                              type="text"
+                              name="IssuingAuth"
+                              id="IssuingAuth"
+                              onChange={this.validationCheckForAuthority}
+                              bsClass="form-control"
+                              autoComplete="off"
+                            />
+                            <HelpBlock>
+                              {t(this.state.IssuingAuthError)}
+                            </HelpBlock>
+                          </Col>
+                          <Col md={3}>
+                            <Translation>
+                              {(t) => (
+                                <ControlLabel>
+                                  {t("Scan and upload your authorization")}{" "}
+                                  <span className="text-red">*</span>
+                                </ControlLabel>
+                              )}
+                            </Translation>
+                            <FormControl
+                              type="file"
+                              bsClass="form-control"
+                              onChange={this.handleFileSelectforEX}
+                              accept="image/x-png,image/gif,image/jpeg,application/pdf"
+                            />
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col md={4}>
+                            <Translation>
+                              {(t) => (
+                                <ControlLabel>
+                                  {t("Expiration date")}{" "}
+                                  <span className="text-red">*</span>
+                                </ControlLabel>
+                              )}
+                            </Translation>
+                            <DatePicker
+                              selected={this.state.DateofExpire}
+                              className="form-control"
+                              dateFormat="dd/MM/yyyy"
+                              onChange={(date) =>
+                                this.validationCheckForDateOfExpire(date)
+                              }
+                              autoComplete="off"
+                              placeholderText="DD/MM/YYYY"
+                            />
+                            <HelpBlock>
+                              {t(this.state.DateofExpireError)}
+                            </HelpBlock>
+                          </Col>
+                        </Row>
+                      </Grid>
+                    </Row>
 
-                      <Row>
-                        <Grid>
-                          <Row>
-                            <Translation>
-                              {(t) => (
-                                <label className="my-3 ml-1 reg-Label">
-                                  {t(
-                                    "Type of contract with the driving school"
-                                  )}
-                                </label>
-                              )}
-                            </Translation>
-                          </Row>
-                          <FormGroup>
-                            <Radio
-                              name="contract"
-                              inline
-                              value="Employee"
-                              id="Employee"
-                              onChange={this.handleCheck}
-                            >
-                              {t("Employee")}
-                            </Radio>
-                            <Radio
-                              name="contract"
-                              inline
-                              value="External Provider"
-                              onChange={this.handleCheck2}
-                            >
-                              {t("External provider")}
-                            </Radio>
-                          </FormGroup>
-                          <div
-                            className={
-                              this.state.isContentShow
-                                ? "form-show"
-                                : "form-hide"
-                            }
+                    <Row>
+                      <Grid>
+                        <Row>
+                          <Translation>
+                            {(t) => (
+                              <label className="my-3 ml-1 reg-Label">
+                                {t("Type of contract with the driving school")}
+                              </label>
+                            )}
+                          </Translation>
+                        </Row>
+                        <FormGroup>
+                          <Radio
+                            name="contract"
+                            inline
+                            value="Employee"
+                            id="Employee"
+                            onChange={this.handleCheck}
                           >
-                            <Row>
-                              <Grid>
-                                <Row>
-                                  <Translation>
-                                    {(t) => (
-                                      <label className="my-3 ml-1 reg-Label">
-                                        {t("Business")}
-                                      </label>
-                                    )}
-                                  </Translation>
-                                </Row>
-                                <FormInputs
-                                  ncols={["col-md-5", "col-md-5"]}
-                                  properties={[
-                                    {
-                                      label: "SIrel Number",
-                                      type: "text",
-                                      bsClass: "form-control",
-                                      name: "Slrel",
-                                      value: this.state.Slrel,
-                                      help: this.state.SlrelError,
-                                      onChange: this.validationCheckForSIrel,
-                                      autoComplete: "off",
-                                      maxLength: 14,
-                                    },
-                                    {
-                                      label: "Upload your kbls",
-                                      type: "file",
-                                      onChange: this.handleFileSelectforBKbls,
-                                      bsClass: "form-control",
-                                      help: this.state.SlerlImageError,
-                                    },
-                                  ]}
-                                />
-                              </Grid>
-                            </Row>
-                            <Row>
-                              <Grid>
-                                <Row>
-                                  <Translation>
-                                    {(t) => (
-                                      <label className="my-3 ml-1 reg-Label">
-                                        {t("Insurance Company")}
-                                      </label>
-                                    )}
-                                  </Translation>
-                                </Row>
-                                <FormInputs
-                                  ncols={["col-md-5", "col-md-5"]}
-                                  properties={[
-                                    {
-                                      label: "Insurer",
-                                      type: "text",
-                                      bsClass: "form-control",
-                                      name: "ICInsurer",
-                                      value: this.state.ICInsurer,
-                                      onChange: this.validationCheckForInsurer,
-                                      autoComplete: "off",
-                                    },
-                                    {
-                                      label: "Police number",
-                                      type: "text",
-                                      bsClass: "form-control",
-                                      name: "ICPNumber",
-                                      value: this.state.ICPNumber,
-                                      onChange: this
-                                        .validationCheckForInsPoliceNumber,
-                                      autoComplete: "off",
-                                    },
-                                  ]}
-                                />
-                                <FormInputs
-                                  ncols={["col-md-5", "col-md-5"]}
-                                  properties={[
-                                    {
-                                      label: "Expiry Date",
-                                      type: "date",
-                                      value: this.state.ICExpireDate,
-                                      onChange: (date) =>
-                                        this.validationCheckForInsExDate(date),
-                                      bsClass: "form-control",
-                                    },
-                                    {
-                                      label: "Upload your RC Pro",
-                                      onChange: this.handleFileSelectforRC,
-                                      type: "file",
-                                      bsClass: "form-control",
-                                    },
-                                  ]}
-                                />
-                              </Grid>
-                            </Row>
-                          </div>
-                        </Grid>
-                      </Row>
-                      <button
-                        className="form-cust-btn"
-                        onClick={this.onSubmit}
-                        disabled={this.state.isAddDisable}
-                        style={{ width: "20%", marginRight: "70px" }}
-                      >
-                        {t("Add")}
-                      </button>
-                    </form>
-                  </Panel.Body>
-                </Panel>
+                            {t("Employee")}
+                          </Radio>
+                          <Radio
+                            name="contract"
+                            inline
+                            value="External Provider"
+                            onChange={this.handleCheck2}
+                          >
+                            {t("External provider")}
+                          </Radio>
+                        </FormGroup>
+                        <div
+                          className={
+                            this.state.isContentShow ? "form-show" : "form-hide"
+                          }
+                        >
+                          <Row>
+                            <Grid>
+                              <Row>
+                                <Translation>
+                                  {(t) => (
+                                    <label className="my-3 ml-1 reg-Label">
+                                      {t("Business")}
+                                    </label>
+                                  )}
+                                </Translation>
+                              </Row>
+                              <FormInputs
+                                ncols={["col-md-5", "col-md-5"]}
+                                properties={[
+                                  {
+                                    label: "SIrel Number",
+                                    type: "text",
+                                    bsClass: "form-control",
+                                    name: "Slrel",
+                                    value: this.state.Slrel,
+                                    help: this.state.SlrelError,
+                                    onChange: this.validationCheckForSIrel,
+                                    autoComplete: "off",
+                                    maxLength: 14,
+                                  },
+                                  {
+                                    label: "Upload your kbls",
+                                    type: "file",
+                                    onChange: this.handleFileSelectforBKbls,
+                                    bsClass: "form-control",
+                                    help: this.state.SlerlImageError,
+                                  },
+                                ]}
+                              />
+                            </Grid>
+                          </Row>
+                          <Row>
+                            <Grid>
+                              <Row>
+                                <Translation>
+                                  {(t) => (
+                                    <label className="my-3 ml-1 reg-Label">
+                                      {t("Insurance Company")}
+                                    </label>
+                                  )}
+                                </Translation>
+                              </Row>
+                              <FormInputs
+                                ncols={["col-md-5", "col-md-5"]}
+                                properties={[
+                                  {
+                                    label: "Insurer",
+                                    type: "text",
+                                    bsClass: "form-control",
+                                    name: "ICInsurer",
+                                    value: this.state.ICInsurer,
+                                    onChange: this.validationCheckForInsurer,
+                                    autoComplete: "off",
+                                  },
+                                  {
+                                    label: "Police number",
+                                    type: "text",
+                                    bsClass: "form-control",
+                                    name: "ICPNumber",
+                                    value: this.state.ICPNumber,
+                                    onChange: this
+                                      .validationCheckForInsPoliceNumber,
+                                    autoComplete: "off",
+                                  },
+                                ]}
+                              />
+                              <FormInputs
+                                ncols={["col-md-5", "col-md-5"]}
+                                properties={[
+                                  {
+                                    label: "Expiry Date",
+                                    type: "date",
+                                    value: this.state.ICExpireDate,
+                                    onChange: (date) =>
+                                      this.validationCheckForInsExDate(date),
+                                    bsClass: "form-control",
+                                  },
+                                  {
+                                    label: "Upload your RC Pro",
+                                    onChange: this.handleFileSelectforRC,
+                                    type: "file",
+                                    bsClass: "form-control",
+                                  },
+                                ]}
+                              />
+                            </Grid>
+                          </Row>
+                        </div>
+                      </Grid>
+                    </Row>
+                    <button
+                      className="form-cust-btn"
+                      onClick={this.onSubmit}
+                      disabled={this.state.isAddDisable}
+                      style={{ width: "20%", marginRight: "70px" }}
+                    >
+                      {t("Add")}
+                    </button>
+                  </form>
+                </Modal>{" "}
               </Grid>
             </div>
           </>

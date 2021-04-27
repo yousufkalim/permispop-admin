@@ -12,6 +12,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "assets/sass/dashboard.scss";
 import "mdbreact/dist/css/mdb.css";
 import "assets/sass/custom.scss";
+import "./translation.jsx";
 
 import AdminLayout from "layouts/Admin.jsx";
 import Login from "layouts/Login.jsx";

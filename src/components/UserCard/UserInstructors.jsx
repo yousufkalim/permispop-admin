@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import WebServicesManager from "../../WebServicesManager/WebServicesManager";
 import InstructorAdd from "../InstructorComponents/InstructorAdd";
+import { Translation } from "react-i18next";
 
 function UserInstructors(props) {
   const WebServicesManagers = useMemo(() => new WebServicesManager(), []);
@@ -63,67 +64,76 @@ function UserInstructors(props) {
   const updateData = () => {
     setUpdateList(!updateList);
   };
-
+  const showModal = () => {
+    if (showAdd === true) {
+      setShowAdd(false);
+    } else {
+      setShowAdd(true);
+    }
+    console.log();
+  };
   return (
-    <div className="table-responsive" style={{ overflowX: "scroll" }}>
-      {!showAdd ? (
-        <i
-          title="Add Instructor"
-          className="fa fa-plus-circle"
-          style={{ float: "right", fontSize: 18, margin: "15px 10px" }}
-          onClick={() => setShowAdd(true)}
-        ></i>
-      ) : (
-        <i
-          className="fa fa-times-circle"
-          style={{ float: "right", fontSize: 18, margin: "15px 10px" }}
-          onClick={() => setShowAdd(false)}
-        ></i>
+    <Translation>
+      {(t) => (
+        <div className="table-responsive" style={{ overflowX: "scroll" }}>
+          <i
+            title="Add Instructor"
+            className="fa fa-plus-circle"
+            style={{ float: "right", fontSize: 18, margin: "15px 10px" }}
+            onClick={() => showModal()}
+          ></i>
+          <InstructorAdd
+            showAddModel={showAdd}
+            drivingSchoolData={props}
+            update={updateData}
+          />
+          <table className="table table-bordered">
+            <thead>
+              <tr>
+                <th>{t("Name")}</th>
+                <th>{t("Address")}</th>
+                <th>{t("Gender")}</th>
+                <th>{t("Email")}</th>
+                <th>{t("Status")}</th>
+                <th>{t("Actions")}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {instructors.length > 0
+                ? instructors.map((ins) => (
+                    <tr key={ins[ins.length - 1]}>
+                      <td>{ins[0]}</td>
+                      <td>{ins[1]}</td>
+                      <td>{ins[2]}</td>
+                      <td>{ins[3]}</td>
+                      <td>
+                        {ins[4] === "Tested" ? (
+                          <i
+                            className="fa fa-check"
+                            style={{ color: "green" }}
+                          ></i>
+                        ) : (
+                          <i
+                            className="fa fa-times"
+                            style={{ color: "red" }}
+                          ></i>
+                        )}
+                      </td>
+                      <td>
+                        <i
+                          className="fa fa-eye"
+                          onClick={() => props.changeUser(ins[5])}
+                        ></i>
+                        {/* <i className="fa fa-trash"></i> */}
+                      </td>
+                    </tr>
+                  ))
+                : ""}
+            </tbody>
+          </table>
+        </div>
       )}
-      <InstructorAdd
-        showAddModel={showAdd}
-        drivingSchoolData={props}
-        update={updateData}
-      />
-      <table className="table table-bordered">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Address</th>
-            <th>Gender</th>
-            <th>Email</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {instructors.length > 0
-            ? instructors.map((ins) => (
-                <tr key={ins[ins.length - 1]}>
-                  <td>{ins[0]}</td>
-                  <td>{ins[1]}</td>
-                  <td>{ins[2]}</td>
-                  <td>{ins[3]}</td>
-                  <td>
-                    {ins[4] === "Tested" ? (
-                      <i className="fa fa-check" style={{ color: "green" }}></i>
-                    ) : (
-                      <i className="fa fa-times" style={{ color: "red" }}></i>
-                    )}
-                  </td>
-                  <td>
-                    <i
-                      className="fa fa-eye"
-                      onClick={() => props.changeUser(ins[5])}
-                    ></i>
-                    {/* <i className="fa fa-trash"></i> */}
-                  </td>
-                </tr>
-              ))
-            : ""}
-        </tbody>
-      </table>
-    </div>
+    </Translation>
   );
 }
 

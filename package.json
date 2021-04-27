@@ -10,6 +10,7 @@
     "font-awesome": "^4.7.0",
     "framer-motion": "^4.0.3",
     "i18next": "^19.8.4",
+    "i18next-browser-languagedetector": "^6.1.0",
     "jquery": "^3.5.0",
     "js-base64": "^3.4.5",
     "jwt-decode": "^2.2.0",

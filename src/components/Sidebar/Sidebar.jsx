@@ -9,7 +9,7 @@ class Sidebar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      width: window.innerWidth
+      width: window.innerWidth,
     };
   }
   activeRoute(routeName) {
@@ -24,7 +24,7 @@ class Sidebar extends Component {
   }
   render() {
     const sidebarBackground = {
-    //  backgroundImage: "url(" + this.props.image + ")"
+      //  backgroundImage: "url(" + this.props.image + ")"
     };
     return (
       <div
@@ -33,24 +33,18 @@ class Sidebar extends Component {
         data-color={this.props.color}
         data-image={this.props.image}
       >
-          {this.props.hasImage ? (
-                <div className="sidebar-background" style={sidebarBackground}
-                />
-          ) : (
-            null
-          )}
-        <div className="logo" style={{background:'#fff'}}>
-          <a
-            href="3"
-            className="simple-text logo-mini"
-          >
+        {this.props.hasImage ? (
+          <div className="sidebar-background" style={sidebarBackground} />
+        ) : null}
+        <div className="logo" style={{ background: "#fff" }}>
+          <a href="3" className="simple-text logo-mini">
             <div className="logo-img">
               <img src={logo} alt="logo_image" />
             </div>
           </a>
           <a
             href="/"
-            style={{color:'#37a186'}}
+            style={{ color: "#37a186" }}
             className="simple-text logo-normal"
           >
             PermisPop Admin

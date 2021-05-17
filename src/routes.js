@@ -7,6 +7,7 @@ import Payments from "views/Payments.jsx";
 import Disputes from "views/Disputes.jsx";
 import UpdateRequest from "views/UpdateRequest";
 import Limitaions from "views/Limitaions";
+import UserRatings from "views/UserRatings";
 import { Translation } from "react-i18next";
 
 const dashboardRoutes = [
@@ -32,9 +33,16 @@ const dashboardRoutes = [
     layout: "/admin",
   },
   {
+    path: "/userRating",
+    name: <Translation>{(t) => t("User Rating")}</Translation>,
+    icon: "pe-7s-star",
+    component: UserRatings,
+    layout: "/admin",
+  },
+  {
     path: "/CloseBooking",
     name: <Translation>{(t) => t("Close Booking")}</Translation>,
-    icon: "pe-7s-users",
+    icon: "pe-7s-notebook",
     component: CloseBooking,
     layout: "/admin",
   },

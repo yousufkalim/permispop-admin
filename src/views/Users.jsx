@@ -13,6 +13,7 @@ import { Table, Button, Input, Space } from "antd";
 import { SearchOutlined, LoadingOutlined } from "@ant-design/icons";
 import { Translation } from "react-i18next";
 import Highlighter from "react-highlight-words";
+import UserRating from "../components/UserCard/UserRating";
 
 const $ = require("jquery");
 $.DataTable = require("datatables.net");
@@ -474,6 +475,10 @@ class Users extends Component {
                               )}
                               <Tab eventKey="Payments" title={t("Payments")}>
                                 <UserPayments {...this.state.userDetails} />
+                              </Tab>
+
+                              <Tab eventKey="ratings" title={t("Ratings")}>
+                                <UserRating {...this.state.userDetails} />
                               </Tab>
                             </Tabs>
                           </TabContainer>

@@ -274,8 +274,8 @@ export default i18n
         },
       },
     },
-    lng: selectedLang ? selectedLang : "fr",
-    fallbackLng: "fr",
+    lng: selectedLang ? selectedLang : "en",
+    fallbackLng: "en",
     interpolation: {
       escapeValue: false,
     },

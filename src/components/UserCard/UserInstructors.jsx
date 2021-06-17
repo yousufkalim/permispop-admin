@@ -13,6 +13,8 @@ function UserInstructors(props) {
   useEffect(() => {
     // console.log(props, "Props");
     var tokn = localStorage.getItem("userdata");
+    console.log("instructor component mount");
+
     WebServicesManagers.getApiWithParamCall(
       {
         endPoint: "Profile/GetProfileByPersonalId",

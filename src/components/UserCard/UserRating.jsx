@@ -24,14 +24,16 @@ class UserRating extends Component {
       users: [],
       loading: false,
       userDetails: [],
-      pageNumber: 0,
-      pageSize: 20,
+      pageNumber: 1,
+      pageSize: 3,
     };
   }
+  baseUrl = process.env.REACT_APP_BASE_URL;
 
   componentDidMount() {
     console.log(this.props);
     this.getUserRating();
+    console.log("userrating component mount");
   }
 
   getUserRating = () => {
@@ -42,7 +44,7 @@ class UserRating extends Component {
     console.log(this.props.id);
     const pagingParameters = { pageNumber: pageNumber, pageSize: pageSize };
     fetch(
-      `http://localhost:63539/api/FeedBacks/GetRatingsById_New?id=${data.id}&Rating=3&PagingParameters=${pagingParameters}`,
+      `${this.baseUrl}FeedBacks/GetRatingsById_New?id=${data.id}&Rating=0&PagingParameters=${pagingParameters}`,
       {
         method: "GET",
         headers: {
@@ -51,8 +53,12 @@ class UserRating extends Component {
         },
       }
     )
+      .then((resp) => console.log("all response ", resp))
       .then((result) => result.json())
-      .then((res) => this.setState({ userDetails: res }))
+      .then((res) => {
+        this.setState({ userDetails: res });
+        console.log("userrating data ", res);
+      })
       .catch((error) => console.log(`Error ${error}`));
 
     // this.WebServicesManager.getApiWithParamCall(
@@ -173,6 +179,7 @@ class UserRating extends Component {
   ////////////////////// On Filter / Sorter / Pagination change ////////////////////////
 
   onChange = (pagination, filters, sorter, extra) => {
+    console.log("filters ", filters);
     console.log("page ", pagination);
     // console.log("params", pagination, filters, sorter, extra);
   };
@@ -216,7 +223,10 @@ class UserRating extends Component {
             value: "CarRentalAgent",
           },
         ],
-        onFilter: (value, record) => record.role.indexOf(value) === 0,
+        onFilter: (value, record) => {
+          console.log("value", value);
+        },
+        //  record.role.indexOf(value) === 0,
         sorter: (a, b) => a.role.length - b.role.length,
       },
       {
@@ -284,7 +294,7 @@ class UserRating extends Component {
             value: 5,
           },
         ],
-        onFilter: (value, record) => record.rating.indexOf(value) === 0,
+        onFilter: (value, record) => record.rating,
         sorter: (a, b) => a.rating.length - b.rating.length,
       },
       {
@@ -310,6 +320,7 @@ class UserRating extends Component {
                         Options={[20, 50, 100]}
                       /> */}
           <Table
+            onChange={this.onChange}
             loading={{
               indicator: antIcon,
               spinning: this.state.loading,
@@ -338,7 +349,7 @@ class UserRating extends Component {
             pagination={{
               position: ["bottomCenter"],
               size: "small",
-              onChange: this.onChange,
+
               showQuickJumper: true,
               defaultPageSize: pageSize,
               defaultCurrent: 1,

@@ -32,13 +32,13 @@ const dashboardRoutes = [
     component: Users,
     layout: "/admin",
   },
-  {
-    path: "/userRating",
-    name: <Translation>{(t) => t("User Rating")}</Translation>,
-    icon: "pe-7s-star",
-    component: UserRatings,
-    layout: "/admin",
-  },
+  // {
+  //   path: "/userRating",
+  //   name: <Translation>{(t) => t("User Rating")}</Translation>,
+  //   icon: "pe-7s-star",
+  //   component: UserRatings,
+  //   layout: "/admin",
+  // },
   {
     path: "/CloseBooking",
     name: <Translation>{(t) => t("Close Booking")}</Translation>,

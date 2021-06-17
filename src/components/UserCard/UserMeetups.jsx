@@ -33,6 +33,9 @@ export class UserMeetups extends Component {
     };
   }
 
+  componentDidMount() {
+    console.log("meetup component mount");
+  }
   componentWillMount() {
     this.getMeetupPoints(this.props.id);
   }

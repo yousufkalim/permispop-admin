@@ -48,80 +48,113 @@ class UserRatings extends Component {
   }
   WebServicesManager = new WebServicesManager();
 
-  componentWillMount() {
-    var nonVerified = [];
-    var verfied = [];
-    var VerifiedUser = [];
-    var NonVerifiedUser = [];
-    var vc = 1,
-      nvc = 1;
-    var tokn = localStorage.getItem("userdata");
-    this.WebServicesManager.getApiCall(
+  componentDidMount() {
+    this.getAllRatings();
+  }
+
+  getAllRatings = () => {
+    const pagingParameters = { pageNumber: 1, pageSize: 2 };
+    var token = localStorage.getItem("userdata");
+    console.log(token);
+    // fetch(
+    //   `http://localhost:63539/api/FeedBacks/GetAllUsersRating_New?PagingParameters=${pagingParameters}`,
+    //   {
+    //     method: "GET",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       Authorization: "Bearer " + token,
+    //     },
+    //   }
+    // )
+    //   .then((result) => result.json())
+    //   .then((res) => console.log(res))
+    //   .catch((err) => console.log(err));
+    this.WebServicesManager.getApiWithParamCall(
       {
-        endPoint: "Personal/GetAllUsers",
-        token: tokn,
+        endPoint: `FeedBacks/GetAllUsersRating_New?PagingParameters=${pagingParameters}`,
+        token,
       },
       (statusCode, response) => {
-        console.log("response", response);
-        response.map((item) => {
-          if (
-            item.role !== "Admin" &&
-            item.role !== "Email" &&
-            item.role !== "DSInstructor" &&
-            !item.role.includes("Delete")
-          ) {
-            if (item.documentTested === "Tested") {
-              VerifiedUser.push({
-                key: vc,
-                name: item.firstName + " " + item.surName,
-                role: item.role,
-                active: true,
-                docV: true,
-                details: item,
-              });
-              vc = vc + 1;
-            } else {
-              NonVerifiedUser.push({
-                key: nvc,
-                name: item.firstName + " " + item.surName,
-                role: item.role,
-                active: true,
-                docV: false,
-                details: item,
-              });
-              nvc = nvc + 1;
-            }
-          }
-          this.setState({ loading: false });
-
-          return null;
-        });
-        var verifiedUserData = { rows: VerifiedUser };
-        var nonVerifiedUserData = { rows: NonVerifiedUser };
-        this.setState(
-          {
-            allUsers: response,
-            verfiedUser: verfied,
-            nonVarifiedUser: nonVerified,
-            dataV: verifiedUserData,
-            dataNV: nonVerifiedUserData,
-          },
-          () => {
-            setTimeout(() => {
-              var link_id = this.props.location.user_id;
-              if (link_id !== undefined) {
-                // var element = document.getElementById("5fec10f2f4d2a1176c70a0f6");
-                var element = document.getElementById(link_id);
-                if (element !== null) {
-                  element.click();
-                }
-              }
-            }, 100);
-          }
-        );
+        console.log("All Ratings ", response);
+        this.setState({ userDetails: response, defualtTab: "documents" });
       }
     );
-  }
+  };
+
+  // componentWillMount() {
+  //   var nonVerified = [];
+  //   var verfied = [];
+  //   var VerifiedUser = [];
+  //   var NonVerifiedUser = [];
+  //   var vc = 1,
+  //     nvc = 1;
+  //   var tokn = localStorage.getItem("userdata");
+  //   this.WebServicesManager.getApiCall(
+  //     {
+  //       endPoint: "Personal/GetAllUsers",
+  //       token: tokn,
+  //     },
+  //     (statusCode, response) => {
+  //       console.log("response", response);
+  //       response.map((item) => {
+  //         if (
+  //           item.role !== "Admin" &&
+  //           item.role !== "Email" &&
+  //           item.role !== "DSInstructor" &&
+  //           !item.role.includes("Delete")
+  //         ) {
+  //           if (item.documentTested === "Tested") {
+  //             VerifiedUser.push({
+  //               key: vc,
+  //               name: item.firstName + " " + item.surName,
+  //               role: item.role,
+  //               active: true,
+  //               docV: true,
+  //               details: item,
+  //             });
+  //             vc = vc + 1;
+  //           } else {
+  //             NonVerifiedUser.push({
+  //               key: nvc,
+  //               name: item.firstName + " " + item.surName,
+  //               role: item.role,
+  //               active: true,
+  //               docV: false,
+  //               details: item,
+  //             });
+  //             nvc = nvc + 1;
+  //           }
+  //         }
+  //         this.setState({ loading: false });
+
+  //         return null;
+  //       });
+  //       var verifiedUserData = { rows: VerifiedUser };
+  //       var nonVerifiedUserData = { rows: NonVerifiedUser };
+  //       this.setState(
+  //         {
+  //           allUsers: response,
+  //           verfiedUser: verfied,
+  //           nonVarifiedUser: nonVerified,
+  //           dataV: verifiedUserData,
+  //           dataNV: nonVerifiedUserData,
+  //         },
+  //         () => {
+  //           setTimeout(() => {
+  //             var link_id = this.props.location.user_id;
+  //             if (link_id !== undefined) {
+  //               // var element = document.getElementById("5fec10f2f4d2a1176c70a0f6");
+  //               var element = document.getElementById(link_id);
+  //               if (element !== null) {
+  //                 element.click();
+  //               }
+  //             }
+  //           }, 100);
+  //         }
+  //       );
+  //     }
+  //   );
+  // }
   handleClick(obj) {
     this.setState({ showDetails: !this.state.showDetails, userDetails: obj });
   }

@@ -64,6 +64,7 @@ export class UserCard extends Component {
   }
 
   componentWillMount() {
+    console.log("users table ");
     var tokn = localStorage.getItem("userdata");
     this.WebServicesManager.getApiWithParamCall(
       {
@@ -762,7 +763,7 @@ export class UserCard extends Component {
                           </tr>
                           <tr>
                             <th>{t("Spoken Language/s")}</th>
-                            {this.props.spokenLanguage.length > 0 ? (
+                            {this.props.spokenLanguage === "" ? (
                               <td>{this.props.spokenLanguage.join(", ")}</td>
                             ) : (
                               <td>N/A</td>
@@ -772,7 +773,13 @@ export class UserCard extends Component {
                       ) : (
                         <tr>
                           <th>{t("Spoken Language/s")}</th>
-                          {this.props.spokenLanguage.length > 0 ? (
+                          {/* {this.props.spokenLanguage &&
+                          this.props.spokenLanguage.length > 0 ? (
+                            <td>{this.props.spokenLanguage.join(", ")}</td>
+                          ) : (
+                            <td>N/A</td>
+                          )} */}
+                          {this.props.spokenLanguage === "" ? (
                             <td>{this.props.spokenLanguage.join(", ")}</td>
                           ) : (
                             <td>N/A</td>

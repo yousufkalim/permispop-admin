@@ -11,8 +11,14 @@ class UserPayments extends Component {
       membershipInfo: {},
     };
   }
+
+  componentDidMount() {
+    console.log("payment component didmount");
+  }
   componentWillMount() {
     var tokn = localStorage.getItem("userdata");
+    console.log("payment component willmount");
+
     if (this.props.role === "Student") {
       // get membership data
       this.WebServicesManager.getApiWithParamCall(
@@ -49,6 +55,7 @@ class UserPayments extends Component {
   }
 
   render() {
+    console.log("payment component render");
     const { role } = this.props;
     if (role === "Student" && this.state.membershipInfo.packageId !== "0") {
       return (

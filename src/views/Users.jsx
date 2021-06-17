@@ -10,10 +10,11 @@ import UserMeetups from "components/UserCard/UserMeetups.jsx";
 import "font-awesome/css/font-awesome.min.css";
 import { motion } from "framer-motion";
 import { Table, Button, Input, Space } from "antd";
-import { SearchOutlined, LoadingOutlined } from "@ant-design/icons";
+import { SearchOutlined, LoadingOutlined, StarFilled } from "@ant-design/icons";
 import { Translation } from "react-i18next";
 import Highlighter from "react-highlight-words";
 import UserRating from "../components/UserCard/UserRating";
+import Rating from "react-rating";
 
 const $ = require("jquery");
 $.DataTable = require("datatables.net");
@@ -31,6 +32,7 @@ class Users extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      key: "inactiveuser",
       allUsers: [],
       nonVarifiedUser: [],
       verfiedUser: [],
@@ -38,17 +40,32 @@ class Users extends Component {
       showDetails: false,
       userDetails: {},
       documentVerified: "",
+      pageNumber: 1,
+
+      pageSize: 3,
       dataV: {},
       dataNV: {},
+      activeTab: "inactiveuser",
       defualtTab: "documents",
       searchText: "",
       searchedColumn: "",
       loading: true,
+      total: 0,
+
+      nameFilter: "",
+      roleFilter: [],
+      averageRatingFilter: [],
     };
   }
   WebServicesManager = new WebServicesManager();
-
+  baseUrl = process.env.REACT_APP_BASE_URL;
   componentWillMount() {
+    const isverified = false;
+    const { pageSize, pageNumber } = this.state;
+    this.getAllUsers(pageSize, pageNumber, isverified);
+  }
+
+  getAllUsers = (pageSize, pageNumber, isverified) => {
     var nonVerified = [];
     var verfied = [];
     var VerifiedUser = [];
@@ -56,13 +73,36 @@ class Users extends Component {
     var vc = 1,
       nvc = 1;
     var tokn = localStorage.getItem("userdata");
-    this.WebServicesManager.getApiCall(
+    // const { pageSize, pageNumber } = this.state;
+    console.log("api pagenumber ", pageNumber);
+    console.log("api pagenumber ", isverified);
+    const pagingParameters = { pageSize: pageSize, pageNumber: pageNumber };
+    // console.log("paging parameteres ", pagingParameters);
+    // console.log(pagingParameters);
+    fetch(
+      // `http://localhost:63539/api/Feedbacks/GetAllUsersRating_New?pagingParameters1=${pagingParameters}&pagingParameters=${pagingParameters}&isVerified=${isverified}`,
+      // `http://localhost:63539/api/Feedbacks/GetAllUsersRating_New?pagingParameters.pageNumber=${pageNumber}&pagingParameters.pageSize=${pageSize}&isVerified=${isverified}`,
+      //  `http://localhost:63539/api/Personal/GetAllUsers_New?pagingParameters.pageSize=${pageSize}&pagingParameters.pageNumber=${pageNumber}&pagingParameters.querySorting=name&pagingParameters.querySorting=descend&isVerified=${isverified}`,
+      `${this.baseUrl}Personal/GetAllUsers`,
       {
-        endPoint: "Personal/GetAllUsers",
-        token: tokn,
-      },
-      (statusCode, response) => {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + tokn,
+        },
+        // body: JSON.stringify(pagingParameters),
+      }
+    )
+      .then((result) => result.json())
+      .then((resp) => resp.data)
+      .then((response) => {
+        console.log("new users ", response);
         console.log("response", response);
+        console.log("totalcount ", response[0].totalCount);
+        response.length > 0
+          ? this.setState({ total: response[0].totalCount })
+          : this.setState({ total: 0 });
+
         response.map((item) => {
           if (
             item.role !== "Admin" &&
@@ -70,25 +110,34 @@ class Users extends Component {
             item.role !== "DSInstructor" &&
             !item.role.includes("Delete")
           ) {
+            console.log("averagecount ", item.ratingCount);
             if (item.documentTested === "Tested") {
               VerifiedUser.push({
                 key: vc,
-                name: item.firstName + " " + item.surName,
+                name: item.firstName + " " + item.surname,
                 role: item.role,
                 active: true,
                 docV: true,
+                count: item.ratingCount,
+                rating: item.averageRating,
                 details: item,
               });
+              console.log("verifiedusers ", VerifiedUser);
               vc = vc + 1;
             } else {
+              console.log("averagecount ", item.ratingCount);
               NonVerifiedUser.push({
                 key: nvc,
-                name: item.firstName + " " + item.surName,
+                name: item.firstName + " " + item.surname,
                 role: item.role,
                 active: true,
                 docV: false,
+                count: item.ratingCount,
+                rating: item.averageRating,
                 details: item,
               });
+              console.log("nonverifiedusers ", NonVerifiedUser);
+
               nvc = nvc + 1;
             }
           }
@@ -96,6 +145,7 @@ class Users extends Component {
 
           return null;
         });
+
         var verifiedUserData = { rows: VerifiedUser };
         var nonVerifiedUserData = { rows: NonVerifiedUser };
         this.setState(
@@ -119,12 +169,37 @@ class Users extends Component {
             }, 100);
           }
         );
-      }
-    );
-  }
+      })
+      .catch((error) => console.log(`Error ${error}`));
+  };
   handleClick(obj) {
     this.setState({ showDetails: !this.state.showDetails, userDetails: obj });
   }
+
+  tabHandler = (k) => {
+    let isverified;
+    this.setState({ loading: true });
+    // const { pageNumber, pageSize } = this.state;
+    if (k === "inactiveuser") {
+      this.setState({ key: k });
+      isverified = false;
+    } else {
+      this.setState({ key: k });
+      isverified = true;
+    }
+    console.log(isverified);
+
+    const pageSize = 3;
+    const pageNumber = 1;
+    const name = "";
+    const roleFilter = [];
+    const averageRatingFilter = [];
+    console.log("new size", pageNumber);
+
+    this.getAllUsers(pageSize, pageNumber, isverified);
+    this.setState({ key: k, pageSize: 1, pageNumber: 20 });
+  };
+
   changeUser = (id) => {
     var token = localStorage.getItem("userdata");
     this.WebServicesManager.getApiWithParamCall(
@@ -246,9 +321,39 @@ class Users extends Component {
   ////////////////////// On Filter / Sorter / Pagination change ////////////////////////
 
   onChange = (pagination, filters, sorter, extra) => {
+    const { key } = this.state;
+    console.log(filters);
+    console.log("sorter ", sorter);
+    console.log("paging", pagination);
+    filters.name && this.setState({ nameFilter: filters.name[0] });
+    filters.role && this.setState({ roleFilter: filters.role });
+    filters.rating && this.setState({ averageRatingFilter: filters.rating });
+    const pageNumber = pagination.current;
+    const pageSize = pagination.pageSize;
+    let isverified;
+
+    console.log("updated pageNumber ", pageNumber);
+    console.log("updated pageSize ", pageSize);
+    // const { pageNumber, pageSize, key } = this.state;
+    if (key === "inactiveuser") {
+      isverified = false;
+    } else {
+      isverified = true;
+    }
+    this.setState({ loading: true });
+    this.getAllUsers(pageSize, pageNumber, isverified);
+    console.log("updated pageNumber2 ", pageNumber);
+    console.log("updated pageSize2 ", pageSize);
+
     // console.log("params", pagination, filters, sorter, extra);
   };
+
   render() {
+    console.log("current key", this.state.total);
+    console.log("role filter ", this.state.roleFilter);
+    console.log("rating filter ", this.state.averageRatingFilter);
+    // console.log("New pagenumber ", this.state.pageNumber);
+    // console.log("New pagesize ", this.state.pageSize);
     const columns = [
       {
         title: "SR. #",
@@ -256,10 +361,10 @@ class Users extends Component {
         key: "number",
         align: "center",
         fontWeight: 400,
-        width: 100,
+        width: 120,
 
-        sorter: (a, b) => a.number - b.number,
-        ...this.getColumnSearchProps("number"),
+        // sorter: (a, b) => a.number - b.number,
+        // ...this.getColumnSearchProps("number"),
       },
       {
         title: <Translation>{(t) => t("Name")}</Translation>,
@@ -302,7 +407,7 @@ class Users extends Component {
         dataIndex: "active",
         key: "active",
         align: "center",
-        width: 160,
+        width: 100,
         render: (active) => (
           <div
             style={{
@@ -321,34 +426,107 @@ class Users extends Component {
         ),
       },
       {
-        title: <Translation>{(t) => t("Document Verified")}</Translation>,
-        dataIndex: "docV",
-        key: "docV",
+        title: <Translation>{(t) => t("Average Rating")}</Translation>,
+        dataIndex: "rating",
+        key: "rating",
         align: "center",
         width: 160,
-        render: (docV) => (
+        render: (rating) => (
           <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              flexDirection: "row",
-              justifyContent: "center",
-            }}
+            className="user-rating-stars"
+            style={{ display: "flex", gap: "5px", justifyContent: "center" }}
           >
-            {docV === true ? (
-              <i className="fa fa-check" style={{ color: "green" }}></i>
-            ) : (
-              <i className="fa fa-remove" style={{ color: "red" }}></i>
-            )}
+            <Rating
+              id={this.props.id}
+              fractions={1}
+              readonly={true}
+              emptySymbol="far fa-star fa-2x fa-fw"
+              fullSymbol="fa fa-star fa-2x fa-fw"
+              initialRating={rating}
+              // onChange={this.handleRating}
+            ></Rating>
+            {rating > 0 && <div className="pl-1">({rating})</div>}
           </div>
+          // <div
+          //   style={{
+          //     display: "flex",
+          //     alignItems: "center",
+          //     flexDirection: "row",
+          //     justifyContent: "center",
+          //   }}
+          // >
+          //   {docV === true ? (
+          //     <i className="fa fa-check" style={{ color: "green" }}></i>
+          //   ) : (
+          //     <i className="fa fa-remove" style={{ color: "red" }}></i>
+          //   )}
+          // </div>
         ),
+        filters: [
+          {
+            text: <StarFilled />,
+            value: 1,
+          },
+          {
+            text: (
+              <span className="d-flex">
+                <StarFilled />
+                <StarFilled />
+              </span>
+            ),
+            value: 2,
+          },
+          {
+            text: (
+              <span className="d-flex">
+                <StarFilled />
+                <StarFilled />
+                <StarFilled />
+              </span>
+            ),
+            value: 3,
+          },
+          {
+            text: (
+              <span className="d-flex">
+                <StarFilled />
+                <StarFilled />
+                <StarFilled />
+                <StarFilled />
+              </span>
+            ),
+            value: 4,
+          },
+          {
+            text: (
+              <span className="d-flex">
+                <StarFilled />
+                <StarFilled />
+                <StarFilled />
+                <StarFilled />
+                <StarFilled />
+              </span>
+            ),
+            value: 5,
+          },
+        ],
+        onFilter: (value, record) => record.rating,
+        sorter: (a, b) => a.rating.length - b.rating.length,
+      },
+      {
+        title: <Translation>{(t) => t("Count")}</Translation>,
+        dataIndex: "count",
+        key: "count",
+        align: "center",
+        width: 120,
+        render: (count) => <div>{count}</div>,
       },
       {
         title: <Translation>{(t) => t("View Details")}</Translation>,
         dataIndex: "details",
         key: "details",
         align: "center",
-        width: 160,
+        width: 130,
         render: (detail) => (
           <div
             style={{
@@ -502,7 +680,9 @@ class Users extends Component {
                       {t("Users")}
                     </h3>
                     <Tabs
-                      defaultActiveKey="inactiveuser"
+                      activeKey={this.state.key}
+                      onSelect={(k) => this.tabHandler(k)}
+                      defaultActiveKey={this.state.activeTab}
                       id="noanim-tab-example"
                     >
                       <Tab eventKey="inactiveuser" title={t("Non Verified")}>
@@ -518,6 +698,7 @@ class Users extends Component {
                         Options={[20, 50, 100]}
                       /> */}
                           <Table
+                            onChange={this.onChange}
                             loading={{
                               indicator: antIcon,
                               spinning: this.state.loading,
@@ -547,10 +728,11 @@ class Users extends Component {
                               position: ["bottomCenter"],
                               size: "small",
                               showQuickJumper: true,
-                              defaultPageSize: 20,
-                              defaultCurrent: 1,
+                              defaultPageSize: this.state.pageSize,
+                              defaultCurrent: this.state.pageNumber,
+                              total: this.state.total,
                               showSizeChanger: true,
-                              pageSizeOptions: [20, 50, 100],
+                              pageSizeOptions: [3, 20, 50, 100],
 
                               showTotal: (total, range) =>
                                 `${range[0]}-${range[1]} of ${total} items`,
@@ -563,7 +745,8 @@ class Users extends Component {
                                     name: item.name,
                                     role: item.role,
                                     active: item.active,
-                                    docV: item.docV,
+                                    rating: item.rating,
+                                    count: item.count,
                                     details: item.details,
                                   }))
                                 : ""
@@ -571,7 +754,7 @@ class Users extends Component {
                           ></Table>
                         </Row>
                       </Tab>
-                      <Tab eventKey="verfied" title={t("Verified")}>
+                      <Tab eventKey="verified" title={t("Verified")}>
                         <Row
                           className="table-responseive"
                           style={{ margin: 10 }}
@@ -584,6 +767,7 @@ class Users extends Component {
                       /> */}
                           <Table
                             // loading={{ indicator: antIcon }}
+                            onChange={this.onChange}
                             style={{ padding: "5px 10px 5px 10px" }}
                             sticky={true}
                             scroll={{ y: "60vh", x: 0 }}
@@ -591,12 +775,14 @@ class Users extends Component {
                             // onChange={this.onChange}
                             pagination={{
                               position: ["bottomCenter"],
-                              size: "small",
+                              size: "large",
                               showQuickJumper: true,
-                              defaultPageSize: 20,
-                              defaultCurrent: 1,
+                              defaultPageSize: this.state.pageSize,
+                              defaultCurrent: this.state.pageNumber,
                               showSizeChanger: true,
-                              pageSizeOptions: [20, 50, 100],
+                              // pageSize: this.state.pageSize,
+                              total: this.state.total,
+                              pageSizeOptions: [3, 20, 50, 100],
 
                               showTotal: (total, range) =>
                                 `${range[0]}-${range[1]} of ${total} items`,
@@ -609,7 +795,8 @@ class Users extends Component {
                                     name: item.name,
                                     role: item.role,
                                     active: item.active,
-                                    docV: item.docV,
+                                    rating: item.rating,
+                                    count: item.count,
                                     details: item.details,
                                   }))
                                 : ""

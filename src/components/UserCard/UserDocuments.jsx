@@ -112,6 +112,7 @@ class UserDocuments extends Component {
     this.getData();
     this.getVehicleMakeData();
     this.getVehicleModelData();
+    console.log("document component mount");
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -886,8 +887,8 @@ class UserDocuments extends Component {
           numberPlate: this.state.numberPlate.toUpperCase(),
           vehichleInsuranceInfoId: insuranceDetail,
           technicalControlInfoID: technicalDetail,
-          vehicleRegistrationCertificatePhotoImagePath: this.state
-            .VCertifiateImagePath,
+          vehicleRegistrationCertificatePhotoImagePath:
+            this.state.VCertifiateImagePath,
           vehicleePhotosImagePath: this.state.VImagePath,
           folder: this.state.folder,
         };
@@ -1174,8 +1175,8 @@ class UserDocuments extends Component {
               numberPlate: this.state.numberPlate,
               vehichleInsuranceInfoId: this.state.insuranceID,
               technicalControlInfoID: this.state.techicalID,
-              vehicleRegistrationCertificatePhotoImagePath: this.state
-                .VCertifiateImagePath,
+              vehicleRegistrationCertificatePhotoImagePath:
+                this.state.VCertifiateImagePath,
               vehicleePhotosImagePath: this.state.VImagePath,
               folder: this.state.folder,
             };
@@ -2453,8 +2454,8 @@ class UserDocuments extends Component {
                                 bsClass: "form-control",
                                 name: "VpoliceNumber",
                                 value: this.state.VpoliceNumber,
-                                onChange: this
-                                  .validationCheckForVInPoliceNumber,
+                                onChange:
+                                  this.validationCheckForVInPoliceNumber,
                                 help: this.state.VpoliceNumberError,
                                 isImport: false,
                                 autoComplete: "off",

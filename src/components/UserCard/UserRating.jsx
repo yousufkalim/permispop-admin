@@ -38,6 +38,7 @@ class UserRating extends Component {
 
   getUserRating = () => {
     const data = this.props;
+    console.log("user data", data);
     var token = localStorage.getItem("userdata");
     const { pageNumber, pageSize } = this.state;
     console.log(token);
@@ -53,9 +54,10 @@ class UserRating extends Component {
         },
       }
     )
-      .then((resp) => console.log("all response ", resp))
+      // .then((resp) => console.log("all response ", resp))
       .then((result) => result.json())
       .then((res) => {
+        console.log("final data ", res);
         this.setState({ userDetails: res });
         console.log("userrating data ", res);
       })

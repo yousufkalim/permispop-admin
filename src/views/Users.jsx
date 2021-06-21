@@ -137,7 +137,8 @@ class Users extends Component {
       //  `http://localhost:63539/api/Personal/GetAllUsers_New?pagingParameters.pageSize=${pageSize}&pagingParameters.pageNumber=${pageNumber}&pagingParameters.querySorting=name&pagingParameters.querySorting=descend&isVerified=${isverified}`,
       // `${this.baseUrl}Personal/GetAllUsers`,
       // `${this.baseUrl}FeedBacks/GetAllUsersRating_New?pagenumber=${pageNumber}&pagesize=${pageSize}&sortvalue=${sortValue}&ModelName=${modelName}&IsVerified=${isVerified}&sortorder=${sortOrder}`,
-      usersUrl,
+      // usersUrl,
+      `${this.baseUrl}Personal/GetAllUsers_New?pagenumber=${pageNumber}&pagesize=${pageSize}&QuerySorting.firstName=descend&IsVerified=${isVerified}`,
       {
         method: "GET",
         headers: {
@@ -148,8 +149,8 @@ class Users extends Component {
       }
     )
       .then((result) => result.json())
-      .then((resp) => resp.data)
       .then((response) => {
+        console.log("api response ", response);
         this.setState({ loading: false });
         console.log("new users ", response);
         console.log("response", response);

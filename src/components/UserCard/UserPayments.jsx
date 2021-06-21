@@ -16,6 +16,7 @@ class UserPayments extends Component {
     console.log("payment component didmount");
   }
   componentWillMount() {
+    console.log("payment props ", this.props);
     var tokn = localStorage.getItem("userdata");
     console.log("payment component willmount");
 

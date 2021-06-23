@@ -1674,6 +1674,7 @@ class UserDocuments extends Component {
                               this.state.frontDoc === undefined
                                 ? false
                                 : this.state.frontDoc.status,
+                                
                           })
                         }
                       ></i>
@@ -2648,7 +2649,8 @@ class UserDocuments extends Component {
             >
               <Modal.Header closeButton>{t("Update Vehicle")}</Modal.Header>
               <Modal.Body>
-                <Form onSubmit={this.handleUpdate}>
+                <Form onSubmit={this.handleUpdate}
+                >
                   <Row>
                     <Grid>
                       <Row>

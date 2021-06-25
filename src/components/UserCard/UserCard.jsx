@@ -64,7 +64,7 @@ export class UserCard extends Component {
   }
 
   componentWillMount() {
-    console.log("users table ");
+    console.log("users table ", this.props);
     var tokn = localStorage.getItem("userdata");
     this.WebServicesManager.getApiWithParamCall(
       {
@@ -83,7 +83,7 @@ export class UserCard extends Component {
       items: [],
       showModal: false,
       firstName: this.props.firstName,
-      surName: this.props.surName,
+      surName: this.props.surname,
       email: this.props.email,
       contactEmail: this.props.contactEmail,
       secondEmail: this.props.secondEmail,
@@ -123,7 +123,7 @@ export class UserCard extends Component {
         items: [],
         showModal: false,
         firstName: this.props.firstName,
-        surName: this.props.surName,
+        surName: this.props.surname,
         email: this.props.email,
         contactEmail: this.props.contactEmail,
         secondEmail: this.props.secondEmail,
@@ -704,7 +704,7 @@ export class UserCard extends Component {
                   <h4 className="title">
                     {this.props.firstName}
                     <br />
-                    <small>{this.props.surName}</small>
+                    <small>{this.props.surname}</small>
                     <hr />
                   </h4>
                   <table className="table">
@@ -975,7 +975,7 @@ export class UserCard extends Component {
                               </div>
                               <div className="col-md-6">
                                 <FormGroup>
-                                  <ControlLabel>{t("Sur Name")}</ControlLabel>
+                                  <ControlLabel>{t("Last Name")}</ControlLabel>
                                   <FormControl
                                     className="form-control"
                                     value={this.state.surName}

@@ -58,6 +58,7 @@ class ID extends Component {
         dataToInsert: dataToInsert,
         token: tokn,
       },
+      
       (statusCode, response) => {
         this.WebServicesManager.getApiWithParamCall(
           {
@@ -111,11 +112,15 @@ class ID extends Component {
                             dataToFetch: Resp.id + "&email=" + Resp.email,
                             token: tokn,
                           },
+                         
                           (statusCode, EResp) => {
                             // console.log("data", EResp);
+                            
                             alert(
                               "All document Verified, mail sent successfully"
+                              
                             );
+                           
                           }
                         );
                       }
@@ -214,6 +219,7 @@ class ID extends Component {
                   type="checkbox"
                   checked={this.state.status}
                   onChange={this.updateStatus}
+                  
                 />
                 <span className="slider round"></span>
               </label>{" "}

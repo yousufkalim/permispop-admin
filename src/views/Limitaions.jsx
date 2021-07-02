@@ -118,7 +118,10 @@ function Limitaions() {
         setCustomValue(custom);
         setLoading(false);
       })
-      .catch((e) => console.log("error loading: ", e));
+      .catch((e) => {
+        setLoading(false);
+        console.log("error loading: ", e);
+      });
   };
 
   const loadUserData = () => {

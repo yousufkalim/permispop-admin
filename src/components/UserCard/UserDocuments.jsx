@@ -22,6 +22,11 @@ import WebServicesManager from "../../WebServicesManager/WebServicesManager";
 import moment from "moment";
 import Utilities from "../../Utilities/Utilities";
 
+import Makes from "../../assets/makesModels/Makes.xml";
+import MakesExc from "../../assets/makesModels/MakesExc.xml";
+import Models from "../../assets/makesModels/Models.xml";
+import XMLParser from "react-xml-parser";
+
 class UserDocuments extends Component {
   WebServicesManager = new WebServicesManager();
   constructor(props) {
@@ -51,8 +56,7 @@ class UserDocuments extends Component {
       vehicleInfo: "",
       // vehicle Add States
       registerDate: "",
-      brand: "",
-      model: "",
+
       numberPlate: "",
       numberPlateError: "",
       gearBox: "Auto",
@@ -92,8 +96,28 @@ class UserDocuments extends Component {
       VInsuranceImagePath: "",
       isAddDisable: true,
       showAddModel: false,
-      brandList: [],
-      modelList: [],
+
+      // for makes and models
+      makes: [],
+      selectedMakeId: "",
+      brand: "",
+      allModels: [],
+      model: "",
+      selectedModelId: "",
+      filteredModels: [
+        {
+          modelId: "null",
+          modelName: "Select Option",
+          makesId: "null",
+          year: "",
+          makesName: "",
+        },
+      ],
+
+      // brand: "",
+      // model: "",
+      // brandList: [],
+      // modelList: [],
       techicalID: "",
       insuranceID: "",
       detailID: "",
@@ -110,9 +134,11 @@ class UserDocuments extends Component {
   }
   componentDidMount() {
     this.getData();
-    this.getVehicleMakeData();
-    this.getVehicleModelData();
-    console.log("document component mount");
+    // this.getVehicleMakeData();
+    // this.getVehicleModelData();
+    this.getAllMakes();
+    this.getAllModels();
+    // console.log("document component mount");
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -975,54 +1001,54 @@ class UserDocuments extends Component {
   };
 
   // get dynamic data for vehicle model and brand
-  getVehicleMakeData = async () => {
-    const response = await fetch(
-      "https://parseapi.back4app.com/classes/Carmodels_Car_Model_List?keys=Make&limit=999999",
-      {
-        headers: {
-          "X-Parse-Application-Id": "XSV8AboSPQpA4pAyKCw67EX7KBnI8YiMt1NvrCdM", // This is your app's application id
-          "X-Parse-REST-API-Key": "qFiiXv1DSjHnkTrrrNWZVcyuiAz7y8uVnf44WLcS", // This is your app's REST API key
-        },
-      }
-    );
-    const data = await response.json(); // Here you have the data that you need
-    const makeList = [];
-    data.results.map((list) => {
-      var exists = makeList.find((item) => item.Make === list.Make);
-      // debugger;
-      if (!exists) {
-        makeList.push(list);
-      }
-      return null;
-    });
-    makeList.sort((a, b) => a.Make.localeCompare(b.Make));
+  // getVehicleMakeData = async () => {
+  //   const response = await fetch(
+  //     "https://parseapi.back4app.com/classes/Carmodels_Car_Model_List?keys=Make&limit=999999",
+  //     {
+  //       headers: {
+  //         "X-Parse-Application-Id": "XSV8AboSPQpA4pAyKCw67EX7KBnI8YiMt1NvrCdM", // This is your app's application id
+  //         "X-Parse-REST-API-Key": "qFiiXv1DSjHnkTrrrNWZVcyuiAz7y8uVnf44WLcS", // This is your app's REST API key
+  //       },
+  //     }
+  //   );
+  //   const data = await response.json(); // Here you have the data that you need
+  //   const makeList = [];
+  //   data.results.map((list) => {
+  //     var exists = makeList.find((item) => item.Make === list.Make);
+  //     // debugger;
+  //     if (!exists) {
+  //       makeList.push(list);
+  //     }
+  //     return null;
+  //   });
+  //   makeList.sort((a, b) => a.Make.localeCompare(b.Make));
 
-    this.setState({ brandList: makeList, brand: data.results[0].Make });
-  };
-  getVehicleModelData = async () => {
-    const response = await fetch(
-      "https://parseapi.back4app.com/classes/Carmodels_Car_Model_List?limit=9999",
-      {
-        headers: {
-          "X-Parse-Application-Id": "XSV8AboSPQpA4pAyKCw67EX7KBnI8YiMt1NvrCdM", // This is your app's application id
-          "X-Parse-REST-API-Key": "qFiiXv1DSjHnkTrrrNWZVcyuiAz7y8uVnf44WLcS", // This is your app's REST API key
-        },
-      }
-    );
-    const data = await response.json(); // Here you have the data that you need
-    // console.log("models",JSON.stringify(data.results, null, 2));
-    const filterData = data.results.filter(
-      (item) => item.Make === this.state.brand
-    );
-    filterData.sort((a, b) => a.Model.localeCompare(b.Model));
-    // console.log("filterData", filterData);
-    this.setState({
-      modelList: filterData,
-      model: `${filterData[0] !== undefined && filterData[0].Model}(${
-        filterData[0] !== undefined && filterData[0].Year
-      })`,
-    });
-  };
+  //   this.setState({ brandList: makeList, brand: data.results[0].Make });
+  // };
+  // getVehicleModelData = async () => {
+  //   const response = await fetch(
+  //     "https://parseapi.back4app.com/classes/Carmodels_Car_Model_List?limit=9999",
+  //     {
+  //       headers: {
+  //         "X-Parse-Application-Id": "XSV8AboSPQpA4pAyKCw67EX7KBnI8YiMt1NvrCdM", // This is your app's application id
+  //         "X-Parse-REST-API-Key": "qFiiXv1DSjHnkTrrrNWZVcyuiAz7y8uVnf44WLcS", // This is your app's REST API key
+  //       },
+  //     }
+  //   );
+  //   const data = await response.json(); // Here you have the data that you need
+  //   // console.log("models",JSON.stringify(data.results, null, 2));
+  //   const filterData = data.results.filter(
+  //     (item) => item.Make === this.state.brand
+  //   );
+  //   filterData.sort((a, b) => a.Model.localeCompare(b.Model));
+  //   // console.log("filterData", filterData);
+  //   this.setState({
+  //     modelList: filterData,
+  //     model: `${filterData[0] !== undefined && filterData[0].Model}(${
+  //       filterData[0] !== undefined && filterData[0].Year
+  //     })`,
+  //   });
+  // };
   // end of vehicle add
 
   //start for vehicle upodate
@@ -1033,6 +1059,9 @@ class UserDocuments extends Component {
     var technicalControlDetial = JSON.parse(
       responseVehicle.technicalControlInfoID
     );
+
+    console.log("start date ", responseVehicle);
+    console.log("end date ", technicalControlDetial.endDateOfTechControl);
     // console.log("technicalControlDetial", technicalControlDetial);
 
     // update state data and open model
@@ -1043,7 +1072,7 @@ class UserDocuments extends Component {
           moment(responseVehicle?.dateOfFirstRegistration).local().format()
         ),
         brand: responseVehicle?.brand,
-
+        model: responseVehicle.model,
         numberPlate: responseVehicle?.numberPlate,
         gearBox: responseVehicle?.gearBox,
         color: responseVehicle?.color,
@@ -1071,13 +1100,15 @@ class UserDocuments extends Component {
             .format()
         ),
         startDateOfTech:
-          technicalControlDetial.startDateOfTech === ""
+          technicalControlDetial.startDateOfTech === "" ||
+          technicalControlDetial.startDateOfTech === "Invalid date"
             ? ""
             : new Date(
                 moment(technicalControlDetial.startDateOfTech).local().format()
               ),
         endDateOfTech:
-          technicalControlDetial.endDateOfTechControl === ""
+          technicalControlDetial.endDateOfTechControl === "" ||
+          technicalControlDetial.endDateOfTechControl === "Invalid date"
             ? ""
             : new Date(
                 moment(technicalControlDetial.endDateOfTechControl)
@@ -1089,12 +1120,12 @@ class UserDocuments extends Component {
         insuranceID: insuranceDetail?.id,
         detailID: responseVehicle?.id,
       },
-      async () => {
+      () => {
         // console.log("this.state", this.state);
         // debugger;
-        await this.getVehicleModelData();
+        // await this.getVehicleModelData();
         this.setState({
-          model: responseVehicle.model.toUpperCase(),
+          model: responseVehicle.model,
           showEdit: true,
           // isAddDisable: false,
         });
@@ -1262,6 +1293,174 @@ class UserDocuments extends Component {
         }
       );
     }
+  };
+
+  validationCheckForVehicleBrand = (e) => {
+    const { value } = e.target;
+    console.log("selecte maake", value);
+    const selectedMake = this.state.makes.filter((item) => item.id === value);
+    const selectedMakesName = selectedMake[0].name;
+    console.log("selected makes name ", selectedMakesName);
+    this.setState({ brand: selectedMakesName });
+    this.setState({ selectedMakeId: value }, () => {
+      if (this.state.selectedMakeId === "") {
+        this.setState(
+          {
+            brandError: "Should Not be empty",
+          },
+          () => {
+            this.handleValidationCheckForButtonDisable();
+          }
+        );
+      } else {
+        this.setState({ brandError: "" }, () => {
+          this.handleValidationCheckForButtonDisable();
+        });
+      }
+    });
+    const filteredModelList = this.state.allModels.filter(
+      (item) => item.makesId === e.target.value
+    );
+
+    if (filteredModelList.length === 0) {
+      filteredModelList.push({
+        modelId: "null",
+        modelName: "Select Option",
+        makesId: "null",
+        year: "",
+        makesName: "",
+      });
+      this.setState({ filteredModels: filteredModelList });
+    } else {
+      const dummyModel = {
+        modelId: "null",
+        modelName: "Select Option",
+        makesId: "null",
+        year: "",
+        makesName: "",
+      };
+      const newModels = [dummyModel, ...filteredModelList];
+
+      this.setState({ filteredModels: newModels });
+    }
+    console.log("models of selected Makes ", filteredModelList);
+  };
+
+  validationCheckForVehicleModel = (e) => {
+    console.log("selecte model", e.target.value);
+    const { value } = e.target;
+    this.setState({ model: value }, () => {
+      if (
+        this.state.model === "" ||
+        this.state.model === undefined ||
+        this.state.model === "Select Option()"
+      ) {
+        console.log("model not selected", this.state.model);
+        this.setState(
+          {
+            modelError: "Should Not be empty",
+          },
+          () => {
+            this.handleValidationCheckForButtonDisable();
+          }
+        );
+      } else {
+        console.log("model not selected", this.state.model);
+        this.setState({ modelError: "" }, () => {
+          this.handleValidationCheckForButtonDisable();
+        });
+      }
+    });
+  };
+
+  getAllMakes = () => {
+    fetch(Makes)
+      .then((res) => res.text())
+      .then((data) => {
+        var xml = new XMLParser().parseFromString(data);
+        const response = xml.children;
+        let allArr = [];
+        response.map((item) => {
+          const id = item.children[0].value;
+          const name = item.children[1].value;
+          const url = item.children[2].value;
+
+          allArr.push({
+            id: id,
+            name: name,
+            url: url,
+          });
+        });
+        this.getExcludingMakes(allArr);
+        // console.log("final array ", allArr);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  getExcludingMakes = (allMakes) => {
+    fetch(MakesExc)
+      .then((res) => res.text())
+      .then((data) => {
+        var xml = new XMLParser().parseFromString(data);
+
+        const response = xml.children;
+        let excArr = [];
+        response.map((item) => {
+          const id = item.children[0].value;
+          const name = item.children[1].value;
+          const url = item.children[2].value;
+
+          excArr.push({
+            id: id,
+            name: name,
+            url: url,
+          });
+        });
+        let result = allMakes.filter(
+          (o1) => !excArr.some((o2) => o1.id === o2.id)
+        );
+
+        const filteredArray = [
+          { id: "", name: "Select option", url: "www.google.com" },
+          ...result,
+        ];
+        // console.log("filtered array ", filteredArray);
+        this.setState({ makes: filteredArray });
+      })
+      .catch((err) => console.log(err));
+  };
+
+  getAllModels = () => {
+    fetch(Models)
+      .then((res) => res.text())
+      .then((data) => {
+        var xml = new XMLParser().parseFromString(data);
+        const response = xml.children;
+        let allArr = [];
+        console.log("all models ", response);
+        response.map((childs) => {
+          childs.children.map((item) => {
+            const modelId = item.children[0].value;
+            const modelName = item.children[1].value;
+            const year = item.children[2].value;
+            const makesId = item.children[3].value;
+            const makesName = item.children[4].value;
+            allArr.push({
+              modelId,
+              modelName,
+              year,
+              makesId,
+              makesName,
+            });
+          });
+        });
+        console.log("final Model array ", allArr);
+        this.setState({ allModels: allArr, loading: false });
+      })
+      .catch((err) => {
+        console.log(err);
+        this.setState({ loading: false });
+      });
   };
 
   render() {
@@ -1674,7 +1873,6 @@ class UserDocuments extends Component {
                               this.state.frontDoc === undefined
                                 ? false
                                 : this.state.frontDoc.status,
-                                
                           })
                         }
                       ></i>
@@ -2197,16 +2395,16 @@ class UserDocuments extends Component {
                               <FormControl
                                 className="noBorderRadius"
                                 componentClass="select"
-                                value={this.state.brand}
+                                name="makes"
+                                value={this.state.selectedMakeId}
                                 onChange={this.validationCheckForVehicleBrand}
                                 autoComplete="off"
                               >
-                                <option value="">{t("Select Option")}</option>
-                                {this.state.brandList.map((item) => (
-                                  <option
-                                    key={item.objectId}
-                                    value={`${item.Make}`}
-                                  >{`${item.Make}`}</option>
+                                {/* <option value="">{t("Select Option")}</option> */}
+                                {this.state.makes.map((item, index) => (
+                                  <option index={index} value={item.id}>
+                                    {item.name}
+                                  </option>
                                 ))}
                               </FormControl>
                               {/* <FormControl
@@ -2251,17 +2449,22 @@ class UserDocuments extends Component {
                                 <FormControl
                                   className="noBorderRadius"
                                   componentClass="select"
+                                  name="models"
                                   value={this.state.model}
                                   onChange={this.validationCheckForVehicleModel}
                                   autoComplete="off"
                                 >
-                                  <option value="">{t("Select Option")}</option>
-                                  {this.state.modelList.map((item) => (
-                                    <option
-                                      value={`${item.Model}(${item.Year})`}
-                                      key={item.objectId}
-                                    >{`${item.Model}(${item.Year})`}</option>
-                                  ))}
+                                  {/* <option value="">{t("Select Option")}</option> */}
+                                  {this.state.filteredModels.map(
+                                    (item, index) => {
+                                      return (
+                                        <option
+                                          index={index}
+                                          value={`${item.modelName}(${item.year})`}
+                                        >{`${item.modelName}(${item.year})`}</option>
+                                      );
+                                    }
+                                  )}
                                 </FormControl>
                                 <HelpBlock>
                                   {t(this.state.modelError)}
@@ -2649,8 +2852,7 @@ class UserDocuments extends Component {
             >
               <Modal.Header closeButton>{t("Update Vehicle")}</Modal.Header>
               <Modal.Body>
-                <Form onSubmit={this.handleUpdate}
-                >
+                <Form onSubmit={this.handleUpdate}>
                   <Row>
                     <Grid>
                       <Row>
@@ -2688,16 +2890,16 @@ class UserDocuments extends Component {
                           <FormControl
                             className="noBorderRadius"
                             componentClass="select"
-                            value={this.state.brand}
+                            name="makes"
+                            value={this.state.selectedMakeId}
                             onChange={this.validationCheckForVehicleBrand}
                             autoComplete="off"
                           >
-                            <option value="">{t("Select Option")}</option>
-                            {this.state.brandList.map((item) => (
-                              <option
-                                key={item.objectId}
-                                value={`${item.Make}`}
-                              >{`${item.Make}`}</option>
+                            {/* <option value="">{t("Select Option")}</option> */}
+                            {this.state.makes.map((item, index) => (
+                              <option index={index} value={item.id}>
+                                {item.name}
+                              </option>
                             ))}
                           </FormControl>
                           {/* <FormControl
@@ -2739,17 +2941,20 @@ class UserDocuments extends Component {
                             <FormControl
                               className="noBorderRadius"
                               componentClass="select"
+                              name="models"
                               value={this.state.model}
                               onChange={this.validationCheckForVehicleModel}
                               autoComplete="off"
                             >
-                              <option value="">{t("Select Option")}</option>
-                              {this.state.modelList.map((item) => (
-                                <option
-                                  value={`${item.Model}(${item.Year})`}
-                                  key={item.objectId}
-                                >{`${item.Model}(${item.Year})`}</option>
-                              ))}
+                              {/* <option value="">{t("Select Option")}</option> */}
+                              {this.state.filteredModels.map((item, index) => {
+                                return (
+                                  <option
+                                    index={index}
+                                    value={`${item.modelName}(${item.year})`}
+                                  >{`${item.modelName}(${item.year})`}</option>
+                                );
+                              })}
                             </FormControl>
                             <HelpBlock>{t(this.state.modelError)}</HelpBlock>
                           </FormGroup>

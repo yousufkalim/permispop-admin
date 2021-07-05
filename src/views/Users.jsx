@@ -163,8 +163,8 @@ class Users extends Component {
           if (
             item.role !== "Admin" &&
             item.role !== "Email" &&
-            item.role !== "DSInstructor" &&
-            !item.role.includes("Delete")
+            item.role !== "DSInstructor"
+            // && !item.role.includes("Delete")
           ) {
             console.log("averagecount ", item.ratingCount);
             if (item.documentTested === "Tested") {

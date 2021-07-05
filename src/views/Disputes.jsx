@@ -37,6 +37,7 @@ class Disputes extends Component {
         token: tokn,
       },
       (s, r) => {
+        console.log("all users ", r);
         if (r !== null) this.setState({ users: r });
         this.setState({ loading: false });
       }

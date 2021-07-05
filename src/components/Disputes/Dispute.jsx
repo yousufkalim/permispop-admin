@@ -21,6 +21,7 @@ class Dispute extends Component {
   }
   WebServicesManager = new WebServicesManager();
   componentWillMount() {
+    console.log("single props ", this.props);
     var tokn = localStorage.getItem("userdata");
     // console.log("props inner", this.props);
     this.WebServicesManager.getApiWithParamCall(
@@ -30,6 +31,9 @@ class Dispute extends Component {
         token: tokn,
       },
       (s, r) => {
+        console.log("get dispute ", r);
+        console.log("id data ", this.props);
+
         // console.log("r", r);
         this.setState({ disputeInfo: r[0] });
         this.WebServicesManager.getApiWithParamCall(
@@ -39,6 +43,7 @@ class Dispute extends Component {
             token: tokn,
           },
           (s, rb) => {
+            console.log("get bookings ", rb);
             this.setState({ bInfo: rb });
             // console.log(rb);
           }
@@ -51,6 +56,7 @@ class Dispute extends Component {
             token: tokn,
           },
           (s, rs) => {
+            console.log("student ", rs);
             this.setState({ sInfo: rs });
           }
         );
@@ -62,6 +68,7 @@ class Dispute extends Component {
             token: tokn,
           },
           (s, ri) => {
+            console.log("instr ", ri);
             this.setState({ iInfo: ri });
           }
         );
@@ -248,9 +255,15 @@ class Dispute extends Component {
                               <option value="Student Suspended">
                                 Student Suspended{" "}
                               </option>
-                              <option value="Intructor Suspended">
-                                Instructor Suspended{" "}
-                              </option>
+                              {this.state.iInfo.role === "CarRentalAgent" ? (
+                                <option value="Intructor Suspended">
+                                  Car Rental Agent Suspended{" "}
+                                </option>
+                              ) : (
+                                <option value="Intructor Suspended">
+                                  Instructor Suspended{" "}
+                                </option>
+                              )}
                             </select>
                           </Col>
                         </Row>

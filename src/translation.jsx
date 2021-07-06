@@ -271,6 +271,16 @@ export default i18n
           "Your email or password is incorrect!":
             "Votre e-mail ou votre mot de passe est incorrect!",
           "Error from sever": "Erreur du serveur",
+          "Car Rental Agent": "Agent de location de voitures",
+
+          "Average Rating": "Moyenne des avis",
+          Count: "Compte",
+
+          "Rating Date": "Date d'évaluation",
+          Rating: "Notation",
+          "View Details": "Voir les détails",
+
+          Ratings: "Notations",
         },
       },
     },

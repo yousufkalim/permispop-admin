@@ -191,7 +191,7 @@ class UserRating extends Component {
     console.log("user data ", this.state.userDetails);
     const columns = [
       {
-        title: "Name",
+        title: <Translation>{(t) => t("Name")}</Translation>,
         dataIndex: "ratingFrom",
         key: "ratingFrom",
         align: "center",

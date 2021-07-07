@@ -764,7 +764,8 @@ export class UserCard extends Component {
                           </tr>
                           <tr>
                             <th>{t("Spoken Language/s")}</th>
-                            {this.props.spokenLanguage !== "" ? (
+                            {this.props.spokenLanguage !== "" ||
+                            this.props.spokenLanguage !== null ? (
                               <td>{this.props.spokenLanguage.join(", ")}</td>
                             ) : (
                               <td>N/A</td>
@@ -780,7 +781,8 @@ export class UserCard extends Component {
                           ) : (
                             <td>N/A</td>
                           )} */}
-                          {this.props.spokenLanguage !== "" ? (
+                          {this.props.spokenLanguage !== "" ||
+                          this.props.spokenLanguage !== null ? (
                             <td>{this.props.spokenLanguage.join(", ")}</td>
                           ) : (
                             <td>N/A</td>

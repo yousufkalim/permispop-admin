@@ -2267,3 +2267,29 @@ thead[class*="ant-table-thead"] th{
 .user-rating-stars .fa-2x {
   font-size: 1.5rem;
 }
+
+.user-screen-container{
+  padding: 20px 10px 2px 10px !important;
+
+}
+
+
+// SPINNER / lOADING
+.spinner{
+  position: absolute;
+  /* background-color: black; */
+  height: 100vh;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100vw;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important; 
+  z-index: 99999;
+}
+.loading-spinner{
+  color: var(--text_color) !important;
+  width: 5rem !important;
+  height: 5rem !important;
+}

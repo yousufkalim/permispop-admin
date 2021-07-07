@@ -279,6 +279,8 @@ export default i18n
           "Rating Date": "Date d'évaluation",
           Rating: "Notation",
           "View Details": "Voir les détails",
+          CarRentalAgent: "Agentdelocationdevoitures",
+          DrivingSchool: "Auto École",
 
           Ratings: "Notations",
         },

@@ -25,7 +25,9 @@ class UserRating extends Component {
       loading: false,
       userDetails: [],
       pageNumber: 1,
-      pageSize: 3,
+      pageSize: 20,
+      searchText: "",
+      roleFilter: [],
     };
   }
   baseUrl = process.env.REACT_APP_BASE_URL;
@@ -37,15 +39,16 @@ class UserRating extends Component {
   }
 
   getUserRating = () => {
+    const { searchText, roleFilter } = this.state;
     const data = this.props;
-    console.log("user data", data);
+    console.log("user data", searchText);
     var token = localStorage.getItem("userdata");
     const { pageNumber, pageSize } = this.state;
     console.log(token);
     console.log(this.props.id);
     const pagingParameters = { pageNumber: pageNumber, pageSize: pageSize };
     fetch(
-      `${this.baseUrl}FeedBacks/GetRatingsById_New?id=${data.id}&Rating=0&PagingParameters=${pagingParameters}`,
+      `${this.baseUrl}FeedBacks/GetRatingsById_New?pagenumber=${pageNumber}&pagesize=${pageSize}&id=${data.id}&QuerySearch.FirstName=${searchText}&QuerySearch.Role=${roleFilter}`,
       {
         method: "GET",
         headers: {
@@ -58,7 +61,7 @@ class UserRating extends Component {
       .then((result) => result.json())
       .then((res) => {
         console.log("final data ", res);
-        this.setState({ userDetails: res });
+        this.setState({ userDetails: res.data });
         console.log("userrating data ", res);
       })
       .catch((error) => console.log(`Error ${error}`));
@@ -137,13 +140,13 @@ class UserRating extends Component {
     filterIcon: (filtered) => (
       <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
     ),
-    onFilter: (value, record) =>
-      record[dataIndex]
-        ? record[dataIndex]
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase())
-        : "",
+    // onFilter: (value, record) =>
+    //   record[dataIndex]
+    //     ? record[dataIndex]
+    //         .toString()
+    //         .toLowerCase()
+    //         .includes(value.toLowerCase())
+    //     : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
         setTimeout(() => this.searchInput.select(), 100);
@@ -165,17 +168,24 @@ class UserRating extends Component {
 
   handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
-    this.setState({
-      searchText: selectedKeys[0],
-      searchedColumn: dataIndex,
-    });
+    this.setState(
+      {
+        searchText: selectedKeys[0],
+        searchedColumn: dataIndex,
+      },
+      () => {
+        this.getUserRating();
+      }
+    );
   };
 
   ////////////////////// Handle For Resetting Search ////////////////////////
 
   handleReset = (clearFilters) => {
     clearFilters();
-    this.setState({ searchText: "" });
+    this.setState({ searchText: "", loading: false }, () => {
+      this.getUserRating();
+    });
   };
 
   ////////////////////// On Filter / Sorter / Pagination change ////////////////////////
@@ -183,6 +193,11 @@ class UserRating extends Component {
   onChange = (pagination, filters, sorter, extra) => {
     console.log("filters ", filters);
     console.log("page ", pagination);
+
+    filters.role &&
+      this.setState({ roleFilter: filters.role, loading: false }, () => {
+        this.getUserRating();
+      });
     // console.log("params", pagination, filters, sorter, extra);
   };
 
@@ -225,9 +240,7 @@ class UserRating extends Component {
             value: "CarRentalAgent",
           },
         ],
-        onFilter: (value, record) => {
-          console.log("value", value);
-        },
+
         //  record.role.indexOf(value) === 0,
         sorter: (a, b) => a.role.length - b.role.length,
       },

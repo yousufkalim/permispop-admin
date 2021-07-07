@@ -42,7 +42,7 @@ class Users extends Component {
       documentVerified: "",
       pageNumber: 1,
 
-      pageSize: 3,
+      pageSize: 20,
       dataV: {},
       dataNV: {},
       activeTab: "inactiveuser",
@@ -71,32 +71,6 @@ class Users extends Component {
 
   componentDidMount() {
     this.getAllUsers();
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    const {
-      isVerified,
-      searchText,
-      sortOrder,
-      roleFilter,
-      pageNumber,
-      pageSize,
-    } = this.state;
-
-    if (
-      prevState.isVerified !== isVerified ||
-      prevState.searchText !== searchText ||
-      prevState.sortOrder !== sortOrder ||
-      prevState.roleFilter.length !== roleFilter.length ||
-      prevState.pageSize !== pageSize ||
-      prevState.pageNumber !== pageNumber
-    ) {
-      console.log("This Get all users function has been called");
-      this.getAllUsers();
-    }
-    if (searchText.length > 0) {
-      this.getAllUsers();
-    }
   }
 
   getAllUsers = async (PageSize, PageNumber, isverified) => {
@@ -138,7 +112,7 @@ class Users extends Component {
       // `${this.baseUrl}Personal/GetAllUsers`,
       // `${this.baseUrl}FeedBacks/GetAllUsersRating_New?pagenumber=${pageNumber}&pagesize=${pageSize}&sortvalue=${sortValue}&ModelName=${modelName}&IsVerified=${isVerified}&sortorder=${sortOrder}`,
       // usersUrl,
-      `${this.baseUrl}Personal/GetAllUsers_New?pagenumber=${pageNumber}&pagesize=${pageSize}&QuerySorting.firstName=descend&IsVerified=${isVerified}`,
+      `${this.baseUrl}Personal/GetAllUsers_New?pagenumber=${pageNumber}&QuerySearch.role=${this.state.roleFilter}&pagesize=${pageSize}&QuerySearch.FirstName=${searchText}&QuerySorting.firstName=descend&IsVerified=${isVerified}`,
       {
         method: "GET",
         headers: {
@@ -154,11 +128,13 @@ class Users extends Component {
         this.setState({ loading: false });
         console.log("new users ", response);
         console.log("response", response);
-        console.log("totalcount ", response[0].totalCount);
+        // console.log("totalcount ", response[0].totalCount.length);
         response.length > 0
           ? this.setState({ total: response[0].totalCount })
           : this.setState({ total: 0 });
 
+        response.length > 0 &&
+          console.log("totalCount ", response[0].totalCount);
         response.map((item) => {
           if (
             item.role !== "Admin" &&
@@ -168,10 +144,18 @@ class Users extends Component {
           ) {
             console.log("averagecount ", item.ratingCount);
             if (item.documentTested === "Tested") {
+              var tRole = "";
+              item.role === "Student"
+                ? (tRole = "Étudiant")
+                : item.role === "Instructor"
+                ? (tRole = "Instructeur")
+                : item.role === "DrivingSchool"
+                ? (tRole = "Auto École")
+                : (tRole = "Agentdelocationdevoitures");
               VerifiedUser.push({
                 key: vc,
                 name: item.firstName + " " + item.surname,
-                role: item.role,
+                role: tRole,
                 active: true,
                 docV: true,
                 count: item.ratingCount,
@@ -181,11 +165,19 @@ class Users extends Component {
               console.log("verifiedusers ", VerifiedUser);
               vc = vc + 1;
             } else {
+              var tRole = "";
+              item.role === "Student"
+                ? (tRole = "Étudiant")
+                : item.role === "Instructor"
+                ? (tRole = "Instructeur")
+                : item.role === "DrivingSchool"
+                ? (tRole = "Auto École")
+                : (tRole = "Agentdelocationdevoitures");
               console.log("averagecount ", item.ratingCount);
               NonVerifiedUser.push({
                 key: nvc,
                 name: item.firstName + " " + item.surname,
-                role: item.role,
+                role: tRole,
                 active: true,
                 docV: false,
                 count: item.ratingCount,
@@ -225,7 +217,7 @@ class Users extends Component {
           }
         );
       })
-      .catch((error) => console.log(`Error ${error}`));
+      .catch((error) => console.log(`Errorssssss ${error}`));
   };
   handleClick(obj) {
     this.setState({ showDetails: !this.state.showDetails, userDetails: obj });
@@ -239,29 +231,44 @@ class Users extends Component {
     if (k === "inactiveuser") {
       this.setState({ key: k });
       isverified = false;
-      this.setState({
-        isVerified: false,
-        sortOrder: "ascend",
-        sortValue: "FristName",
-        pageNumber: 1,
-        pageSize: 3,
-        modelName: "PersonalInfo",
-        searchText: "",
-      });
-      this.setState({ loading: false });
+
+      this.setState(
+        {
+          isVerified: false,
+          sortOrder: "ascend",
+          sortValue: "FristName",
+          pageNumber: 1,
+          pageSize: 20,
+          modelName: "PersonalInfo",
+          searchText: "",
+          loading: false,
+          roleFilter: [],
+        },
+        () => {
+          this.getAllUsers();
+        }
+      );
+      // clearFilters();
     } else {
       this.setState({ key: k });
       isverified = true;
-      this.setState({
-        isVerified: true,
-        sortOrder: "ascend",
-        sortValue: "FirstName",
-        pageNumber: 1,
-        pageSize: 3,
-        modelName: "PersonalInfo",
-        searchText: "",
-      });
-      this.setState({ loading: false });
+      this.setState(
+        {
+          isVerified: true,
+          sortOrder: "ascend",
+          sortValue: "FirstName",
+          pageNumber: 1,
+          pageSize: 20,
+          modelName: "PersonalInfo",
+          searchText: "",
+          loading: false,
+          roleFilter: [],
+        },
+        () => {
+          this.getAllUsers();
+        }
+      );
+      // clearFilters();
     }
     // console.log(isverified);
 
@@ -352,13 +359,13 @@ class Users extends Component {
     filterIcon: (filtered) => (
       <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
     ),
-    onFilter: (value, record) =>
-      record[dataIndex]
-        ? record[dataIndex]
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase())
-        : "",
+    // onFilter: (value, record) =>
+    //   record[dataIndex]
+    //     ? record[dataIndex]
+    //         .toString()
+    //         .toLowerCase()
+    //         .includes(value.toLowerCase())
+    //     : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
         setTimeout(() => this.searchInput.select(), 100);
@@ -381,29 +388,47 @@ class Users extends Component {
   handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
 
-    this.setState({
-      searchText: !selectedKeys[0] ? "" : selectedKeys[0],
-      searchedColumn: dataIndex,
-    });
+    this.setState(
+      {
+        searchText: !selectedKeys[0] ? "" : selectedKeys[0],
+        searchedColumn: dataIndex,
+        loading: false,
+      },
+      () => {
+        this.getAllUsers();
+      }
+    );
   };
 
   ////////////////////// Handle For Resetting Search ////////////////////////
 
   handleReset = (clearFilters) => {
     clearFilters();
-    this.setState({ searchText: "" });
+    this.setState({ searchText: "", loading: false }, () => {
+      this.getAllUsers();
+    });
   };
 
   ////////////////////// On Filter / Sorter / Pagination change ////////////////////////
 
   onChange = (pagination, filters, sorter, extra) => {
     const { key } = this.state;
-    console.log(filters);
-    console.log("sorter ", sorter);
+    console.log(extra);
+    console.log("sorter ", filters);
     console.log("paging", pagination);
-    filters.name && this.setState({ nameFilter: filters.name[0] });
-    filters.role && this.setState({ roleFilter: filters.role });
-    filters.rating && this.setState({ averageRatingFilter: filters.rating });
+    filters.name &&
+      this.setState({ nameFilter: filters.name[0] }, () => {
+        this.getAllUsers();
+      });
+    filters.role &&
+      this.setState({ roleFilter: filters.role, loading: false }, () => {
+        console.log("selected roles ", this.state.roleFilter);
+        this.getAllUsers();
+      });
+    filters.rating &&
+      this.setState({ averageRatingFilter: filters.rating }, () => {
+        this.getAllUsers();
+      });
     const pageNumber = pagination.current;
     const pageSize = pagination.pageSize;
     let isverified;
@@ -417,12 +442,17 @@ class Users extends Component {
       isverified = true;
     }
 
-    this.setState({
-      loading: true,
-      sortOrder: sorter.order ? sorter.order : "ascend",
-      pageSize: pagination.pageSize,
-      pageNumber: pagination.current,
-    });
+    this.setState(
+      {
+        loading: false,
+        sortOrder: sorter.order ? sorter.order : "ascend",
+        pageSize: pagination.pageSize,
+        pageNumber: pagination.current,
+      },
+      () => {
+        this.getAllUsers();
+      }
+    );
     // this.getAllUsers(pageSize, pageNumber, isverified);
     console.log("updated pageNumber2 ", pageNumber);
     console.log("updated pageSize2 ", pageSize);
@@ -431,9 +461,9 @@ class Users extends Component {
   };
 
   render() {
-    console.log("current key", this.state.total);
+    // console.log("current key", this.state.total);
     console.log("role filter ", this.state.roleFilter);
-    console.log("rating filter ", this.state.averageRatingFilter);
+    // console.log("rating filter ", this.state.averageRatingFilter);
     // console.log("New pagenumber ", this.state.pageNumber);
     // console.log("New pagesize ", this.state.pageSize);
     const columns = [
@@ -481,7 +511,7 @@ class Users extends Component {
             value: "CarRentalAgent",
           },
         ],
-        onFilter: (value, record) => record.role.indexOf(value) === 0,
+        // onFilter: (value, record) => record.role.indexOf(value) === 0,
         sorter: (a, b) => a.role.length - b.role.length,
       },
       {
@@ -641,7 +671,7 @@ class Users extends Component {
     return (
       <Translation>
         {(t) => (
-          <div className="content">
+          <div className="content user-screen-container">
             <Grid fluid>
               {this.state.showDetails ? (
                 <Row>
@@ -804,7 +834,7 @@ class Users extends Component {
                             }
                             style={{ padding: "5px 10px 5px 10px" }}
                             sticky={true}
-                            scroll={{ y: "60vh", x: 0 }}
+                            scroll={{ y: "48vh", x: 0 }}
                             columns={columns}
                             pagination={{
                               position: ["bottomCenter"],
@@ -814,7 +844,7 @@ class Users extends Component {
                               defaultCurrent: this.state.pageNumber,
                               total: this.state.total,
                               showSizeChanger: true,
-                              pageSizeOptions: [3, 20, 50, 100],
+                              pageSizeOptions: [20, 50, 100],
 
                               showTotal: (total, range) =>
                                 `${range[0]}-${range[1]} of ${total} items`,
@@ -852,7 +882,7 @@ class Users extends Component {
                             onChange={this.onChange}
                             style={{ padding: "5px 10px 5px 10px" }}
                             sticky={true}
-                            scroll={{ y: "60vh", x: 0 }}
+                            scroll={{ y: "47vh", x: 0 }}
                             columns={columns}
                             // onChange={this.onChange}
                             pagination={{
@@ -864,7 +894,7 @@ class Users extends Component {
                               showSizeChanger: true,
                               // pageSize: this.state.pageSize,
                               total: this.state.total,
-                              pageSizeOptions: [3, 20, 50, 100],
+                              pageSizeOptions: [20, 50, 100],
 
                               showTotal: (total, range) =>
                                 `${range[0]}-${range[1]} of ${total} items`,

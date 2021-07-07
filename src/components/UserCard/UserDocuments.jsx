@@ -13,6 +13,8 @@ import {
   FormGroup,
 } from "react-bootstrap";
 import FormInputs from "../../components/FormInputs/FormInputs";
+import { SearchOutlined, LoadingOutlined, StarFilled } from "@ant-design/icons";
+
 // import Loader from "react-loader-spinner";
 import { Translation } from "react-i18next";
 import DatePicker from "react-datepicker";
@@ -21,7 +23,7 @@ import ID from "components/Documents/ID.jsx";
 import WebServicesManager from "../../WebServicesManager/WebServicesManager";
 import moment from "moment";
 import Utilities from "../../Utilities/Utilities";
-
+import CircularProgress from "@material-ui/core/CircularProgress";
 import Makes from "../../assets/makesModels/Makes.xml";
 import MakesExc from "../../assets/makesModels/MakesExc.xml";
 import Models from "../../assets/makesModels/Models.xml";
@@ -121,7 +123,7 @@ class UserDocuments extends Component {
       techicalID: "",
       insuranceID: "",
       detailID: "",
-      loading: false,
+      loading: true,
     };
   }
   componentWillMount() {
@@ -134,6 +136,8 @@ class UserDocuments extends Component {
   }
   componentDidMount() {
     this.getData();
+
+    console.log("documents mount");
     // this.getVehicleMakeData();
     // this.getVehicleModelData();
     this.getAllMakes();
@@ -145,8 +149,10 @@ class UserDocuments extends Component {
     if (prevProps.id !== this.props.id) {
       this.loadDataFromProps();
       this.getData();
-      this.getVehicleMakeData();
-      this.getVehicleModelData();
+      this.getAllMakes();
+      this.getAllModels();
+      // this.getVehicleMakeData();
+      // this.getVehicleModelData();
     }
   }
 
@@ -1569,10 +1575,21 @@ class UserDocuments extends Component {
       });
     }
 
+    const { loading } = this.state;
+
     return (
       <Translation>
         {(t) => (
           <div className="content">
+            {loading && (
+              <div className="spinner">
+                <LoadingOutlined
+                  style={{ fontSize: 46, color: "#149e7a", marginTop: "30px" }}
+                  spin
+                />
+              </div>
+            )}
+
             <Modal size="lg" show={this.state.showId}>
               <Modal.Header
                 closeButton

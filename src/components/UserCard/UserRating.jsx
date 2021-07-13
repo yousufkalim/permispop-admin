@@ -28,6 +28,7 @@ class UserRating extends Component {
       pageSize: 20,
       searchText: "",
       roleFilter: [],
+      total: 0,
     };
   }
   baseUrl = process.env.REACT_APP_BASE_URL;
@@ -59,10 +60,34 @@ class UserRating extends Component {
     )
       // .then((resp) => console.log("all response ", resp))
       .then((result) => result.json())
-      .then((res) => {
-        console.log("final data ", res);
-        this.setState({ userDetails: res.data });
+      .then((response) => {
+        // console.log("final data ", res);
+        const res = response.data;
+        res.length > 0
+          ? this.setState({ total: res[0].totalCount })
+          : this.setState({ total: 0 });
         console.log("userrating data ", res);
+
+        var newArr = [];
+        res.map((item, index) => {
+          var tRole = "";
+          item.role === "Student"
+            ? (tRole = "Étudiant")
+            : item.role === "Instructor"
+            ? (tRole = "Instructeur")
+            : item.role === "DrivingSchool"
+            ? (tRole = "Auto École")
+            : (tRole = "Agentdelocationdevoitures");
+          newArr.push({
+            key: index + 1,
+            name: item.firstName,
+            ratingFrom: `${item.firstName} ${item.surname}`,
+            role: tRole,
+            rating: item.rating,
+            feedBackDate: item.feedBackDate,
+          });
+        });
+        this.setState({ userDetails: newArr });
       })
       .catch((error) => console.log(`Error ${error}`));
 
@@ -199,6 +224,18 @@ class UserRating extends Component {
         this.getUserRating();
       });
     // console.log("params", pagination, filters, sorter, extra);
+
+    this.setState(
+      {
+        loading: false,
+
+        pageSize: pagination.pageSize,
+        pageNumber: pagination.current,
+      },
+      () => {
+        this.getUserRating();
+      }
+    );
   };
 
   render() {
@@ -239,6 +276,10 @@ class UserRating extends Component {
             text: <Translation>{(t) => t("Car Rental Agent")}</Translation>,
             value: "CarRentalAgent",
           },
+          {
+            text: <Translation>{(t) => t("DSInstructor")}</Translation>,
+            value: "DSInstructor",
+          },
         ],
 
         //  record.role.indexOf(value) === 0,
@@ -261,59 +302,59 @@ class UserRating extends Component {
             // onChange={this.handleRating}
           ></Rating>
         ),
-        filters: [
-          {
-            text: <StarFilled />,
-            value: 1,
-          },
-          {
-            text: (
-              <span className="d-flex">
-                <StarFilled />
-                <StarFilled />
-              </span>
-            ),
-            value: 2,
-          },
-          {
-            text: (
-              <span className="d-flex">
-                <StarFilled />
-                <StarFilled />
-                <StarFilled />
-              </span>
-            ),
-            value: 3,
-          },
-          {
-            text: (
-              <span className="d-flex">
-                <StarFilled />
-                <StarFilled />
-                <StarFilled />
-                <StarFilled />
-              </span>
-            ),
-            value: 4,
-          },
-          {
-            text: (
-              <span className="d-flex">
-                <StarFilled />
-                <StarFilled />
-                <StarFilled />
-                <StarFilled />
-                <StarFilled />
-              </span>
-            ),
-            value: 5,
-          },
-        ],
+        // filters: [
+        //   {
+        //     text: <StarFilled />,
+        //     value: 1,
+        //   },
+        //   {
+        //     text: (
+        //       <span className="d-flex">
+        //         <StarFilled />
+        //         <StarFilled />
+        //       </span>
+        //     ),
+        //     value: 2,
+        //   },
+        //   {
+        //     text: (
+        //       <span className="d-flex">
+        //         <StarFilled />
+        //         <StarFilled />
+        //         <StarFilled />
+        //       </span>
+        //     ),
+        //     value: 3,
+        //   },
+        //   {
+        //     text: (
+        //       <span className="d-flex">
+        //         <StarFilled />
+        //         <StarFilled />
+        //         <StarFilled />
+        //         <StarFilled />
+        //       </span>
+        //     ),
+        //     value: 4,
+        //   },
+        //   {
+        //     text: (
+        //       <span className="d-flex">
+        //         <StarFilled />
+        //         <StarFilled />
+        //         <StarFilled />
+        //         <StarFilled />
+        //         <StarFilled />
+        //       </span>
+        //     ),
+        //     value: 5,
+        //   },
+        // ],
         onFilter: (value, record) => record.rating,
-        sorter: (a, b) => a.rating.length - b.rating.length,
+        // sorter: (a, b) => a.rating.length - b.rating.length,
       },
       {
-        title: "Rating Date",
+        title: <Translation>{(t) => t("Rating Date")}</Translation>,
         dataIndex: "feedBackDate",
         key: "feedBackDate",
         align: "center",
@@ -364,8 +405,8 @@ class UserRating extends Component {
             pagination={{
               position: ["bottomCenter"],
               size: "small",
-
-              showQuickJumper: true,
+              total: this.state.total,
+              // showQuickJumper: true,
               defaultPageSize: pageSize,
               defaultCurrent: 1,
               showSizeChanger: true,
@@ -376,9 +417,9 @@ class UserRating extends Component {
             dataSource={
               this.state.userDetails !== undefined
                 ? this.state.userDetails.map((item, index) => ({
-                    key: index + 1,
-                    name: item.firstName,
-                    ratingFrom: `${item.firstName} ${item.surname}`,
+                    key: item.key,
+                    name: item.name,
+                    ratingFrom: item.ratingFrom,
                     role: item.role,
                     rating: item.rating,
                     feedBackDate: item.feedBackDate,

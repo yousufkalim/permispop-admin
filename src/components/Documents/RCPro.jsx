@@ -12,6 +12,7 @@ import {
 import WebServicesManager from "../../WebServicesManager/WebServicesManager";
 import FileDisplay from "components/Documents/FileDisplay.jsx";
 import moment from "moment";
+import { Translation } from "react-i18next";
 
 class RCPro extends Component {
   constructor(props) {
@@ -209,7 +210,7 @@ class RCPro extends Component {
                 {moment(this.state.rc.endDate).format("DD/MM/YYYY")}
                 <br />
                 <Button varient="success" onClick={this.handleModelShow}>
-                  Update Data
+                  <Translation>{(t) => t("Update Data")}</Translation>
                 </Button>
               </Col>
             </Row>
@@ -222,7 +223,9 @@ class RCPro extends Component {
             size="xl"
           >
             <Modal.Header closeButton>
-              <Modal.Title>Update Data</Modal.Title>
+              <Modal.Title>
+                <Translation>{(t) => t("Update Data")}</Translation>
+              </Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <div className="content">

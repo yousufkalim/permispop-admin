@@ -12,6 +12,7 @@ import {
 import WebServicesManager from "../../WebServicesManager/WebServicesManager";
 import FileDisplay from "components/Documents/FileDisplay.jsx";
 import moment from "moment";
+import { Translation } from "react-i18next";
 
 class AOE extends Component {
   WebServicesManager = new WebServicesManager();
@@ -209,7 +210,7 @@ class AOE extends Component {
               Issuing Authority: {this.state.aoe.issuingAuthority}
               <br />
               <Button varient="success" onClick={this.handleModelShow}>
-                Update Data
+                <Translation>{(t) => t("Update Data")}</Translation>
               </Button>
             </Col>
           </Row>
@@ -222,7 +223,9 @@ class AOE extends Component {
           size="xl"
         >
           <Modal.Header closeButton>
-            <Modal.Title>Update Data</Modal.Title>
+            <Modal.Title>
+              <Translation>{(t) => t("Update Data")}</Translation>
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <div className="content">

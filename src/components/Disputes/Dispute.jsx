@@ -94,13 +94,17 @@ class Dispute extends Component {
           token: tokn,
         },
         (s, r) => {
-          // console.log("drispuet r",r);
+          console.log("drispuet r", r);
           if (this.state.status === "Student Suspended") {
+            console.log("id ", this.state.sInfo.id);
+            console.log("status ", this.state.status);
             // debugger;
             this.deactivateUser(this.state.sInfo.id);
           } else if (this.state.status === "Instructor Suspended") {
-            this.deactivateUser(this.state.IInfo.id);
+            console.log("status ", this.state.iInfo.id);
+            this.deactivateUser(this.state.iInfo.id);
           } else {
+            console.log("status ", this.state.status);
             this.props.toggle();
             window.location.reload();
           }
@@ -108,6 +112,7 @@ class Dispute extends Component {
       );
   };
   deactivateUser = (id) => {
+    console.log(id);
     // debugger;
     var tokn = localStorage.getItem("userdata");
     this.WebServicesManager.getApiWithParamCall(
@@ -142,6 +147,8 @@ class Dispute extends Component {
         };
         // debugger;
         var dataTo = JSON.stringify(profiledataUnban);
+        console.log("dispute deactive ", dataTo);
+
         this.WebServicesManager.postApiCall(
           {
             endPoint: "Profile/UpdateProfile",
@@ -150,7 +157,7 @@ class Dispute extends Component {
           },
           (statusCode, response) => {
             this.props.toggle();
-            window.location.reload();
+            // window.location.reload();
           }
         );
       }
@@ -244,24 +251,24 @@ class Dispute extends Component {
                       <Grid>
                         <Row>
                           <Col md={10}>
-                            {t("Change Status")}:
+                            {(t) => t("Change Status")}:
                             <select
                               className="form-control"
                               onChange={this.handleStatusChange}
                             >
                               <option value="-1"></option>
-                              <option value="Open">Open </option>
-                              <option value="Closed">Closed </option>
+                              <option value="Open">{t("Open")} </option>
+                              <option value="Closed">{t("Closed")} </option>
                               <option value="Student Suspended">
-                                Student Suspended{" "}
+                                {t("Student Suspended")}
                               </option>
                               {this.state.iInfo.role === "CarRentalAgent" ? (
-                                <option value="Intructor Suspended">
-                                  Car Rental Agent Suspended{" "}
+                                <option value="Instructor Suspended">
+                                  {t("Car Rental Agent Suspended")}
                                 </option>
                               ) : (
-                                <option value="Intructor Suspended">
-                                  Instructor Suspended{" "}
+                                <option value="Instructor Suspended">
+                                  {t("Instructor Suspended")}
                                 </option>
                               )}
                             </select>
@@ -283,7 +290,7 @@ class Dispute extends Component {
                               onClick={this.submit}
                               style={{ marginTop: 30 }}
                             >
-                              {t("Submit")}
+                              <Translation>{(t) => t("Submit")}</Translation>
                             </Button>
                           </Col>
                         </Row>
@@ -389,7 +396,7 @@ class Dispute extends Component {
               <Row>
                 <Col md={6}>
                   <Card
-                    title="Student"
+                    title={t("Student")}
                     category=""
                     ctTableFullWidth
                     ctTableResponsive
@@ -423,7 +430,7 @@ class Dispute extends Component {
                 </Col>
                 <Col md={6}>
                   <Card
-                    title="Instructor"
+                    title={t("Instructor")}
                     category=""
                     ctTableFullWidth
                     ctTableResponsive

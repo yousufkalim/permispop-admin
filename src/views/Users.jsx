@@ -112,7 +112,7 @@ class Users extends Component {
       // `${this.baseUrl}Personal/GetAllUsers`,
       // `${this.baseUrl}FeedBacks/GetAllUsersRating_New?pagenumber=${pageNumber}&pagesize=${pageSize}&sortvalue=${sortValue}&ModelName=${modelName}&IsVerified=${isVerified}&sortorder=${sortOrder}`,
       // usersUrl,
-      `${this.baseUrl}Personal/GetAllUsers_New?pagenumber=${pageNumber}&QuerySearch.role=${this.state.roleFilter}&pagesize=${pageSize}&QuerySearch.FirstName=${searchText}&QuerySorting.firstName=descend&IsVerified=${isVerified}`,
+      `${this.baseUrl}Personal/GetAllUsers_New?pagenumber=${pageNumber}&pagesize=${pageSize}&QuerySearch.role=${this.state.roleFilter}&pagesize=${pageSize}&QuerySearch.FirstName=${searchText}&QuerySorting.firstName=descend&IsVerified=${isVerified}`,
       {
         method: "GET",
         headers: {
@@ -220,6 +220,7 @@ class Users extends Component {
       .catch((error) => console.log(`Errorssssss ${error}`));
   };
   handleClick(obj) {
+    console.log("tosend ", obj);
     this.setState({ showDetails: !this.state.showDetails, userDetails: obj });
   }
 
@@ -291,6 +292,7 @@ class Users extends Component {
         token,
       },
       (statusCode, responseUser) => {
+        console.log("change user ", responseUser);
         this.setState({ userDetails: responseUser, defualtTab: "documents" });
       }
     );
@@ -839,7 +841,7 @@ class Users extends Component {
                             pagination={{
                               position: ["bottomCenter"],
                               size: "small",
-                              showQuickJumper: true,
+                              // showQuickJumper: true,
                               defaultPageSize: this.state.pageSize,
                               defaultCurrent: this.state.pageNumber,
                               total: this.state.total,
@@ -847,7 +849,7 @@ class Users extends Component {
                               pageSizeOptions: [20, 50, 100],
 
                               showTotal: (total, range) =>
-                                `${range[0]}-${range[1]} of ${total} items`,
+                                `${range[0]}-${range[1]} of ${total} Lignes`,
                             }}
                             dataSource={
                               this.state.dataNV.rows !== undefined
@@ -888,7 +890,7 @@ class Users extends Component {
                             pagination={{
                               position: ["bottomCenter"],
                               size: "large",
-                              showQuickJumper: true,
+                              // showQuickJumper: true,
                               defaultPageSize: this.state.pageSize,
                               defaultCurrent: this.state.pageNumber,
                               showSizeChanger: true,
@@ -897,7 +899,7 @@ class Users extends Component {
                               pageSizeOptions: [20, 50, 100],
 
                               showTotal: (total, range) =>
-                                `${range[0]}-${range[1]} of ${total} items`,
+                                `${range[0]}-${range[1]} of ${total} Lignes`,
                             }}
                             dataSource={
                               this.state.dataNV.rows !== undefined

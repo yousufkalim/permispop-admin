@@ -442,7 +442,7 @@ export class UpdateRequest extends Component {
                               pageSizeOptions: [20, 50, 100],
 
                               showTotal: (total, range) =>
-                                `${range[0]}-${range[1]} of ${total} items`,
+                                `${range[0]}-${range[1]} of ${total} Lignes`,
                             }}
                             dataSource={this.state.pendingRequest.map(
                               (item, index) => ({
@@ -497,7 +497,7 @@ export class UpdateRequest extends Component {
                               pageSizeOptions: [20, 50, 100],
 
                               showTotal: (total, range) =>
-                                `${range[0]}-${range[1]} of ${total} items`,
+                                `${range[0]}-${range[1]} of ${total} Lignes`,
                             }}
                             dataSource={
                               this.state.completed.length > 0

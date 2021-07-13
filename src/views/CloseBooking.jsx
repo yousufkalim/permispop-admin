@@ -60,12 +60,14 @@ class CloseBooking extends Component {
   closeBookingRange = () => {
     const { startDate, endDate, message } = this.state;
 
+    console.log("message submit ", message);
+
     const info = {
       message,
       startDate: startDate + "T00:00:00Z",
       endDate: endDate + "T23:59:00",
     };
-    fetch(`${process.env.REACT_APP_BASE_NODE}/dynamic/closerangebooking`, {
+    fetch(`${process.env.REACT_APP_BASE_NODE}dynamic/closerangebooking`, {
       method: "POST",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("userdata"),
@@ -206,7 +208,7 @@ class CloseBooking extends Component {
                                   *
                                 </span>
                                 <textarea
-                                  value=""
+                                  value={this.state.message}
                                   className="form-control"
                                   rows="5"
                                   style={{ width: 400, marginTop: "6px" }}
@@ -214,9 +216,7 @@ class CloseBooking extends Component {
                                     this.setState({ message: e.target.value })
                                   }
                                   id="reasontoclose"
-                                >
-                                  {this.state.message}
-                                </textarea>
+                                />
                               </ControlLabel>
                             </FormGroup>
                           </Col>

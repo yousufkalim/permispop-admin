@@ -1803,14 +1803,15 @@ a {
    
   /* Handle */
   ::-webkit-scrollbar-thumb {
-	 background: darkorange; 
-	 /* border-radius: 10px; */
+	 background: #1fdab3;
+	//  background: darkorange;
+   
   }
   
   /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-	 background: darkorange; 
-  }
+  // ::-webkit-scrollbar-thumb:hover {
+	//  background: darkorange; 
+  // }
 
 /* end of sidebar styling */
 

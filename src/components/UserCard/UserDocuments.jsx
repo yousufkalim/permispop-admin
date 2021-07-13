@@ -137,16 +137,20 @@ class UserDocuments extends Component {
   componentDidMount() {
     this.getData();
 
-    console.log("documents mount");
+    console.log("documents mount", this.props);
     // this.getVehicleMakeData();
     // this.getVehicleModelData();
-    this.getAllMakes();
-    this.getAllModels();
+    if (this.props.role !== "Student") {
+      this.getAllMakes();
+      this.getAllModels();
+    } else {
+      this.setState({ loading: false });
+    }
     // console.log("document component mount");
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.id !== this.props.id) {
+    if (prevProps.id !== this.props.id && this.props.role !== "Student") {
       this.loadDataFromProps();
       this.getData();
       this.getAllMakes();
@@ -165,6 +169,7 @@ class UserDocuments extends Component {
         token: tokn,
       },
       (statusCode, responseProfile) => {
+        console.log("my data ", responseProfile);
         var vehicle = "";
         if (
           responseProfile.role === "Instructor" ||
@@ -180,6 +185,9 @@ class UserDocuments extends Component {
             vehicle = JSON.parse(responseProfile.drivingSchoolVehiclesInfoId);
           }
         }
+
+        console.log("my data 2 ", responseProfile);
+
         var vehicleData = {};
         if (vehicle !== null && Object.entries(vehicle).length > 0) {
           Object.entries(vehicle).forEach(([key, value]) => {
@@ -195,6 +203,7 @@ class UserDocuments extends Component {
                   Object.entries(vehicleData).length ===
                   Object.entries(vehicle).length
                 ) {
+                  console.log("profile data ", responseProfile);
                   this.setState(
                     { profileData: responseProfile, vehicleInfo: vehicleData },
                     () => {}
@@ -223,12 +232,15 @@ class UserDocuments extends Component {
       },
       (statusCode, list) => {
         var newState = {};
+        console.log("Document Data ", list);
         list
           .filter((item) => item.documentName.includes("veh"))
           .map((item) => {
             newState[item.documentName] = item;
             return null;
           });
+
+        console.log("Document Data 2 ", list);
         this.setState(
           {
             profile: list.find((o) => o.documentName === "profile"),
@@ -1308,7 +1320,7 @@ class UserDocuments extends Component {
     const selectedMakesName = selectedMake[0].name;
     console.log("selected makes name ", selectedMakesName);
     this.setState({ brand: selectedMakesName });
-    this.setState({ selectedMakeId: value }, () => {
+    this.setState({ selectedMakeId: value, model: "" }, () => {
       if (this.state.selectedMakeId === "") {
         this.setState(
           {

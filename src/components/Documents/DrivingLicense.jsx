@@ -12,6 +12,7 @@ import {
 import WebServicesManager from "../../WebServicesManager/WebServicesManager";
 import FileDisplay from "components/Documents/FileDisplay.jsx";
 import moment from "moment";
+import { Translation } from "react-i18next";
 
 class DrivingLicense extends Component {
   WebServicesManager = new WebServicesManager();
@@ -249,7 +250,7 @@ class DrivingLicense extends Component {
               {moment(this.state.dLic.validityDate).format("DD/MM/YYYY")}
               <br />
               <Button varient="success" onClick={this.handleModelShow}>
-                Update Data
+                <Translation>{(t) => t("Update Data")}</Translation>
               </Button>
             </Col>
           </Row>

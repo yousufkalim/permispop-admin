@@ -138,6 +138,7 @@ export default i18n
           Student: "Étudiant",
           Students: "Étudiants",
           Instructor: "Instructeur",
+          DSInstructor: "DSInstructeur",
           Instructors: "Instructeurs",
           "Driving School": "Auto École",
           "Rental Car Company": "Loueur de voitures",
@@ -146,7 +147,7 @@ export default i18n
             "Clotûrer toutes les réservations entre 2 dates",
           "START DATE": "Date de début",
           "END DATE": "Date de fin",
-          "Message / Reason": "Message / Raison",
+          "Message/Reason": "Commentaire/Raison",
           "Close Bookings": "Fermer les réservations",
           "Booking Count": "Nombre de réservations",
           "Users with max booking count":
@@ -276,13 +277,17 @@ export default i18n
           "Average Rating": "Moyenne des avis",
           Count: "Compte",
 
-          "Rating Date": "Date d'évaluation",
+          "Rating Date": "Date de notation",
           Rating: "Notation",
           "View Details": "Voir les détails",
           CarRentalAgent: "Agentdelocationdevoitures",
           DrivingSchool: "Auto École",
 
           Ratings: "Notations",
+
+          Submit: "Envoyer",
+
+          Complete: "Compléter",
         },
       },
     },

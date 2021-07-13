@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import FileDisplay from "components/Documents/FileDisplay.jsx";
 import { Grid, Row, Col } from "react-bootstrap";
 import moment from "moment";
+import { Translation } from "react-i18next";
 
 class DrivingLicense extends Component {
   constructor(props) {
@@ -65,7 +66,7 @@ class DrivingLicense extends Component {
             <br />
             <b>{this.props.firstName}</b>
             <br />
-            Email: {this.props.email}
+            Email: {this.props.contactEmail}
             <br />
             Gender:{this.props.gender}
             <br />
@@ -78,8 +79,11 @@ class DrivingLicense extends Component {
             Address: {this.props.address}
             <hr />
             <p style={{ color: "red", fontSize: 12 }}>
-              **For Updating Data click on button <b>Update Data</b> under
-              profile info card**
+              **For Updating Data click on button{" "}
+              <b>
+                <Translation>{(t) => t("Update Data")}</Translation>
+              </b>{" "}
+              under profile info card**
             </p>
           </Col>
         </Row>

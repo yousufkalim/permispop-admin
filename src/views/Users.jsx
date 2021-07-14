@@ -112,7 +112,7 @@ class Users extends Component {
       // `${this.baseUrl}Personal/GetAllUsers`,
       // `${this.baseUrl}FeedBacks/GetAllUsersRating_New?pagenumber=${pageNumber}&pagesize=${pageSize}&sortvalue=${sortValue}&ModelName=${modelName}&IsVerified=${isVerified}&sortorder=${sortOrder}`,
       // usersUrl,
-      `${this.baseUrl}Personal/GetAllUsers_New?pagenumber=${pageNumber}&pagesize=${pageSize}&QuerySearch.role=${this.state.roleFilter}&pagesize=${pageSize}&QuerySearch.FirstName=${searchText}&QuerySorting.firstName=descend&IsVerified=${isVerified}`,
+      `${this.baseUrl}Personal/GetAllUsers_New?pagenumber=${pageNumber}&pagesize=${pageSize}&QuerySearch.role=${this.state.roleFilter}&pagesize=${pageSize}&QuerySearch.FirstName=${searchText}&QuerySorting.${sortValue}=${sortOrder}&IsVerified=${isVerified}`,
       {
         method: "GET",
         headers: {
@@ -154,7 +154,7 @@ class Users extends Component {
                 : (tRole = "Agentdelocationdevoitures");
               VerifiedUser.push({
                 key: vc,
-                name: item.firstName + " " + item.surname,
+                firstName: item.firstName + " " + item.surname,
                 role: tRole,
                 active: true,
                 docV: true,
@@ -176,7 +176,7 @@ class Users extends Component {
               console.log("averagecount ", item.ratingCount);
               NonVerifiedUser.push({
                 key: nvc,
-                name: item.firstName + " " + item.surname,
+                firstName: item.firstName + " " + item.surname,
                 role: tRole,
                 active: true,
                 docV: false,
@@ -330,7 +330,7 @@ class Users extends Component {
             size="small"
             style={{ width: 90 }}
           >
-            Search
+            <Translation>{(t) => t("Search")}</Translation>
           </Button>
           <Button
             type="primary"
@@ -339,7 +339,7 @@ class Users extends Component {
             size="small"
             style={{ width: 90 }}
           >
-            Reset
+            <Translation>{(t) => t("Reset")}</Translation>
           </Button>
           <Button
             type="link"
@@ -353,7 +353,7 @@ class Users extends Component {
             }}
             style={{ color: "#149e7a" }}
           >
-            Filter
+            <Translation>{(t) => t("Filter")}</Translation>
           </Button>
         </Space>
       </div>
@@ -416,7 +416,7 @@ class Users extends Component {
   onChange = (pagination, filters, sorter, extra) => {
     const { key } = this.state;
     console.log(extra);
-    console.log("sorter ", filters);
+    console.log("sorter ", sorter);
     console.log("paging", pagination);
     filters.name &&
       this.setState({ nameFilter: filters.name[0] }, () => {
@@ -450,6 +450,7 @@ class Users extends Component {
         sortOrder: sorter.order ? sorter.order : "ascend",
         pageSize: pagination.pageSize,
         pageNumber: pagination.current,
+        sortValue: sorter.field,
       },
       () => {
         this.getAllUsers();
@@ -482,11 +483,11 @@ class Users extends Component {
       },
       {
         title: <Translation>{(t) => t("Name")}</Translation>,
-        dataIndex: "name",
-        key: "name",
+        dataIndex: "firstName",
+        key: "firstName",
         align: "center",
         width: 160,
-        sorter: (a, b) => a.name.length - b.name.length,
+        sorter: (a, b) => a.firstName.length - b.firstName.length,
         ...this.getColumnSearchProps("name"),
       },
       {
@@ -856,7 +857,7 @@ class Users extends Component {
                                 ? this.state.dataNV.rows.map((item, index) => ({
                                     key: index + 1,
                                     number: item.key,
-                                    name: item.name,
+                                    firstName: item.firstName,
                                     role: item.role,
                                     active: item.active,
                                     rating: item.rating,
@@ -906,7 +907,7 @@ class Users extends Component {
                                 ? this.state.dataV.rows.map((item, index) => ({
                                     key: index + 1,
                                     number: item.key,
-                                    name: item.name,
+                                    firstName: item.firstName,
                                     role: item.role,
                                     active: item.active,
                                     rating: item.rating,

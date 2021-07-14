@@ -21,12 +21,20 @@ const antIcon = (
 
 export class UpdateRequest extends Component {
   WebServicesManager = new WebServicesManager();
+  baseUrl = process.env.REACT_APP_BASE_URL;
   constructor(props) {
     super(props);
     this.state = {
       pendingRequest: [],
       completed: [],
       loading: true,
+
+      // searching/ paging
+      isVerified: false,
+      name: "",
+      updateField: "",
+      pageSize: 3,
+      pageNumber: 1,
     };
   }
 
@@ -36,21 +44,31 @@ export class UpdateRequest extends Component {
   }
 
   loadData = () => {
+    const { pageSize, pageNumber, isVerified, name } = this.state;
     this.setState({
       pendingRequest: [],
       completed: [],
     });
     var token = localStorage.getItem("userdata");
-    this.WebServicesManager.getApiCall(
+    fetch(
+      `${this.baseUrl}Profile/GetAllRequestForAdmin_New?IsVerified=${isVerified}&pageSize=${pageSize}&pageNumber=${pageNumber}&QuerySearch.FirstName=${name}`,
       {
-        endPoint: "Profile/GetAllRequestForAdmin",
-        token,
-      },
-      (statusCode, responseRequest) => {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        // body: JSON.stringify(pagingParameters),
+      }
+    )
+      .then((result) => result.json())
+      .then((response) => {
+        console.log("total ", response);
+        const responseRequest = response.data;
         // console.log("responseRequest", responseRequest);
         var pendingList = [];
         var completeList = [];
-        if (responseRequest.length > 0) {
+        if (responseRequest && responseRequest.length > 0) {
           responseRequest.map((request) => {
             if (request.resolved) {
               completeList.push({ ...request, user: JSON.parse(request.user) });
@@ -65,8 +83,53 @@ export class UpdateRequest extends Component {
             loading: false,
           });
         }
-      }
-    );
+      })
+      .catch((err) => {
+        console.log("errorrr ", err);
+      });
+  };
+
+  tabHandler = (k) => {
+    console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk--------->", k);
+    let isverified;
+    this.setState({ loading: true });
+    if (k === "completed") {
+      this.setState(
+        {
+          isVerified: true,
+          sortOrder: "ascend",
+          sortValue: "firstName",
+          pageNumber: 1,
+          pageSize: 10,
+          name: "",
+          updateField: "",
+          loading: false,
+        },
+        () => {
+          this.loadData();
+          // this.handleResetUpdateField();
+          // this.handleReset();
+        }
+      );
+    } else {
+      this.setState(
+        {
+          isVerified: false,
+          sortOrder: "ascend",
+          sortValue: "firstName",
+          pageNumber: 1,
+          pageSize: 10,
+          name: "",
+          updateField: "",
+          loading: false,
+        },
+        () => {
+          this.loadData();
+          // this.handleResetUpdateField();
+          // this.handleReset();
+        }
+      );
+    }
   };
 
   MakeRequestComplete = (id) => {
@@ -114,7 +177,7 @@ export class UpdateRequest extends Component {
             size="small"
             style={{ width: 90 }}
           >
-            Search
+            <Translation>{(t) => t("Search")}</Translation>
           </Button>
           <Button
             type="primary"
@@ -123,7 +186,7 @@ export class UpdateRequest extends Component {
             size="small"
             style={{ width: 90 }}
           >
-            Reset
+            <Translation>{(t) => t("Reset")}</Translation>
           </Button>
           <Button
             type="link"
@@ -137,7 +200,7 @@ export class UpdateRequest extends Component {
             }}
             style={{ color: "#149e7a" }}
           >
-            Filter
+            Fil<Translation>{(t) => t("Filter")}</Translation>ter
           </Button>
         </Space>
       </div>
@@ -145,13 +208,102 @@ export class UpdateRequest extends Component {
     filterIcon: (filtered) => (
       <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
     ),
-    onFilter: (value, record) =>
-      record[dataIndex]
-        ? record[dataIndex]
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase())
-        : "",
+    // onFilter: (value, record) =>
+    //   record[dataIndex]
+    //     ? record[dataIndex]
+    //         .toString()
+    //         .toLowerCase()
+    //         .includes(value.toLowerCase())
+    //     : "",
+    onFilterDropdownVisibleChange: (visible) => {
+      if (visible) {
+        setTimeout(() => this.searchInput.select(), 100);
+      }
+    },
+    render: (text) =>
+      this.state.searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
+          searchWords={[this.state.searchText]}
+          autoEscape
+          textToHighlight={text ? text.toString() : ""}
+        />
+      ) : (
+        text
+      ),
+  });
+
+  getColumnSearchPropsUpdateField = (dataIndex) => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }) => (
+      <div style={{ padding: 8 }}>
+        <Input
+          ref={(node) => {
+            this.searchInput = node;
+          }}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() =>
+            this.handleSearchUpdateField(selectedKeys, confirm, dataIndex)
+          }
+          style={{ width: 188, marginBottom: 8, display: "block" }}
+        />
+        <Space>
+          <Button
+            className="add-package-button"
+            type="primary"
+            onClick={() =>
+              this.handleSearchUpdateField(selectedKeys, confirm, dataIndex)
+            }
+            icon={<SearchOutlined className="icon-search" />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            <Translation>{(t) => t("Search")}</Translation>
+          </Button>
+          <Button
+            type="primary"
+            className="add-package-button"
+            onClick={() => this.handleResetUpdateField(clearFilters)}
+            size="small"
+            style={{ width: 90 }}
+          >
+            <Translation>{(t) => t("Reset")}</Translation>
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              confirm({ closeDropdown: false });
+              this.setState({
+                searchText: selectedKeys[0],
+                searchedColumn: dataIndex,
+              });
+            }}
+            style={{ color: "#149e7a" }}
+          >
+            <Translation>{(t) => t("Filter")}</Translation>
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+    ),
+    // onFilter: (value, record) =>
+    //   record[dataIndex]
+    //     ? record[dataIndex]
+    //         .toString()
+    //         .toLowerCase()
+    //         .includes(value.toLowerCase())
+    //     : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
         setTimeout(() => this.searchInput.select(), 100);
@@ -174,22 +326,61 @@ export class UpdateRequest extends Component {
 
   handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
-    this.setState({
-      searchText: selectedKeys[0],
-      searchedColumn: dataIndex,
-    });
+    this.setState(
+      {
+        name: selectedKeys[0],
+        searchedColumn: dataIndex,
+      },
+      () => {
+        this.loadData();
+      }
+    );
+  };
+
+  handleSearchUpdateField = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    this.setState(
+      {
+        updateField: selectedKeys[0],
+        searchedColumn: dataIndex,
+      },
+      () => {
+        this.loadData();
+      }
+    );
   };
 
   ////////////////////// Handle For Resetting Search ////////////////////////
 
   handleReset = (clearFilters) => {
     clearFilters();
-    this.setState({ searchText: "" });
+    this.setState({ name: "" }, () => {
+      this.loadData();
+    });
+  };
+
+  handleResetUpdateField = (clearFilters) => {
+    clearFilters();
+    this.setState({ updateField: "" }, () => {
+      this.loadData();
+    });
   };
 
   ////////////////////// On Filter / Sorter / Pagination change ////////////////////////
 
   onChange = (pagination, filters, sorter, extra) => {
+    this.setState(
+      {
+        loading: false,
+        pageSize: pagination.pageSize,
+        pageNumber: pagination.current,
+        // sortOrder: sorter.order ? sorter.order : "ascend",
+        // sortValue: sorter.field,
+      },
+      () => {
+        this.loadData();
+      }
+    );
     // console.log("params", pagination, filters, sorter, extra);
   };
 
@@ -200,7 +391,7 @@ export class UpdateRequest extends Component {
         title: "Name",
         dataIndex: "name",
         key: "name",
-        width: 160,
+        width: 50,
         align: "center",
         responsive: ["xs"],
         sorter: (a, b) => a.name.length - b.name.length,
@@ -209,12 +400,12 @@ export class UpdateRequest extends Component {
       {
         title: "Update Field",
         dataIndex: "field",
-        width: 160,
+        width: 100,
         responsive: ["xs"],
         key: "field",
         align: "center",
         sorter: (a, b) => a.field.length - b.field.length,
-        ...this.getColumnSearchProps("field"),
+        ...this.getColumnSearchPropsUpdateField("field"),
       },
       {
         title: "Description",
@@ -228,7 +419,7 @@ export class UpdateRequest extends Component {
         title: "Action",
         dataIndex: "action",
         key: "action",
-        width: 100,
+        width: 150,
         responsive: ["xs"],
         align: "center",
         render: (item) => (
@@ -299,7 +490,7 @@ export class UpdateRequest extends Component {
         responsive: ["sm"],
         align: "center",
         sorter: (a, b) => a.field.length - b.field.length,
-        ...this.getColumnSearchProps("field"),
+        ...this.getColumnSearchPropsUpdateField("field"),
       },
       {
         title: <Translation>{(t) => t("Description")}</Translation>,
@@ -366,7 +557,7 @@ export class UpdateRequest extends Component {
         align: "center",
         width: 160,
         sorter: (a, b) => a.field.length - b.field.length,
-        ...this.getColumnSearchProps("field"),
+        ...this.getColumnSearchPropsUpdateField("field"),
       },
       {
         title: <Translation>{(t) => t("Description")}</Translation>,
@@ -399,6 +590,7 @@ export class UpdateRequest extends Component {
                       defaultActiveKey="pending"
                       transition="false"
                       id="noanim-tab-example"
+                      onSelect={(k) => this.tabHandler(k)}
                     >
                       <Tab eventKey="pending" title={t("Pending")}>
                         <div
@@ -406,6 +598,7 @@ export class UpdateRequest extends Component {
                           className="table-responsive"
                         >
                           <Table
+                            onChange={this.onChange}
                             loading={{
                               indicator: antIcon,
                               spinning: this.state.loading,
@@ -436,10 +629,10 @@ export class UpdateRequest extends Component {
                               position: ["bottomCenter"],
                               size: "small",
                               showQuickJumper: true,
-                              defaultPageSize: 20,
+                              defaultPageSize: 10,
                               defaultCurrent: 1,
                               showSizeChanger: true,
-                              pageSizeOptions: [20, 50, 100],
+                              pageSizeOptions: [10, 20, 50, 100],
 
                               showTotal: (total, range) =>
                                 `${range[0]}-${range[1]} of ${total} Lignes`,
@@ -491,10 +684,10 @@ export class UpdateRequest extends Component {
                               position: ["bottomCenter"],
                               size: "small",
                               showQuickJumper: true,
-                              defaultPageSize: 20,
+                              defaultPageSize: 10,
                               defaultCurrent: 1,
                               showSizeChanger: true,
-                              pageSizeOptions: [20, 50, 100],
+                              pageSizeOptions: [10, 20, 50, 100],
 
                               showTotal: (total, range) =>
                                 `${range[0]}-${range[1]} of ${total} Lignes`,

@@ -25,24 +25,62 @@ class Disputes extends Component {
       disputeId: "0",
       users: [],
       loading: true,
+
+      // Searching
+      pageNumber: 1,
+      pageSize: 2,
+      createdByName: "",
+      createdAgainstName: "",
+      rolesCB: [],
     };
   }
 
   WebServicesManager = new WebServicesManager();
-  componentWillMount() {
-    var tokn = localStorage.getItem("userdata");
-    this.WebServicesManager.getApiCall(
-      {
-        endPoint: "Dispute/GetAllDisputesForAdmin",
-        token: tokn,
-      },
-      (s, r) => {
-        console.log("all users ", r);
-        if (r !== null) this.setState({ users: r });
-        this.setState({ loading: false });
-      }
-    );
+  baseUrl = process.env.REACT_APP_BASE_URL;
+  // componentWillMount() {
+  //   this.getAllDisputes();
+  // }
+  componentDidMount() {
+    this.getAllDisputes();
   }
+
+  getAllDisputes = () => {
+    const { pageSize, pageNumber } = this.state;
+
+    const pagingParameters = { pageSize, pageNumber };
+    var tokn = localStorage.getItem("userdata");
+
+    fetch(
+      `${this.baseUrl}Dispute/GetAllDisputesForAdmin?pageSize=${pageSize}&pageNumber=${pageNumber}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + tokn,
+        },
+      }
+    )
+      .then((resp) => resp.json())
+      .then((res) => {
+        const data = res.data;
+        this.setState({ users: data, loading: false });
+        // console.log("response ", res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    // this.WebServicesManager.getApiCall(
+    //   {
+    //     endPoint: "Dispute/GetAllDisputesForAdmin",
+    //     token: tokn,
+    //   },
+    //   (s, r) => {
+    //     console.log("all users ", r);
+    //     if (r !== null) this.setState({ users: r });
+    //     this.setState({ loading: false });
+    //   }
+    // );
+  };
   toggle = (id) => {
     this.setState(
       {
@@ -53,6 +91,184 @@ class Disputes extends Component {
   };
 
   ////////////////////// Searching function ////////////////////////
+
+  getColumnSearchCreatedByName = (dataIndex) => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }) => (
+      <div style={{ padding: 8 }}>
+        <Input
+          ref={(node) => {
+            this.searchInput = node;
+          }}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() =>
+            this.handleSearchCBName(selectedKeys, confirm, dataIndex)
+          }
+          style={{ width: 188, marginBottom: 8, display: "block" }}
+        />
+        <Space>
+          <Button
+            className="add-package-button"
+            type="primary"
+            onClick={() =>
+              this.handleSearchCBName(selectedKeys, confirm, dataIndex)
+            }
+            icon={<SearchOutlined className="icon-search" />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            <Translation>{(t) => t("Search")}</Translation>
+          </Button>
+          <Button
+            type="primary"
+            className="add-package-button"
+            onClick={() => this.handleReset(clearFilters)}
+            size="small"
+            style={{ width: 90 }}
+          >
+            <Translation>{(t) => t("Reset")}</Translation>
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              confirm({ closeDropdown: false });
+              this.setState({
+                searchText: selectedKeys[0],
+                searchedColumn: dataIndex,
+              });
+            }}
+            style={{ color: "#149e7a" }}
+          >
+            <Translation>{(t) => t("Filter")}</Translation>
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+    ),
+    // onFilter: (value, record) =>
+    //   record[dataIndex]
+    //     ? record[dataIndex]
+    //         .toString()
+    //         .toLowerCase()
+    //         .includes(value.toLowerCase())
+    //     : "",
+    onFilterDropdownVisibleChange: (visible) => {
+      if (visible) {
+        setTimeout(() => this.searchInput.select(), 100);
+      }
+    },
+    render: (text) =>
+      this.state.searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
+          searchWords={[this.state.searchText]}
+          autoEscape
+          textToHighlight={text ? text.toString() : ""}
+        />
+      ) : (
+        text
+      ),
+  });
+
+  getColumnSearchCreatedAgainstName = (dataIndex) => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }) => (
+      <div style={{ padding: 8 }}>
+        <Input
+          ref={(node) => {
+            this.searchInput = node;
+          }}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() =>
+            this.handleSearchCAName(selectedKeys, confirm, dataIndex)
+          }
+          style={{ width: 188, marginBottom: 8, display: "block" }}
+        />
+        <Space>
+          <Button
+            className="add-package-button"
+            type="primary"
+            onClick={() =>
+              this.handleSearchCAName(selectedKeys, confirm, dataIndex)
+            }
+            icon={<SearchOutlined className="icon-search" />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            <Translation>{(t) => t("Search")}</Translation>
+          </Button>
+          <Button
+            type="primary"
+            className="add-package-button"
+            onClick={() => this.handleReset(clearFilters)}
+            size="small"
+            style={{ width: 90 }}
+          >
+            <Translation>{(t) => t("Reset")}</Translation>
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              confirm({ closeDropdown: false });
+              this.setState({
+                searchText: selectedKeys[0],
+                searchedColumn: dataIndex,
+              });
+            }}
+            style={{ color: "#149e7a" }}
+          >
+            <Translation>{(t) => t("Filter")}</Translation>
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+    ),
+    // onFilter: (value, record) =>
+    //   record[dataIndex]
+    //     ? record[dataIndex]
+    //         .toString()
+    //         .toLowerCase()
+    //         .includes(value.toLowerCase())
+    //     : "",
+    onFilterDropdownVisibleChange: (visible) => {
+      if (visible) {
+        setTimeout(() => this.searchInput.select(), 100);
+      }
+    },
+    render: (text) =>
+      this.state.searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
+          searchWords={[this.state.searchText]}
+          autoEscape
+          textToHighlight={text ? text.toString() : ""}
+        />
+      ) : (
+        text
+      ),
+  });
 
   getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
@@ -116,13 +332,13 @@ class Disputes extends Component {
     filterIcon: (filtered) => (
       <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
     ),
-    onFilter: (value, record) =>
-      record[dataIndex]
-        ? record[dataIndex]
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase())
-        : "",
+    // onFilter: (value, record) =>
+    //   record[dataIndex]
+    //     ? record[dataIndex]
+    //         .toString()
+    //         .toLowerCase()
+    //         .includes(value.toLowerCase())
+    //     : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
         setTimeout(() => this.searchInput.select(), 100);
@@ -151,6 +367,40 @@ class Disputes extends Component {
     });
   };
 
+  handleSearchCBName = (selectedKeys, confirm, dataIndex) => {
+    const { startDate, endDate, brand } = this.state;
+    confirm();
+    console.log("search ", selectedKeys);
+    this.setState(
+      {
+        createdByName: selectedKeys[0],
+      },
+      () => {
+        console.log("createdBy Name ", this.state.createdByName);
+        // this.fetchAllBookings();
+        this.getAllDisputes();
+        console.log("filteres selec");
+      }
+    );
+  };
+
+  handleSearchCAName = (selectedKeys, confirm, dataIndex) => {
+    const { startDate, endDate, brand } = this.state;
+    confirm();
+    console.log("search ", selectedKeys);
+    this.setState(
+      {
+        createdAgainstName: selectedKeys[0],
+      },
+      () => {
+        console.log("createdBy Name ", this.state.createdByName);
+        // this.fetchAllBookings();
+        this.getAllDisputes();
+        console.log("filteres selec");
+      }
+    );
+  };
+
   ////////////////////// Handle For Resetting Search ////////////////////////
 
   handleReset = (clearFilters) => {
@@ -162,6 +412,15 @@ class Disputes extends Component {
 
   onChange = (pagination, filters, sorter, extra) => {
     // console.log("params", pagination, filters, sorter, extra);
+
+    console.log("roles ", filters);
+
+    filters.roleRB &&
+      this.setState({ rolesCB: filters.roleRB, loading: false }, () => {
+        console.log("selected roles ", this.state.rolesCB);
+        this.getAllDisputes();
+        // this.getAllUsers();
+      });
   };
 
   render() {
@@ -190,7 +449,7 @@ class Disputes extends Component {
             align: "center",
             width: 100,
             sorter: (a, b) => a.nameRB.length - b.nameRB.length,
-            ...this.getColumnSearchProps("nameRB"),
+            ...this.getColumnSearchCreatedByName("nameRB"),
           },
           {
             title: <Translation>{(t) => t("Role")}</Translation>,
@@ -224,7 +483,7 @@ class Disputes extends Component {
             align: "center",
             width: 100,
             sorter: (a, b) => a.nameRA.length - b.nameRA.length,
-            ...this.getColumnSearchProps("nameRA"),
+            ...this.getColumnSearchCreatedAgainstName("nameRA"),
           },
           {
             title: <Translation>{(t) => t("Role")}</Translation>,
@@ -410,6 +669,7 @@ class Disputes extends Component {
                     </tbody>
                   </Table> */}
                       <Table
+                        onChange={this.onChange}
                         loading={{
                           indicator: antIcon,
                           spinning: this.state.loading,

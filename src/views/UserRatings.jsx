@@ -44,6 +44,8 @@ class UserRatings extends Component {
       searchText: "",
       searchedColumn: "",
       loading: true,
+      pageNumber: 1,
+      pageSize: 10,
     };
   }
   WebServicesManager = new WebServicesManager();
@@ -53,7 +55,8 @@ class UserRatings extends Component {
   }
 
   getAllRatings = () => {
-    const pagingParameters = { pageNumber: 1, pageSize: 2 };
+    const { pageSize, pageNumber } = this.state;
+    const pagingParameters = { pageSize, pageNumber };
     var token = localStorage.getItem("userdata");
     console.log(token);
     // fetch(

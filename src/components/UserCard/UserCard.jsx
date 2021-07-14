@@ -537,30 +537,30 @@ export class UserCard extends Component {
         };
         var dataTo = JSON.stringify(profiledataUnban);
         console.log("usercard deactive ", dataTo);
-        // this.WebServicesManager.postApiCall(
-        //   {
-        //     endPoint: "Profile/UpdateProfile",
-        //     dataToInsert: dataTo,
-        //     token: tokn,
-        //   },
-        //   (statusCode, response) => {
-        //     this.WebServicesManager.getApiWithParamCall(
-        //       {
-        //         endPoint: "Personal/SendEmail",
-        //         dataToFetch:
-        //           this.props.id +
-        //           "&email=" +
-        //           this.props.email +
-        //           "&emailfor=Deactivate",
-        //         token: tokn,
-        //       },
-        //       (statusCode, EResp) => {
-        //         // console.log("data", EResp);
-        //         window.location.reload();
-        //       }
-        //     );
-        //   }
-        // );
+        this.WebServicesManager.postApiCall(
+          {
+            endPoint: "Profile/UpdateProfile",
+            dataToInsert: dataTo,
+            token: tokn,
+          },
+          (statusCode, response) => {
+            this.WebServicesManager.getApiWithParamCall(
+              {
+                endPoint: "Personal/SendEmail",
+                dataToFetch:
+                  this.props.id +
+                  "&email=" +
+                  this.props.email +
+                  "&emailfor=Deactivate",
+                token: tokn,
+              },
+              (statusCode, EResp) => {
+                // console.log("data", EResp);
+                window.location.reload();
+              }
+            );
+          }
+        );
       }
     );
   };

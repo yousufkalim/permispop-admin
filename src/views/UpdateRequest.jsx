@@ -44,14 +44,16 @@ export class UpdateRequest extends Component {
   }
 
   loadData = () => {
-    const { pageSize, pageNumber, isVerified, name } = this.state;
+    const { pageSize, pageNumber, isVerified, name, updateField } = this.state;
     this.setState({
       pendingRequest: [],
       completed: [],
     });
     var token = localStorage.getItem("userdata");
+
+    //  &QuerySearch.UpdateField=${updateField}
     fetch(
-      `${this.baseUrl}Profile/GetAllRequestForAdmin_New?IsVerified=${isVerified}&pageSize=${pageSize}&pageNumber=${pageNumber}&QuerySearch.FirstName=${name}`,
+      `${this.baseUrl}Profile/GetAllRequestForAdmin_New?isVerified=${isVerified}&pageSize=${pageSize}&pageNumber=${pageNumber}`,
       {
         method: "GET",
         headers: {

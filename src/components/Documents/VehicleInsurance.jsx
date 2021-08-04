@@ -200,7 +200,7 @@ class VehicleInsurance extends Component {
               <Col md={6}>
                 <b>
                   {this.state.vIns.greenCardImagePath === undefined
-                    ? "No Added Yet"
+                    ? "Pas encore ajouté" 
                     : ""}
                 </b>
                 <br />
@@ -324,7 +324,7 @@ class VehicleInsurance extends Component {
                                     href={this.state.greenCardImagePath}
                                     target="noopener noreferrer"
                                   >
-                                    View current File
+                                   Afficher le fichier actuel
                                   </a>
                                 ) : (
                                   ""

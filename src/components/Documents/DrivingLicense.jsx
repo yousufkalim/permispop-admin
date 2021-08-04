@@ -223,7 +223,7 @@ class DrivingLicense extends Component {
                   rel="noopener noreferrer"
                   target="noopener noreferrer"
                 >
-                  View file in new Tab.
+                  Ouvrir le fichier dans un nouvel onglet.
                 </a>
               ) : (
                 ""
@@ -233,20 +233,21 @@ class DrivingLicense extends Component {
             <Col md={6}>
               <b>
                 {this.state.dLic.drivingLisenceImagePath === undefined
-                  ? "No Added Yet"
+                  ? "Pas encore ajouté"
                   : ""}
               </b>
               <br />
               {this.props.firstName}
               <br />
-              License No: {this.state.dLic.lisenceNumber}
+              
+              N ° de licence: {this.state.dLic.lisenceNumber}
               <br />
-              Obtaining Date:{" "}
+              Obtenir la date:{" "}
               {moment(this.state.dLic.obtainingDate).format("DD/MM/YYYY")}
               <br />
-              Delivery Place: {this.state.dLic.deliveryPlace}
+              LIEU DE DÉLIVRANCE: {this.state.dLic.deliveryPlace}
               <br />
-              Validity Date:{" "}
+              Date de validité:{" "}
               {moment(this.state.dLic.validityDate).format("DD/MM/YYYY")}
               <br />
               <Button varient="success" onClick={this.handleModelShow}>
@@ -263,7 +264,7 @@ class DrivingLicense extends Component {
           size="xl"
         >
           <Modal.Header closeButton>
-            <Modal.Title>Update Data</Modal.Title>
+            <Modal.Title>Mettre à jour les données</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <div className="content">
@@ -291,7 +292,7 @@ class DrivingLicense extends Component {
                             </div>
                             <div className="col-md-6">
                               <FormGroup>
-                                <ControlLabel>Delivery Place</ControlLabel>
+                                <ControlLabel>LIEU DE DÉLIVRANCE</ControlLabel>
                                 <FormControl
                                   className="form-control"
                                   value={this.state.deliveryPlace}
@@ -307,7 +308,7 @@ class DrivingLicense extends Component {
                           <div className="row">
                             <div className="col-md-6">
                               <FormGroup>
-                                <ControlLabel>Obtain Date</ControlLabel>
+                                <ControlLabel>Obtenir la date</ControlLabel>
                                 <FormControl
                                   className="form-control"
                                   type="date"
@@ -324,7 +325,7 @@ class DrivingLicense extends Component {
                             </div>
                             <div className="col-md-6">
                               <FormGroup>
-                                <ControlLabel>Expire Date</ControlLabel>
+                                <ControlLabel>Date d'expiration</ControlLabel>
                                 <FormControl
                                   className="form-control"
                                   type="date"
@@ -343,7 +344,7 @@ class DrivingLicense extends Component {
                           <Row style={{ padding: "20px 0px" }}>
                             <Col md={6}>
                               <ControlLabel>
-                                Upload License File
+                              Télécharger le fichier de licence
                                 <span className="text-red">*</span>
                               </ControlLabel>
                               <FormControl
@@ -359,7 +360,7 @@ class DrivingLicense extends Component {
                                   href={this.state.drivingLisenceImagePath}
                                   target="noopener noreferrer"
                                 >
-                                  View current File
+                                  Afficher le fichier actuel
                                 </a>
                               ) : (
                                 ""
@@ -376,10 +377,10 @@ class DrivingLicense extends Component {
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={this.handleModelShow}>
-              Close
+            Fermer
             </Button>
             <Button variant="primary" onClick={this.handleSave}>
-              Update
+              Mettre à jour
             </Button>
           </Modal.Footer>
         </Modal>

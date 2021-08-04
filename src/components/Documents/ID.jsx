@@ -9,6 +9,7 @@ import VehicleRegistration from "components/Documents/VehicleDetails.jsx";
 import VehicleInsurance from "components/Documents/VehicleInsurance.jsx";
 import DrivingSchoolApproval from "components/Documents/DrivingSchoolApproval.jsx";
 import RCPro from "components/Documents/RCPro.jsx";
+import { Translation } from "react-i18next";
 
 class ID extends Component {
   WebServicesManager = new WebServicesManager();
@@ -211,7 +212,8 @@ class ID extends Component {
 
           <Row>
             <Col md={12}>
-              Not Verified
+            <Translation>{(t)=> t ("Non Verified")}</Translation>
+             
               <label className="switch">
                 <input
                   type="checkbox"
@@ -220,7 +222,8 @@ class ID extends Component {
                 />
                 <span className="slider round"></span>
               </label>{" "}
-              Verified
+              <Translation>{(t)=> t ("Verified")}</Translation>
+              
             </Col>
           </Row>
         </Grid>

@@ -134,7 +134,7 @@ class UserRating extends Component {
             size="small"
             style={{ width: 90 }}
           >
-            Search
+            <Translation>{(t) => t("Search")}</Translation>
           </Button>
           <Button
             type="primary"
@@ -143,7 +143,7 @@ class UserRating extends Component {
             size="small"
             style={{ width: 90 }}
           >
-            Reset
+            <Translation>{(t) => t("Reset")}</Translation>
           </Button>
           <Button
             type="link"
@@ -157,7 +157,7 @@ class UserRating extends Component {
             }}
             style={{ color: "#149e7a" }}
           >
-            Filter
+            <Translation>{(t) => t("Filter")}</Translation>
           </Button>
         </Space>
       </div>

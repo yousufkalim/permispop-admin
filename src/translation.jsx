@@ -97,11 +97,12 @@ export default i18n
           DOB: "DOB",
           "First Name": "Prénom",
           "Sur Name": "Nom",
+          SurName: "Nom",
           Account: "Compte",
           "Log out": "Se Déconnecter",
           Reset: "La remise",
           Filter: "Filtre",
-          Search: "Search",
+          Search: "Rechercher",
           "Driving Membership": "Conduire l'Adhésion",
           Paid: "Payé",
           Free: "Libérer",
@@ -288,6 +289,12 @@ export default i18n
           Submit: "Envoyer",
 
           Complete: "Compléter",
+
+          "No Comment": "Aucun commentaire",
+
+          MeetupPoint: "Pointde rencontre",
+
+          DateOfBirth: "Datede naissance",
         },
       },
     },

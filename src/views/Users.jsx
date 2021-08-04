@@ -58,6 +58,7 @@ class Users extends Component {
       nameFilter: "",
       roleFilter: [],
       averageRatingFilter: [],
+      sortedInfo: null,
     };
   }
   WebServicesManager = new WebServicesManager();
@@ -139,7 +140,8 @@ class Users extends Component {
           if (
             item.role !== "Admin" &&
             item.role !== "Email" &&
-            item.role !== "DSInstructor"
+            item.role !== "DSInstructor" &&
+            !item.role.includes("Deleted ")
             // && !item.role.includes("Delete")
           ) {
             console.log("averagecount ", item.ratingCount);
@@ -422,11 +424,15 @@ class Users extends Component {
       this.setState({ nameFilter: filters.name[0] }, () => {
         this.getAllUsers();
       });
-    filters.role &&
-      this.setState({ roleFilter: filters.role, loading: false }, () => {
-        console.log("selected roles ", this.state.roleFilter);
-        this.getAllUsers();
-      });
+    filters.role
+      ? this.setState({ roleFilter: filters.role, loading: false }, () => {
+          console.log("selected roles ", this.state.roleFilter);
+          this.getAllUsers();
+        })
+      : this.setState({ roleFilter: [], loading: false }, () => {
+          console.log("selected roles ", this.state.roleFilter);
+          this.getAllUsers();
+        });
     filters.rating &&
       this.setState({ averageRatingFilter: filters.rating }, () => {
         this.getAllUsers();
@@ -446,11 +452,12 @@ class Users extends Component {
 
     this.setState(
       {
+        sortedInfo: sorter,
         loading: false,
-        sortOrder: sorter.order ? sorter.order : "ascend",
         pageSize: pagination.pageSize,
         pageNumber: pagination.current,
         sortValue: sorter.field,
+        sortOrder: sorter.order ? sorter.order : "ascend",
       },
       () => {
         this.getAllUsers();
@@ -464,6 +471,7 @@ class Users extends Component {
   };
 
   render() {
+    const { sortedInfo } = this.state;
     // console.log("current key", this.state.total);
     console.log("role filter ", this.state.roleFilter);
     // console.log("rating filter ", this.state.averageRatingFilter);
@@ -487,7 +495,7 @@ class Users extends Component {
         key: "firstName",
         align: "center",
         width: 160,
-        sorter: (a, b) => a.firstName.length - b.firstName.length,
+        sorter: (a, b) => "",
         ...this.getColumnSearchProps("name"),
       },
       {
@@ -515,7 +523,7 @@ class Users extends Component {
           },
         ],
         // onFilter: (value, record) => record.role.indexOf(value) === 0,
-        sorter: (a, b) => a.role.length - b.role.length,
+        sorter: (a, b) => "",
       },
       {
         title: <Translation>{(t) => t("Active")}</Translation>,
@@ -843,11 +851,11 @@ class Users extends Component {
                               position: ["bottomCenter"],
                               size: "small",
                               // showQuickJumper: true,
-                              defaultPageSize: this.state.pageSize,
-                              defaultCurrent: this.state.pageNumber,
+                              defaultPageSize: 10,
+                              defaultCurrent: 1,
                               total: this.state.total,
                               showSizeChanger: true,
-                              pageSizeOptions: [20, 50, 100],
+                              pageSizeOptions: [10, 20, 50, 100],
 
                               showTotal: (total, range) =>
                                 `${range[0]}-${range[1]} of ${total} Lignes`,
@@ -897,7 +905,7 @@ class Users extends Component {
                               showSizeChanger: true,
                               // pageSize: this.state.pageSize,
                               total: this.state.total,
-                              pageSizeOptions: [20, 50, 100],
+                              pageSizeOptions: [10, 20, 50, 100],
 
                               showTotal: (total, range) =>
                                 `${range[0]}-${range[1]} of ${total} Lignes`,

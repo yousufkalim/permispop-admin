@@ -799,7 +799,7 @@ export class UserCard extends Component {
                 className="description text-center"
                 style={{ fontWeight: "bold", fontSize: 16 }}
               >
-                {this.props.role}
+                {t(this.props.role)}
               </p>
               {this.state.banDate !== "" ? (
                 <p className="text-center" style={{ fontSize: 10 }}>

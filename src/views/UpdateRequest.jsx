@@ -53,7 +53,7 @@ export class UpdateRequest extends Component {
 
     //  &QuerySearch.UpdateField=${updateField}
     fetch(
-      `${this.baseUrl}Profile/GetAllRequestForAdmin_New?isVerified=${isVerified}&pageSize=${pageSize}&pageNumber=${pageNumber}`,
+      `${this.baseUrl}Profile/GetAllRequestForAdmin_New?isVerified=${isVerified}&pageSize=${pageSize}&pageNumber=${pageNumber}&QuerySearch.firstName=${name}`,
       {
         method: "GET",
         headers: {
@@ -645,7 +645,7 @@ export class UpdateRequest extends Component {
                                 name: `${item.user.firstName} ${item.user.surName}`,
                                 action: item,
                                 description: item.description,
-                                field: item.updateField,
+                                field: t(item.updateField),
                               })
                             )}
                           ></Table>
@@ -700,7 +700,7 @@ export class UpdateRequest extends Component {
                                     key: index,
                                     name: `${item.user.firstName} ${item.user.surName}`,
                                     description: item.description,
-                                    field: item.updateField,
+                                    field: t(item.updateField),
                                   }))
                                 : ""
                             }

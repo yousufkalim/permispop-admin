@@ -65,6 +65,7 @@ function Limitaions() {
       .then((resJson) => {
         var custom = [];
         setUserLimits(resJson);
+        console.log("values ", resJson);
         resJson.customValues.map((item) => {
           custom.push([
             `${item.user.FirstName} ${item.user.SurName}`,
@@ -133,6 +134,7 @@ function Limitaions() {
         token: tokn,
       },
       (statusCode, response) => {
+        console.log("response ", response);
         response = response.filter(
           (item) =>
             item.role !== "Admin" &&

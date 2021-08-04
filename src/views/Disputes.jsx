@@ -28,7 +28,7 @@ class Disputes extends Component {
 
       // Searching
       pageNumber: 1,
-      pageSize: 2,
+      pageSize: 10,
       createdByName: "",
       createdAgainstName: "",
       rolesCB: [],
@@ -45,13 +45,13 @@ class Disputes extends Component {
   }
 
   getAllDisputes = () => {
-    const { pageSize, pageNumber } = this.state;
+    const { pageSize, pageNumber, createdAgainstName, rolesCB } = this.state;
 
     const pagingParameters = { pageSize, pageNumber };
     var tokn = localStorage.getItem("userdata");
 
     fetch(
-      `${this.baseUrl}Dispute/GetAllDisputesForAdmin?pageSize=${pageSize}&pageNumber=${pageNumber}`,
+      `${this.baseUrl}Dispute/GetAllDisputesForAdmin_New?pageSize=${pageSize}&pageNumber=${pageNumber}&QuerySearch.firstName=${createdAgainstName}&QuerySearch.Role=${rolesCB}`,
       {
         method: "GET",
         headers: {
@@ -62,6 +62,7 @@ class Disputes extends Component {
     )
       .then((resp) => resp.json())
       .then((res) => {
+        console.log("response ", res.data);
         const data = res.data;
         this.setState({ users: data, loading: false });
         // console.log("response ", res);
@@ -82,6 +83,7 @@ class Disputes extends Component {
     // );
   };
   toggle = (id) => {
+    console.log("id is ", id);
     this.setState(
       {
         disputeId: id,
@@ -405,7 +407,7 @@ class Disputes extends Component {
 
   handleReset = (clearFilters) => {
     clearFilters();
-    this.setState({ searchText: "" });
+    this.setState({ name: "" });
   };
 
   ////////////////////// On Filter / Sorter / Pagination change ////////////////////////
@@ -415,11 +417,10 @@ class Disputes extends Component {
 
     console.log("roles ", filters);
 
-    filters.roleRB &&
-      this.setState({ rolesCB: filters.roleRB, loading: false }, () => {
+    filters.roleRA &&
+      this.setState({ rolesCB: filters.roleRA, loading: false }, () => {
         console.log("selected roles ", this.state.rolesCB);
         this.getAllDisputes();
-        // this.getAllUsers();
       });
   };
 
@@ -433,9 +434,9 @@ class Disputes extends Component {
             dataIndex: "number",
             key: "number",
             align: "center",
-            width: 100,
-            sorter: (a, b) => a.number - b.number,
-            ...this.getColumnSearchProps("number"),
+            width: 70,
+            // sorter: (a, b) => a.number - b.number,
+            // ...this.getColumnSearchProps("number"),
           },
         ],
       },
@@ -447,28 +448,36 @@ class Disputes extends Component {
             dataIndex: "nameRB",
             key: "nameRB",
             align: "center",
-            width: 100,
-            sorter: (a, b) => a.nameRB.length - b.nameRB.length,
-            ...this.getColumnSearchCreatedByName("nameRB"),
+            width: 130,
+            // sorter: (a, b) => a.nameRB.length - b.nameRB.length,
+            // ...this.getColumnSearchCreatedByName("nameRB"),
           },
           {
             title: <Translation>{(t) => t("Role")}</Translation>,
             dataIndex: "roleRB",
             key: "roleRB",
             align: "center",
-            width: 160,
-            filters: [
-              {
-                text: <Translation>{(t) => t("Student")}</Translation>,
-                value: "Student",
-              },
-              {
-                text: <Translation>{(t) => t("Instructor")}</Translation>,
-                value: "Instructor",
-              },
-            ],
-            onFilter: (value, record) => record.roleRB.indexOf(value) === 0,
-            sorter: (a, b) => a.roleRB.length - b.roleRB.length,
+            width: 140,
+            // filters: [
+            //   {
+            //     text: <Translation>{(t) => t("Student")}</Translation>,
+            //     value: "Student",
+            //   },
+            //   {
+            //     text: <Translation>{(t) => t("Instructor")}</Translation>,
+            //     value: "Instructor",
+            //   },
+            //   {
+            //     text: <Translation>{(t) => t("Driving School")}</Translation>,
+            //     value: "DrivingSchool",
+            //   },
+            //   {
+            //     text: <Translation>{(t) => t("Car Rental Agent")}</Translation>,
+            //     value: "CarRentalAgent",
+            //   },
+            // ],
+            // onFilter: (value, record) => record.roleRB.indexOf(value) === 0,
+            // sorter: (a, b) => "",
           },
         ],
       },
@@ -481,7 +490,7 @@ class Disputes extends Component {
             dataIndex: "nameRA",
             key: "nameRA",
             align: "center",
-            width: 100,
+            width: 120,
             sorter: (a, b) => a.nameRA.length - b.nameRA.length,
             ...this.getColumnSearchCreatedAgainstName("nameRA"),
           },
@@ -490,19 +499,27 @@ class Disputes extends Component {
             dataIndex: "roleRA",
             key: "roleRA",
             align: "center",
-            width: 200,
+            width: 140,
             filters: [
               {
-                text: (
-                  <Translation>
-                    {(t) => t("Instructor/DrivingSchool")}
-                  </Translation>
-                ),
-                value: "Instructor/DrivingSchool",
+                text: <Translation>{(t) => t("Student")}</Translation>,
+                value: "Student",
+              },
+              {
+                text: <Translation>{(t) => t("Instructor")}</Translation>,
+                value: "Instructor",
+              },
+              {
+                text: <Translation>{(t) => t("Driving School")}</Translation>,
+                value: "DrivingSchool",
+              },
+              {
+                text: <Translation>{(t) => t("Car Rental Agent")}</Translation>,
+                value: "CarRentalAgent",
               },
             ],
-            onFilter: (value, record) => record.roleRA.indexOf(value) === 0,
-            sorter: (a, b) => a.roleRA.length - b.roleRA.length,
+            // onFilter: (value, record) => record.roleRA.indexOf(value) === 0,
+            sorter: (a, b) => "",
           },
         ],
       },
@@ -514,7 +531,7 @@ class Disputes extends Component {
             dataIndex: "comments",
             key: "comments",
             align: "center",
-            width: 160,
+            width: 140,
           },
           {
             title: <Translation>{(t) => t("Status")}</Translation>,
@@ -528,7 +545,7 @@ class Disputes extends Component {
             dataIndex: "details",
             key: "details",
             align: "center",
-            width: 160,
+            width: 100,
             render: (id) => (
               <div
                 style={{
@@ -542,6 +559,7 @@ class Disputes extends Component {
                   whileHover={{ scale: 1.2 }}
                   whileTap={{ scale: 0.8 }}
                   onClick={(e) => {
+                    console.log("click id ", id);
                     this.toggle(id);
                   }}
                   style={{ margin: "6px 14px 6px 14px" }}
@@ -699,41 +717,44 @@ class Disputes extends Component {
                           position: ["bottomCenter"],
                           size: "small",
                           showQuickJumper: true,
-                          defaultPageSize: 20,
+                          defaultPageSize: 10,
                           defaultCurrent: 1,
                           showSizeChanger: true,
-                          pageSizeOptions: [20, 50, 100],
+                          pageSizeOptions: [10, 20, 50, 100],
 
                           showTotal: (total, range) =>
                             `${range[0]}-${range[1]} of ${total} items`,
                         }}
-                        dataSource={this.state.users.map((item, index) => ({
-                          key: index,
-                          number: index + 1,
-                          nameRB:
-                            item.disputingFrom.toLowerCase() === "student"
-                              ? item.studentID
-                              : item.instructorID,
-                          roleRB: item.disputingFrom,
-                          nameRA:
-                            item.disputingFrom.toLowerCase() === "student"
-                              ? item.instructorID
-                              : item.studentID,
-                          roleRA:
-                            item.disputingFrom.toLowerCase() !== "student"
-                              ? "Student"
-                              : "Instructor/DrivingSchool",
-                          comments:
-                            item.adminComments !== null &&
-                            item.adminComments !== "null"
-                              ? item.adminComments
-                              : "No Comment",
-                          status:
-                            item.status !== null && item.status !== "null"
-                              ? item.status
-                              : "Pending",
-                          details: item.id,
-                        }))}
+                        dataSource={
+                          this.state.users &&
+                          this.state.users.map((item, index) => ({
+                            key: index,
+                            number: index + 1,
+                            nameRB:
+                              item.disputingFrom.toLowerCase() === "student"
+                                ? item.studentID
+                                : item.instructorID,
+                            roleRB: item.disputingFrom,
+                            nameRA:
+                              item.disputingFrom.toLowerCase() === "student"
+                                ? item.instructorID
+                                : item.studentID,
+                            roleRA:
+                              item.disputingFrom.toLowerCase() !== "student"
+                                ? "Student"
+                                : "Instructor/DrivingSchool",
+                            comments:
+                              item.adminComments !== null &&
+                              item.adminComments !== "null"
+                                ? t(item.adminComments)
+                                : t("No Comment"),
+                            status:
+                              item.status !== null && item.status !== "null"
+                                ? t(item.status)
+                                : t("Pending"),
+                            details: item.id,
+                          }))
+                        }
                       ></Table>
                     </div>
                   </Col>

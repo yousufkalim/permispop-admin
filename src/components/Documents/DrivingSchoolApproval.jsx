@@ -127,7 +127,7 @@ class DrivingSchoolApproval extends Component {
                     rel="noopener noreferrer"
                     target="noopener noreferrer"
                   >
-                    View file in new Tab.
+                    Ouvrir le fichier dans un nouvel onglet.
                   </a>
                 ) : (
                   ""
@@ -137,13 +137,13 @@ class DrivingSchoolApproval extends Component {
               <Col md={6}>
                 <b>
                   {this.state.dsa.approvalCertificationImagePath === undefined
-                    ? "No Added Yet"
+                    ? "Pas encore ajouté" 
                     : ""}
                 </b>
                 <br />
-                Approval Number: {this.state.dsa.approvalNumber}
+                Numéro d'agrément: {this.state.dsa.approvalNumber}
                 <br />
-                approval Issuing Authority{" "}
+                Approbation Délivré par{" "}
                 {this.state.dsa.approvalIssuingAuthority}
                 <br />
                 Date of Approval:{" "}
@@ -179,7 +179,7 @@ class DrivingSchoolApproval extends Component {
                             <div className="row">
                               <div className="col-md-6">
                                 <FormGroup>
-                                  <ControlLabel>Date of Approval</ControlLabel>
+                                  <ControlLabel>Date de délivrance de l'agrément</ControlLabel>
                                   <FormControl
                                     className="form-control"
                                     type="date"
@@ -196,7 +196,7 @@ class DrivingSchoolApproval extends Component {
                               </div>
                               <div className="col-md-6">
                                 <FormGroup>
-                                  <ControlLabel>Approval Number</ControlLabel>
+                                  <ControlLabel>Numéro d'agrément</ControlLabel>
                                   <FormControl
                                     className="form-control"
                                     type="text"
@@ -214,7 +214,7 @@ class DrivingSchoolApproval extends Component {
                               <Col md={6}>
                                 <FormGroup>
                                   <ControlLabel>
-                                    Approval Issuing Authority
+                                  Approbation Délivré par
                                   </ControlLabel>
                                   <FormControl
                                     className="form-control"
@@ -249,7 +249,7 @@ class DrivingSchoolApproval extends Component {
                                     }
                                     target="noopener noreferrer"
                                   >
-                                    View current File
+                                    Afficher le fichier actuel
                                   </a>
                                 ) : (
                                   ""

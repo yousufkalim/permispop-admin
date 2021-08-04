@@ -186,7 +186,7 @@ class RCPro extends Component {
                     rel="noopener noreferrer"
                     target="noopener noreferrer"
                   >
-                    View file in new Tab.
+                    Ouvrir le fichier dans un nouvel onglet.
                   </a>
                 ) : (
                   ""
@@ -198,15 +198,15 @@ class RCPro extends Component {
                   {this.state.rc === undefined &&
                   this.state.rc === {} &&
                   this.state.rc === null
-                    ? "No Added Yet"
+                    ? "Pas encore ajouté"
                     : ""}
                 </b>
                 <br />
-                Insurer: {this.state.rc.insurer}
+                Assureur: {this.state.rc.insurer}
                 <br />
-                Police Number {this.state.rc.policeNumber}
+                N° de Police {this.state.rc.policeNumber}
                 <br />
-                Date of Expirtation:{" "}
+                Date d'expiration:{" "}
                 {moment(this.state.rc.endDate).format("DD/MM/YYYY")}
                 <br />
                 <Button varient="success" onClick={this.handleModelShow}>
@@ -240,7 +240,7 @@ class RCPro extends Component {
                               <div className="col-md-6">
                                 <FormGroup>
                                   <ControlLabel>
-                                    Date of Expirtation
+                                  Date d'expiration
                                   </ControlLabel>
                                   <FormControl
                                     className="form-control"
@@ -258,7 +258,7 @@ class RCPro extends Component {
                               </div>
                               <div className="col-md-6">
                                 <FormGroup>
-                                  <ControlLabel>Police Number</ControlLabel>
+                                  <ControlLabel>N° de Police</ControlLabel>
                                   <FormControl
                                     className="form-control"
                                     type="text"
@@ -275,7 +275,7 @@ class RCPro extends Component {
                             <Row style={{ padding: "20px 0px" }}>
                               <Col md={6}>
                                 <FormGroup>
-                                  <ControlLabel>Insurer</ControlLabel>
+                                  <ControlLabel>Assureur</ControlLabel>
                                   <FormControl
                                     className="form-control"
                                     value={this.state.insurer}

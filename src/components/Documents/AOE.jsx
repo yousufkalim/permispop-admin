@@ -13,6 +13,7 @@ import WebServicesManager from "../../WebServicesManager/WebServicesManager";
 import FileDisplay from "components/Documents/FileDisplay.jsx";
 import moment from "moment";
 import { Translation } from "react-i18next";
+import translation from "translation";
 
 class AOE extends Component {
   WebServicesManager = new WebServicesManager();
@@ -188,7 +189,7 @@ class AOE extends Component {
                   rel="noopener noreferrer"
                   target="noopener noreferrer"
                 >
-                  View file in new Tab.
+                  Ouvrir le fichier dans un nouvel onglet.
                 </a>
               ) : (
                 ""
@@ -197,17 +198,17 @@ class AOE extends Component {
             <Col md={6}>
               <b>
                 {this.state.aoe.authorizationImagePath === undefined
-                  ? "No Added Yet"
+                  ? "Pas encore ajouté"
                   : ""}
               </b>
               <br />
-              Authorization Date:{" "}
+              DATE D'AUTORISATION:{" "}
               {moment(this.state.aoe.authorizationDate).format("DD/MM/YYYY")}
               <br />
-              Expiry Date:{" "}
+              Date d'expiration:{" "}
               {moment(this.state.aoe.expirationDate).format("DD/MM/YYYY")}
               <br />
-              Issuing Authority: {this.state.aoe.issuingAuthority}
+              Délivré par: {this.state.aoe.issuingAuthority}
               <br />
               <Button varient="success" onClick={this.handleModelShow}>
                 <Translation>{(t) => t("Update Data")}</Translation>
@@ -275,7 +276,7 @@ class AOE extends Component {
                           <Row style={{ padding: "20px 0px" }}>
                             <Col md={6}>
                               <FormGroup>
-                                <ControlLabel>Issuing Authority</ControlLabel>
+                                <ControlLabel>Délivré par</ControlLabel>
                                 <FormControl
                                   className="form-control"
                                   value={this.state.issuingAuthority}
@@ -289,7 +290,7 @@ class AOE extends Component {
                             </Col>
                             <Col md={6}>
                               <ControlLabel>
-                                Upload Authorization File
+                              Télécharger le fichier d'autorisation
                                 <span className="text-red">*</span>
                               </ControlLabel>
                               <FormControl
@@ -306,7 +307,7 @@ class AOE extends Component {
                                   href={this.state.authorizationImagePath}
                                   target="noopener noreferrer"
                                 >
-                                  View current File
+                                  Afficher le fichier actuel
                                 </a>
                               ) : (
                                 ""

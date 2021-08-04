@@ -1656,7 +1656,7 @@ class UserDocuments extends Component {
                         onClick={() =>
                           this.setState({
                             showId: true,
-                            docTitle: "Front ID",
+                            docTitle: "Recto Pièce d'identité",
                             idName: "fic",
                             fbStatus:
                               this.state.frontDoc === undefined
@@ -1896,7 +1896,7 @@ class UserDocuments extends Component {
                         onClick={() =>
                           this.setState({
                             showId: true,
-                            docTitle: "Front ID",
+                            docTitle: "Recto Pièce d'identité",
                             idName: "fic",
                             fbStatus:
                               this.state.frontDoc === undefined
@@ -1927,7 +1927,7 @@ class UserDocuments extends Component {
                         onClick={() =>
                           this.setState({
                             showId: true,
-                            docTitle: "Back ID",
+                            docTitle: "Verso Pièce d'identité",
                             idName: "bic",
                             fbStatus:
                               this.state.backDoc === undefined
@@ -2060,7 +2060,7 @@ class UserDocuments extends Component {
                         onClick={() =>
                           this.setState({
                             showId: true,
-                            docTitle: "Front ID",
+                            docTitle: "Recto Pièce d'identité",
                             idName: "fic",
                             fbStatus:
                               this.state.frontDoc === undefined
@@ -2092,7 +2092,7 @@ class UserDocuments extends Component {
                         onClick={() =>
                           this.setState({
                             showId: true,
-                            docTitle: "Back ID",
+                            docTitle: "Verso Pièce d'identité",
                             idName: "bic",
                             fbStatus:
                               this.state.backDoc === undefined
@@ -2246,7 +2246,7 @@ class UserDocuments extends Component {
                         onClick={() =>
                           this.setState({
                             showId: true,
-                            docTitle: "Front ID",
+                            docTitle: "Recto Pièce d'identité",
                             idName: "fic",
                             fbStatus:
                               this.state.frontDoc === undefined
@@ -2277,7 +2277,7 @@ class UserDocuments extends Component {
                         onClick={() =>
                           this.setState({
                             showId: true,
-                            docTitle: "Back ID",
+                            docTitle: "Verso Pièce d'identité",
                             idName: "bic",
                             fbStatus:
                               this.state.backDoc === undefined

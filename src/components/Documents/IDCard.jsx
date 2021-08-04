@@ -54,7 +54,7 @@ class DrivingLicense extends Component {
                 }
                 target="noopener noreferrer"
               >
-                View file in new Tab.
+                <Translation>{(t)=> t ("View file in new Tab")}</Translation>
               </a>
             ) : (
               ""
@@ -66,24 +66,24 @@ class DrivingLicense extends Component {
             <br />
             <b>{this.props.firstName}</b>
             <br />
-            Email: {this.props.contactEmail}
+            <Translation>{(t) => t("Email")}</Translation>: {this.props.contactEmail}
             <br />
-            Gender:{this.props.gender}
+            <Translation>{(t) => t("Gender")}</Translation>:{this.props.gender}
             <br />
-            Date of Birth: {moment(this.props.dob).format("DD/MM/YYYY")}
+            <Translation>{(t) => t("Date of Birth")}</Translation>: {moment(this.props.dob).format("DD/MM/YYYY")}
             <br />
-            City: {this.props.city}
+            <Translation>{(t) => t("City")}</Translation>: {this.props.city}
             <br />
-            Zip: {this.props.zip}
+            <Translation>{(t) => t("Zip")}</Translation>: {this.props.zip}
             <br />
-            Address: {this.props.address}
+            <Translation>{(t) => t("Address")}</Translation>: {this.props.address}
             <hr />
             <p style={{ color: "red", fontSize: 12 }}>
-              **For Updating Data click on button{" "}
+              **<Translation>{(t) =>t("For Updating Data click on button")}</Translation>{" "}
               <b>
                 <Translation>{(t) => t("Update Data")}</Translation>
               </b>{" "}
-              under profile info card**
+              <Translation>{(t) => t("under profile info card")}</Translation>**
             </p>
           </Col>
         </Row>

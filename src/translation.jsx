@@ -185,6 +185,7 @@ export default i18n
           "Ban User": "Bannir",
           "Un-ban": "Débannir",
           "De-Active": "Désactiver",
+           "No Added Yet" : "Pas encore ajouté",
           "Re-Active": "Réactiver",
           "Delete User": "Supprimer",
           "Send Email Non-Verified Document":
@@ -192,9 +193,15 @@ export default i18n
           Document: "Document",
           "Verification Status": "ÉTAT DE LA VÉRIFICATION",
           "Not a member": "N'est pas un membre",
+          
           "View file in new Tab": "Ouvrir le fichier dans un nouvel onglet",
           "For Updating Data click on button Update Data under profile info card":
             "Pour mettre à jour les données, cliquez sur le bouton Mettre à jour les données sous la carte d'informations de profil",
+            "under profile info card" : "sous la carte d'informations du profil",
+            "Update Data":"Mettre à jour les données",
+            "For Updating Data click on button":"Pour mettre à jour les données, cliquez sur le bouton",
+
+
           "Meetup Points": "Points de rencontre",
           "Driving License": "Permis de conduire",
           "Authorization to Exercise": "Autorisation d'exercer",

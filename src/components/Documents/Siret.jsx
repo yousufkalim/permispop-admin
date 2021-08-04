@@ -192,7 +192,7 @@ class Siret extends Component {
             <Col md={6}>
               <b>
                 {this.state.siret.siratImagePath === undefined
-                  ? "No Added Yet"
+                  ? "Pas encore ajouté" 
                   : ""}
               </b>
               <br />
@@ -228,7 +228,7 @@ class Siret extends Component {
                           <Row style={{ padding: "20px 0px" }}>
                             <Col md={6}>
                               <FormGroup>
-                                <ControlLabel>Sirat Number</ControlLabel>
+                                <ControlLabel>N° de SIRET</ControlLabel>
                                 <FormControl
                                   className="form-control"
                                   maxLength={14}
@@ -260,7 +260,7 @@ class Siret extends Component {
                                   href={this.state.siratImagePath}
                                   target="noopener noreferrer"
                                 >
-                                  View current File
+                                  Afficher le fichier actuel
                                 </a>
                               ) : (
                                 ""

@@ -192,11 +192,11 @@ class Siret extends Component {
             <Col md={6}>
               <b>
                 {this.state.siret.siratImagePath === undefined
-                  ? "Pas encore ajouté" 
+                  ? "Pas encore ajouté"
                   : ""}
               </b>
               <br />
-              Siret Number: {this.state.siret.siretNumber}
+              N° de SIRET: {this.state.siret.siretNumber}
               <br />
               <Button varient="success" onClick={this.handleModelShow}>
                 <Translation>{(t) => t("Update Data")}</Translation>

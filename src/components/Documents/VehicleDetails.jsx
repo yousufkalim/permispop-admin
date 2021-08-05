@@ -140,7 +140,7 @@ class VehicleRegistration extends Component {
                   target="noopener noreferrer"
                   alt="techinal control"
                 >
-                  View file in new Tab.
+                  Ouvrir le fichier dans un nouvel onglet.
                 </a>
                 <hr />
                 {role !== "Instructor" ? (
@@ -173,26 +173,26 @@ class VehicleRegistration extends Component {
               <Col md={6}>
                 <b>Vehicle Details</b>
                 <br />
-                Date Of First Registration:{" "}
+                Date de première immatriculation:{" "}
                 {moment(this.state.dateOfFirstRegistration).format(
                   "DD/MM/YYYY"
                 )}
                 <br />
-                Brand: {this.state.brand}
+                Constructeur: {this.state.brand}
                 <br />
-                Color: {this.state.color}
+                Couleur: {this.state.color}
                 <br />
-                Model: {this.state.model}
+                Modèle: {this.state.model}
                 <br />
-                GearBox: {this.state.gearBox}
+                Boîte de vitesse: {this.state.gearBox}
                 <br />
-                Energy: {this.state.energy}
+                Carburant: {this.state.energy}
                 <hr />
-                <b>Vehicle Insurance</b>
+                <b>Assurance du véhicule</b>
                 <br />
                 Insurer: {this.state.vehicleInsurer}
                 <br />
-                Police Number: {this.state.vehiclePoliceNumber}
+                N° de Police: {this.state.vehiclePoliceNumber}
                 <br />
                 Start Date:{" "}
                 {moment(this.state.vehicleInsuranceStartDate).format(

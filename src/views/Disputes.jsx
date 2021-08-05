@@ -63,8 +63,16 @@ class Disputes extends Component {
       .then((resp) => resp.json())
       .then((res) => {
         console.log("response ", res.data);
+        const response = res.data;
+        response.length > 0
+          ? this.setState({ total: response[0].bookingId })
+          : this.setState({ total: 0 });
         const data = res.data;
-        this.setState({ users: data, loading: false });
+        this.setState({
+          users: data,
+          loading: false,
+          total: data[0].bookingId,
+        });
         // console.log("response ", res);
       })
       .catch((err) => {
@@ -414,17 +422,33 @@ class Disputes extends Component {
 
   onChange = (pagination, filters, sorter, extra) => {
     // console.log("params", pagination, filters, sorter, extra);
-
-    console.log("roles ", filters);
-
-    filters.roleRA &&
-      this.setState({ rolesCB: filters.roleRA, loading: false }, () => {
+    this.setState(
+      {
+        pageNumber: pagination.current,
+        pageSize: pagination.pageSize,
+      },
+      () => {
         console.log("selected roles ", this.state.rolesCB);
         this.getAllDisputes();
-      });
+      }
+    );
+    console.log("roles ", pagination);
+
+    filters.roleRA &&
+      this.setState(
+        {
+          rolesCB: filters.roleRA,
+          loading: false,
+        },
+        () => {
+          console.log("selected roles ", this.state.rolesCB);
+          this.getAllDisputes();
+        }
+      );
   };
 
   render() {
+    console.log("data ", this.state.users);
     const columns = [
       {
         title: <Translation>{(t) => t("Disputes")}</Translation>,
@@ -719,6 +743,7 @@ class Disputes extends Component {
                           showQuickJumper: true,
                           defaultPageSize: 10,
                           defaultCurrent: 1,
+                          total: this.state.total,
                           showSizeChanger: true,
                           pageSizeOptions: [10, 20, 50, 100],
 

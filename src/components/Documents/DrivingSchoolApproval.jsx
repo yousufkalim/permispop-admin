@@ -137,7 +137,7 @@ class DrivingSchoolApproval extends Component {
               <Col md={6}>
                 <b>
                   {this.state.dsa.approvalCertificationImagePath === undefined
-                    ? "Pas encore ajouté" 
+                    ? "Pas encore ajouté"
                     : ""}
                 </b>
                 <br />
@@ -146,7 +146,7 @@ class DrivingSchoolApproval extends Component {
                 Approbation Délivré par{" "}
                 {this.state.dsa.approvalIssuingAuthority}
                 <br />
-                Date of Approval:{" "}
+                Date d'approbation:{" "}
                 {moment(this.state.dsa.dateOfApproval).format("DD/MM/YYYY")}
                 <br />
                 <Button varient="success" onClick={this.handleModelShow}>
@@ -179,7 +179,9 @@ class DrivingSchoolApproval extends Component {
                             <div className="row">
                               <div className="col-md-6">
                                 <FormGroup>
-                                  <ControlLabel>Date de délivrance de l'agrément</ControlLabel>
+                                  <ControlLabel>
+                                    Date de délivrance de l'agrément
+                                  </ControlLabel>
                                   <FormControl
                                     className="form-control"
                                     type="date"
@@ -214,7 +216,7 @@ class DrivingSchoolApproval extends Component {
                               <Col md={6}>
                                 <FormGroup>
                                   <ControlLabel>
-                                  Approbation Délivré par
+                                    Approbation Délivré par
                                   </ControlLabel>
                                   <FormControl
                                     className="form-control"

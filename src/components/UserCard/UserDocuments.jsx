@@ -2108,7 +2108,7 @@ class UserDocuments extends Component {
                 <tbody>
                   <tr>
                     <td colSpan="3">
-                      <h3>{t("Personal Detai")}l</h3>
+                      <h3>{t("Personal Detail")}l</h3>
                     </td>
                   </tr>
                   <tr>
@@ -2131,7 +2131,7 @@ class UserDocuments extends Component {
                         onClick={() =>
                           this.setState({
                             showId: true,
-                            docTitle: "Driving School Approval",
+                            docTitle: "Approbation de l'auto école",
                             idName: "dsa",
                             fbStatus:
                               this.state.dsa === undefined
@@ -2767,7 +2767,7 @@ class UserDocuments extends Component {
                               <Translation>
                                 {(t) => (
                                   <ControlLabel>
-                                    {t("Date of Technical Control")}
+                                    {t("Ouvrir le fichier dans un nouvel onglet")}
                                   </ControlLabel>
                                 )}
                               </Translation>
@@ -3237,7 +3237,7 @@ class UserDocuments extends Component {
                           <Translation>
                             {(t) => (
                               <ControlLabel>
-                                {t("Date of Technical Control")}
+                                {t("Ouvrir le fichier dans un nouvel onglet")}
                               </ControlLabel>
                             )}
                           </Translation>

@@ -793,12 +793,18 @@ export class UserCard extends Component {
                       {this.props.role === "DrivingSchool" && (
                         <tr>
                           <th>{t("CPF Accept")}</th>
-                          {this.props.cpfAccept === false ||
+                          <select
+                            value={this.props.cpfAccept === true ? true : false}
+                          >
+                            <option value="true">{t("Yes")}</option>
+                            <option value="false">{t("No")}</option>
+                          </select>
+                          {/* {this.props.cpfAccept === false ||
                           this.props.cpfAccept === null ? (
                             <td>{t("No")}</td>
                           ) : (
                             <td>{t("Yes")}</td>
-                          )}
+                          )} */}
                         </tr>
                       )}
                     </tbody>

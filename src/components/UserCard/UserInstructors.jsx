@@ -11,7 +11,7 @@ function UserInstructors(props) {
 
   // fetch all instructors by driving school
   useEffect(() => {
-    // console.log(props, "Props");
+    console.log("Props instructors ", props);
     var tokn = localStorage.getItem("userdata");
     console.log("instructor component mount");
 
@@ -46,6 +46,7 @@ function UserInstructors(props) {
                   responsePersonalData.id,
                 ];
                 data.push(datais);
+                console.log("details ", data);
                 if (data.length === lenToMatch) {
                   setInstructors(data);
                 }
@@ -53,6 +54,7 @@ function UserInstructors(props) {
             );
           } else {
             lenToMatch = lenToMatch - 1;
+            console.log("details 2", data);
             if (data.length === lenToMatch) {
               setInstructors(data);
             }

@@ -287,6 +287,7 @@ class Users extends Component {
 
   changeUser = (id) => {
     var token = localStorage.getItem("userdata");
+    console.log("inst id ", id);
     this.WebServicesManager.getApiWithParamCall(
       {
         endPoint: "Personal/GetAllById",
@@ -309,55 +310,24 @@ class Users extends Component {
       clearFilters,
     }) => (
       <div style={{ padding: 8 }}>
-        <Input
-          ref={(node) => {
-            this.searchInput = node;
-          }}
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={(e) =>
-            setSelectedKeys(e.target.value ? [e.target.value] : [])
-          }
-          onPressEnter={() =>
-            this.handleSearch(selectedKeys, confirm, dataIndex)
-          }
-          style={{ width: 188, marginBottom: 8, display: "block" }}
-        />
-        <Space>
-          <Button
-            className="add-package-button"
-            type="primary"
-            onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
-            icon={<SearchOutlined className="icon-search" />}
-            size="small"
-            style={{ width: 90 }}
-          >
-            <Translation>{(t) => t("Search")}</Translation>
-          </Button>
-          <Button
-            type="primary"
-            className="add-package-button"
-            onClick={() => this.handleReset(clearFilters)}
-            size="small"
-            style={{ width: 90 }}
-          >
-            <Translation>{(t) => t("Reset")}</Translation>
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              confirm({ closeDropdown: false });
-              this.setState({
-                searchText: selectedKeys[0],
-                searchedColumn: dataIndex,
-              });
-            }}
-            style={{ color: "#149e7a" }}
-          >
-            <Translation>{(t) => t("Filter")}</Translation>
-          </Button>
-        </Space>
+        <Translation>
+          {(t) => (
+            <Input
+              ref={(node) => {
+                this.searchInput = node;
+              }}
+              placeholder={t("Search name")}
+              value={selectedKeys[0]}
+              onChange={(e) =>
+                setSelectedKeys(e.target.value ? [e.target.value] : [])
+              }
+              onPressEnter={() =>
+                this.handleSearch(selectedKeys, confirm, dataIndex)
+              }
+              style={{ width: 188, marginBottom: 8, display: "block" }}
+            />
+          )}
+        </Translation>
       </div>
     ),
     filterIcon: (filtered) => (

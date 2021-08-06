@@ -191,7 +191,7 @@ class VehicleInsurance extends Component {
                     href={this.state.vIns.greenCardImagePath}
                     target="noopener noreferrer"
                   >
-                    View file in new Tab.
+                    Ouvrir le fichier dans un nouvel onglet.
                   </a>
                 ) : (
                   ""
@@ -200,18 +200,19 @@ class VehicleInsurance extends Component {
               <Col md={6}>
                 <b>
                   {this.state.vIns.greenCardImagePath === undefined
-                    ? "Pas encore ajouté" 
+                    ? "Pas encore ajouté"
                     : ""}
                 </b>
                 <br />
                 Insurer {this.state.vIns.insurer}
                 <br />
-                Police Number: {this.state.vIns.policeNumber}
+                N° de Police: {this.state.vIns.policeNumber}
                 <br />
-                Start Date:{" "}
+                Date de début:{" "}
                 {moment(this.state.vIns.startDate).format("DD/MM/YYYY")}
                 <br />
-                End Date: {moment(this.state.vIns.endDate).format("DD/MM/YYYY")}
+                Date de fin:{" "}
+                {moment(this.state.vIns.endDate).format("DD/MM/YYYY")}
                 <br />
                 <Button varient="success" onClick={this.handleModelShow}>
                   <Translation>{(t) => t("Update Data")}</Translation>
@@ -243,7 +244,7 @@ class VehicleInsurance extends Component {
                             <div className="row">
                               <div className="col-md-6">
                                 <FormGroup>
-                                  <ControlLabel>Start Date</ControlLabel>
+                                  <ControlLabel>Date de début</ControlLabel>
                                   <FormControl
                                     className="form-control"
                                     type="date"
@@ -260,7 +261,7 @@ class VehicleInsurance extends Component {
                               </div>
                               <div className="col-md-6">
                                 <FormGroup>
-                                  <ControlLabel>End Date</ControlLabel>
+                                  <ControlLabel>Date de fin</ControlLabel>
                                   <FormControl
                                     className="form-control"
                                     type="date"
@@ -324,7 +325,7 @@ class VehicleInsurance extends Component {
                                     href={this.state.greenCardImagePath}
                                     target="noopener noreferrer"
                                   >
-                                   Afficher le fichier actuel
+                                    Afficher le fichier actuel
                                   </a>
                                 ) : (
                                   ""
@@ -341,7 +342,7 @@ class VehicleInsurance extends Component {
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={this.handleModelShow}>
-                Close
+                Fermer
               </Button>
               <Button variant="primary" onClick={this.handleSave}>
                 Update

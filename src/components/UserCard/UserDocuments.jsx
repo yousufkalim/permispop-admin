@@ -2393,7 +2393,7 @@ class UserDocuments extends Component {
                               <Translation>
                                 {(t) => (
                                   <ControlLabel>
-                                    {t("Date of the 1st Registration")}{" "}
+                                    Date de 1ère immatriculation
                                     <span className="text-red">*</span>
                                   </ControlLabel>
                                 )}
@@ -2767,7 +2767,9 @@ class UserDocuments extends Component {
                               <Translation>
                                 {(t) => (
                                   <ControlLabel>
-                                    {t("Ouvrir le fichier dans un nouvel onglet")}
+                                    {t(
+                                      "Ouvrir le fichier dans un nouvel onglet"
+                                    )}
                                   </ControlLabel>
                                 )}
                               </Translation>
@@ -2889,7 +2891,7 @@ class UserDocuments extends Component {
                           <Translation>
                             {(t) => (
                               <ControlLabel>
-                                {t("Date of the 1st Registration")}{" "}
+                                Date de 1ère immatriculation
                                 <span className="text-red">*</span>
                               </ControlLabel>
                             )}

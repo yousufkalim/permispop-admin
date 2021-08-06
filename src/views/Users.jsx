@@ -389,7 +389,7 @@ class Users extends Component {
     const { key } = this.state;
     console.log(extra);
     console.log("sorter ", sorter);
-    console.log("paging", pagination);
+    console.log("paging", filters);
     filters.name &&
       this.setState({ nameFilter: filters.name[0] }, () => {
         this.getAllUsers();

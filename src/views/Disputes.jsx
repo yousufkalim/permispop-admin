@@ -51,7 +51,7 @@ class Disputes extends Component {
     var tokn = localStorage.getItem("userdata");
 
     fetch(
-      `${this.baseUrl}Dispute/GetAllDisputesForAdmin_New?pageSize=${pageSize}&pageNumber=${pageNumber}&QuerySearch.firstName=${createdAgainstName}&QuerySearch.Role=${rolesCB}`,
+      `${this.baseUrl}Dispute/GetAllDisputesForAdmin_New?pageSize=${pageSize}&pageNumber=${pageNumber}&QuerySearch.studentName=${createdAgainstName}&QuerySearch.Role=${rolesCB}`,
       {
         method: "GET",
         headers: {
@@ -71,7 +71,7 @@ class Disputes extends Component {
         this.setState({
           users: data,
           loading: false,
-          total: data[0].bookingId,
+       
         });
         // console.log("response ", res);
       })
@@ -757,13 +757,13 @@ class Disputes extends Component {
                             number: index + 1,
                             nameRB:
                               item.disputingFrom.toLowerCase() === "student"
-                                ? item.studentID
-                                : item.instructorID,
+                                ? item.studentName
+                                : item.instructorName,
                             roleRB: item.disputingFrom,
                             nameRA:
                               item.disputingFrom.toLowerCase() === "student"
-                                ? item.instructorID
-                                : item.studentID,
+                                ? item.instructorName
+                                : item.studentName,
                             roleRA:
                               item.disputingFrom.toLowerCase() !== "student"
                                 ? "Student"

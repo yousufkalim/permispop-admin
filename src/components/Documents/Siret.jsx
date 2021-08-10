@@ -183,7 +183,7 @@ class Siret extends Component {
                   href={this.state.siret.siratImagePath}
                   target="noopener noreferrer"
                 >
-                  View file in new Tab.
+                  Ouvrir le fichier dans un nouvel onglet.
                 </a>
               ) : (
                 ""

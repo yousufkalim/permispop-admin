@@ -71,7 +71,6 @@ class Disputes extends Component {
         this.setState({
           users: data,
           loading: false,
-       
         });
         // console.log("response ", res);
       })
@@ -198,59 +197,63 @@ class Disputes extends Component {
       confirm,
       clearFilters,
     }) => (
-      <div style={{ padding: 8 }}>
-        <Input
-          ref={(node) => {
-            this.searchInput = node;
-          }}
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={(e) =>
-            setSelectedKeys(e.target.value ? [e.target.value] : [])
-          }
-          onPressEnter={() =>
-            this.handleSearchCAName(selectedKeys, confirm, dataIndex)
-          }
-          style={{ width: 188, marginBottom: 8, display: "block" }}
-        />
-        <Space>
-          <Button
-            className="add-package-button"
-            type="primary"
-            onClick={() =>
-              this.handleSearchCAName(selectedKeys, confirm, dataIndex)
-            }
-            icon={<SearchOutlined className="icon-search" />}
-            size="small"
-            style={{ width: 90 }}
-          >
-            <Translation>{(t) => t("Search")}</Translation>
-          </Button>
-          <Button
-            type="primary"
-            className="add-package-button"
-            onClick={() => this.handleReset(clearFilters)}
-            size="small"
-            style={{ width: 90 }}
-          >
-            <Translation>{(t) => t("Reset")}</Translation>
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              confirm({ closeDropdown: false });
-              this.setState({
-                searchText: selectedKeys[0],
-                searchedColumn: dataIndex,
-              });
-            }}
-            style={{ color: "#149e7a" }}
-          >
-            <Translation>{(t) => t("Filter")}</Translation>
-          </Button>
-        </Space>
-      </div>
+      <Translation>
+        {(t) => (
+          <div style={{ padding: 8 }}>
+            <Input
+              ref={(node) => {
+                this.searchInput = node;
+              }}
+              placeholder={t("Search")}
+              value={selectedKeys[0]}
+              onChange={(e) =>
+                setSelectedKeys(e.target.value ? [e.target.value] : [])
+              }
+              onPressEnter={() =>
+                this.handleSearchCAName(selectedKeys, confirm, dataIndex)
+              }
+              style={{ width: 188, marginBottom: 8, display: "block" }}
+            />
+            <Space>
+              <Button
+                className="add-package-button"
+                type="primary"
+                onClick={() =>
+                  this.handleSearchCAName(selectedKeys, confirm, dataIndex)
+                }
+                icon={<SearchOutlined className="icon-search" />}
+                size="small"
+                style={{ width: 100 }}
+              >
+                <Translation>{(t) => t("Search")}</Translation>
+              </Button>
+              <Button
+                type="primary"
+                className="add-package-button"
+                onClick={() => this.handleReset(clearFilters)}
+                size="small"
+                style={{ width: 90 }}
+              >
+                <Translation>{(t) => t("Reset")}</Translation>
+              </Button>
+              <Button
+                type="link"
+                size="small"
+                onClick={() => {
+                  confirm({ closeDropdown: false });
+                  this.setState({
+                    searchText: selectedKeys[0],
+                    searchedColumn: dataIndex,
+                  });
+                }}
+                style={{ color: "#149e7a" }}
+              >
+                <Translation>{(t) => t("Filter")}</Translation>
+              </Button>
+            </Space>
+          </div>
+        )}
+      </Translation>
     ),
     filterIcon: (filtered) => (
       <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
@@ -515,7 +518,7 @@ class Disputes extends Component {
             key: "nameRA",
             align: "center",
             width: 120,
-            sorter: (a, b) => a.nameRA.length - b.nameRA.length,
+            sorter: (a, b) => "",
             ...this.getColumnSearchCreatedAgainstName("nameRA"),
           },
           {
@@ -748,7 +751,7 @@ class Disputes extends Component {
                           pageSizeOptions: [10, 20, 50, 100],
 
                           showTotal: (total, range) =>
-                            `${range[0]}-${range[1]} of ${total} items`,
+                            `${range[0]}-${range[1]} of ${total} Lignes`,
                         }}
                         dataSource={
                           this.state.users &&
@@ -759,15 +762,15 @@ class Disputes extends Component {
                               item.disputingFrom.toLowerCase() === "student"
                                 ? item.studentName
                                 : item.instructorName,
-                            roleRB: item.disputingFrom,
+                            roleRB: t(item.disputingFrom),
                             nameRA:
                               item.disputingFrom.toLowerCase() === "student"
                                 ? item.instructorName
                                 : item.studentName,
                             roleRA:
                               item.disputingFrom.toLowerCase() !== "student"
-                                ? "Student"
-                                : "Instructor/DrivingSchool",
+                                ? t("Student")
+                                : t("Instructor/DrivingSchool"),
                             comments:
                               item.adminComments !== null &&
                               item.adminComments !== "null"

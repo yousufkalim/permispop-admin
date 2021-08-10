@@ -585,12 +585,20 @@ export class UserCard extends Component {
 
   showConfirmDelete = () => {
     confirm({
-      title: "Are you sure you want to delete this User?",
+      title: (
+        <Translation>
+          {(t) => t("Are you sure you want to delete this User?")}
+        </Translation>
+      ),
       icon: <ExclamationCircleOutlined />,
-      content: "All data regarding the user will be deleted!",
-      okText: "Yes",
+      content: (
+        <Translation>
+          {(t) => t("All data regarding the user will be deleted!")}
+        </Translation>
+      ),
+      okText: <Translation>{(t) => t("Yes")}</Translation>,
       okType: "danger",
-      cancelText: "No",
+      cancelText: <Translation>{(t) => t("No")}</Translation>,
       onOk: () => {
         this.handleDelete();
       },
@@ -634,7 +642,11 @@ export class UserCard extends Component {
 
   showConfirmDeactive = () => {
     confirm({
-      title: "Are you sure you want to De-activate this User?",
+      title: (
+        <Translation>
+          {(t) => t("Are you sure you want to De-activate this User?")}
+        </Translation>
+      ),
       icon: <ExclamationCircleOutlined />,
       // content: "The User will be De-activated!",
       okText: "Yes",
@@ -964,7 +976,7 @@ export class UserCard extends Component {
             {/* {console.log("My Custom", this.props)} */}
             <Modal
               className="update-modal"
-              title="Update Data"
+              title={t("Update Data")}
               visible={this.state.showModal}
               style={{ marginTop: "-80px" }}
               onOk={this.handleSave}
@@ -1176,7 +1188,7 @@ export class UserCard extends Component {
                               </Col>
                               <div className="col-md-6">
                                 <FormGroup>
-                                  <ControlLabel>Complement</ControlLabel>
+                                  <ControlLabel>{t("Complement")}</ControlLabel>
                                   <FormControl
                                     className="form-control"
                                     value={this.state.complement}
@@ -1192,7 +1204,7 @@ export class UserCard extends Component {
                             <div className="row">
                               <div className="col-md-6">
                                 <FormGroup>
-                                  <ControlLabel>Zip Code</ControlLabel>
+                                  <ControlLabel>{t("Zip Code")}</ControlLabel>
                                   <FormControl
                                     className="form-control"
                                     onChange={(e) => {

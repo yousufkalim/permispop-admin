@@ -73,7 +73,7 @@ export default class Login extends Component {
                 this.setState({
                   notValidError: (
                     <Translation>
-                      {(t) => t("Your email or password is incorrect!")}
+                      Ton e-mail ou ton mot de passe est incorrect!
                     </Translation>
                   ),
                   // isLoading: false,

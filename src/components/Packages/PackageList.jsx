@@ -284,14 +284,14 @@ class PackageList extends Component {
                 pagination={{
                   position: ["bottomCenter"],
                   size: "small",
-                  showQuickJumper: true,
+
                   defaultPageSize: 20,
                   defaultCurrent: 1,
                   showSizeChanger: true,
                   pageSizeOptions: [20, 50, 100],
 
                   showTotal: (total, range) =>
-                    `${range[0]}-${range[1]} of ${total} items`,
+                    `${range[0]}-${range[1]} of ${total} Lignes`,
                 }}
                 dataSource={this.state.packages.map((item, index) => ({
                   key: index + 1,

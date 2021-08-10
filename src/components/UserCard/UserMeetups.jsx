@@ -74,7 +74,7 @@ export class UserMeetups extends Component {
         if (!this.state.lat && !this.state.long) {
           this.setState({
             disableAdd: true,
-            meetupError: "Select From dropdown to continue.",
+            meetupError: "Select From dropdown to continue",
           });
         } else {
           this.setState({ disableAdd: false, meetupError: "" });
@@ -331,7 +331,7 @@ export class UserMeetups extends Component {
                       onChange={this.getAddress}
                       onSelect={this.setAddress}
                     />
-                    <HelpBlock>{this.state.meetupError}</HelpBlock>
+                    <HelpBlock>{t(this.state.meetupError)}</HelpBlock>
                   </FormGroup>
                   <Row>
                     <Col md={6}>
@@ -423,7 +423,7 @@ export class UserMeetups extends Component {
                       onChange={this.getAddress}
                       onSelect={this.setAddress}
                     />
-                    <HelpBlock>{this.state.meetupError}</HelpBlock>
+                    <HelpBlock>{t(this.state.meetupError)}</HelpBlock>
                   </FormGroup>
                   <Row>
                     <Col md={6}>

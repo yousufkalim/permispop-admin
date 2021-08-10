@@ -1494,7 +1494,7 @@ class UserDocuments extends Component {
           stateis = stateis[1];
           vehicleList.push(
             <tr key={stateis.id}>
-              <td>{key} Detail</td>
+              <Translation>{(t) => <td>{t(`${key} Detail`)}</td>}</Translation>
               <td>
                 {stateis === undefined ? (
                   <i className="fa fa-remove"></i>
@@ -1540,7 +1540,7 @@ class UserDocuments extends Component {
         } else {
           vehicleList.push(
             <tr key={keySplit}>
-              <td>{key} Detail</td>
+              <Translation>{(t) => <td>{t(`${key} Detail`)}</td>}</Translation>
               <td>
                 {stateis === undefined ? (
                   <i className="fa fa-remove"></i>
@@ -1687,7 +1687,7 @@ class UserDocuments extends Component {
                         onClick={() =>
                           this.setState({
                             showId: true,
-                            docTitle: "Back ID",
+                            docTitle: "Verso Pièce d'identité",
                             idName: "bic",
                             fbStatus:
                               this.state.backDoc === undefined
@@ -1719,7 +1719,7 @@ class UserDocuments extends Component {
                         onClick={() =>
                           this.setState({
                             showId: true,
-                            docTitle: "Driving License",
+                            docTitle: "Permis de conduire",
                             idName: "drvlic",
                             fbStatus:
                               this.state.drvLic === undefined
@@ -1843,7 +1843,7 @@ class UserDocuments extends Component {
                         onClick={() =>
                           this.setState({
                             showId: true,
-                            docTitle: "Green Card",
+                            docTitle: "Carte verte",
                             idName: "greenCard",
                             fbStatus:
                               this.state.greenCard === undefined
@@ -1959,7 +1959,7 @@ class UserDocuments extends Component {
                         onClick={() =>
                           this.setState({
                             showId: true,
-                            docTitle: "Driving License",
+                            docTitle: "Permis de conduire",
                             idName: "drvlic",
                             fbStatus:
                               this.state.drvLic === undefined

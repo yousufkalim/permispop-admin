@@ -155,57 +155,63 @@ export class UpdateRequest extends Component {
       confirm,
       clearFilters,
     }) => (
-      <div style={{ padding: 8 }}>
-        <Input
-          ref={(node) => {
-            this.searchInput = node;
-          }}
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={(e) =>
-            setSelectedKeys(e.target.value ? [e.target.value] : [])
-          }
-          onPressEnter={() =>
-            this.handleSearch(selectedKeys, confirm, dataIndex)
-          }
-          style={{ width: 188, marginBottom: 8, display: "block" }}
-        />
-        <Space>
-          <Button
-            className="add-package-button"
-            type="primary"
-            onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
-            icon={<SearchOutlined className="icon-search" />}
-            size="small"
-            style={{ width: 90 }}
-          >
-            <Translation>{(t) => t("Search")}</Translation>
-          </Button>
-          <Button
-            type="primary"
-            className="add-package-button"
-            onClick={() => this.handleReset(clearFilters)}
-            size="small"
-            style={{ width: 90 }}
-          >
-            <Translation>{(t) => t("Reset")}</Translation>
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              confirm({ closeDropdown: false });
-              this.setState({
-                searchText: selectedKeys[0],
-                searchedColumn: dataIndex,
-              });
-            }}
-            style={{ color: "#149e7a" }}
-          >
-            Fil<Translation>{(t) => t("Filter")}</Translation>ter
-          </Button>
-        </Space>
-      </div>
+      <Translation>
+        {(t) => (
+          <div style={{ padding: 8 }}>
+            <Input
+              ref={(node) => {
+                this.searchInput = node;
+              }}
+              placeholder={t("Search Name")}
+              value={selectedKeys[0]}
+              onChange={(e) =>
+                setSelectedKeys(e.target.value ? [e.target.value] : [])
+              }
+              onPressEnter={() =>
+                this.handleSearch(selectedKeys, confirm, dataIndex)
+              }
+              style={{ width: 188, marginBottom: 8, display: "block" }}
+            />
+            <Space>
+              <Button
+                className="add-package-button"
+                type="primary"
+                onClick={() =>
+                  this.handleSearch(selectedKeys, confirm, dataIndex)
+                }
+                icon={<SearchOutlined className="icon-search" />}
+                size="small"
+                style={{ width: 100 }}
+              >
+                <Translation>{(t) => t("Search")}</Translation>
+              </Button>
+              <Button
+                type="primary"
+                className="add-package-button"
+                onClick={() => this.handleReset(clearFilters)}
+                size="small"
+                style={{ width: 90 }}
+              >
+                <Translation>{(t) => t("Reset")}</Translation>
+              </Button>
+              <Button
+                type="link"
+                size="small"
+                onClick={() => {
+                  confirm({ closeDropdown: false });
+                  this.setState({
+                    searchText: selectedKeys[0],
+                    searchedColumn: dataIndex,
+                  });
+                }}
+                style={{ color: "#149e7a" }}
+              >
+                <Translation>{(t) => t("Filter")}</Translation>
+              </Button>
+            </Space>
+          </div>
+        )}
+      </Translation>
     ),
     filterIcon: (filtered) => (
       <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
@@ -242,59 +248,63 @@ export class UpdateRequest extends Component {
       confirm,
       clearFilters,
     }) => (
-      <div style={{ padding: 8 }}>
-        <Input
-          ref={(node) => {
-            this.searchInput = node;
-          }}
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={(e) =>
-            setSelectedKeys(e.target.value ? [e.target.value] : [])
-          }
-          onPressEnter={() =>
-            this.handleSearchUpdateField(selectedKeys, confirm, dataIndex)
-          }
-          style={{ width: 188, marginBottom: 8, display: "block" }}
-        />
-        <Space>
-          <Button
-            className="add-package-button"
-            type="primary"
-            onClick={() =>
-              this.handleSearchUpdateField(selectedKeys, confirm, dataIndex)
-            }
-            icon={<SearchOutlined className="icon-search" />}
-            size="small"
-            style={{ width: 90 }}
-          >
-            <Translation>{(t) => t("Search")}</Translation>
-          </Button>
-          <Button
-            type="primary"
-            className="add-package-button"
-            onClick={() => this.handleResetUpdateField(clearFilters)}
-            size="small"
-            style={{ width: 90 }}
-          >
-            <Translation>{(t) => t("Reset")}</Translation>
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              confirm({ closeDropdown: false });
-              this.setState({
-                searchText: selectedKeys[0],
-                searchedColumn: dataIndex,
-              });
-            }}
-            style={{ color: "#149e7a" }}
-          >
-            <Translation>{(t) => t("Filter")}</Translation>
-          </Button>
-        </Space>
-      </div>
+      <Translation>
+        {(t) => (
+          <div style={{ padding: 8 }}>
+            <Input
+              ref={(node) => {
+                this.searchInput = node;
+              }}
+              placeholder={t("Search")}
+              value={selectedKeys[0]}
+              onChange={(e) =>
+                setSelectedKeys(e.target.value ? [e.target.value] : [])
+              }
+              onPressEnter={() =>
+                this.handleSearchUpdateField(selectedKeys, confirm, dataIndex)
+              }
+              style={{ width: 188, marginBottom: 8, display: "block" }}
+            />
+            <Space>
+              <Button
+                className="add-package-button"
+                type="primary"
+                onClick={() =>
+                  this.handleSearchUpdateField(selectedKeys, confirm, dataIndex)
+                }
+                icon={<SearchOutlined className="icon-search" />}
+                size="small"
+                style={{ width: 100 }}
+              >
+                <Translation>{(t) => t("Search")}</Translation>
+              </Button>
+              <Button
+                type="primary"
+                className="add-package-button"
+                onClick={() => this.handleResetUpdateField(clearFilters)}
+                size="small"
+                style={{ width: 90 }}
+              >
+                <Translation>{(t) => t("Reset")}</Translation>
+              </Button>
+              <Button
+                type="link"
+                size="small"
+                onClick={() => {
+                  confirm({ closeDropdown: false });
+                  this.setState({
+                    searchText: selectedKeys[0],
+                    searchedColumn: dataIndex,
+                  });
+                }}
+                style={{ color: "#149e7a" }}
+              >
+                <Translation>{(t) => t("Filter")}</Translation>
+              </Button>
+            </Space>
+          </div>
+        )}
+      </Translation>
     ),
     filterIcon: (filtered) => (
       <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />

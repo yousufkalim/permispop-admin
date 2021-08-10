@@ -54,7 +54,7 @@ class DrivingLicense extends Component {
                 }
                 target="noopener noreferrer"
               >
-                <Translation>{(t) => t("View file in new Tab")}</Translation>
+                Ouvrir le fichier dans un nouvel onglet.
               </a>
             ) : (
               ""

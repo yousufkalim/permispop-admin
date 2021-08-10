@@ -84,8 +84,8 @@ export default i18n
           "Ban till:": "Interdire jusqu'à:",
           "15 Days": "15 jours",
           "30 Days": "30 jours",
-          Update: "Update",
-
+          Update: "Mettre à jour",
+          Complement: "Complément d'adresse",
           "Upload front of your ID Card/Passport/Residence permit":
             "Télécharge le recto de ta CNI/Passeport/Permis de séjour",
           "Upload back of your ID Card/Passport/Residence permit":
@@ -209,6 +209,8 @@ export default i18n
           "RC Pro": "RC Pro",
           "Green Card": "Carte verte",
           "Vehicle Details": "Détails du véhicule",
+          "Vehicle1 Details": "Détail du véhicule 1",
+          "Vehicle1 Details": "Détail du véhicule 2",
           "Vehicle1 Detail": "Détails du véhicule",
           "Vehicle Insurance": "Assurance du véhicule",
           "Technical Control": "Contrôle technique",
@@ -278,8 +280,7 @@ export default i18n
           ///////////////// LOGIN PAGE //////////////////
           "Please input a valid E-mail!": "Veuillez saisir un e-mail valide!",
           "Please input your Password!": "Veuillez saisir votre mot de passe!",
-          "Your email or password is incorrect!":
-            "Votre e-mail ou votre mot de passe est incorrect!",
+
           "Error from sever": "Erreur du serveur",
           "Car Rental Agent": "Agent de location de voitures",
 
@@ -307,6 +308,7 @@ export default i18n
           No: "Non",
           "CPF Accept": "CPF Accepté",
           "Search name": "Nom de la recherche",
+          "Search Name": "Nom de la recherche",
           "View Vehicle file": "Voir la fiche du véhicule",
           "View Registration file": "Voir le dossier d'inscription",
           "View GreenCard file": "Voir la carte verte",
@@ -323,6 +325,18 @@ export default i18n
           "select meetup": "Sélectionner le point de rencontre",
           "search rating from": "Rechercher la note de",
           "upload image": "Télécharger une image",
+          "Are you sure you want to De-activate this User?":
+            "Êtes-vous sûr de vouloir désactiver cet utilisateur ?",
+          "Are you sure you want to delete this User?":
+            "Êtes-vous sûr de vouloir supprimer cet utilisateur ?",
+          "All data regarding the user will be deleted!":
+            "Toutes les données concernant l'utilisateur seront supprimées !",
+          "Last Name": "Nom de famille",
+          "Update Meetup Location": "Mettre à jour l'emplacement du Meetup",
+          "Are you sure?": "Es-tu sûr?",
+          "Select From dropdown to continue":
+            "Sélectionnez De la liste déroulante pour continuer",
+          items: "Lignes",
         },
       },
     },

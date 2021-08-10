@@ -1429,9 +1429,8 @@ class InstructorAdd extends Component {
                         responseUp.drivingSchoolManagerInfoId,
                       DrivingSchoolVehiclesInfoId:
                         responseUp.drivingSchoolVehiclesInfoId,
-                      DrivingSchoolInstructorInfoId: JSON.stringify(
-                        Instructros
-                      ),
+                      DrivingSchoolInstructorInfoId:
+                        JSON.stringify(Instructros),
                       Lat: responseUp.lat,
                       Long: responseUp.long,
                       Status: responseUp.status,
@@ -1498,6 +1497,7 @@ class InstructorAdd extends Component {
                   title={t("Identity Of Instructor")}
                   visible={this.state.isModalVisible}
                   onOk={this.handleOk}
+                  width="75%"
                   onCancel={this.handleCancel}
                   footer={null}
                   className="add-inst-modal"
@@ -2097,8 +2097,8 @@ class InstructorAdd extends Component {
                                     bsClass: "form-control",
                                     name: "ICPNumber",
                                     value: this.state.ICPNumber,
-                                    onChange: this
-                                      .validationCheckForInsPoliceNumber,
+                                    onChange:
+                                      this.validationCheckForInsPoliceNumber,
                                     autoComplete: "off",
                                   },
                                 ]}

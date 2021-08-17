@@ -609,12 +609,20 @@ export class UserCard extends Component {
   };
   showConfirmBan1 = () => {
     confirm({
-      title: "Are you sure you want to Ban this User?",
+      title: (
+        <Translation>
+          {(t) => t("Are you sure you want to Ban this User?")}
+        </Translation>
+      ),
       icon: <ExclamationCircleOutlined />,
-      content: "The User will be banned for 15 days!",
-      okText: "Yes",
+      content: (
+        <Translation>
+          {(t) => t("The User will be banned for 15 days!")}
+        </Translation>
+      ),
+      okText: <Translation>{(t) => t("Yes")}</Translation>,
       okType: "danger",
-      cancelText: "No",
+      cancelText: <Translation>{(t) => t("No")}</Translation>,
       onOk: () => {
         this.handleFunc(15);
       },
@@ -625,12 +633,20 @@ export class UserCard extends Component {
   };
   showConfirmBan2 = () => {
     confirm({
-      title: "Are you sure you want to Ban this User?",
+      title: (
+        <Translation>
+          {(t) => t("Are you sure you want to Ban this User?")}
+        </Translation>
+      ),
       icon: <ExclamationCircleOutlined />,
-      content: "The User will be banned for 30 days!",
-      okText: "Yes",
+      content: (
+        <Translation>
+          {(t) => t("The User will be banned for 30 days!")}
+        </Translation>
+      ),
+      okText: <Translation>{(t) => t("Yes")}</Translation>,
       okType: "danger",
-      cancelText: "No",
+      cancelText: <Translation>{(t) => t("No")}</Translation>,
       onOk: () => {
         this.handleFunc(30);
       },
@@ -649,9 +665,9 @@ export class UserCard extends Component {
       ),
       icon: <ExclamationCircleOutlined />,
       // content: "The User will be De-activated!",
-      okText: "Yes",
+      okText: <Translation>{(t) => t("Yes")}</Translation>,
       okType: "danger",
-      cancelText: "No",
+      cancelText: <Translation>{(t) => t("No")}</Translation>,
       onOk: () => {
         this.handlefuntDeActive();
       },
@@ -663,12 +679,16 @@ export class UserCard extends Component {
 
   showConfirmReactive = () => {
     confirm({
-      title: "Are you sure you want to Re-activate this User?",
+      title: (
+        <Translation>
+          {(t) => t("Are you sure you want to Re-activate this User?")}
+        </Translation>
+      ),
       icon: <ExclamationCircleOutlined />,
       // content: "The User will be De-activated!",
-      okText: "Yes",
+      okText: <Translation>{(t) => t("Yes")}</Translation>,
       okType: "danger",
-      cancelText: "No",
+      cancelText: <Translation>{(t) => t("No")}</Translation>,
       onOk: () => {
         this.handleUnban();
       },
@@ -682,9 +702,9 @@ export class UserCard extends Component {
       title: "Are you sure you want to Un-ban this User?",
       icon: <ExclamationCircleOutlined />,
       // content: "The User will be De-activated!",
-      okText: "Yes",
+      okText: <Translation>{(t) => t("Yes")}</Translation>,
       okType: "danger",
-      cancelText: "No",
+      cancelText: <Translation>{(t) => t("No")}</Translation>,
       onOk: () => {
         this.handleUnban();
       },
@@ -805,12 +825,18 @@ export class UserCard extends Component {
                       {this.props.role === "DrivingSchool" && (
                         <tr>
                           <th>{t("CPF Accept")}</th>
-                          <select
+                          {this.props.cpfAccept === true ||
+                          this.props.cpfAccept === "true" ? (
+                            <td>{t("Yes")}</td>
+                          ) : (
+                            <td>{t("No")}</td>
+                          )}
+                          {/* <select
                             value={this.props.cpfAccept === true ? true : false}
                           >
                             <option value="true">{t("Yes")}</option>
                             <option value="false">{t("No")}</option>
-                          </select>
+                          </select> */}
                           {/* {this.props.cpfAccept === false ||
                           this.props.cpfAccept === null ? (
                             <td>{t("No")}</td>

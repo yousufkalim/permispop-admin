@@ -33,8 +33,9 @@ export class UpdateRequest extends Component {
       isVerified: false,
       name: "",
       updateField: "",
-      pageSize: 3,
+      pageSize: 10,
       pageNumber: 1,
+      total: 0,
     };
   }
 
@@ -67,6 +68,10 @@ export class UpdateRequest extends Component {
       .then((response) => {
         console.log("total ", response);
         const responseRequest = response.data;
+
+        responseRequest.length > 0
+          ? this.setState({ total: response.totalCount })
+          : this.setState({ total: 0 });
         // console.log("responseRequest", responseRequest);
         var pendingList = [];
         var completeList = [];
@@ -381,6 +386,7 @@ export class UpdateRequest extends Component {
   ////////////////////// On Filter / Sorter / Pagination change ////////////////////////
 
   onChange = (pagination, filters, sorter, extra) => {
+    console.log("pagination ", pagination);
     this.setState(
       {
         loading: false,
@@ -390,6 +396,7 @@ export class UpdateRequest extends Component {
         // sortValue: sorter.field,
       },
       () => {
+        console.log("load data done");
         this.loadData();
       }
     );
@@ -406,7 +413,7 @@ export class UpdateRequest extends Component {
         width: 50,
         align: "center",
         responsive: ["xs"],
-        sorter: (a, b) => a.name.length - b.name.length,
+        sorter: (a, b) => "",
         ...this.getColumnSearchProps("name"),
       },
       {
@@ -416,8 +423,8 @@ export class UpdateRequest extends Component {
         responsive: ["xs"],
         key: "field",
         align: "center",
-        sorter: (a, b) => a.field.length - b.field.length,
-        ...this.getColumnSearchPropsUpdateField("field"),
+        // sorter: (a, b) => "",
+        // ...this.getColumnSearchPropsUpdateField("field"),
       },
       {
         title: "Description",
@@ -492,7 +499,7 @@ export class UpdateRequest extends Component {
         key: "name",
         align: "center",
         responsive: ["sm"],
-        sorter: (a, b) => a.name.length - b.name.length,
+        sorter: (a, b) => "",
         ...this.getColumnSearchProps("name"),
       },
       {
@@ -501,8 +508,8 @@ export class UpdateRequest extends Component {
         key: "field",
         responsive: ["sm"],
         align: "center",
-        sorter: (a, b) => a.field.length - b.field.length,
-        ...this.getColumnSearchPropsUpdateField("field"),
+        // sorter: (a, b) => "",
+        // ...this.getColumnSearchPropsUpdateField("field"),
       },
       {
         title: <Translation>{(t) => t("Description")}</Translation>,
@@ -559,7 +566,7 @@ export class UpdateRequest extends Component {
         key: "name",
         align: "center",
         width: 160,
-        sorter: (a, b) => a.name.length - b.name.length,
+        sorter: (a, b) => "",
         ...this.getColumnSearchProps("name"),
       },
       {
@@ -568,8 +575,8 @@ export class UpdateRequest extends Component {
         key: "field",
         align: "center",
         width: 160,
-        sorter: (a, b) => a.field.length - b.field.length,
-        ...this.getColumnSearchPropsUpdateField("field"),
+        // sorter: (a, b) => "",
+        // ...this.getColumnSearchPropsUpdateField("field"),
       },
       {
         title: <Translation>{(t) => t("Description")}</Translation>,
@@ -643,6 +650,7 @@ export class UpdateRequest extends Component {
                               showQuickJumper: true,
                               defaultPageSize: 10,
                               defaultCurrent: 1,
+                              total: this.state.total,
                               showSizeChanger: true,
                               pageSizeOptions: [10, 20, 50, 100],
 
@@ -667,6 +675,7 @@ export class UpdateRequest extends Component {
                           className="table-responsive"
                         >
                           <Table
+                            onChange={this.onChange}
                             loading={{
                               indicator: antIcon,
                               spinning: this.state.loading,
@@ -699,6 +708,7 @@ export class UpdateRequest extends Component {
                               defaultPageSize: 10,
                               defaultCurrent: 1,
                               showSizeChanger: true,
+                              total: this.state.total,
                               pageSizeOptions: [10, 20, 50, 100],
 
                               showTotal: (total, range) =>

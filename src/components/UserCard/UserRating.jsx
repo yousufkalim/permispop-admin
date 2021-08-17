@@ -111,20 +111,24 @@ class UserRating extends Component {
       clearFilters,
     }) => (
       <div style={{ padding: 8 }}>
-        <Input
-          ref={(node) => {
-            this.searchInput = node;
-          }}
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={(e) =>
-            setSelectedKeys(e.target.value ? [e.target.value] : [])
-          }
-          onPressEnter={() =>
-            this.handleSearch(selectedKeys, confirm, dataIndex)
-          }
-          style={{ width: 188, marginBottom: 8, display: "block" }}
-        />
+        <Translation>
+          {(t) => (
+            <Input
+              ref={(node) => {
+                this.searchInput = node;
+              }}
+              placeholder={t("Search Name")}
+              value={selectedKeys[0]}
+              onChange={(e) =>
+                setSelectedKeys(e.target.value ? [e.target.value] : [])
+              }
+              onPressEnter={() =>
+                this.handleSearch(selectedKeys, confirm, dataIndex)
+              }
+              style={{ width: 188, marginBottom: 8, display: "block" }}
+            />
+          )}
+        </Translation>
         <Space>
           <Button
             className="add-package-button"
@@ -132,7 +136,7 @@ class UserRating extends Component {
             onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
             icon={<SearchOutlined className="icon-search" />}
             size="small"
-            style={{ width: 90 }}
+            style={{ width: 100 }}
           >
             <Translation>{(t) => t("Search")}</Translation>
           </Button>

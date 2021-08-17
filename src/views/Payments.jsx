@@ -116,68 +116,74 @@ class Payments extends Component {
       confirm,
       clearFilters,
     }) => (
-      <div style={{ padding: 8 }}>
-        <Input
-          ref={(node) => {
-            this.searchInput = node;
-          }}
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={(e) =>
-            setSelectedKeys(e.target.value ? [e.target.value] : [])
-          }
-          onPressEnter={() =>
-            this.handleSearch(selectedKeys, confirm, dataIndex)
-          }
-          style={{ width: 188, marginBottom: 8, display: "block" }}
-        />
-        <Space>
-          <Button
-            className="add-package-button"
-            type="primary"
-            onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
-            icon={<SearchOutlined className="icon-search" />}
-            size="small"
-            style={{ width: 90 }}
-          >
-            Search
-          </Button>
-          <Button
-            type="primary"
-            className="add-package-button"
-            onClick={() => this.handleReset(clearFilters)}
-            size="small"
-            style={{ width: 90 }}
-          >
-            Reset
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              confirm({ closeDropdown: false });
-              this.setState({
-                searchText: selectedKeys[0],
-                searchedColumn: dataIndex,
-              });
-            }}
-            style={{ color: "#149e7a" }}
-          >
-            Filter
-          </Button>
-        </Space>
-      </div>
+      <Translation>
+        {(t) => (
+          <div style={{ padding: 8 }}>
+            <Input
+              ref={(node) => {
+                this.searchInput = node;
+              }}
+              placeholder={t("Search Name")}
+              value={selectedKeys[0]}
+              onChange={(e) =>
+                setSelectedKeys(e.target.value ? [e.target.value] : [])
+              }
+              onPressEnter={() =>
+                this.handleSearch(selectedKeys, confirm, dataIndex)
+              }
+              style={{ width: 188, marginBottom: 8, display: "block" }}
+            />
+            <Space>
+              <Button
+                className="add-package-button"
+                type="primary"
+                onClick={() =>
+                  this.handleSearch(selectedKeys, confirm, dataIndex)
+                }
+                icon={<SearchOutlined className="icon-search" />}
+                size="small"
+                style={{ width: 110 }}
+              >
+                {t("Search")}
+              </Button>
+              <Button
+                type="primary"
+                className="add-package-button"
+                onClick={() => this.handleReset(clearFilters)}
+                size="small"
+                style={{ width: 90 }}
+              >
+                {t("Reset")}
+              </Button>
+              <Button
+                type="link"
+                size="small"
+                onClick={() => {
+                  confirm({ closeDropdown: false });
+                  this.setState({
+                    searchText: selectedKeys[0],
+                    searchedColumn: dataIndex,
+                  });
+                }}
+                style={{ color: "#149e7a" }}
+              >
+                {t("Filter")}
+              </Button>
+            </Space>
+          </div>
+        )}
+      </Translation>
     ),
     filterIcon: (filtered) => (
       <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
     ),
-    onFilter: (value, record) =>
-      record[dataIndex]
-        ? record[dataIndex]
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase())
-        : "",
+    // onFilter: (value, record) =>
+    //   record[dataIndex]
+    //     ? record[dataIndex]
+    //         .toString()
+    //         .toLowerCase()
+    //         .includes(value.toLowerCase())
+    //     : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
         setTimeout(() => this.searchInput.select(), 100);
@@ -243,8 +249,8 @@ class Payments extends Component {
         key: "gender",
         width: 160,
         align: "center",
-        sorter: (a, b) => a.gender.length - b.gender.length,
-        ...this.getColumnSearchProps("gender"),
+        sorter: (a, b) => "",
+        // ...this.getColumnSearchProps("gender"),
       },
 
       {
@@ -253,8 +259,8 @@ class Payments extends Component {
         key: "email",
         width: 160,
         align: "center",
-        sorter: (a, b) => a.email.length - b.email.length,
-        ...this.getColumnSearchProps("email"),
+        sorter: (a, b) => "",
+        // ...this.getColumnSearchProps("email"),
       },
       {
         title: <Translation>{(t) => t("Address")}</Translation>,
@@ -262,8 +268,8 @@ class Payments extends Component {
         key: "address",
         width: 160,
         align: "center",
-        sorter: (a, b) => a.address.length - b.address.length,
-        ...this.getColumnSearchProps("address"),
+        sorter: (a, b) => "",
+        // ...this.getColumnSearchProps("address"),
       },
       {
         title: <Translation>{(t) => t("Start Date")}</Translation>,
@@ -288,7 +294,7 @@ class Payments extends Component {
         key: "name",
         width: 160,
         align: "center",
-        sorter: (a, b) => a.name.length - b.name.length,
+        sorter: (a, b) => "",
         ...this.getColumnSearchProps("name"),
       },
 
@@ -298,8 +304,8 @@ class Payments extends Component {
         key: "gender",
         width: 160,
         align: "center",
-        sorter: (a, b) => a.gender.length - b.gender.length,
-        ...this.getColumnSearchProps("gender"),
+        sorter: (a, b) =>"",
+        // ...this.getColumnSearchProps("gender"),
       },
 
       {
@@ -308,8 +314,8 @@ class Payments extends Component {
         key: "email",
         width: 160,
         align: "center",
-        sorter: (a, b) => a.email.length - b.email.length,
-        ...this.getColumnSearchProps("email"),
+        sorter: (a, b) =>"",
+        // ...this.getColumnSearchProps("email"),
       },
       {
         title: <Translation>{(t) => t("Address")}</Translation>,
@@ -317,8 +323,8 @@ class Payments extends Component {
         key: "address",
         width: 160,
         align: "center",
-        sorter: (a, b) => a.address.length - b.address.length,
-        ...this.getColumnSearchProps("address"),
+        sorter: (a, b) => "",
+        // ...this.getColumnSearchProps("address"),
       },
       {
         title: <Translation>{(t) => t("Start Date")}</Translation>,

@@ -10,6 +10,15 @@ import {
 import { Translation } from "react-i18next";
 import moment from "moment";
 
+// Datepicker Language
+import DatePicker, { registerLocale } from "react-datepicker";
+import en from "date-fns/locale/en-GB";
+import fr from "date-fns/locale/fr";
+
+// Datepicker Language
+registerLocale("en", en);
+registerLocale("fr", fr);
+
 // import { Card } from "components/Card/Card.jsx";
 
 class CloseBooking extends Component {
@@ -20,8 +29,8 @@ class CloseBooking extends Component {
       userListWithBookingCount: [],
       limitaion: null,
       // booking cancel states
-      startDate: moment().format("YYYY-MM-DD"),
-      endDate: moment().format("YYYY-MM-DD"),
+      startDate: new Date(),
+      endDate: new Date(),
       message: "",
     };
   }
@@ -80,8 +89,8 @@ class CloseBooking extends Component {
         alert(resJson);
         document.getElementById("reasontoclose").value = "";
         this.setState({
-          startDate: moment().format("YYYY-MM-DD"),
-          endDate: moment().format("YYYY-MM-DD"),
+          startDate: new Date(),
+          endDate: new Date(),
           message: "",
         });
       })
@@ -89,6 +98,9 @@ class CloseBooking extends Component {
   };
 
   render() {
+    const lang = localStorage.getItem("language");
+    // Datepicker Language
+    var selectedDateLang = fr;
     return (
       <Translation>
         {(t) => (
@@ -138,7 +150,23 @@ class CloseBooking extends Component {
                                   *
                                 </span>
                               </ControlLabel>
-                              <input
+                              <DatePicker
+                                selected={this.state.startDate}
+                                locale={selectedDateLang}
+                                dateFormat="dd/MM/yyyy"
+                                onChange={(date) =>
+                                  this.setState({
+                                    startDate: date,
+                                  })
+                                }
+                                className="form-control"
+                                value={this.state.startDate}
+                                autoComplete="off"
+                                placeholderText="DD/MM/YYYY"
+                                name="pickDate"
+                                id="pickdate"
+                              />
+                              {/* <input
                                 type="date"
                                 className="form-control"
                                 name="pickDate"
@@ -152,7 +180,7 @@ class CloseBooking extends Component {
                                     startDate: event.target.value,
                                   });
                                 }}
-                              />
+                              /> */}
                             </FormGroup>
                           </Col>
                           <Col md={4}>
@@ -172,7 +200,23 @@ class CloseBooking extends Component {
                                   *
                                 </span>
                               </ControlLabel>
-                              <input
+                              <DatePicker
+                                selected={this.state.endDate}
+                                locale={selectedDateLang}
+                                dateFormat="dd/MM/yyyy"
+                                onChange={(date) =>
+                                  this.setState({
+                                    endDate: date,
+                                  })
+                                }
+                                className="form-control"
+                                value={this.state.endDate}
+                                autoComplete="off"
+                                placeholderText="DD/MM/YYYY"
+                                name="pickDate"
+                                id="pickdate"
+                              />
+                              {/* <input
                                 type="date"
                                 className="form-control"
                                 name="pickDate"
@@ -186,7 +230,7 @@ class CloseBooking extends Component {
                                     endDate: event.target.value,
                                   });
                                 }}
-                              />
+                              /> */}
                             </FormGroup>
                           </Col>
                         </Row>

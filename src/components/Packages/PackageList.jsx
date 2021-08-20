@@ -182,7 +182,7 @@ class PackageList extends Component {
         fontWeight: 400,
         width: 100,
         sorter: (a, b) => a.number - b.number,
-        ...this.getColumnSearchProps("number"),
+        // ...this.getColumnSearchProps("number"),
       },
       {
         title: <Translation>{(t) => t("Name")}</Translation>,

@@ -1319,7 +1319,9 @@ class UserDocuments extends Component {
     const selectedMake = this.state.makes.filter((item) => item.id === value);
     const selectedMakesName = selectedMake[0].name;
     console.log("selected makes name ", selectedMakesName);
-    this.setState({ brand: selectedMakesName });
+    this.setState({ brand: selectedMakesName }, () => {
+      console.log("selected brand ", this.state.brand);
+    });
     this.setState({ selectedMakeId: value, model: "" }, () => {
       if (this.state.selectedMakeId === "") {
         this.setState(

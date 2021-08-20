@@ -211,7 +211,8 @@ export default i18n
           "Vehicle Details": "Détails du véhicule",
           "Vehicle1 Details": "Détail du véhicule 1",
           "Vehicle1 Details": "Détail du véhicule 2",
-          "Vehicle1 Detail": "Détails du véhicule",
+          "Vehicle1 Detail": "Détails du véhicule 1",
+          "Vehicle2 Detail": "Détails du véhicule 2",
           "Vehicle Insurance": "Assurance du véhicule",
           "Technical Control": "Contrôle technique",
           "Number Plate": "Plaque d'immatriculation",
@@ -337,6 +338,15 @@ export default i18n
           "Select From dropdown to continue":
             "Sélectionnez De la liste déroulante pour continuer",
           items: "Lignes",
+          "Should Not be empty": "Ne doit pas être vide",
+          "Are you sure you want to Ban this User?":
+            "Êtes-vous sûr de vouloir interdire cet utilisateur?",
+          "The User will be banned for 30 days!":
+            "L'Utilisateur sera banni pendant 30 jours !",
+          "The User will be banned for 15 days!":
+            "L'Utilisateur sera banni pendant 15 jours !",
+          "Are you sure you want to De-activate this User?":
+            "Êtes-vous sûr de vouloir désactiver cet utilisateur ?",
         },
       },
     },

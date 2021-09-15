@@ -1488,7 +1488,7 @@ class UserDocuments extends Component {
     const { vehicleInfo } = this.state;
     if (vehicleInfo !== "" && Object.entries(vehicleInfo).length > 0) {
       Object.entries(vehicleInfo).forEach(([key, value]) => {
-        var keySplit = "veh" + key.split("Vehicle")[1];
+        var keySplit = "veh" + key.split("véhicule ")[1];
         var stateis = Object.entries(this.state).find(
           (item) => item[0] === keySplit
         );
@@ -1496,7 +1496,7 @@ class UserDocuments extends Component {
           stateis = stateis[1];
           vehicleList.push(
             <tr key={stateis.id}>
-              <Translation>{(t) => <td>{t(`${key} Detail`)}</td>}</Translation>
+              <Translation>{(t) => <td>{`Détails du ${key}`}</td>}</Translation>
               <td>
                 {stateis === undefined ? (
                   <i className="fa fa-remove"></i>
@@ -1609,7 +1609,7 @@ class UserDocuments extends Component {
                 closeButton
                 onHide={() => this.setState({ showId: false })}
               >
-                <Modal.Title>{this.state.docTitle}</Modal.Title>
+                <Modal.Title>{t(this.state.docTitle)}</Modal.Title>
               </Modal.Header>
               <Modal.Body>
                 <ID

@@ -39,14 +39,12 @@ class VehicleRegistration extends Component {
     const { vehicleInfo, Type } = this.props;
     var vehicleInfoGet = vehicleInfo[`Vehicle${Type.split("veh")[1]}`];
     // console.log("sad", vehicleInfo[`Vehicle${Type.split("veh")[1]}`]);
-    var technicalData =
-      vehicleInfoGet.technicalControlInfoID !== ""
-        ? JSON.parse(vehicleInfoGet?.technicalControlInfoID)
-        : null;
-    var insuranceData =
-      vehicleInfoGet.vehichleInsuranceInfoId !== ""
-        ? JSON.parse(vehicleInfoGet?.vehichleInsuranceInfoId)
-        : null;
+    var technicalData = vehicleInfoGet?.technicalControlInfoID
+      ? JSON.parse(vehicleInfoGet?.technicalControlInfoID)
+      : null;
+    var insuranceData = vehicleInfoGet?.vehichleInsuranceInfoId
+      ? JSON.parse(vehicleInfoGet?.vehichleInsuranceInfoId)
+      : null;
     this.setState({
       vIns: vehicleInfoGet,
       brand: vehicleInfoGet?.brand,

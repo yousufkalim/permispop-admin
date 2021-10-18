@@ -64,10 +64,10 @@ class UserProfile extends Component {
                               defaultValue: "Mike",
                             },
                             {
-                              label: {t("Last name")},
+                              label: t("Last name"),
                               type: "text",
                               bsClass: "form-control",
-                              placeholder: {t("Last name")},
+                              placeholder: t("Last name"),
                               defaultValue: "Andrew",
                             },
                           ]}

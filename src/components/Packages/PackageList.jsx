@@ -31,15 +31,16 @@ class PackageList extends Component {
     var tokn = localStorage.getItem("userdata");
     this.WebServicesManager.getApiCall(
       {
-        endPoint: "package/GetStudentPackages",
+        endPoint: "package/GetAllPackages",
         token: tokn,
       },
       (statusCode, pgkDetails) => {
+        console.log("did mount package", this.state.packages);
         this.setState({ packages: pgkDetails });
         this.setState({ loading: false });
-        // console.log("did mount", this.state.packages);
       }
     );
+    this.setState({ loading: false });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -299,7 +300,7 @@ class PackageList extends Component {
                   name: item.name,
                   price: item.price,
                   role: item.role,
-                  duration: item.type,
+                  duration: item.duration,
                 }))}
               ></Table>
             </Col>

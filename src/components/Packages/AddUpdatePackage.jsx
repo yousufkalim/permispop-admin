@@ -27,7 +27,7 @@ class AddUpdatePackage extends Component {
     super(props);
     this.state = {
       pkName: "",
-      pkDuration: "1 Day",
+      pkDuration: "1day",
       pkRole: "admin",
       pkPrice: "",
       // pkDesc1: "",
@@ -59,28 +59,28 @@ class AddUpdatePackage extends Component {
       // desc3: this.state.pkDesc3,
     };
     console.log("package post ", pkg);
-    // this.WebServicesManager.postApiCall(
-    //   {
-    //     endPoint: "Package",
-    //     dataToInsert: JSON.stringify(pkg),
-    //     token: tokn,
-    //   },
-    //   () => {
-    //     Array.from(document.querySelectorAll("input")).forEach(
-    //       (input) => (input.value = "")
-    //     );
-    //     this.setState({
-    //       pkName: "",
-    //       pkDuration: "1day",
-    //       pkRole: "admin",
-    //       pkPrice: "",
-    //       loading: false,
-    //     });
-    //     this.props.toggle();
-    //     success();
-    //     // window.location.reload();
-    //   }
-    // );
+    this.WebServicesManager.postApiCall(
+      {
+        endPoint: "Package",
+        dataToInsert: JSON.stringify(pkg),
+        token: tokn,
+      },
+      () => {
+        Array.from(document.querySelectorAll("input")).forEach(
+          (input) => (input.value = "")
+        );
+        this.setState({
+          pkName: "",
+          pkDuration: "1day",
+          pkRole: "admin",
+          pkPrice: "",
+          loading: false,
+        });
+        this.props.toggle();
+        success();
+        // window.location.reload();
+      }
+    );
   };
 
   render() {

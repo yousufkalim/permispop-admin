@@ -347,6 +347,7 @@ export default i18n
             "L'Utilisateur sera banni pendant 15 jours !",
           "Are you sure you want to De-activate this User?":
             "Êtes-vous sûr de vouloir désactiver cet utilisateur ?",
+          Days: "Jour",
         },
       },
     },

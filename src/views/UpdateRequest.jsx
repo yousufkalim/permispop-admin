@@ -69,7 +69,7 @@ export class UpdateRequest extends Component {
         console.log("total ", response);
         const responseRequest = response.data;
 
-        responseRequest.length > 0
+        responseRequest && responseRequest.length > 0
           ? this.setState({ total: response.totalCount })
           : this.setState({ total: 0 });
         // console.log("responseRequest", responseRequest);
@@ -90,9 +90,15 @@ export class UpdateRequest extends Component {
             loading: false,
           });
         }
+        this.setState({
+          loading: false,
+        });
       })
       .catch((err) => {
         console.log("errorrr ", err);
+        this.setState({
+          loading: false,
+        });
       });
   };
 

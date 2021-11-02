@@ -27,12 +27,12 @@ class AddUpdatePackage extends Component {
     super(props);
     this.state = {
       pkName: "",
-      pkDuration: "Monthly",
-      pkRole: "Student",
+      pkDuration: "1 Day",
+      pkRole: "admin",
       pkPrice: "",
-      pkDesc1: "",
-      pkDesc2: "",
-      pkDesc3: "",
+      // pkDesc1: "",
+      // pkDesc2: "",
+      // pkDesc3: "",
       loading: false,
       disabled: true,
     };
@@ -51,38 +51,36 @@ class AddUpdatePackage extends Component {
     var tokn = localStorage.getItem("userdata");
     const pkg = {
       name: this.state.pkName,
-      type: this.state.pkDuration,
-      role: this.state.pkRole,
+      duration: this.state.pkDuration,
       price: this.state.pkPrice,
-      desc1: this.state.pkDesc1,
-      desc2: this.state.pkDesc2,
-      desc3: this.state.pkDesc3,
+      createdBy: this.state.pkRole,
+      // desc1: this.state.pkDesc1,
+      // desc2: this.state.pkDesc2,
+      // desc3: this.state.pkDesc3,
     };
-    this.WebServicesManager.postApiCall(
-      {
-        endPoint: "Package",
-        dataToInsert: JSON.stringify(pkg),
-        token: tokn,
-      },
-      () => {
-        Array.from(document.querySelectorAll("input")).forEach(
-          (input) => (input.value = "")
-        );
-        this.setState({
-          pkName: "",
-          pkDuration: "Monthly",
-          pkRole: "Student",
-          pkPrice: "",
-          pkDesc1: "",
-          pkDesc2: "",
-          pkDesc3: "",
-          loading: false,
-        });
-        this.props.toggle();
-        success();
-        // window.location.reload();
-      }
-    );
+    console.log("package post ", pkg);
+    // this.WebServicesManager.postApiCall(
+    //   {
+    //     endPoint: "Package",
+    //     dataToInsert: JSON.stringify(pkg),
+    //     token: tokn,
+    //   },
+    //   () => {
+    //     Array.from(document.querySelectorAll("input")).forEach(
+    //       (input) => (input.value = "")
+    //     );
+    //     this.setState({
+    //       pkName: "",
+    //       pkDuration: "1day",
+    //       pkRole: "admin",
+    //       pkPrice: "",
+    //       loading: false,
+    //     });
+    //     this.props.toggle();
+    //     success();
+    //     // window.location.reload();
+    //   }
+    // );
   };
 
   render() {
@@ -98,7 +96,7 @@ class AddUpdatePackage extends Component {
                     <div className="container-flex">
                       <div>
                         <div className="row">
-                          <div className="col-md-6">
+                          <div className="col-md-12">
                             <FormGroup>
                               <ControlLabel
                                 style={{
@@ -118,7 +116,7 @@ class AddUpdatePackage extends Component {
                               />
                             </FormGroup>
                           </div>
-                          <div className="col-md-6">
+                          <div className="col-md-12">
                             <FormGroup>
                               <ControlLabel
                                 style={{
@@ -136,18 +134,18 @@ class AddUpdatePackage extends Component {
                                   this.setState({ pkDuration: e.target.value });
                                 }}
                               >
-                                <option value="Monthly">{t("Monthly")}</option>{" "}
-                                <option value="Quarterly">
-                                  {t("Quarterly")}
-                                </option>{" "}
-                                <option value="Yearly">{t("Yearly")}</option>
+                                <option value="1day">1 {t("Days")}</option>
+                                <option value="3day">3 {t("Days")}</option>
+                                <option value="7day">7 {t("Days")}</option>
+                                <option value="7day">15 {t("Days")}</option>
+                                <option value="7day">1 {t("Month")}</option>
                               </select>
                             </FormGroup>
                           </div>
                         </div>
 
                         <div className="row">
-                          <div className="col-md-6">
+                          {/* <div className="col-md-6">
                             <FormGroup>
                               <ControlLabel
                                 style={{
@@ -169,8 +167,8 @@ class AddUpdatePackage extends Component {
                                 <option>{t("Driving School")}</option>
                               </select>
                             </FormGroup>
-                          </div>
-                          <div className="col-md-6">
+                          </div> */}
+                          <div className="col-md-12">
                             <FormGroup>
                               <ControlLabel
                                 style={{
@@ -192,7 +190,7 @@ class AddUpdatePackage extends Component {
                           </div>
                         </div>
 
-                        <div className="row">
+                        {/* <div className="row">
                           <div className="col-md-12">
                             <FormGroup>
                               <ControlLabel
@@ -214,9 +212,9 @@ class AddUpdatePackage extends Component {
                               />
                             </FormGroup>
                           </div>
-                        </div>
+                        </div> */}
 
-                        <div className="row">
+                        {/* <div className="row">
                           <div className="col-md-12">
                             <FormGroup>
                               <ControlLabel
@@ -262,7 +260,7 @@ class AddUpdatePackage extends Component {
                               />
                             </FormGroup>
                           </div>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                     <Button

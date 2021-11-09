@@ -348,6 +348,7 @@ export default i18n
           "Are you sure you want to De-activate this User?":
             "Êtes-vous sûr de vouloir désactiver cet utilisateur ?",
           Days: "Jour",
+          Pages: "Pages",
         },
       },
     },

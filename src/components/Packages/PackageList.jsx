@@ -48,7 +48,7 @@ class PackageList extends Component {
       var tokn = localStorage.getItem("userdata");
       this.WebServicesManager.getApiCall(
         {
-          endPoint: "package/GetStudentPackages",
+          endPoint: "package/GetAllPackages",
           token: tokn,
         },
         (statusCode, pgkDetails) => {
@@ -200,22 +200,22 @@ class PackageList extends Component {
         key: "duration",
         align: "center",
         width: 160,
-        filters: [
-          {
-            text: <Translation>{(t) => t("Monthly")}</Translation>,
-            value: "Monthly",
-          },
-          {
-            text: <Translation>{(t) => t("Quarterly")}</Translation>,
-            value: "Quarterly",
-          },
-          {
-            text: <Translation>{(t) => t("Yearly")}</Translation>,
-            value: "Yearly",
-          },
-        ],
-        onFilter: (value, record) => record.duration.indexOf(value) === 0,
-        sorter: (a, b) => a.duration.length - b.duration.length,
+        // filters: [
+        //   {
+        //     text: <Translation>{(t) => t("Monthly")}</Translation>,
+        //     value: "Monthly",
+        //   },
+        //   {
+        //     text: <Translation>{(t) => t("Quarterly")}</Translation>,
+        //     value: "Quarterly",
+        //   },
+        //   {
+        //     text: <Translation>{(t) => t("Yearly")}</Translation>,
+        //     value: "Yearly",
+        //   },
+        // ],
+        // onFilter: (value, record) => record.duration.indexOf(value) === 0,
+        // sorter: (a, b) => a.duration.length - b.duration.length,
       },
       {
         title: <Translation>{(t) => t("Price")}</Translation>,
@@ -223,32 +223,32 @@ class PackageList extends Component {
         key: "price",
         align: "center",
         width: 160,
-        sorter: (a, b) => a.price - b.price,
-        ...this.getColumnSearchProps("price"),
+        // sorter: (a, b) => a.price - b.price,
+        // ...this.getColumnSearchProps("price"),
       },
-      {
-        title: <Translation>{(t) => t("Role")}</Translation>,
-        dataIndex: "role",
-        key: "role",
-        align: "center",
-        width: 160,
-        filters: [
-          {
-            text: <Translation>{(t) => t("Student")}</Translation>,
-            value: "Student",
-          },
-          {
-            text: <Translation>{(t) => t("Instructor")}</Translation>,
-            value: "Instructor",
-          },
-          {
-            text: <Translation>{(t) => t("Driving School")}</Translation>,
-            value: "Driving School",
-          },
-        ],
-        onFilter: (value, record) => record.role.indexOf(value) === 0,
-        sorter: (a, b) => a.role.length - b.role.length,
-      },
+      // {
+      //   title: <Translation>{(t) => t("Role")}</Translation>,
+      //   dataIndex: "role",
+      //   key: "role",
+      //   align: "center",
+      //   width: 160,
+      //   filters: [
+      //     {
+      //       text: <Translation>{(t) => t("Student")}</Translation>,
+      //       value: "Student",
+      //     },
+      //     {
+      //       text: <Translation>{(t) => t("Instructor")}</Translation>,
+      //       value: "Instructor",
+      //     },
+      //     {
+      //       text: <Translation>{(t) => t("Driving School")}</Translation>,
+      //       value: "Driving School",
+      //     },
+      //   ],
+      //   onFilter: (value, record) => record.role.indexOf(value) === 0,
+      //   sorter: (a, b) => a.role.length - b.role.length,
+      // },
     ];
     return (
       <div className="content">
@@ -294,13 +294,22 @@ class PackageList extends Component {
                   showTotal: (total, range) =>
                     `${range[0]}-${range[1]} of ${total} Lignes`,
                 }}
-                dataSource={this.state.packages.map((item, index) => ({
+                dataSource={this.state.packages?.map((item, index) => ({
                   key: index + 1,
                   number: index + 1,
                   name: item.name,
                   price: item.price,
-                  role: item.role,
-                  duration: item.duration,
+                  // role: item.role,
+                  duration:
+                    item.duration === "1day"
+                      ? "1 Day"
+                      : item.duration === "3day"
+                      ? "3 days"
+                      : item.duration === "7day"
+                      ? "7 Days"
+                      : item.duration === "15day"
+                      ? "15 days"
+                      : item.duration === "1month" && "1 Month",
                 }))}
               ></Table>
             </Col>

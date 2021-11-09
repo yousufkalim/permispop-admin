@@ -36,7 +36,8 @@
     "react-switch": "^5.0.1",
     "react-toggle": "4.0.2",
     "react-xml-parser": "^1.1.8",
-    "socket.io-client": "^3.0.3"
+    "socket.io-client": "^3.0.3",
+    "sweetalert2": "^11.1.10"
   },
   "devDependencies": {
     "@types/googlemaps": "3.30.19",

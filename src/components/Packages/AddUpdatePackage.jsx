@@ -137,8 +137,8 @@ class AddUpdatePackage extends Component {
                                 <option value="1day">1 {t("Days")}</option>
                                 <option value="3day">3 {t("Days")}</option>
                                 <option value="7day">7 {t("Days")}</option>
-                                <option value="7day">15 {t("Days")}</option>
-                                <option value="7day">1 {t("Month")}</option>
+                                <option value="15day">15 {t("Days")}</option>
+                                <option value="1month">1 {t("Month")}</option>
                               </select>
                             </FormGroup>
                           </div>

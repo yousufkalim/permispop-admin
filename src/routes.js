@@ -7,6 +7,7 @@ import Payments from "views/Payments.jsx";
 import Disputes from "views/Disputes.jsx";
 import UpdateRequest from "views/UpdateRequest";
 import Limitaions from "views/Limitaions";
+import CMS from "views/CMS";
 import UserRatings from "views/UserRatings";
 import { Translation } from "react-i18next";
 
@@ -72,6 +73,13 @@ const dashboardRoutes = [
     name: <Translation>{(t) => t("User Limitations")}</Translation>,
     icon: "pe-7s-lock",
     component: Limitaions,
+    layout: "/admin",
+  },
+  {
+    path: "/cms",
+    name: <Translation>{(t) => t("CMS")}</Translation>,
+    icon: "pe-7s-lock",
+    component: CMS,
     layout: "/admin",
   },
 ];

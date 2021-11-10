@@ -38,8 +38,8 @@ export const inputHandler = (e, setData, data) => {
 export const changeSection = (value, setSection, sections, page, setShowCards, setCard, setSectionName, setCardName) =>{
     console.log("section value ", value);
     setSection(value);
-    setCard("1");
-    setCardName("Card 1");
+    setCard("4");
+    setCardName("General");
   
     const item = sections.find((sec, index) => sec.id == value );
     setSectionName(item.name);
@@ -82,6 +82,9 @@ export const cmsSubmitHandler = (e, data, page, section, card, setData, setPage,
         sectionName: sectionName,
         cardName: cardName
     }
+
+    console.log("send data  ", send);
+
 
     fetch(`${baseUrl}CMS/CreateCM`, {
         method: "POST",

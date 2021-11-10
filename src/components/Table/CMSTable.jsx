@@ -91,22 +91,22 @@ const CMSTable = (props) => {
       key: "card",
       align: "center",
       width: 60,
-      render: (active) => (
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            flexDirection: "row",
-            justifyContent: "center",
-          }}
-        >
-          {active === true ? (
-            <i className="fa fa-check" style={{ color: "green" }}></i>
-          ) : (
-            <i className="fa fa-remove" style={{ color: "red" }}></i>
-          )}
-        </div>
-      ),
+      //   render: (active) => (
+      //     <div
+      //       style={{
+      //         display: "flex",
+      //         alignItems: "center",
+      //         flexDirection: "row",
+      //         justifyContent: "center",
+      //       }}
+      //     >
+      //       {active === true ? (
+      //         <i className="fa fa-check" style={{ color: "green" }}></i>
+      //       ) : (
+      //         <i className="fa fa-remove" style={{ color: "red" }}></i>
+      //       )}
+      //     </div>
+      //   ),
     },
 
     {

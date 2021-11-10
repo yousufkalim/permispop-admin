@@ -29,6 +29,10 @@ const { Option } = Select;
 
 const cards = [
   {
+    name: "General",
+    value: "4",
+  },
+  {
     name: "Card 1",
     value: "1",
   },
@@ -51,7 +55,7 @@ const mySections = [
     },
     {
       id: 2,
-      name: "Contact Us",
+      name: "Our Services",
       value: "contactus",
     },
     {
@@ -98,6 +102,7 @@ const CMS = (props) => {
   const [cms, setCms] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
   const [disableSelect, setDisableSelect] = useState(false);
+  const [selectedSection, setSelectedSection] = useState([]);
 
   const [data, setData] = useState({
     heading: "",
@@ -159,15 +164,20 @@ const CMS = (props) => {
     console.log("find page ", pageIndex);
     const ind = pageIndex - 1;
     const newSections = mySections.find((item, index) => index === ind);
-
+    // const newArr = [];
     const newSection = newSections.find((item, index) => item.id == sectionId);
+    // newArr.push(newSection);
+    // console.log("find sections array ", newArr);
 
     console.log("find section ", newSection);
     console.log("find sections ", newSections);
 
-    const newSection1 = parseInt(newSection.id);
+    const newSection1 = newSection.id;
+    if (pageValue === "home" && sectionId == "2") {
+      setShowCards(true);
+    }
+    // setSelectedSection(newArr);
     setSections(newSections);
-    setShowCards(true);
     setPage(pageValue);
     setPageName(pageName);
     setSection(newSection1);
@@ -187,6 +197,7 @@ const CMS = (props) => {
   const handleShow = (edit) => {
     setIsEdit(edit);
     setShow(true);
+    setDisableSelect(false);
   };
 
   const clearStates = () => {
@@ -206,6 +217,7 @@ const CMS = (props) => {
 
   const handleClose = () => {
     isEdit && clearStates();
+    isEdit && setShowCards(false);
     // clearStates();
     setShow(false);
   };
@@ -230,9 +242,22 @@ const CMS = (props) => {
 
   const deleteRecord = (id) => {
     console.log("delete id ", id);
+    var tokn = localStorage.getItem("userdata");
+    const baseUrl = process.env.REACT_APP_BASE_URL;
+
+    fetch(`${baseUrl}CMS/DeleteDataById?id=${id}`, {
+      method: "Delete",
+      headers: {
+        Authorization: `Bearer ${tokn}`,
+        "Content-type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((resp) => console.log(resp))
+      .catch((err) => console.log(err));
   };
   console.log("new pages page ", pageName);
-  console.log("new pages section ", sectionName);
+  console.log("new pages section ", section);
   console.log("new pages card ", cardName);
   //   console.log("new pages ", pages);
   //   console.log("new pages ", pages);
@@ -287,7 +312,7 @@ const CMS = (props) => {
           </div>
 
           <CustomModal
-            title="Add"
+            title={isEdit ? "Edit" : "Add"}
             visible={show}
             onCancel={handleClose}
             footer={null}
@@ -363,7 +388,7 @@ const CMS = (props) => {
                 style={{
                   width: "100%",
                 }}
-                value={section}
+                value={isEdit ? sectionName : section}
                 label="Section"
                 disabled={disableSelect}
                 onChange={(e) =>

@@ -382,6 +382,7 @@ function Limitaions() {
     setsearchText(selectedKeys[0]);
   };
 
+  console.log("custom value ", customValue);
   ////////////////////// Handle For Resetting Search ////////////////////////
 
   const handleReset = (clearFilters) => {

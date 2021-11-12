@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Table, Button, Input, Space } from "antd";
 import { Translation } from "react-i18next";
 import Swal from "sweetalert2";
@@ -8,6 +8,7 @@ import {
   DeleteOutlined,
   EditOutlined,
 } from "@ant-design/icons";
+import Highlighter from "react-highlight-words";
 
 const antIcon = (
   <div>
@@ -19,6 +20,10 @@ const antIcon = (
 );
 
 const CMSTable = (props) => {
+  //   const [searchedColumn, setSearchedColumn] = useState("");
+  const [search, setSearch] = useState({ searchText: "", searchedColumn: "" });
+  const [loading, setLoading] = useState(false);
+
   const deleteHandler = (id) => {
     console.log("del record ", id);
     Swal.fire({
@@ -37,6 +42,86 @@ const CMSTable = (props) => {
     });
   };
 
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    console.log("search text ", selectedKeys);
+    setSearch({
+      ...search,
+      searchText: !selectedKeys[0] ? "" : selectedKeys[0],
+      searchedColumn: dataIndex,
+    });
+    setLoading(false);
+    // this.setState(
+    //   {
+    //     searchText: !selectedKeys[0] ? "" : selectedKeys[0],
+    //     searchedColumn: dataIndex,
+    //     loading: false,
+    //   },
+    //   () => {
+    //     this.getAllUsers();
+    //   }
+    // );
+  };
+
+  const getColumnSearchProps = (dataIndex) => {
+    let searchInput;
+    return {
+      filterDropdown: ({
+        setSelectedKeys,
+        selectedKeys,
+        confirm,
+        clearFilters,
+      }) => (
+        <div style={{ padding: 8 }}>
+          <Translation>
+            {(t) => (
+              <Input
+                ref={(node) => {
+                  searchInput = node;
+                }}
+                placeholder={t("Search name")}
+                value={selectedKeys[0]}
+                onChange={(e) =>
+                  setSelectedKeys(e.target.value ? [e.target.value] : [])
+                }
+                onPressEnter={() =>
+                  handleSearch(selectedKeys, confirm, dataIndex)
+                }
+                style={{ width: 188, marginBottom: 8, display: "block" }}
+              />
+            )}
+          </Translation>
+        </div>
+      ),
+      filterIcon: (filtered) => (
+        <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+      ),
+      // onFilter: (value, record) =>
+      //   record[dataIndex]
+      //     ? record[dataIndex]
+      //         .toString()
+      //         .toLowerCase()
+      //         .includes(value.toLowerCase())
+      //     : "",
+      onFilterDropdownVisibleChange: (visible) => {
+        if (visible) {
+          setTimeout(() => searchInput.select(), 100);
+        }
+      },
+      render: (text) =>
+        search.searchedColumn === dataIndex ? (
+          <Highlighter
+            highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
+            searchWords={[search.searchText]}
+            autoEscape
+            textToHighlight={text ? text.toString() : ""}
+          />
+        ) : (
+          text
+        ),
+    };
+  };
+
   const columns = [
     {
       title: "SR. #",
@@ -47,7 +132,7 @@ const CMSTable = (props) => {
       width: 40,
 
       // sorter: (a, b) => a.number - b.number,
-      // ...this.getColumnSearchProps("number"),
+      //   ...this.getColumnSearchProps("number"),
     },
     {
       title: <Translation>{(t) => t("Page")}</Translation>,
@@ -56,7 +141,7 @@ const CMSTable = (props) => {
       align: "center",
       width: 70,
       sorter: (a, b) => "",
-      //   ...this.getColumnSearchProps("page"),
+      ...getColumnSearchProps("page"),
     },
     {
       title: <Translation>{(t) => t("Section")}</Translation>,

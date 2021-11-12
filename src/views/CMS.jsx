@@ -63,6 +63,21 @@ const mySections = [
       name: "Footer",
       value: "footer",
     },
+    {
+      id: 4,
+      name: "Contact Us",
+      value: "ourservices",
+    },
+    {
+      id: 5,
+      name: "Code",
+      value: "code",
+    },
+    {
+      id: 6,
+      name: "Cookies",
+      value: "cookies",
+    },
   ],
   [
     {
@@ -103,6 +118,8 @@ const CMS = (props) => {
   const [isEdit, setIsEdit] = useState(false);
   const [disableSelect, setDisableSelect] = useState(false);
   const [selectedSection, setSelectedSection] = useState([]);
+  const [showSections, setShowSections] = useState(false);
+  const [id, setId] = useState(null);
 
   const [data, setData] = useState({
     heading: "",
@@ -158,41 +175,70 @@ const CMS = (props) => {
       id,
     } = item;
 
+    setId(item.id);
     const pageIndex = pages.findIndex(
       (item, index) => item.value === pageValue
     );
-    console.log("find page ", pageIndex);
-    const ind = pageIndex - 1;
-    const newSections = mySections.find((item, index) => index === ind);
-    // const newArr = [];
-    const newSection = newSections.find((item, index) => item.id == sectionId);
-    // newArr.push(newSection);
-    // console.log("find sections array ", newArr);
 
-    console.log("find section ", newSection);
-    console.log("find sections ", newSections);
+    if (pageIndex < 3) {
+      setShowSections(true);
 
-    const newSection1 = newSection.id;
-    if (pageValue === "home" && sectionId == "2") {
-      setShowCards(true);
+      console.log("find page ", pageIndex);
+      const ind = pageIndex - 1;
+      const newSections = mySections.find((item, index) => index === ind);
+      // const newArr = [];
+      const newSection = newSections.find(
+        (item, index) => item.id == sectionId
+      );
+      // newArr.push(newSection);
+      // console.log("find sections array ", newArr);
+
+      console.log("find section ", newSection);
+      console.log("find sections ", newSections);
+
+      const newSection1 = newSection.id;
+      if (pageValue === "home" && sectionId == "2") {
+        setShowCards(true);
+      }
+
+      // setSelectedSection(newArr);
+      setSections(newSections);
+      setPage(pageValue);
+      setPageName(pageName);
+      setSection(newSection1);
+      setSectionName(newSection.name);
+      setCard(cardId);
+      setCardName(cardName);
+      setData({
+        ...data,
+        heading: headingEnglish,
+        headingFrench: headingFrench,
+        text: textEnglish,
+        textFrench: textFrench,
+      });
+      handleShow(true);
+      setDisableSelect(true);
+    } else {
+      setShowSections(false);
+      setShowCards(false);
+
+      setSections([]);
+      setPage(pageValue);
+      setPageName(pageName);
+      setSection("1");
+      setSectionName(pageName);
+      setCard("1");
+      setCardName("General");
+      setData({
+        ...data,
+        heading: headingEnglish,
+        headingFrench: headingFrench,
+        text: textEnglish,
+        textFrench: textFrench,
+      });
+      handleShow(true);
+      setDisableSelect(true);
     }
-    // setSelectedSection(newArr);
-    setSections(newSections);
-    setPage(pageValue);
-    setPageName(pageName);
-    setSection(newSection1);
-    setSectionName(newSection.name);
-    setCard(cardId);
-    setCardName(cardName);
-    setData({
-      ...data,
-      heading: headingEnglish,
-      headingFrench: headingFrench,
-      text: textEnglish,
-      textFrench: textFrench,
-    });
-    handleShow(true);
-    setDisableSelect(true);
   };
   const handleShow = (edit) => {
     setIsEdit(edit);
@@ -220,6 +266,7 @@ const CMS = (props) => {
     isEdit && setShowCards(false);
     // clearStates();
     setShow(false);
+    setId(null);
   };
 
   const getPages = () => {
@@ -332,7 +379,9 @@ const CMS = (props) => {
                   handleClose,
                   pageName,
                   sectionName,
-                  cardName
+                  cardName,
+                  getAllData,
+                  id
                 )
               }
             >
@@ -350,7 +399,11 @@ const CMS = (props) => {
                     setPage,
                     setShowCards,
                     setSection,
-                    setPageName
+                    setPageName,
+                    setShowSections,
+                    setCard,
+                    setSectionName,
+                    setCardName
                   )
                 }
               >
@@ -384,30 +437,32 @@ const CMS = (props) => {
                   ))}
               </FormInput> */}
 
-              <FormSelect
-                style={{
-                  width: "100%",
-                }}
-                value={isEdit ? sectionName : section}
-                label="Section"
-                disabled={disableSelect}
-                onChange={(e) =>
-                  changeSection(
-                    e,
-                    setSection,
-                    sections,
-                    page,
-                    setShowCards,
-                    setCard,
-                    setSectionName,
-                    setCardName
-                  )
-                }
-              >
-                {sections.map((section, index) => (
-                  <Option key={section.id}>{section.name}</Option>
-                ))}
-              </FormSelect>
+              {showSections && (
+                <FormSelect
+                  style={{
+                    width: "100%",
+                  }}
+                  value={isEdit ? sectionName : section}
+                  label="Section"
+                  disabled={disableSelect}
+                  onChange={(e) =>
+                    changeSection(
+                      e,
+                      setSection,
+                      sections,
+                      page,
+                      setShowCards,
+                      setCard,
+                      setSectionName,
+                      setCardName
+                    )
+                  }
+                >
+                  {sections.map((section, index) => (
+                    <Option key={section.id}>{section.name}</Option>
+                  ))}
+                </FormSelect>
+              )}
               {showCards && (
                 <FormSelect
                   style={{ width: "100%" }}

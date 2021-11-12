@@ -1,5 +1,4 @@
-export const changePages = (value,pages, setSections, mySections, setPage, setShowCards, setSection, setPageName) => {
-
+export const changePages = (value,pages, setSections, mySections, setPage, setShowCards, setSection, setPageName, setShowSections, setCard, setSectionName, setCardName) => {
     // setSection(1);
     if(value !== "home"){
         setShowCards(false)
@@ -9,18 +8,35 @@ export const changePages = (value,pages, setSections, mySections, setPage, setSh
     const item = pages.find((item) => item.value === value);
     setPage(value);
     setPageName(item.name);
-
-    if(i > 0){
-        const ind = i - 1;
-        const sections = mySections.find((item, index) => index === ind);
-        console.log("all sections ", sections);
-        setSections(sections);
+    if(i > 1) {
+        setShowSections(false);
+        setSection(value);
+        setSections([]);
+        setShowCards(false);
+        setCard("1"); 
+        setSectionName(item.name); 
+        setCardName("General")
     }
     else{
-        setSection("")
-        setSections([])
-        setShowCards(false)
+        setShowSections(true);
+        setCard(""); 
+        setSectionName(""); 
+        setCardName("")
+
+        if(i > 0){
+            const ind = i - 1;
+            const sections = mySections.find((item, index) => index === ind);
+            console.log("all sections ", sections);
+            setSections(sections);
+        }
+        else{
+            setSection("")
+            setSections([])
+            setShowCards(false)
+        }
     }
+
+    
 
 }
 
@@ -60,7 +76,7 @@ export const changeCards = (value, setCard, cards, setCardName) => {
 }
 export const cmsSubmitHandler = (e, data, page, section, card, setData, setPage, setSection, setCard, handleClose, pageName,
     sectionName,
-    cardName) => {
+    cardName, getAllData, id) => {
     e.preventDefault();
     console.log("set data ", data);
     console.log("set page ", page);
@@ -71,6 +87,7 @@ export const cmsSubmitHandler = (e, data, page, section, card, setData, setPage,
     const baseUrl = process.env.REACT_APP_BASE_URL;
 
     const send = {
+        id: id,
         sectionId: section,
         cardId: card,
         headingEnglish: data.heading,
@@ -96,7 +113,10 @@ export const cmsSubmitHandler = (e, data, page, section, card, setData, setPage,
     }
     )
     .then(resp => resp.json())
-        .then(res => console.log("response page ", res))
+        .then(res =>{
+             console.log("response page ", res);
+             getAllData();
+            })
         .catch(err => console.log("page error ", err.message))
 
     clearStates(setData, setPage, setSection, setCard,handleClose)

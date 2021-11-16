@@ -18,6 +18,8 @@ import { SearchOutlined, LoadingOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
 import { Translation } from "react-i18next";
 
+const baseUrl = process.env.REACT_APP_BASE_URL;
+
 const antIcon = (
   <div>
     <LoadingOutlined
@@ -46,10 +48,65 @@ function Limitaions() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadData();
-    loadUserData();
+    // loadData();
+    getData();
+    // loadUserData();
     // eslint-disable-next-line
   }, [updateLimit]);
+
+  const getData = () => {
+    setCustomValue([]);
+    fetch(`${baseUrl}DynamicFields/GetDynamicFields`, {
+      method: "GET",
+
+      // headers: {
+      //   Authorization: "Bearer " + localStorage.getItem("userdata"),
+      //   "content-type": "application/json",
+      // },
+    })
+      .then((res) => res.json())
+      .then((resp) => {
+        console.log("get limitations ", resp);
+        const resJson = resp.data[0];
+        var custom = [];
+        setUserLimits(resJson);
+        console.log("values ", resJson);
+        resJson.customValues.map((item) => {
+          custom.push([
+            `${item.user.FirstName} ${item.user.SurName}`,
+            item.user.Role,
+            item.user.Role !== "Student"
+              ? [
+                  `Max Vehicle Add = ${
+                    item.user.Role === "Instructor"
+                      ? item.vehicleAddLimitInstructor !== undefined
+                        ? item.vehicleAddLimitInstructor
+                        : resJson.vehicleAddLimitInstructor
+                      : item.vehicleAddLimitDrivingSchool !== undefined
+                      ? item.vehicleAddLimitDrivingSchool
+                      : resJson.vehicleAddLimitDrivingSchool
+                  }`,
+                  item.user.Role === "DrivingSchool"
+                    ? `\nMax Instructor Add = ${
+                        item.instructorAddLimit !== undefined
+                          ? item.instructorAddLimit
+                          : resJson.instructorAddLimit
+                      }`
+                    : "",
+                ]
+              : ``,
+            item,
+          ]);
+          return null;
+        });
+        setCustomValue(custom);
+        setLoading(false);
+      })
+      .catch((e) => {
+        setLoading(false);
+        console.log("error loading: ", e);
+      });
+  };
 
   const loadData = () => {
     setCustomValue([]);

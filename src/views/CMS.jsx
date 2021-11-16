@@ -120,6 +120,7 @@ const CMS = (props) => {
   const [selectedSection, setSelectedSection] = useState([]);
   const [showSections, setShowSections] = useState(false);
   const [id, setId] = useState(null);
+  const [showLinks, setShowLinks] = useState(false);
 
   const [data, setData] = useState({
     heading: "",
@@ -182,6 +183,7 @@ const CMS = (props) => {
 
     if (pageIndex < 3) {
       setShowSections(true);
+      setShowLinks(false);
 
       console.log("find page ", pageIndex);
       const ind = pageIndex - 1;
@@ -219,25 +221,49 @@ const CMS = (props) => {
       handleShow(true);
       setDisableSelect(true);
     } else {
-      setShowSections(false);
-      setShowCards(false);
+      if (pageIndex === 5) {
+        setShowLinks(true);
+        setShowSections(false);
+        setShowCards(false);
 
-      setSections([]);
-      setPage(pageValue);
-      setPageName(pageName);
-      setSection("1");
-      setSectionName(pageName);
-      setCard("1");
-      setCardName("General");
-      setData({
-        ...data,
-        heading: headingEnglish,
-        headingFrench: headingFrench,
-        text: textEnglish,
-        textFrench: textFrench,
-      });
-      handleShow(true);
-      setDisableSelect(true);
+        setSections([]);
+        setPage(pageValue);
+        setPageName(pageName);
+        setSection("1");
+        setSectionName(pageName);
+        setCard("1");
+        setCardName("General");
+        setData({
+          ...data,
+          heading: headingEnglish,
+          headingFrench: headingFrench,
+          text: textEnglish,
+          textFrench: textFrench,
+        });
+        handleShow(true);
+        setDisableSelect(true);
+      } else {
+        setShowLinks(false);
+        setShowSections(false);
+        setShowCards(false);
+
+        setSections([]);
+        setPage(pageValue);
+        setPageName(pageName);
+        setSection("1");
+        setSectionName(pageName);
+        setCard("1");
+        setCardName("General");
+        setData({
+          ...data,
+          heading: headingEnglish,
+          headingFrench: headingFrench,
+          text: textEnglish,
+          textFrench: textFrench,
+        });
+        handleShow(true);
+        setDisableSelect(true);
+      }
     }
   };
   const handleShow = (edit) => {
@@ -264,6 +290,7 @@ const CMS = (props) => {
   const handleClose = () => {
     isEdit && clearStates();
     isEdit && setShowCards(false);
+    isEdit && setShowLinks(false);
     // clearStates();
     setShow(false);
     setId(null);
@@ -381,6 +408,8 @@ const CMS = (props) => {
                   sectionName,
                   cardName,
                   getAllData,
+                  setShowLinks,
+
                   id
                 )
               }
@@ -403,7 +432,8 @@ const CMS = (props) => {
                     setShowSections,
                     setCard,
                     setSectionName,
-                    setCardName
+                    setCardName,
+                    setShowLinks
                   )
                 }
               >
@@ -487,7 +517,7 @@ const CMS = (props) => {
 
               <FormInput
                 name="text"
-                label="Description"
+                label={showLinks ? "Link" : "Description"}
                 cat="textarea"
                 onChange={(e) => inputHandler(e, setData, data)}
                 value={data.text}
@@ -499,29 +529,30 @@ const CMS = (props) => {
                 onChange={(e) => inputHandler(e, setData, data)}
                 value={data.headingFrench}
               ></FormInput>
-              <FormInput
-                name="textFrench"
-                label="Description French"
-                cat="textarea"
-                onChange={(e) => inputHandler(e, setData, data)}
-                value={data.textFrench}
-              ></FormInput>
+              {!showLinks && (
+                <FormInput
+                  name="textFrench"
+                  label="Description French"
+                  cat="textarea"
+                  onChange={(e) => inputHandler(e, setData, data)}
+                  value={data.textFrench}
+                ></FormInput>
+              )}
 
               <Button
                 type="submit"
                 disabled={
-                  page &&
-                  section &&
-                  card &&
-                  data.heading &&
-                  data.headingFrench &&
-                  data.text &&
-                  data.textFrench
-                    ? false
+                  page && section && card
+                    ? //   &&
+                      //   data.heading &&
+                      //   data.headingFrench &&
+                      //   data.text &&
+                      //   data.textFrench
+                      false
                     : true
                 }
               >
-                Submit
+                {t("Submit")}
               </Button>
               {/* <FormGroup>
                 <ControlLabel>{t("Pages")}</ControlLabel>

@@ -13,7 +13,7 @@ const FormSelect = (props) => {
       {(t) => (
         <div style={{ marginBlock: "5px 20px" }}>
           <div style={{ fontSize: "16px", fontWeight: "400" }}>
-            {props.label}
+            {t(props.label)}
           </div>
           <Select
             style={props.style}

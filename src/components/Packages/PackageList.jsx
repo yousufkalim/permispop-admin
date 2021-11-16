@@ -5,6 +5,8 @@ import { SearchOutlined, LoadingOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
 import WebServicesManager from "../../WebServicesManager/WebServicesManager";
 import { Translation } from "react-i18next";
+import { motion } from "framer-motion";
+import Swal from "sweetalert2";
 
 const antIcon = (
   <div>
@@ -28,6 +30,10 @@ class PackageList extends Component {
   WebServicesManager = new WebServicesManager();
 
   componentDidMount() {
+    this.getData();
+  }
+
+  getData = () => {
     var tokn = localStorage.getItem("userdata");
     this.WebServicesManager.getApiCall(
       {
@@ -36,12 +42,14 @@ class PackageList extends Component {
       },
       (statusCode, pgkDetails) => {
         console.log("did mount package", this.state.packages);
-        this.setState({ packages: pgkDetails });
+        this.setState({ packages: pgkDetails }, () => {
+          console.log("pkg list ", this.state.packages);
+        });
         this.setState({ loading: false });
       }
     );
     this.setState({ loading: false });
-  }
+  };
 
   componentDidUpdate(prevProps, prevState) {
     if (this.props.addUpdate !== prevProps.addUpdate) {
@@ -171,9 +179,48 @@ class PackageList extends Component {
     // console.log("params", pagination, filters, sorter, extra);
   };
 
+  handleDelete = (item) => {
+    console.log("del pkg ", item);
+    Swal.fire({
+      title: "Are you sure?",
+      // text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.deleteRecord(item.id);
+        Swal.fire("Deleted!", "Your record has been deleted.", "success");
+      }
+    });
+  };
+
+  deleteRecord = (id) => {
+    var tokn = localStorage.getItem("userdata");
+    const baseUrl = process.env.REACT_APP_BASE_URL;
+    fetch(`${baseUrl}package/DeletePackageById?id=${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${tokn}`,
+        "Content-type": "application/json",
+      },
+    })
+      .then((resp) => resp.json())
+      .then((res) => {
+        console.log("delete data ", res);
+        this.getData();
+
+        // setCms(res.data);
+      })
+      .catch((err) => console.log(err.message));
+  };
+
   ////////////////////// Render ////////////////////////
 
   render() {
+    console.log("package list ", this.props);
     const columns = [
       {
         title: <Translation>{(t) => t("Sr. No.")}</Translation>,
@@ -223,6 +270,43 @@ class PackageList extends Component {
         key: "price",
         align: "center",
         width: 160,
+        render: (price) => <div>{`${price} €`}</div>,
+        // sorter: (a, b) => a.price - b.price,
+        // ...this.getColumnSearchProps("price"),
+      },
+      {
+        title: <Translation>{(t) => t("Action")}</Translation>,
+        dataIndex: "action",
+        key: "action",
+        align: "center",
+        width: 160,
+        render: (item) => (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              flexDirection: "row",
+              justifyContent: "center",
+            }}
+          >
+            <motion.div
+              whileHover={{ scale: 1.2 }}
+              whileTap={{ scale: 0.8 }}
+              style={{
+                margin: "6px 6px 6px 6px",
+                width: "10%",
+                borderRadius: "50%",
+              }}
+            >
+              <i
+                style={{ fontSize: "20px" }}
+                title="Delete"
+                className="fa fa-trash simple-btn package-icon"
+                onClick={() => this.handleDelete(item)}
+              ></i>
+            </motion.div>
+          </div>
+        ),
         // sorter: (a, b) => a.price - b.price,
         // ...this.getColumnSearchProps("price"),
       },
@@ -310,6 +394,7 @@ class PackageList extends Component {
                       : item.duration === "15day"
                       ? "15 days"
                       : item.duration === "1month" && "1 Month",
+                  action: item,
                 }))}
               ></Table>
             </Col>

@@ -48,66 +48,71 @@ class Packages extends Component {
   render() {
     return (
       <Translation>
-                      {(t) =>(
-      <div>
-        <Modal
-          title={t("Settings")}
-          visible={this.state.isModalVisible}
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
-          footer={null}
-          className="add-mp-modal"
-        >
-          <MembershipSetting />
-        </Modal>
-        <Modal
-          title={t("Package Details")}
-          visible={this.state.isAddModalVisible}
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
-          footer={null}
-          className="add-mp-modal"
-        >
-          <AddUpdatePackage toggle={this.toggle} />
-        </Modal>
-        <div id="setting-panel"></div>
+        {(t) => (
+          <div>
+            <Modal
+              title={t("Settings")}
+              visible={this.state.isModalVisible}
+              onOk={this.handleOk}
+              onCancel={this.handleCancel}
+              footer={null}
+              className="add-mp-modal"
+            >
+              <MembershipSetting />
+            </Modal>
+            <Modal
+              title={t("Package Details")}
+              visible={this.state.isAddModalVisible}
+              onOk={this.handleOk}
+              onCancel={this.handleCancel}
+              footer={null}
+              className="add-mp-modal"
+            >
+              <AddUpdatePackage toggle={this.toggle} />
+            </Modal>
+            <div id="setting-panel"></div>
 
-        <header
-          className="pull-right"
-          style={{
-            fontSize: 28,
-            position: "relative",
-            zIndex: 100,
-            display: "flex",
-            flexDirection: "row",
-            marginRight: "30px",
-          }}
-        >
-          <motion.div
-            whileHover={{ scale: 1.2 }}
-            whileTap={{ scale: 0.8 }}
-            onClick={this.showAddModal}
-            style={{ margin: "6px 14px 6px 14px" }}
-          >
-            {/* <Button className="Package-btn"> */}
-            <i className=" fas fa-plus package-icon"></i>
-            {/* </Button> */}
-          </motion.div>
-          <motion.div
+            <header
+              className="pull-right"
+              style={{
+                fontSize: 28,
+                position: "relative",
+                zIndex: 100,
+                display: "flex",
+                flexDirection: "row",
+                marginRight: "30px",
+              }}
+            >
+              <motion.div
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.8 }}
+                onClick={this.showAddModal}
+                style={{ margin: "6px 14px 6px 14px" }}
+              >
+                {/* <Button className="Package-btn"> */}
+                <i className=" fas fa-plus package-icon"></i>
+                {/* </Button> */}
+              </motion.div>
+              {/* <motion.div
             whileHover={{ scale: 1.2 }}
             whileTap={{ scale: 0.8 }}
             onClick={this.showModal}
             style={{ margin: "6px 14px 6px 14px" }}
           >
-            {/* <Button className="Package-btn"> */}
+           
             <i className="fas fa-cog package-icon"></i>
-            {/* </Button> */}
-          </motion.div>
-          <div className="clearfix" />
-        </header>
-        <PackageList toggle={this.toggle} addUpdate={this.state.addUpdate} />
-      </div>
-    )}</Translation>);
+          
+          </motion.div> */}
+              <div className="clearfix" />
+            </header>
+            <PackageList
+              toggle={this.toggle}
+              addUpdate={this.state.addUpdate}
+            />
+          </div>
+        )}
+      </Translation>
+    );
   }
 }
 

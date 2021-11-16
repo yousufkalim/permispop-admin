@@ -113,7 +113,7 @@ class Users extends Component {
       // `${this.baseUrl}Personal/GetAllUsers`,
       // `${this.baseUrl}FeedBacks/GetAllUsersRating_New?pagenumber=${pageNumber}&pagesize=${pageSize}&sortvalue=${sortValue}&ModelName=${modelName}&IsVerified=${isVerified}&sortorder=${sortOrder}`,
       // usersUrl,
-      `${this.baseUrl}Personal/GetAllUsers_New?pagenumber=${pageNumber}&pagesize=${pageSize}&QuerySearch.role=${this.state.roleFilter}&pagesize=${pageSize}&QuerySearch.FirstName=${searchText}&QuerySorting.${sortValue}=${sortOrder}&IsVerified=${isVerified}`,
+      `${this.baseUrl}Personal/GetAllUsers_New?pagenumber=${pageNumber}&pagesize=${pageSize}&QuerySearch.role=${this.state.roleFilter}&QuerySearch.FirstName=${searchText}&QuerySorting.${sortValue}=${sortOrder}&IsVerified=${isVerified}`,
       {
         method: "GET",
         headers: {

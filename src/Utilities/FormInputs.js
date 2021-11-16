@@ -1,4 +1,4 @@
-export const changePages = (value,pages, setSections, mySections, setPage, setShowCards, setSection, setPageName, setShowSections, setCard, setSectionName, setCardName) => {
+export const changePages = (value,pages, setSections, mySections, setPage, setShowCards, setSection, setPageName, setShowSections, setCard, setSectionName, setCardName, setShowLinks) => {
     // setSection(1);
     if(value !== "home"){
         setShowCards(false)
@@ -8,7 +8,21 @@ export const changePages = (value,pages, setSections, mySections, setPage, setSh
     const item = pages.find((item) => item.value === value);
     setPage(value);
     setPageName(item.name);
-    if(i > 1) {
+    if(i > 2) {
+
+        if(i === 5){
+            setShowLinks(true);
+            setShowSections(false);
+            setSection(value);
+            setSections([]);
+            setShowCards(false);
+            setCard("1"); 
+            setSectionName(item.name); 
+            setCardName("General")
+
+        }
+        else{
+            setShowLinks(false);
         setShowSections(false);
         setSection(value);
         setSections([]);
@@ -16,6 +30,7 @@ export const changePages = (value,pages, setSections, mySections, setPage, setSh
         setCard("1"); 
         setSectionName(item.name); 
         setCardName("General")
+        }
     }
     else{
         setShowSections(true);
@@ -28,6 +43,7 @@ export const changePages = (value,pages, setSections, mySections, setPage, setSh
             const sections = mySections.find((item, index) => index === ind);
             console.log("all sections ", sections);
             setSections(sections);
+            setSection("");
         }
         else{
             setSection("")
@@ -52,18 +68,22 @@ export const inputHandler = (e, setData, data) => {
 }
 
 export const changeSection = (value, setSection, sections, page, setShowCards, setCard, setSectionName, setCardName) =>{
-    console.log("section value ", value);
-    setSection(value);
-    setCard("4");
-    setCardName("General");
-  
+    console.log("section value ", typeof value);
+    // setSection(value);
+    // setCard("4");
+    // setCardName("General");
+
     const item = sections.find((sec, index) => sec.id == value );
     setSectionName(item.name);
+    setCardName("General");
+    setSection(value);
     if(page === "home" && value === "2"){
         setShowCards(true);
+        setCard("4");
     }
     else{
-        setShowCards(false)
+        setShowCards(false);
+        setCard("1");
     }
 }
 
@@ -76,7 +96,7 @@ export const changeCards = (value, setCard, cards, setCardName) => {
 }
 export const cmsSubmitHandler = (e, data, page, section, card, setData, setPage, setSection, setCard, handleClose, pageName,
     sectionName,
-    cardName, getAllData, id) => {
+    cardName, getAllData, setShowLinks, id) => {
     e.preventDefault();
     console.log("set data ", data);
     console.log("set page ", page);
@@ -119,7 +139,8 @@ export const cmsSubmitHandler = (e, data, page, section, card, setData, setPage,
             })
         .catch(err => console.log("page error ", err.message))
 
-    clearStates(setData, setPage, setSection, setCard,handleClose)
+    clearStates(setData, setPage, setSection, setCard,handleClose);
+    setShowLinks(false);
 }
 
 const clearStates = (setData, setPage, setSection, setCard, handleClose) => {

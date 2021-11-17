@@ -18,7 +18,11 @@ const success = () => {
     maxCount: 1,
   });
   message.success({
-    content: "Membership Added Successfully!",
+    content: (
+      <Translation>
+        {(t) => <div>{t("Package Added Successfully")} !</div>}
+      </Translation>
+    ),
   });
 };
 
@@ -27,6 +31,7 @@ class AddUpdatePackage extends Component {
     super(props);
     this.state = {
       pkName: "",
+      pkNameFrench: "",
       pkDuration: "1day",
       pkRole: "admin",
       pkPrice: "",
@@ -41,7 +46,12 @@ class AddUpdatePackage extends Component {
   WebServicesManager = new WebServicesManager();
 
   handleDisabled = () => {
-    if (this.state.pkName === "" || this.state.pkPrice === "") return true;
+    if (
+      this.state.pkName === "" ||
+      this.state.pkPrice === "" ||
+      this.state.pkNameFrench === ""
+    )
+      return true;
     else return false;
   };
   handleSave = (e) => {
@@ -50,7 +60,8 @@ class AddUpdatePackage extends Component {
     });
     var tokn = localStorage.getItem("userdata");
     const pkg = {
-      name: this.state.pkName,
+      nameEnglish: this.state.pkName,
+      nameFrench: this.state.pkNameFrench,
       duration: this.state.pkDuration,
       price: this.state.pkPrice,
       createdBy: this.state.pkRole,
@@ -71,6 +82,7 @@ class AddUpdatePackage extends Component {
         );
         this.setState({
           pkName: "",
+          pkNameFrench: "",
           pkDuration: "1day",
           pkRole: "admin",
           pkPrice: "",
@@ -112,6 +124,28 @@ class AddUpdatePackage extends Component {
                                 placeholder={t("Package Name")}
                                 onChange={(e) => {
                                   this.setState({ pkName: e.target.value });
+                                }}
+                              />
+                            </FormGroup>
+                          </div>
+                          <div className="col-md-12">
+                            <FormGroup>
+                              <ControlLabel
+                                style={{
+                                  fontSize: "16px",
+                                  fontWeight: "400",
+                                  color: "rgb(51, 51, 51)",
+                                }}
+                              >
+                                {t("Name French")}
+                              </ControlLabel>
+                              <FormControl
+                                className="form-control"
+                                placeholder={t("Package Name French")}
+                                onChange={(e) => {
+                                  this.setState({
+                                    pkNameFrench: e.target.value,
+                                  });
                                 }}
                               />
                             </FormGroup>

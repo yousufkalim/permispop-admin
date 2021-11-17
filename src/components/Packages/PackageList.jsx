@@ -182,17 +182,22 @@ class PackageList extends Component {
   handleDelete = (item) => {
     console.log("del pkg ", item);
     Swal.fire({
-      title: "Are you sure?",
+      title: "Es-tu sûr?",
       // text: "You won't be able to revert this!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Annuler",
+      confirmButtonText: "Oui, supprimez-le!",
     }).then((result) => {
       if (result.isConfirmed) {
         this.deleteRecord(item.id);
-        Swal.fire("Deleted!", "Your record has been deleted.", "success");
+        Swal.fire(
+          "Supprimé!",
+          "Votre enregistrement a été supprimé.",
+          "success"
+        );
       }
     });
   };
@@ -233,13 +238,22 @@ class PackageList extends Component {
         // ...this.getColumnSearchProps("number"),
       },
       {
-        title: <Translation>{(t) => t("Name")}</Translation>,
-        dataIndex: "name",
-        key: "name",
+        title: <Translation>{(t) => t("Name English")}</Translation>,
+        dataIndex: "nameEnglish",
+        key: "nameEnglish",
         align: "center",
         width: 160,
-        sorter: (a, b) => a.name.length - b.name.length,
-        ...this.getColumnSearchProps("name"),
+        sorter: (a, b) => a.nameEnglish.length - b.nameEnglish.length,
+        ...this.getColumnSearchProps("nameEnglish"),
+      },
+      {
+        title: <Translation>{(t) => t("Name French")}</Translation>,
+        dataIndex: "nameFrench",
+        key: "nameFrench",
+        align: "center",
+        width: 160,
+        sorter: (a, b) => a.nameFrench.length - b.nameFrench.length,
+        ...this.getColumnSearchProps("nameFrench"),
       },
       {
         title: <Translation>{(t) => t("Duration")}</Translation>,
@@ -336,70 +350,75 @@ class PackageList extends Component {
     ];
     return (
       <div className="content">
-        <Grid fluid>
-          <Row>
-            <Col md={12}>
-              <Table
-                loading={{
-                  indicator: antIcon,
-                  spinning: this.state.loading,
-                  size: "large",
-                }}
-                locale={
-                  this.state.loading
-                    ? {
-                        emptyText: (
-                          <div>
-                            <br></br>
-                            <br></br>
-                            <br></br>
-                            <br></br>
-                            <br></br>
-                            <br></br>
-                          </div>
-                        ),
-                      }
-                    : {}
-                }
-                style={{ padding: "5px 10px 5px 10px" }}
-                sticky={true}
-                scroll={{ y: "70vh", x: 0 }}
-                columns={columns}
-                onChange={this.onChange}
-                pagination={{
-                  position: ["bottomCenter"],
-                  size: "small",
+        <Translation>
+          {(t) => (
+            <Grid fluid>
+              <Row>
+                <Col md={12}>
+                  <Table
+                    loading={{
+                      indicator: antIcon,
+                      spinning: this.state.loading,
+                      size: "large",
+                    }}
+                    locale={
+                      this.state.loading
+                        ? {
+                            emptyText: (
+                              <div>
+                                <br></br>
+                                <br></br>
+                                <br></br>
+                                <br></br>
+                                <br></br>
+                                <br></br>
+                              </div>
+                            ),
+                          }
+                        : {}
+                    }
+                    style={{ padding: "5px 10px 5px 10px" }}
+                    sticky={true}
+                    scroll={{ y: "70vh", x: 0 }}
+                    columns={columns}
+                    onChange={this.onChange}
+                    pagination={{
+                      position: ["bottomCenter"],
+                      size: "small",
 
-                  defaultPageSize: 20,
-                  defaultCurrent: 1,
-                  showSizeChanger: true,
-                  pageSizeOptions: [20, 50, 100],
+                      defaultPageSize: 20,
+                      defaultCurrent: 1,
+                      showSizeChanger: true,
+                      pageSizeOptions: [20, 50, 100],
 
-                  showTotal: (total, range) =>
-                    `${range[0]}-${range[1]} of ${total} Lignes`,
-                }}
-                dataSource={this.state.packages?.map((item, index) => ({
-                  key: index + 1,
-                  number: index + 1,
-                  name: item.name,
-                  price: item.price,
-                  // role: item.role,
-                  duration:
-                    item.duration === "1day"
-                      ? "1 Day"
-                      : item.duration === "3day"
-                      ? "3 days"
-                      : item.duration === "7day"
-                      ? "7 Days"
-                      : item.duration === "15day"
-                      ? "15 days"
-                      : item.duration === "1month" && "1 Month",
-                  action: item,
-                }))}
-              ></Table>
-            </Col>
-          </Row>
-        </Grid>
+                      showTotal: (total, range) =>
+                        `${range[0]}-${range[1]} of ${total} Lignes`,
+                    }}
+                    dataSource={this.state.packages?.map((item, index) => ({
+                      key: index + 1,
+                      number: index + 1,
+                      nameEnglish: item.nameEnglish,
+                      nameFrench: item.nameFrench,
+                      price: item.price,
+                      // role: item.role,
+                      duration:
+                        item.duration === "1day"
+                          ? t("1 Day")
+                          : item.duration === "3day"
+                          ? t("3 Days")
+                          : item.duration === "7day"
+                          ? t("7 Days")
+                          : item.duration === "15day"
+                          ? t("15 Days")
+                          : item.duration === "1month" && t("1 Month"),
+                      action: item,
+                    }))}
+                  ></Table>
+                </Col>
+              </Row>
+            </Grid>
+          )}
+        </Translation>
       </div>
     );
   }

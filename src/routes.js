@@ -78,7 +78,7 @@ const dashboardRoutes = [
   {
     path: "/cms",
     name: <Translation>{(t) => t("CMS")}</Translation>,
-    icon: "pe-7s-lock",
+    icon: "pe-7s-note2",
     component: CMS,
     layout: "/admin",
   },

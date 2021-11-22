@@ -3,6 +3,7 @@ import { Row, Col } from "react-bootstrap";
 
 export class StatsCard extends Component {
   render() {
+    console.log("update statcard ", this.props);
     return (
       <div className="card card-stats">
         <div className="content">

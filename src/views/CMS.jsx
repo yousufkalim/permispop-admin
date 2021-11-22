@@ -509,7 +509,7 @@ const CMS = (props) => {
 
               <FormInput
                 name="heading"
-                label="Heading"
+                label="Heading English"
                 cat="input"
                 onChange={(e) => inputHandler(e, setData, data)}
                 value={data.heading}
@@ -517,7 +517,7 @@ const CMS = (props) => {
 
               <FormInput
                 name="text"
-                label={showLinks ? "Link" : "Description"}
+                label={showLinks ? "Link" : "Description English"}
                 cat="textarea"
                 onChange={(e) => inputHandler(e, setData, data)}
                 value={data.text}

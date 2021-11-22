@@ -30,6 +30,8 @@ var legendPieLocal = {
   types: ["info", "danger", "warning"],
 };
 
+const baseUrl = process.env.REACT_APP_BASE_URL;
+
 class Dashboard extends Component {
   constructor(props) {
     super(props);
@@ -57,19 +59,18 @@ class Dashboard extends Component {
   }
   componentDidMount() {
     const token = localStorage.getItem("userdata");
-    fetch(`${process.env.REACT_APP_BASE_NODE}personal/getusercount`, {
+    fetch(`${baseUrl}Personal/GetUserCount`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
       .then((res) => res.json())
-      .then((resJson) => {
-        var countUser =
-          resJson.genderCount.male +
-          resJson.genderCount.female +
-          resJson.genderCount.others;
-        console.log(resJson.genderCount.others);
+      .then((resp) => {
+        console.log("count users ", resp);
+        const resJson = resp.data;
+        var countUser = resJson.male + resJson.female + resJson.other;
+        console.log(resJson.other);
         var dataPieLocal = {
           labels: [
             // `${((resJson.genderCount.male * 100) / countUser).toFixed(2)}%`,
@@ -80,23 +81,23 @@ class Dashboard extends Component {
             // resJson.genderCount.male, resJson.genderCount.female
           ],
         };
-        if (resJson.genderCount.male > 0) {
+        if (resJson.male > 0) {
           dataPieLocal.labels.push(
-            `${((resJson.genderCount.male * 100) / countUser).toFixed(2)}%`
+            `${((resJson.male * 100) / countUser).toFixed(2)}%`
           );
-          dataPieLocal.series.push(resJson.genderCount.male);
+          dataPieLocal.series.push(resJson.male);
         }
-        if (resJson.genderCount.female > 0) {
+        if (resJson.female > 0) {
           dataPieLocal.labels.push(
-            `${((resJson.genderCount.female * 100) / countUser).toFixed(2)}%`
+            `${((resJson.female * 100) / countUser).toFixed(2)}%`
           );
-          dataPieLocal.series.push(resJson.genderCount.female);
+          dataPieLocal.series.push(resJson.female);
         }
-        if (resJson.genderCount.others > 0) {
+        if (resJson.others > 0) {
           dataPieLocal.labels.push(
-            `${((resJson.genderCount.others * 100) / countUser).toFixed(2)}%`
+            `${((resJson.others * 100) / countUser).toFixed(2)}%`
           );
-          dataPieLocal.series.push(resJson.genderCount.others);
+          dataPieLocal.series.push(resJson.others);
         }
         this.setState(
           { userCounts: resJson, genderData: dataPieLocal }
@@ -199,30 +200,32 @@ class Dashboard extends Component {
                   <Col lg={3} sm={6}>
                     <StatsCard
                       bigIcon={<i className="pe-7s-study text-warning" />}
-                      statsValue={<CountUp end={userCounts.students} />}
+                      statsValue={<CountUp end={userCounts.studentCounts} />}
                       statsText={t("Students")}
                     />
                   </Col>
                   <Col lg={3} sm={6}>
                     <StatsCard
                       bigIcon={<i className="pe-7s-users text-success" />}
-                      statsValue={<CountUp end={userCounts.instructors} />}
+                      statsValue={<CountUp end={userCounts.instructorCounts} />}
                       statsText={t("Instructors")}
                     />
                   </Col>
                   <Col lg={3} sm={6}>
                     <StatsCard
                       bigIcon={<i className="pe-7s-home text-danger" />}
-                      statsValue={<CountUp end={userCounts.drivingSchool} />}
+                      statsValue={
+                        <CountUp end={userCounts.drivingSchoolCounts} />
+                      }
                       statsText={t("Driving School")}
                       statsIcon={<i className="fa fa-users" />}
-                      statsIconText={`Instructeurs attachés: ${userCounts.dsInstructor}`}
+                      statsIconText={`Instructeurs attachés: ${userCounts.dsInstructorCounts}`}
                     />
                   </Col>
                   <Col lg={3} sm={6}>
                     <StatsCard
                       bigIcon={<i className="pe-7s-car text-info" />}
-                      statsValue={<CountUp end={userCounts.carRantal} />}
+                      statsValue={<CountUp end={userCounts.carRentalCounts} />}
                       statsText={t("Rental Car Company")}
                     />
                   </Col>

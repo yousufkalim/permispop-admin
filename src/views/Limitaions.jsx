@@ -48,9 +48,9 @@ function Limitaions() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // loadData();
-    getData();
-    // loadUserData();
+    loadData();
+    // getData();
+    loadUserData();
     // eslint-disable-next-line
   }, [updateLimit]);
 
@@ -67,18 +67,18 @@ function Limitaions() {
       .then((res) => res.json())
       .then((resp) => {
         console.log("get limitations ", resp);
-        const resJson = resp.data[0];
+        const resJson = resp.data;
         var custom = [];
         setUserLimits(resJson);
         console.log("values ", resJson);
         resJson.customValues.map((item) => {
           custom.push([
-            `${item.user.FirstName} ${item.user.SurName}`,
-            item.user.Role,
-            item.user.Role !== "Student"
+            `${item.users.firstName} ${item.users.surName}`,
+            item.users.Role,
+            item.users.Role !== "Student"
               ? [
                   `Max Vehicle Add = ${
-                    item.user.Role === "Instructor"
+                    item.users.Role === "Instructor"
                       ? item.vehicleAddLimitInstructor !== undefined
                         ? item.vehicleAddLimitInstructor
                         : resJson.vehicleAddLimitInstructor
@@ -86,7 +86,7 @@ function Limitaions() {
                       ? item.vehicleAddLimitDrivingSchool
                       : resJson.vehicleAddLimitDrivingSchool
                   }`,
-                  item.user.Role === "DrivingSchool"
+                  item.users.Role === "DrivingSchool"
                     ? `\nMax Instructor Add = ${
                         item.instructorAddLimit !== undefined
                           ? item.instructorAddLimit
@@ -110,7 +110,7 @@ function Limitaions() {
 
   const loadData = () => {
     setCustomValue([]);
-    fetch(`${process.env.REACT_APP_BASE_NODE}dynamic/`, {
+    fetch(`${baseUrl}DynamicFields/GetDynamicFields`, {
       method: "GET",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("userdata"),
@@ -118,18 +118,20 @@ function Limitaions() {
       },
     })
       .then((res) => res.json())
-      .then((resJson) => {
+      .then((resp) => {
+        console.log("values users ", resp);
+        const resJson = resp.data;
         var custom = [];
         setUserLimits(resJson);
         console.log("values ", resJson);
         resJson.customValues.map((item) => {
           custom.push([
-            `${item.user.FirstName} ${item.user.SurName}`,
-            item.user.Role,
-            // item.user.Role !== "Student"
+            `${item.users.firstName} ${item.users.surName}`,
+            item.users.role,
+            // item.users.Role !== "Student"
             //   ? `<ul>
             //     <li>Max Vehicle Add = ${
-            //       item.user.Role === "Instructor"
+            //       item.users.Role === "Instructor"
             //         ? item.vehicleAddLimitInstructor !== undefined
             //           ? item.vehicleAddLimitInstructor
             //           : resJson.vehicleAddLimitInstructor
@@ -138,7 +140,7 @@ function Limitaions() {
             //         : resJson.vehicleAddLimitDrivingSchool
             //     }</li>
             //     ${
-            //       item.user.Role === "DrivingSchool"
+            //       item.users.Role === "DrivingSchool"
             //         ? `<li>Max Instructor Add = ${
             //             item.instructorAddLimit !== undefined
             //               ? item.instructorAddLimit
@@ -148,10 +150,10 @@ function Limitaions() {
             //     }
             //   </ul>`
             //   : ``,
-            item.user.Role !== "Student"
+            item.users.role !== "Student"
               ? [
                   `Max Vehicle Add = ${
-                    item.user.Role === "Instructor"
+                    item.users.role === "Instructor"
                       ? item.vehicleAddLimitInstructor !== undefined
                         ? item.vehicleAddLimitInstructor
                         : resJson.vehicleAddLimitInstructor
@@ -159,7 +161,7 @@ function Limitaions() {
                       ? item.vehicleAddLimitDrivingSchool
                       : resJson.vehicleAddLimitDrivingSchool
                   }`,
-                  item.user.Role === "DrivingSchool"
+                  item.users.role === "DrivingSchool"
                     ? `\nMax Instructor Add = ${
                         item.instructorAddLimit !== undefined
                           ? item.instructorAddLimit
@@ -558,6 +560,7 @@ function Limitaions() {
     },
   ];
 
+  console.log("updated data ", userLimits);
   return (
     <Translation>
       {(t) => (
@@ -568,7 +571,7 @@ function Limitaions() {
                 <StatsCard
                   bigIcon={<i className="pe-7s-plus text-success" />}
                   statsText={t("Vehicle Add Limit Instructor")}
-                  statsValue={userLimits.vehicleAddLimitInstructor}
+                  statsValue={userLimits?.vehicleAddLimitInstructor}
                 />
               </Col>
 
@@ -576,21 +579,21 @@ function Limitaions() {
                 <StatsCard
                   bigIcon={<i className="pe-7s-plus text-primary" />}
                   statsText={t("Vehicle Add Limit Driving School")}
-                  statsValue={userLimits.vehicleAddLimitDrivingSchool}
+                  statsValue={userLimits?.vehicleAddLimitDrivingSchool}
                 />
               </Col>
               <Col lg={3} sm={6}>
                 <StatsCard
                   bigIcon={<i className="pe-7s-plus text-warning" />}
                   statsText={t("DrivingSchool Instructor Limit")}
-                  statsValue={userLimits.instructorAddLimit}
+                  statsValue={userLimits?.instructorAddLimit}
                 />
               </Col>
               <Col lg={3} sm={6}>
                 <StatsCard
                   bigIcon={<i className="pe-7s-note text-danger" />}
                   statsText={t("Max Booking Allowed/Week")}
-                  statsValue={userLimits.maxBookingLimit}
+                  statsValue={userLimits?.maxBookingLimit}
                 />
               </Col>
             </Row>
@@ -799,7 +802,7 @@ function Limitaions() {
                     name="gender"
                     value={
                       updateCustom
-                        ? `${updateCustom.user.FirstName} ${updateCustom.user.SurName}`
+                        ? `${updateCustom.users.firstName} ${updateCustom.users.surName}`
                         : ""
                     }
                     readOnly={true}

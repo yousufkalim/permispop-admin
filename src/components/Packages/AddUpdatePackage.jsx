@@ -215,7 +215,7 @@ class AddUpdatePackage extends Component {
                               </ControlLabel>
                               <FormControl
                                 className="form-control"
-                                placeholder={t("Package Price")}
+                                placeholder={t("Package Price in €")}
                                 onChange={(e) => {
                                   this.setState({ pkPrice: e.target.value });
                                 }}

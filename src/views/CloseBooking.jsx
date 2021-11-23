@@ -72,11 +72,12 @@ class CloseBooking extends Component {
     console.log("message submit ", message);
 
     const info = {
-      message,
-      startDate: startDate + "T00:00:00Z",
-      endDate: endDate + "T23:59:00",
+      Message: message,
+      StartDate: startDate + "T00:00:00Z",
+      EndDate: endDate + "T23:59:00",
     };
-    fetch(`${process.env.REACT_APP_BASE_NODE}dynamic/closerangebooking`, {
+    console.log("dates ", info);
+    fetch(`${process.env.REACT_APP_BASE_URL}Bookings/cancelRangeAllBookings`, {
       method: "POST",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("userdata"),

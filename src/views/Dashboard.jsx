@@ -143,9 +143,9 @@ class Dashboard extends Component {
       () => {
         // api call to update status in backend
         fetch(
-          `${process.env.REACT_APP_BASE_NODE}dynamic/updateMailStatus/${status}`,
+          `${process.env.REACT_APP_BASE_URL}DynamicFields/UpdateMailStatus?status=${status}`,
           {
-            method: "GET",
+            method: "POST",
             headers: {
               Authorization: "Bearer " + localStorage.getItem("userdata"),
               "content-type": "application/json",

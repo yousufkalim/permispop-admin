@@ -38,12 +38,15 @@ class CloseBooking extends Component {
     const token = localStorage.getItem("userdata");
 
     // fetch data for booking counts limit
-    fetch(`${process.env.REACT_APP_BASE_NODE}dynamic/getBookingCounts`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    fetch(
+      `${process.env.REACT_APP_BASE_URL}/DynamicFields/getBookingLimitExceededUsers`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
       .then((res) => res.json())
       .then((resJson) => {
         // console.log(resJson, "res");

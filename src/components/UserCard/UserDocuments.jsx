@@ -1488,7 +1488,7 @@ class UserDocuments extends Component {
     const { vehicleInfo } = this.state;
     if (vehicleInfo !== "" && Object.entries(vehicleInfo).length > 0) {
       Object.entries(vehicleInfo).forEach(([key, value]) => {
-        var keySplit = "veh" + key.split("véhicule ")[1];
+        var keySplit = "veh" + key.split("Vehicle")[1];
         var stateis = Object.entries(this.state).find(
           (item) => item[0] === keySplit
         );

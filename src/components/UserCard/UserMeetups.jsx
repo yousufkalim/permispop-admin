@@ -149,6 +149,7 @@ export class UserMeetups extends Component {
         dataToInsert: meetupObj,
       },
       (statusCode, response) => {
+
         if (response !== "") {
           this.setState({
             showAdd: false,
@@ -199,7 +200,7 @@ export class UserMeetups extends Component {
     var tokn = localStorage.getItem("userdata");
     const meetupObj = JSON.stringify({
       ...this.state.editMeetup,
-      meetUp: this.state.address,
+      meetUp: `${this.state.address},${this.state.zip},${this.state.city}`,
       zipCode: this.state.zip,
       city: this.state.city,
       lat: this.state.lat,

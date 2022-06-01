@@ -19,6 +19,7 @@ import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { Translation } from "react-i18next";
 import Autocomplete from "react-autocomplete";
 
+
 const { confirm } = Modal;
 
 export class UserCard extends Component {
@@ -276,11 +277,13 @@ export class UserCard extends Component {
   };
 
   handleSave = () => {
+
     this.setState({
       isAddDisable: true,
     });
-    // debugger;
     var tokn = localStorage.getItem("userdata");
+
+
     const data = {
       id: this.props.id,
       FirstName: this.state.firstName,
@@ -296,7 +299,7 @@ export class UserCard extends Component {
         this.state.backIDPhoto === ""
           ? this.state.backIdPathError
           : this.state.backIDPhoto,
-      address: this.state.address,
+      address: `${this.state.address}, ${this.state.zip}, ${this.state.city}`,
       Complement: this.state.complement,
       ZIP: this.state.zip,
       City: this.state.city,
@@ -353,6 +356,7 @@ export class UserCard extends Component {
                 token: tokn,
               },
               (statusCode, responseUpdate) => {
+
                 window.location.reload();
               }
             );
@@ -367,6 +371,7 @@ export class UserCard extends Component {
       }
     );
   };
+
 
   handleFunc = (days) => {
     this.setState({
